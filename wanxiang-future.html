@@ -1,0 +1,1675 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>万象未来 · AI 档案知识空间</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=ZCOOL+XiaoWei&family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-cream: #faf5ee;
+      --bg-warm: #f3e8db;
+      --bg-pink: #f8ece6;
+      --accent-red: #a62c2c;
+      --accent-red-light: #c94d4d;
+      --accent-gold: #c9a86c;
+      --text-primary: #3d2b1f;
+      --text-secondary: rgba(61, 43, 31, 0.72);
+      --text-muted: rgba(61, 43, 31, 0.5);
+      --glass: rgba(255, 250, 245, 0.78);
+      --glass-border: rgba(166, 44, 44, 0.12);
+      --card-shadow: rgba(92, 61, 46, 0.08);
+      --card-glow: rgba(166, 44, 44, 0.08);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Noto Sans SC', 'Microsoft YaHei', sans-serif;
+      background: var(--bg-cream);
+      color: var(--text-primary);
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* 温暖背景层 */
+    .landscape-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
+      background: 
+        radial-gradient(ellipse at 50% 70%, rgba(201, 168, 108, 0.12) 0%, transparent 55%),
+        radial-gradient(ellipse at 80% 60%, rgba(166, 44, 44, 0.06) 0%, transparent 40%),
+        linear-gradient(180deg, #faf5ee 0%, #f8ece6 35%, #f3e8db 65%, #efe2d3 100%);
+    }
+
+    /* 祥云/飞鸟装饰 */
+    .clouds {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+      pointer-events: none;
+      opacity: 0.25;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 400'%3E%3Cpath fill='%23c9a86c' fill-opacity='0.3' d='M100,200 Q130,160 170,180 T250,170 T320,190 T400,160 T480,180 T560,150 T640,170 T720,140'/%3E%3Cpath fill='%23a62c2c' fill-opacity='0.15' d='M50,120 Q80,90 120,110 T200,100 T280,120 T360,90 T440,110 T520,80 T600,100 T680,70'/%3E%3C/svg%3E") repeat-x;
+      background-size: 800px 400px;
+      animation: cloudMove 60s linear infinite;
+    }
+
+    @keyframes cloudMove {
+      from { background-position: 0 0; }
+      to { background-position: -800px 0; }
+    }
+
+    .mountain-silhouette {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 60%;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320' preserveAspectRatio='none'%3E%3Cpath fill='%23e8d4c0' fill-opacity='0.85' d='M0,240L60,225C120,210,240,180,360,180C480,180,600,210,720,215C840,220,960,200,1080,185C1200,170,1320,150,1380,140L1440,130L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z'/%3E%3C/svg%3E") no-repeat bottom;
+      background-size: 100% 100%;
+      opacity: 0.9;
+      filter: drop-shadow(0 0 30px rgba(201, 168, 108, 0.15));
+    }
+
+    .mountain-silhouette::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320' preserveAspectRatio='none'%3E%3Cpath fill='%23dcbfa6' fill-opacity='0.6' d='M0,270L80,255C160,240,320,210,480,210C640,210,800,240,960,245C1120,250,1280,230,1360,220L1440,210L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z'/%3E%3C/svg%3E") no-repeat bottom;
+      background-size: 100% 100%;
+      transform: translateY(-15px);
+    }
+
+    /* 红色飘带装饰 */
+    .ribbon-left, .ribbon-right {
+      position: fixed;
+      bottom: 0;
+      height: 180px;
+      width: 280px;
+      pointer-events: none;
+      z-index: 3;
+      opacity: 0.7;
+    }
+
+    .ribbon-left {
+      left: -40px;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 100' preserveAspectRatio='none'%3E%3Cpath fill='%23a62c2c' fill-opacity='0.6' d='M0,100 C40,80 60,40 100,50 C140,60 160,90 200,70 L200,100 Z'/%3E%3C/svg%3E") no-repeat bottom;
+      background-size: 100% 100%;
+      filter: blur(1px);
+    }
+
+    .ribbon-right {
+      right: -40px;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 100' preserveAspectRatio='none'%3E%3Cpath fill='%23a62c2c' fill-opacity='0.6' d='M0,70 C40,90 60,50 100,55 C140,60 160,80 200,100 L200,100 L0,100 Z'/%3E%3C/svg%3E") no-repeat bottom;
+      background-size: 100% 100%;
+      filter: blur(1px);
+    }
+
+    /* 主容器 */
+    .app {
+      position: relative;
+      z-index: 10;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* 顶部导航 */
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      height: 76px;
+      background: rgba(250, 245, 238, 0.82);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(166, 44, 44, 0.08);
+      position: relative;
+      z-index: 100;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .logo-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #8b2c2c 0%, #a62c2c 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Ma Shan Zheng', cursive;
+      font-size: 24px;
+      color: #fff;
+      border: 2px solid rgba(201, 168, 108, 0.5);
+      box-shadow: 0 0 20px rgba(166, 44, 44, 0.25);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .logo-icon::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.3) 0%, transparent 60%);
+    }
+
+    .logo-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .logo-title {
+      font-family: 'Ma Shan Zheng', cursive;
+      font-size: 28px;
+      line-height: 1;
+      color: var(--accent-red);
+      letter-spacing: 2px;
+    }
+
+    .logo-subtitle {
+      font-size: 12px;
+      color: var(--text-muted);
+      letter-spacing: 3px;
+      margin-top: 4px;
+    }
+
+    .nav-menu {
+      display: flex;
+      gap: 8px;
+      list-style: none;
+    }
+
+    .nav-item {
+      padding: 10px 22px;
+      font-size: 15px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      position: relative;
+      transition: all 0.3s ease;
+      border-radius: 20px;
+    }
+
+    .nav-item:hover, .nav-item.active {
+      color: var(--accent-red);
+      background: rgba(166, 44, 44, 0.08);
+    }
+
+    .nav-item.active::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 24px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent-red), transparent);
+      border-radius: 2px;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .nav-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      color: var(--text-secondary);
+    }
+
+    .nav-icon:hover {
+      background: rgba(166, 44, 44, 0.08);
+      color: var(--accent-red);
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-secondary);
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .user-info span {
+      color: var(--accent-red);
+    }
+
+    /* 主视觉区域 */
+    .hero-section {
+      position: relative;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding-top: 40px;
+      min-height: 520px;
+    }
+
+    /* 左侧竖排书法字 */
+    .side-poem {
+      position: absolute;
+      left: 50px;
+      top: 50%;
+      transform: translateY(-50%);
+      writing-mode: vertical-rl;
+      text-orientation: upright;
+      font-family: 'Ma Shan Zheng', cursive;
+      z-index: 20;
+      pointer-events: none;
+    }
+
+    .side-poem .big {
+      font-size: 52px;
+      color: var(--accent-red);
+      text-shadow: 0 0 25px rgba(166, 44, 44, 0.2);
+      letter-spacing: 8px;
+      line-height: 1.4;
+    }
+
+    .side-poem .small {
+      font-size: 20px;
+      color: rgba(61, 43, 31, 0.7);
+      margin-top: 16px;
+      letter-spacing: 6px;
+    }
+
+    .seal {
+      display: inline-block;
+      width: 34px;
+      height: 34px;
+      border: 2px solid var(--accent-red);
+      color: var(--accent-red);
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 16px;
+      font-family: 'Noto Serif SC', serif;
+      border-radius: 4px;
+      background: rgba(166, 44, 44, 0.05);
+    }
+
+    /* 中央标题区 */
+    .hero-content {
+      text-align: center;
+      z-index: 20;
+      position: relative;
+      margin-top: 20px;
+    }
+
+    .main-title {
+      font-family: 'Ma Shan Zheng', cursive;
+      font-size: 110px;
+      line-height: 1;
+      color: var(--accent-red);
+      text-shadow: 0 0 50px rgba(166, 44, 44, 0.2);
+      position: relative;
+      letter-spacing: 8px;
+    }
+
+    .main-title::after {
+      content: '档案';
+      position: absolute;
+      top: 15px;
+      right: -40px;
+      width: 36px;
+      height: 52px;
+      border: 2px solid var(--accent-red);
+      border-radius: 4px;
+      color: var(--accent-red);
+      font-family: 'Ma Shan Zheng', cursive;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      writing-mode: vertical-rl;
+      background: rgba(166, 44, 44, 0.05);
+    }
+
+    .subtitle {
+      font-family: 'ZCOOL XiaoWei', serif;
+      font-size: 26px;
+      color: var(--accent-red);
+      letter-spacing: 10px;
+      margin-top: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+    }
+
+    .subtitle::before, .subtitle::after {
+      content: '';
+      width: 80px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent-red), transparent);
+    }
+
+    .tagline {
+      font-size: 16px;
+      color: var(--text-secondary);
+      letter-spacing: 3px;
+      margin-top: 22px;
+    }
+
+    /* 搜索框 */
+    .hero-search {
+      margin-top: 36px;
+      width: 640px;
+      max-width: 90vw;
+      position: relative;
+    }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      height: 56px;
+      border-radius: 28px;
+      background: rgba(255, 255, 255, 0.85);
+      border: 1px solid rgba(166, 44, 44, 0.18);
+      box-shadow: 0 0 30px rgba(166, 44, 44, 0.08), inset 0 0 20px rgba(255, 255, 255, 0.5);
+      backdrop-filter: blur(10px);
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .search-box:focus-within {
+      border-color: var(--accent-red-light);
+      box-shadow: 0 0 40px rgba(166, 44, 44, 0.15), inset 0 0 20px rgba(255, 255, 255, 0.6);
+    }
+
+    .search-dropdown {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0 20px;
+      border-right: 1px solid rgba(61, 43, 31, 0.1);
+      color: var(--text-primary);
+      font-size: 15px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .search-dropdown svg {
+      width: 12px;
+      height: 12px;
+      color: var(--text-muted);
+    }
+
+    .search-box input {
+      flex: 1;
+      height: 100%;
+      border: none;
+      background: transparent;
+      padding: 0 20px;
+      color: var(--text-primary);
+      font-size: 15px;
+      outline: none;
+    }
+
+    .search-box input::placeholder {
+      color: rgba(61, 43, 31, 0.35);
+    }
+
+    .search-btn {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent-red) 0%, var(--accent-red-light) 100%);
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 20px rgba(166, 44, 44, 0.35);
+      margin: 0 4px;
+    }
+
+    .search-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 30px rgba(166, 44, 44, 0.5);
+    }
+
+    .search-btn svg {
+      width: 22px;
+      height: 22px;
+      color: #fff;
+    }
+
+    /* 热门搜索 */
+    .hot-tags {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 18px;
+      flex-wrap: wrap;
+    }
+
+    .hot-label {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .hot-tag {
+      padding: 6px 16px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.5);
+      border: 1px solid rgba(166, 44, 44, 0.12);
+      font-size: 13px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .hot-tag:hover {
+      background: rgba(166, 44, 44, 0.08);
+      border-color: rgba(166, 44, 44, 0.25);
+      color: var(--accent-red);
+      transform: translateY(-2px);
+    }
+
+    /* 问AI 知识库下拉 */
+    .kb-select {
+      appearance: none;
+      -webkit-appearance: none;
+      background: transparent url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238a7263' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='m6 9 6 6 6-6'/></svg>") no-repeat right center;
+      padding-right: 18px;
+      border: none;
+      font-family: inherit;
+      font-size: 15px;
+      color: var(--text-primary);
+      cursor: pointer;
+      outline: none;
+      font-weight: 500;
+    }
+    .kb-select option { color: #3d2b1f; }
+
+    /* 弹窗 - 历史上的今天 */
+    .modal-overlay {
+      position: fixed; inset: 0;
+      background: rgba(40, 20, 12, 0.55);
+      backdrop-filter: blur(4px);
+      display: none; align-items: center; justify-content: center;
+      z-index: 1000; padding: 24px;
+    }
+    .modal-overlay.show { display: flex; }
+    .modal {
+      width: 920px; max-width: 100%; max-height: 84vh;
+      background: linear-gradient(180deg, #fffaf3, #f8efe3);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      box-shadow: 0 30px 80px rgba(60, 30, 20, 0.35);
+      display: flex; flex-direction: column; overflow: hidden;
+    }
+    .modal-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 22px 28px; border-bottom: 1px solid rgba(166, 44, 44, 0.1);
+    }
+    .modal-title { font-family: 'ZCOOL XiaoWei', serif; font-size: 22px; color: var(--accent-red); }
+    .modal-close {
+      width: 34px; height: 34px; border-radius: 50%; border: none;
+      background: rgba(166, 44, 44, 0.08); color: var(--text-secondary);
+      font-size: 20px; cursor: pointer; transition: all .3s;
+    }
+    .modal-close:hover { background: var(--accent-red); color: #fff; transform: rotate(90deg); }
+    .modal-body { padding: 24px 28px; overflow-y: auto; }
+    .history-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 16px; }
+    .history-card {
+      background: rgba(255, 255, 255, 0.7); border: 1px solid rgba(166, 44, 44, 0.1);
+      border-radius: 14px; padding: 18px; transition: all .3s;
+    }
+    .history-card:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(166, 44, 44, 0.12); border-color: rgba(166, 44, 44, 0.25); }
+    .hc-year { font-family: 'ZCOOL XiaoWei', serif; font-size: 26px; color: var(--accent-red); line-height: 1; }
+    .hc-date { font-size: 12px; color: var(--text-muted); margin: 4px 0 10px; }
+    .hc-title { font-size: 15px; font-weight: 600; color: var(--text-primary); margin-bottom: 8px; }
+    .hc-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 12px; }
+    .hc-btn {
+      font-size: 12px; color: var(--accent-red); border: 1px solid rgba(166, 44, 44, 0.25);
+      background: rgba(166, 44, 44, 0.05); border-radius: 14px; padding: 5px 14px;
+      cursor: pointer; transition: all .3s;
+    }
+    .hc-btn:hover { background: var(--accent-red); color: #fff; }
+
+    /* 中央科技平台 HUD - 暖调版 */
+    .hud-platform {
+      position: absolute;
+      top: 58%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 760px;
+      height: 760px;
+      z-index: 5;
+      pointer-events: none;
+      opacity: 0.85;
+    }
+
+    .hud-ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(166, 44, 44, 0.18);
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .hud-ring-1 { width: 300px; height: 300px; }
+    .hud-ring-2 { width: 460px; height: 460px; border-color: rgba(166, 44, 44, 0.1); }
+    .hud-ring-3 { width: 620px; height: 620px; border-color: rgba(166, 44, 44, 0.08); }
+    .hud-ring-4 { width: 720px; height: 720px; border: 1px dashed rgba(166, 44, 44, 0.08); }
+
+    .hud-ring-1::before, .hud-ring-2::before, .hud-ring-3::before {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      border-radius: 50%;
+      border: 1px solid transparent;
+      border-top-color: rgba(166, 44, 44, 0.4);
+      border-right-color: rgba(166, 44, 44, 0.15);
+      animation: rotate 10s linear infinite;
+    }
+
+    .hud-ring-2::before { animation-duration: 18s; animation-direction: reverse; }
+    .hud-ring-3::before { animation-duration: 25s; }
+
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .hud-core {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(166, 44, 44, 0.2) 0%, rgba(201, 168, 108, 0.1) 60%, transparent 100%);
+      border: 1px solid rgba(166, 44, 44, 0.35);
+      box-shadow: 0 0 40px rgba(166, 44, 44, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hud-core svg {
+      width: 48px;
+      height: 48px;
+      color: var(--accent-red);
+      filter: drop-shadow(0 0 10px rgba(166, 44, 44, 0.4));
+    }
+
+    .hud-sweep {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 360px;
+      height: 360px;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      background: conic-gradient(from 0deg, transparent 0deg, rgba(166, 44, 44, 0.1) 60deg, transparent 120deg);
+      animation: sweep 4s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes sweep {
+      from { transform: translate(-50%, -50%) rotate(0deg); }
+      to { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+
+    .hud-particles {
+      position: absolute;
+      inset: 0;
+    }
+
+    .hud-particle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: var(--accent-red-light);
+      border-radius: 50%;
+      box-shadow: 0 0 10px rgba(166, 44, 44, 0.4);
+      animation: orbit linear infinite;
+    }
+
+    @keyframes orbit {
+      from { transform: rotate(0deg) translateX(var(--r)) rotate(0deg); }
+      to { transform: rotate(360deg) translateX(var(--r)) rotate(-360deg); }
+    }
+
+    /* 右侧数据概览 */
+    .data-overview {
+      position: absolute;
+      right: 40px;
+      top: 30px;
+      width: 320px;
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      padding: 20px;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 10px 40px rgba(92, 61, 46, 0.1), 0 0 30px rgba(166, 44, 44, 0.05);
+      z-index: 20;
+    }
+
+    .overview-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(166, 44, 44, 0.08);
+    }
+
+    .overview-title {
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .overview-title::before {
+      content: '';
+      width: 4px;
+      height: 16px;
+      background: linear-gradient(180deg, var(--accent-red-light), var(--accent-gold));
+      border-radius: 2px;
+    }
+
+    .overview-more {
+      font-size: 13px;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: color 0.3s ease;
+    }
+
+    .overview-more:hover { color: var(--accent-red); }
+
+    .data-row {
+      display: flex;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(166, 44, 44, 0.04);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .data-row:last-child { border-bottom: none; }
+
+    .data-row:hover {
+      background: rgba(166, 44, 44, 0.04);
+      border-radius: 8px;
+      padding-left: 8px;
+      padding-right: 8px;
+      margin: 0 -8px;
+    }
+
+    .data-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      background: rgba(166, 44, 44, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 12px;
+      font-size: 20px;
+      color: var(--accent-red);
+    }
+
+    .data-main {
+      flex: 1;
+    }
+
+    .data-label {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 2px;
+    }
+
+    .data-value {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-primary);
+      font-family: 'Noto Sans SC', sans-serif;
+    }
+
+    .data-value span.unit {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 400;
+      margin-left: 2px;
+    }
+
+    .data-side {
+      text-align: right;
+      margin-left: 8px;
+    }
+
+    .data-side .data-label { margin-bottom: 2px; }
+    .data-side .data-value { font-size: 15px; }
+
+    .data-row.single { justify-content: center; }
+    .data-row.single .data-icon { margin-right: 14px; }
+
+    .data-arrow {
+      color: var(--text-muted);
+      margin-left: 8px;
+      font-size: 12px;
+      transition: color 0.3s ease;
+    }
+
+    .data-row:hover .data-arrow { color: var(--accent-red); }
+
+    /* 功能区卡片 */
+    .feature-cards {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 18px;
+      padding: 30px 40px 20px;
+      position: relative;
+      z-index: 20;
+    }
+
+    .feature-card {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      padding: 20px 18px;
+      backdrop-filter: blur(12px);
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 8px 32px rgba(92, 61, 46, 0.08);
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(166, 44, 44, 0.3), transparent);
+      opacity: 0.6;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(166, 44, 44, 0.2);
+      box-shadow: 0 16px 48px rgba(92, 61, 46, 0.12), 0 0 30px rgba(166, 44, 44, 0.08);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 8px;
+    }
+
+    .card-title {
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .card-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+    }
+
+    .card-arrow {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: rgba(166, 44, 44, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent-red);
+      font-size: 13px;
+      transition: all 0.3s ease;
+    }
+
+    .feature-card:hover .card-arrow {
+      background: rgba(166, 44, 44, 0.15);
+      transform: translateX(3px);
+    }
+
+    .card-illustration {
+      height: 110px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .card-base {
+      position: absolute;
+      bottom: 10px;
+      width: 90px;
+      height: 18px;
+      border-radius: 50%;
+      background: radial-gradient(ellipse, rgba(166, 44, 44, 0.15) 0%, transparent 70%);
+      filter: blur(2px);
+    }
+
+    .card-icon {
+      font-size: 56px;
+      filter: drop-shadow(0 0 12px rgba(166, 44, 44, 0.2));
+      z-index: 2;
+      transition: transform 0.4s ease;
+    }
+
+    .feature-card:hover .card-icon {
+      transform: translateY(-5px) scale(1.05);
+    }
+
+    .card-halo {
+      position: absolute;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 1px solid rgba(166, 44, 44, 0.12);
+      animation: pulse 3s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(0.9); opacity: 0.4; }
+      50% { transform: scale(1.1); opacity: 0.7; }
+    }
+
+    .card-halo:nth-child(2) { animation-delay: 1s; }
+    .card-halo:nth-child(3) { animation-delay: 2s; }
+
+    /* 底部区域 */
+    .bottom-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      padding: 0 40px 30px;
+      position: relative;
+      z-index: 20;
+    }
+
+    .bottom-card {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      padding: 20px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 8px 32px rgba(92, 61, 46, 0.08);
+    }
+
+    .bottom-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .bottom-card-title {
+      font-size: 16px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .bottom-card-title::before {
+      content: '';
+      width: 4px;
+      height: 16px;
+      background: linear-gradient(180deg, var(--accent-red-light), var(--accent-gold));
+      border-radius: 2px;
+    }
+
+    .bottom-card-more {
+      font-size: 12px;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* 历史上的今天 */
+    .today-in-history {
+      display: flex;
+      gap: 20px;
+    }
+
+    .history-left {
+      width: 160px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+      background: rgba(166, 44, 44, 0.04);
+      border-radius: 12px;
+      border: 1px solid rgba(166, 44, 44, 0.08);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .history-left::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% 30%, rgba(166, 44, 44, 0.08) 0%, transparent 60%);
+    }
+
+    .history-date {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+      z-index: 1;
+    }
+
+    .history-lunar {
+      font-size: 13px;
+      color: var(--text-muted);
+      z-index: 1;
+    }
+
+    .history-book {
+      font-size: 48px;
+      margin-top: 10px;
+      z-index: 1;
+      filter: drop-shadow(0 0 8px rgba(166, 44, 44, 0.2));
+    }
+
+    .history-timeline {
+      flex: 1;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      position: relative;
+      padding-top: 10px;
+    }
+
+    .history-timeline::before {
+      content: '';
+      position: absolute;
+      top: 38px;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(166, 44, 44, 0.2), transparent 95%);
+    }
+
+    .timeline-item {
+      flex: 1;
+      min-width: 0;
+      padding-right: 16px;
+      position: relative;
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      top: 34px;
+      left: 0;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent-red);
+      box-shadow: 0 0 10px rgba(166, 44, 44, 0.4);
+    }
+
+    .timeline-year {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--accent-red);
+      margin-bottom: 20px;
+    }
+
+    .timeline-event {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      margin-bottom: 12px;
+      min-height: 40px;
+    }
+
+    .timeline-btn {
+      padding: 5px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(166, 44, 44, 0.2);
+      background: rgba(166, 44, 44, 0.06);
+      color: var(--accent-red);
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .timeline-btn:hover {
+      background: rgba(166, 44, 44, 0.12);
+      box-shadow: 0 0 15px rgba(166, 44, 44, 0.1);
+    }
+
+    /* 平台公告 */
+    .notice-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .notice-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(166, 44, 44, 0.04);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .notice-item:last-child { border-bottom: none; }
+
+    .notice-item:hover { padding-left: 8px; }
+
+    .notice-text {
+      font-size: 14px;
+      color: var(--text-secondary);
+      transition: color 0.3s ease;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 360px;
+    }
+
+    .notice-item:hover .notice-text { color: var(--text-primary); }
+
+    .notice-date {
+      font-size: 12px;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    /* 右侧悬浮按钮 */
+    .floating-actions {
+      position: fixed;
+      right: 20px;
+      bottom: 120px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      z-index: 100;
+    }
+
+    .float-btn {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: rgba(255, 250, 245, 0.9);
+      border: 1px solid rgba(166, 44, 44, 0.15);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 16px rgba(92, 61, 46, 0.1);
+    }
+
+    .float-btn:hover {
+      background: rgba(166, 44, 44, 0.08);
+      border-color: rgba(166, 44, 44, 0.3);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(166, 44, 44, 0.12);
+    }
+
+    .float-btn svg {
+      width: 20px;
+      height: 20px;
+      color: var(--accent-red);
+      margin-bottom: 2px;
+    }
+
+    .float-btn span {
+      font-size: 10px;
+      color: var(--text-secondary);
+    }
+
+    /* 响应式 */
+    @media (max-width: 1400px) {
+      .feature-cards { grid-template-columns: repeat(3, 1fr); }
+      .data-overview { width: 280px; }
+      .side-poem { left: 30px; }
+      .main-title { font-size: 90px; }
+    }
+
+    @media (max-width: 1024px) {
+      .feature-cards { grid-template-columns: repeat(2, 1fr); }
+      .bottom-section { grid-template-columns: 1fr; }
+      .data-overview { position: relative; right: auto; top: auto; margin: 20px auto 0; }
+      .side-poem { display: none; }
+      .nav-menu { display: none; }
+    }
+
+    @media (max-width: 768px) {
+      .feature-cards { grid-template-columns: 1fr; }
+      .hero-search { width: 90vw; }
+      .main-title { font-size: 60px; }
+      .main-title::after { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <!-- 温暖山水背景 -->
+  <div class="landscape-bg">
+    <div class="mountain-silhouette"></div>
+  </div>
+  
+  <!-- 祥云装饰 -->
+  <div class="clouds"></div>
+  
+  <!-- 红色飘带 -->
+  <div class="ribbon-left"></div>
+  <div class="ribbon-right"></div>
+
+  <div class="app">
+    <!-- 导航栏 -->
+    <nav class="navbar">
+      <div class="logo">
+        <div class="logo-icon">万</div>
+        <div class="logo-text">
+          <div class="logo-title">万象未来</div>
+          <div class="logo-subtitle">AI 档案知识空间</div>
+        </div>
+      </div>
+      
+      <ul class="nav-menu">
+        <li class="nav-item active">首页</li>
+        <li><a href="archives.html" class="nav-item">档案资源</a></li>
+        <li><a href="knowledge-graph.html" class="nav-item">知识图谱</a></li>
+        <li><a href="sizheng-courses.html" class="nav-item">数字思政</a></li>
+        <li><a href="yanxue.html" class="nav-item">研学探索</a></li>
+        <li><a href="ai-chat.html" class="nav-item">智能问答</a></li>
+        <li><a href="admin.html" class="nav-item">后台管理</a></li>
+      </ul>
+      
+      <div class="nav-right">
+        <div class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+            <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path>
+            <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path>
+          </svg>
+        </div>
+        <div class="user-info">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+          <span>欢迎您：管理员</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14">
+            <path d="m6 9 6 6 6-6"></path>
+          </svg>
+        </div>
+      </div>
+    </nav>
+
+    <!-- 主视觉 -->
+    <section class="hero-section">
+      <!-- 左侧竖排书法 -->
+      <div class="side-poem">
+        <div class="big">丽水</div>
+        <div class="small">秀山丽水</div>
+        <div class="small">红绿染金</div>
+        <div class="small">六九八之大业</div>
+        <div class="seal">档案</div>
+      </div>
+
+      <!-- 中央科技 HUD -->
+      <div class="hud-platform">
+        <div class="hud-ring hud-ring-4"></div>
+        <div class="hud-ring hud-ring-3"></div>
+        <div class="hud-ring hud-ring-2"></div>
+        <div class="hud-ring hud-ring-1"></div>
+        <div class="hud-sweep"></div>
+        <div class="hud-core">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M12 1v6m0 6v6m4.22-10.22l4.24-4.24M6.34 17.66l-4.24 4.24M23 12h-6m-6 0H1m20.24 4.24l-4.24-4.24M6.34 6.34L2.1 2.1"></path>
+          </svg>
+        </div>
+        <div class="hud-particles" id="hudParticles"></div>
+      </div>
+
+      <div class="hero-content">
+        <h1 class="main-title">万象未来</h1>
+        <div class="subtitle">AI 档 案 知 识 空 间</div>
+        <p class="tagline">以档案为根，以AI为翼，探索历史 · 连接知识 · 望向未来</p>
+        
+        <div class="hero-search">
+          <div class="search-box">
+            <div class="search-dropdown">
+              <select class="kb-select" id="kbSelect">
+                <option>党史故事</option>
+                <option>红色革命</option>
+                <option>侨乡青田</option>
+              </select>
+            </div>
+            <input type="text" placeholder="问AI：你想了解哪段历史、人物或故事？">
+            <button class="search-btn" id="askAiBtn" title="向AI智能体提问">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="4" y="8" width="16" height="11" rx="3.2"></rect>
+                <path d="M12 8V4.2"></path>
+                <circle cx="12" cy="3" r="1.5" fill="currentColor"></circle>
+                <circle cx="9" cy="13.5" r="1.3" fill="currentColor" stroke="none"></circle>
+                <circle cx="15" cy="13.5" r="1.3" fill="currentColor" stroke="none"></circle>
+                <path d="M9.5 16.5h5"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+        
+        <div class="hot-tags">
+          <span class="hot-label">你可以这样问：</span>
+          <span class="hot-tag">讲讲粟裕在浙西南的游击抗战事迹</span>
+          <span class="hot-tag">介绍龙泉革命英雄陈凤生的生平事迹</span>
+        </div>
+      </div>
+
+      <!-- 右侧数据概览 -->
+      <div class="data-overview">
+        <div class="overview-header">
+          <div class="overview-title">数据概览</div>
+        </div>
+        
+        <div class="data-row">
+          <div class="data-icon">📚</div>
+          <div class="data-main">
+            <div class="data-label">馆藏档案总量</div>
+            <div class="data-value">2.7<span class="unit">TB</span></div>
+          </div>
+          <div class="data-side">
+            <div class="data-label">数字档案资源</div>
+            <div class="data-value">15<span class="unit">万页+</span></div>
+          </div>
+          <div class="data-arrow">›</div>
+        </div>
+        
+        <div class="data-row">
+          <div class="data-icon">🎵</div>
+          <div class="data-main">
+            <div class="data-label">声像档案资源</div>
+            <div class="data-value">3<span class="unit">万分钟+</span></div>
+          </div>
+          <div class="data-side">
+            <div class="data-label">专题知识图谱</div>
+            <div class="data-value">10<span class="unit">个</span></div>
+          </div>
+          <div class="data-arrow">›</div>
+        </div>
+        
+        <div class="data-row">
+          <div class="data-icon">📖</div>
+          <div class="data-main">
+            <div class="data-label">思政课程资源</div>
+            <div class="data-value">5<span class="unit">套</span></div>
+          </div>
+          <div class="data-side">
+            <div class="data-label">研学路线资源</div>
+            <div class="data-value">10<span class="unit">条</span></div>
+          </div>
+          <div class="data-arrow">›</div>
+        </div>
+        
+        <div class="data-row">
+          <div class="data-icon">🏛️</div>
+          <div class="data-main">
+            <div class="data-label">红色档案资源</div>
+            <div class="data-value">12<span class="unit">万件</span></div>
+          </div>
+          <div class="data-side">
+            <div class="data-label">已编研成果</div>
+            <div class="data-value">28<span class="unit">项</span></div>
+          </div>
+          <div class="data-arrow">›</div>
+        </div>
+        
+        <div class="data-row single">
+          <div class="data-icon">📍</div>
+          <div class="data-main">
+            <div class="data-label">地图资源覆盖</div>
+            <div class="data-value">12<span class="unit">项</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 功能卡片 -->
+    <section class="feature-cards">
+      <a href="archives.html" class="feature-card" style="text-decoration:none">
+        <div class="card-header">
+          <div>
+            <div class="card-title">档案资源中心</div>
+            <div class="card-desc">海量档案资源智能检索</div>
+          </div>
+          <div class="card-arrow">›</div>
+        </div>
+        <div class="card-illustration">
+          <div class="card-halo"></div>
+          <div class="card-halo"></div>
+          <div class="card-base"></div>
+          <div class="card-icon">📁</div>
+        </div>
+      </a>
+
+      <a href="knowledge-graph.html" class="feature-card" style="text-decoration:none">
+        <div class="card-header">
+          <div>
+            <div class="card-title">知识图谱中心</div>
+            <div class="card-desc">探索人物关系与历史脉络</div>
+          </div>
+          <div class="card-arrow">›</div>
+        </div>
+        <div class="card-illustration">
+          <div class="card-halo"></div>
+          <div class="card-halo"></div>
+          <div class="card-base"></div>
+          <div class="card-icon">🕸️</div>
+        </div>
+      </a>
+
+      <a href="sizheng-courses.html" class="feature-card" style="text-decoration:none">
+        <div class="card-header">
+          <div>
+            <div class="card-title">数字思政课程</div>
+            <div class="card-desc">红色记忆 · 思想传承</div>
+          </div>
+          <div class="card-arrow">›</div>
+        </div>
+        <div class="card-illustration">
+          <div class="card-halo"></div>
+          <div class="card-halo"></div>
+          <div class="card-base"></div>
+          <div class="card-icon">🚩</div>
+        </div>
+      </a>
+
+      <a href="yanxue.html" class="feature-card" style="text-decoration:none">
+        <div class="card-header">
+          <div>
+            <div class="card-title">研学路线探索</div>
+            <div class="card-desc">行走的课堂 · 沉浸体验</div>
+          </div>
+          <div class="card-arrow">›</div>
+        </div>
+        <div class="card-illustration">
+          <div class="card-halo"></div>
+          <div class="card-halo"></div>
+          <div class="card-base"></div>
+          <div class="card-icon">🗺️</div>
+        </div>
+      </a>
+
+      <a href="ai-chat.html" class="feature-card" style="text-decoration:none">
+        <div class="card-header">
+          <div>
+            <div class="card-title">智能问答助手</div>
+            <div class="card-desc">AI赋能 · 智慧探索</div>
+          </div>
+          <div class="card-arrow">›</div>
+        </div>
+        <div class="card-illustration">
+          <div class="card-halo"></div>
+          <div class="card-halo"></div>
+          <div class="card-base"></div>
+          <div class="card-icon">🤖</div>
+        </div>
+      </a>
+    </section>
+
+    <!-- 底部区域 -->
+    <section class="bottom-section">
+      <div class="bottom-card">
+        <div class="bottom-card-header">
+          <div class="bottom-card-title">历史上的今天</div>
+          <div class="bottom-card-more" id="historyMoreBtn" style="cursor:pointer">
+            更多
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="12" height="12">
+              <path d="m9 18 6-6-6-6"></path>
+            </svg>
+          </div>
+        </div>
+        <div class="today-in-history">
+          <div class="history-left">
+            <div class="history-date">5月22日</div>
+            <div class="history-lunar">农历四月廿五</div>
+            <div class="history-book">📖</div>
+          </div>
+          <div class="history-timeline">
+            <div class="timeline-item">
+              <div class="timeline-year">1935</div>
+              <div class="timeline-event">红军挺进师进入丽水地区</div>
+              <button class="timeline-btn">查看档案</button>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-year">1942</div>
+              <div class="timeline-event">中共浙西南区委成立</div>
+              <button class="timeline-btn">查看档案</button>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-year">1949</div>
+              <div class="timeline-event">丽水解放</div>
+              <button class="timeline-btn">查看档案</button>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-year">2003</div>
+              <div class="timeline-event">丽水撤地设市</div>
+              <button class="timeline-btn">查看档案</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bottom-card">
+        <div class="bottom-card-header">
+          <div class="bottom-card-title">平台公告</div>
+          <div class="bottom-card-more">
+            更多
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="12" height="12">
+              <path d="m9 18 6-6-6-6"></path>
+            </svg>
+          </div>
+        </div>
+        <div class="notice-list">
+          <div class="notice-item">
+            <div class="notice-text">关于平台系统升级维护的通知</div>
+            <div class="notice-date">05-20</div>
+          </div>
+          <div class="notice-item">
+            <div class="notice-text">新增一批档案资源上线公告</div>
+            <div class="notice-date">05-18</div>
+          </div>
+          <div class="notice-item">
+            <div class="notice-text">丽水市档案馆数字化成果展示活动预告</div>
+            <div class="notice-date">05-15</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- 历史上的今天 弹窗 -->
+  <div class="modal-overlay" id="historyModal">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title">历史上的今天 · 5月22日</div>
+        <button class="modal-close" id="historyCloseBtn">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="history-grid">
+          <div class="history-card">
+            <div class="hc-year">1935</div>
+            <div class="hc-date">5月22日</div>
+            <div class="hc-title">红军挺进师进入浙西南</div>
+            <div class="hc-desc">中国工农红军挺进师在粟裕、刘英率领下进入丽水地区，开辟浙西南游击根据地。</div>
+            <button class="hc-btn">查看档案</button>
+          </div>
+          <div class="history-card">
+            <div class="hc-year">1942</div>
+            <div class="hc-date">5月22日</div>
+            <div class="hc-title">中共浙西南特委重建</div>
+            <div class="hc-desc">在艰苦环境下重建党的组织体系，坚持敌后斗争，保存革命力量。</div>
+            <button class="hc-btn">查看档案</button>
+          </div>
+          <div class="history-card">
+            <div class="hc-year">1949</div>
+            <div class="hc-date">5月22日</div>
+            <div class="hc-title">丽水解放</div>
+            <div class="hc-desc">人民解放军进驻丽水，人民政权建立，历史翻开新篇章。</div>
+            <button class="hc-btn">查看档案</button>
+          </div>
+          <div class="history-card">
+            <div class="hc-year">1956</div>
+            <div class="hc-date">5月22日</div>
+            <div class="hc-title">文物史料普查启动</div>
+            <div class="hc-desc">丽水开展大规模文物与史料普查，地方档案事业起步。</div>
+            <button class="hc-btn">查看档案</button>
+          </div>
+          <div class="history-card">
+            <div class="hc-year">1978</div>
+            <div class="hc-date">5月22日</div>
+            <div class="hc-title">档案工作恢复发展</div>
+            <div class="hc-desc">改革开放春风下，丽水档案事业步入正轨，服务现代化建设。</div>
+            <button class="hc-btn">查看档案</button>
+          </div>
+          <div class="history-card">
+            <div class="hc-year">1986</div>
+            <div class="hc-date">5月22日</div>
+            <div class="hc-title">地区档案馆成立</div>
+            <div class="hc-desc">丽水地区档案馆正式挂牌，系统收集整理红色档案。</div>
+            <button class="hc-btn">查看档案</button>
+          </div>
+          <div class="history-card">
+            <div class="hc-year">1998</div>
+            <div class="hc-date">5月22日</div>
+            <div class="hc-title">革命旧址列入文保</div>
+            <div class="hc-desc">浙西南革命根据地旧址群列入省级文物保护单位。</div>
+            <button class="hc-btn">查看档案</button>
+          </div>
+          <div class="history-card">
+            <div class="hc-year">2003</div>
+            <div class="hc-date">5月22日</div>
+            <div class="hc-title">丽水撤地设市</div>
+            <div class="hc-desc">丽水撤地设市，城市发展与档案信息化开启新篇章。</div>
+            <button class="hc-btn">查看档案</button>
+          </div>
+          <div class="history-card">
+            <div class="hc-year">2015</div>
+            <div class="hc-date">5月22日</div>
+            <div class="hc-title">侨乡档案数字化工程</div>
+            <div class="hc-desc">“侨乡青田”海外档案数字化抢救工程启动，留住乡愁记忆。</div>
+            <button class="hc-btn">查看档案</button>
+          </div>
+          <div class="history-card">
+            <div class="hc-year">2021</div>
+            <div class="hc-date">5月22日</div>
+            <div class="hc-title">浙西南革命精神研究成果发布</div>
+            <div class="hc-desc">革命精神研究成果集中发布，纳入红色档案资源体系。</div>
+            <button class="hc-btn">查看档案</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 生成 HUD 粒子
+    const particlesContainer = document.getElementById('hudParticles');
+    for (let i = 0; i < 8; i++) {
+      const particle = document.createElement('div');
+      particle.className = 'hud-particle';
+      const r = 160 + Math.random() * 160;
+      const angle = Math.random() * 360;
+      particle.style.setProperty('--r', r + 'px');
+      particle.style.left = '50%';
+      particle.style.top = '50%';
+      particle.style.marginLeft = '-2px';
+      particle.style.marginTop = '-2px';
+      particle.style.transform = `rotate(${angle}deg) translateX(${r}px)`;
+      particle.style.animationDuration = (8 + Math.random() * 12) + 's';
+      particle.style.animationDelay = (Math.random() * -20) + 's';
+      particlesContainer.appendChild(particle);
+    }
+
+    // 搜索交互
+    document.getElementById('askAiBtn').addEventListener('click', function() {
+      const kb = document.getElementById('kbSelect').value;
+      const input = document.querySelector('.search-box input');
+      const q = input.value.trim();
+      const params = new URLSearchParams({kb: kb});
+      if (q) params.set('q', q);
+      window.location.href = 'ai-chat.html?' + params.toString();
+    });
+
+    document.querySelector('.search-box input').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        document.querySelector('.search-btn').click();
+      }
+    });
+
+    // 热门标签点击
+    document.querySelectorAll('.hot-tag').forEach(tag => {
+      tag.addEventListener('click', function() {
+        document.querySelector('.search-box input').value = this.textContent;
+      });
+    });
+
+    // 历史上的今天 弹窗
+    const historyModal = document.getElementById('historyModal');
+    document.getElementById('historyMoreBtn').addEventListener('click', () => historyModal.classList.add('show'));
+    document.getElementById('historyCloseBtn').addEventListener('click', () => historyModal.classList.remove('show'));
+    historyModal.addEventListener('click', e => { if (e.target === historyModal) historyModal.classList.remove('show'); });
+    historyModal.querySelectorAll('.hc-btn').forEach(b => b.addEventListener('click', () => alert('正在打开相关档案…')));
+  </script>
+</body>
+</html>
