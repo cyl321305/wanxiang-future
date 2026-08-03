@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>研学路线探索 - 万象未来 · AI 档案知识空间</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=ZCOOL+XiaoWei&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-cream:#faf5ee;--bg-warm:#f3e8db;--bg-pink:#f8ece6;
+    --accent-red:#a62c2c;--accent-red-light:#c94d4d;--accent-gold:#c9a86c;
+    --text-primary:#3d2b1f;--text-secondary:rgba(61,43,31,.72);--text-muted:rgba(61,43,31,.5);
+    --glass:rgba(255,250,245,.82);--glass-border:rgba(166,44,44,.12);
+    --card-shadow:rgba(92,61,46,.08);--card-glow:rgba(166,44,44,.08);
+    --radius:14px;--radius-sm:10px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{font-family:'Noto Sans SC','Microsoft YaHei',sans-serif;color:var(--text-primary);background:var(--bg-cream);min-height:100vh;overflow-x:hidden}
+  body{position:relative}
+  .page-bg{position:fixed;inset:0;z-index:1;pointer-events:none;
+    background:radial-gradient(ellipse at 50% 70%,rgba(201,168,108,.12) 0%,transparent 55%),
+               radial-gradient(ellipse at 80% 60%,rgba(166,44,44,.06) 0%,transparent 40%),
+               linear-gradient(180deg,#faf5ee 0%,#f8ece6 35%,#f3e8db 65%,#efe2d3 100%)}
+  .clouds{position:fixed;inset:0;z-index:2;pointer-events:none;opacity:.16;
+    background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 400'%3E%3Cpath fill='%23c9a86c' fill-opacity='.4' d='M100,200 Q130,160 170,180 T250,170 T320,190 T400,160 T480,180 T560,150 T640,170 T720,140'/%3E%3Cpath fill='%23a62c2c' fill-opacity='.18' d='M50,120 Q80,90 120,110 T200,100 T280,120 T360,90 T440,110 T520,80 T600,100 T680,70'/%3E%3C/svg%3E") repeat-x;
+    background-size:800px 400px;animation:cloudMove 60s linear infinite}
+  @keyframes cloudMove{from{background-position:0 0}to{background-position:-800px 0}}
+
+  .app{position:relative;z-index:10;min-height:100vh;display:flex;flex-direction:column}
+
+  /* 顶部导航 */
+  .navbar{display:flex;align-items:center;justify-content:space-between;padding:0 32px;height:68px;
+    background:rgba(250,245,238,.9);backdrop-filter:blur(12px);
+    border-bottom:1px solid rgba(166,44,44,.08);position:sticky;top:0;z-index:100}
+  .logo{display:flex;align-items:center;gap:12px;text-decoration:none}
+  .logo-icon{width:44px;height:44px;border-radius:50%;
+    background:linear-gradient(135deg,#8b2c2c,#a62c2c);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Ma Shan Zheng',cursive;font-size:22px;color:#fff;
+    border:2px solid rgba(201,168,108,.5);box-shadow:0 0 16px rgba(166,44,44,.22)}
+  .logo-text{display:flex;flex-direction:column}
+  .logo-title{font-family:'Ma Shan Zheng',cursive;font-size:26px;line-height:1;color:var(--accent-red);letter-spacing:2px}
+  .logo-subtitle{font-size:11px;color:var(--text-muted);letter-spacing:2px;margin-top:2px}
+  .nav-menu{display:flex;gap:6px;list-style:none}
+  .nav-item{padding:9px 18px;font-size:14px;color:var(--text-secondary);cursor:pointer;
+    position:relative;transition:all .3s ease;border-radius:18px;text-decoration:none}
+  .nav-item:hover,.nav-item.active{color:var(--accent-red);background:rgba(166,44,44,.08)}
+  .nav-item.active::after{content:'';position:absolute;bottom:-3px;left:50%;transform:translateX(-50%);
+    width:20px;height:2px;background:linear-gradient(90deg,transparent,var(--accent-red),transparent);border-radius:2px}
+  .nav-right{display:flex;align-items:center;gap:16px}
+  .nav-icon{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    cursor:pointer;color:var(--text-secondary)}
+  .nav-icon:hover{color:var(--accent-red)}
+  .user-info{display:flex;align-items:center;gap:6px;color:var(--text-secondary);font-size:12px;cursor:pointer}
+  .user-info span{color:var(--accent-red)}
+
+  /* 容器 */
+  .container{max-width:100%;margin:0 auto;padding:16px 16px 40px;flex:1}
+
+  /* 头部紧凑排布 */
+  .head-row{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:12px;gap:20px}
+  .head-left .page-title{font-family:'Ma Shan Zheng',cursive;font-size:42px;color:var(--accent-red);
+    letter-spacing:3px;text-shadow:0 0 20px rgba(166,44,44,.15);line-height:1}
+  .head-left .page-subtitle{font-family:'ZCOOL XiaoWei',serif;font-size:14px;color:var(--text-secondary);
+    letter-spacing:4px;margin-top:4px;display:flex;align-items:center;gap:10px}
+  .head-left .page-subtitle::before,.head-left .page-subtitle::after{content:'';width:36px;height:1px;
+    background:linear-gradient(90deg,transparent,var(--accent-gold),transparent)}
+
+  /* 统计卡片紧凑横向 */
+  .stats-row{display:flex;gap:10px}
+  .stat-mini{display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--glass);
+    border:1px solid var(--glass-border);border-radius:12px;box-shadow:0 4px 12px var(--card-shadow)}
+  .stat-mini .icon{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px}
+  .stat-mini .icon.gold{background:linear-gradient(135deg,rgba(201,168,108,.25),rgba(201,168,108,.12));color:#8a6a2f}
+  .stat-mini .icon.red{background:linear-gradient(135deg,rgba(166,44,44,.18),rgba(166,44,44,.08));color:var(--accent-red)}
+  .stat-mini .icon.green{background:linear-gradient(135deg,rgba(120,160,90,.18),rgba(120,160,90,.08));color:#5e8042}
+  .stat-mini .icon.blue{background:linear-gradient(135deg,rgba(120,150,180,.18),rgba(120,150,180,.08));color:#4a6b8a}
+  .stat-mini .txt{display:flex;flex-direction:column}
+  .stat-mini .num{font-size:15px;font-weight:700;color:var(--text-primary);line-height:1}
+  .stat-mini .lbl{font-size:10px;color:var(--text-muted)}
+
+  /* 搜索栏紧凑 */
+  .search-bar{display:flex;align-items:center;gap:8px;background:var(--glass);
+    border:1px solid var(--glass-border);border-radius:14px;padding:5px 5px 5px 12px;
+    box-shadow:0 6px 16px var(--card-shadow);margin-bottom:14px}
+  .search-bar select{height:34px;border:none;background:transparent;font-size:13px;color:var(--text-secondary);
+    padding-right:10px;outline:none;cursor:pointer;font-family:inherit}
+  .search-bar input{flex:1;height:34px;border:none;background:transparent;font-size:13px;color:var(--text-primary);outline:none}
+  .search-bar input::placeholder{color:rgba(61,43,31,.4)}
+  .search-bar .divider{width:1px;height:16px;background:rgba(166,44,44,.15)}
+  .search-btn{padding:0 18px;height:34px;border:none;border-radius:10px;
+    background:linear-gradient(135deg,var(--accent-red),var(--accent-red-light));color:#fff;
+    font-size:13px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:5px;transition:all .3s}
+  .search-btn:hover{transform:translateY(-1px);box-shadow:0 6px 14px rgba(166,44,44,.28)}
+
+  /* 主体两栏 */
+  .main-row{display:grid;grid-template-columns:160px 1fr;gap:12px}
+
+  /* 左：可折叠筛选栏 */
+  .sidebar{background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--radius);
+    padding:10px;box-shadow:0 10px 24px var(--card-shadow);height:fit-content;position:sticky;top:86px}
+  .side-block + .side-block{margin-top:10px;padding-top:10px;border-top:1px dashed rgba(166,44,44,.1)}
+  .side-header{display:flex;align-items:center;justify-content:space-between;cursor:pointer;padding:6px 0}
+  .side-title{font-family:'ZCOOL XiaoWei',serif;font-size:14px;color:var(--accent-red);display:flex;align-items:center;gap:6px}
+  .side-title::before{content:'';width:3px;height:12px;background:linear-gradient(180deg,var(--accent-red-light),var(--accent-gold));border-radius:2px}
+  .side-toggle{width:20px;height:20px;display:flex;align-items:center;justify-content:center;color:var(--text-muted);transition:transform .25s}
+  .side-block.collapsed .side-toggle{transform:rotate(-90deg)}
+  .side-body{max-height:400px;overflow:hidden;transition:max-height .3s ease}
+  .side-block.collapsed .side-body{max-height:0}
+  .side-row{display:flex;align-items:center;justify-content:space-between;padding:6px 6px;border-radius:6px;
+    font-size:12px;color:var(--text-secondary);cursor:pointer;transition:all .25s}
+  .side-row:hover{background:rgba(166,44,44,.06);color:var(--accent-red)}
+  .side-row.active{background:rgba(166,44,44,.1);color:var(--accent-red);font-weight:500}
+  .side-num{color:var(--text-muted);font-size:11px}
+  .side-row.active .side-num{color:var(--accent-red)}
+  .reset-btn{margin-top:12px;width:100%;padding:8px;border-radius:8px;border:1px solid rgba(166,44,44,.18);
+    background:transparent;color:var(--accent-red);font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px}
+  .reset-btn:hover{background:var(--accent-red);color:#fff}
+
+  /* 右：卡片网格统一间距 */
+  .card-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  @media(max-width:1400px){.card-grid{grid-template-columns:repeat(3,1fr)}}
+  @media(max-width:1100px){.card-grid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:768px){.card-grid{grid-template-columns:1fr}}
+
+  .rc-card{background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--radius);
+    overflow:hidden;cursor:pointer;transition:all .3s ease;
+    box-shadow:0 10px 22px var(--card-shadow);display:flex;flex-direction:column}
+  .rc-card:hover{transform:translateY(-3px);box-shadow:0 16px 32px rgba(166,44,44,.16)}
+  .rc-cover{position:relative;height:130px;background:linear-gradient(135deg,#c9a884,#8a6c4a);overflow:hidden}
+  .rc-cover::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 70% 30%,rgba(255,255,255,.2),transparent 60%)}
+  .rc-cover::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(0,0,0,.2) 100%)}
+  .rc-emoji{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:52px;filter:drop-shadow(0 4px 12px rgba(0,0,0,.3))}
+  .rc-tag{position:absolute;left:8px;top:8px;padding:2px 8px;border-radius:8px;font-size:10px;font-weight:600;
+    background:rgba(255,255,255,.92);color:var(--accent-red)}
+  .rc-tag.hot{background:linear-gradient(135deg,var(--accent-red),var(--accent-red-light));color:#fff}
+  /* 收藏按钮加大点击区 */
+  .rc-fav{position:absolute;right:6px;top:6px;width:36px;height:36px;border-radius:50%;
+    background:rgba(255,255,255,.9);display:flex;align-items:center;justify-content:center;color:var(--text-muted);
+    transition:all .25s;cursor:pointer}
+  .rc-fav:hover{color:var(--accent-red);transform:scale(1.1)}
+  .rc-fav.on{color:var(--accent-red)}
+  .rc-meta-strip{display:flex;align-items:center;justify-content:space-between;padding:8px 10px 0;font-size:10px;color:var(--text-muted)}
+  .rc-meta-strip .left{display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+  .rc-tag-pill{padding:2px 6px;border-radius:6px;background:rgba(166,44,44,.08);color:var(--accent-red);font-size:10px}
+  .rc-tag-pill.soft{background:rgba(166,44,44,.04);border:1px solid rgba(166,44,44,.12)}
+  .rc-body{padding:8px 10px 0;flex:1;display:flex;flex-direction:column}
+  .rc-title{font-size:14px;font-weight:700;color:var(--text-primary);line-height:1.35;margin-bottom:5px;display:-webkit-box;
+    -webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .rc-desc{font-size:12px;color:var(--text-secondary);line-height:1.55;margin-bottom:8px;display:-webkit-box;
+    -webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:36px}
+  .rc-foot{display:flex;align-items:center;justify-content:space-between;padding:10px 10px;border-top:1px dashed rgba(166,44,44,.1);margin-top:auto}
+  .rc-level{font-size:10px;color:var(--text-muted);display:flex;align-items:center;gap:3px}
+  .rc-level .dot{width:4px;height:4px;border-radius:50%;background:var(--accent-red)}
+  .rc-detail{display:inline-flex;align-items:center;gap:3px;padding:5px 10px;border-radius:10px;
+    background:rgba(166,44,44,.08);color:var(--accent-red);font-size:11px;font-weight:500;transition:all .25s}
+  .rc-card:hover .rc-detail{background:var(--accent-red);color:#fff}
+
+  /* 右下悬浮按钮组 */
+  .float-tools{position:fixed;right:20px;bottom:20px;display:flex;flex-direction:column;gap:8px;z-index:80}
+  .float-btn{width:44px;height:44px;border-radius:12px;background:var(--glass);border:1px solid var(--glass-border);
+    box-shadow:0 8px 20px rgba(0,0,0,.1);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--accent-red)}
+  .float-btn:hover{background:var(--accent-red);color:#fff}
+  .float-btn svg{width:20px;height:20px}
+
+  .footer{padding:20px;text-align:center;color:var(--text-muted);font-size:11px;letter-spacing:2px}
+</style>
+</head>
+<body>
+<div class="page-bg"></div>
+<div class="clouds"></div>
+
+<div class="app">
+  <nav class="navbar">
+    <a href="wanxiang-future.html" class="logo">
+      <div class="logo-icon">万</div>
+      <div class="logo-text">
+        <div class="logo-title">万象未来</div>
+        <div class="logo-subtitle">AI 档案知识空间</div>
+      </div>
+    </a>
+    <ul class="nav-menu">
+      <li><a href="wanxiang-future.html" class="nav-item">首页</a></li>
+      <li><a href="archives.html" class="nav-item">档案资源</a></li>
+      <li><a href="knowledge-graph.html" class="nav-item">知识图谱</a></li>
+      <li><a href="sizheng-courses.html" class="nav-item">数字思政</a></li>
+      <li><a href="yanxue.html" class="nav-item active">研学探索</a></li>
+      <li><a href="ai-chat.html" class="nav-item">智能问答</a></li>
+      <li><a href="admin.html" class="nav-item">后台管理</a></li>
+    </ul>
+    <div class="nav-right">
+      <div class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path></svg></div>
+      <div class="user-info"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"/></svg><span>管理员</span></div>
+    </div>
+  </nav>
+
+  <div class="container">
+
+    <!-- 头部紧凑 -->
+    <div class="head-row">
+      <div class="head-left">
+        <h1 class="page-title">研学路线探索</h1>
+        <p class="page-subtitle">行走的课堂 · 沉浸式红色文化之旅</p>
+      </div>
+      <div class="stats-row">
+        <div class="stat-mini">
+          <div class="icon gold">📍</div>
+          <div class="txt"><span class="num">10<small style="font-size:10px;color:var(--text-muted)">条</small></span><span class="lbl">研学路线总数</span></div>
+        </div>
+        <div class="stat-mini">
+          <div class="icon red">🚩</div>
+          <div class="txt"><span class="num">12,568<small style="font-size:10px;color:var(--text-muted)">条</small></span><span class="lbl">关联档案资源</span></div>
+        </div>
+        <div class="stat-mini">
+          <div class="icon green">⭐</div>
+          <div class="txt"><span class="num">86<small style="font-size:10px;color:var(--text-muted)">个</small></span><span class="lbl">研学点总数</span></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 两栏 -->
+    <div class="main-row">
+
+      <!-- 左：可折叠筛选栏 -->
+      <aside class="sidebar">
+        <div class="side-block" id="sb-theme">
+          <div class="side-header" onclick="toggleBlock('sb-theme')">
+            <div class="side-title">主题分类</div>
+            <div class="side-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="m6 9 6 6 6-6"/></svg></div>
+          </div>
+          <div class="side-body">
+            <div class="side-row active" data-cat="全部">全部<span class="side-num">8</span></div>
+            <div class="side-row" data-cat="革命历史">革命历史<span class="side-num">4</span></div>
+            <div class="side-row" data-cat="红色教育">红色教育<span class="side-num">6</span></div>
+            <div class="side-row" data-cat="文化遗产">文化遗产<span class="side-num">2</span></div>
+            <div class="side-row" data-cat="生态文明">生态文明<span class="side-num">1</span></div>
+          </div>
+        </div>
+        <div class="side-block" id="sb-dur">
+          <div class="side-header" onclick="toggleBlock('sb-dur')">
+            <div class="side-title">路段时间</div>
+            <div class="side-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="m6 9 6 6 6-6"/></svg></div>
+          </div>
+          <div class="side-body">
+            <div class="side-row" data-dur="1">1日游<span class="side-num">2</span></div>
+            <div class="side-row" data-dur="2">2日游<span class="side-num">3</span></div>
+            <div class="side-row" data-dur="3">3日及以上<span class="side-num">2</span></div>
+            <div class="side-row" data-dur="多">多日研学<span class="side-num">1</span></div>
+          </div>
+        </div>
+        <button class="reset-btn" onclick="resetFilters()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><path d="M3 12a9 9 0 1 0 9-9"/><path d="M3 4v5h5"/></svg>重置筛选
+        </button>
+      </aside>
+
+      <!-- 右：卡片网格 -->
+      <div class="card-grid" id="routesGrid"></div>
+    </div>
+
+    <footer class="footer">万象未来 · AI 档案知识空间 © 2026 | 让历史可触摸，让档案会说话</footer>
+  </div>
+
+
+</div>
+
+<script>
+  const routes=[
+    {id:1,title:'浙西南革命根据地红色之旅',level:'初中',duration:'1天',location:'丽水·莲都',emoji:'🏯',
+      desc:'探访浙西南革命根据地，追寻红色足迹，感受革命先辈艰苦奋斗、矢志不渝的革命精神。',
+      tags:['红色记忆','红色教育'],theme:'革命历史',hot:true,fav:false},
+    {id:2,title:'红船起航·嘉兴南湖初心之旅',level:'初中',duration:'1天',location:'浙江·嘉兴',emoji:'⛵',
+      desc:'登上南湖红船，感悟开天辟地、敢为人先的首创精神。',
+      tags:['党史教育','初心使命'],theme:'革命历史',hot:false,fav:true},
+    {id:3,title:'丽水红色足迹研学',level:'大学',duration:'3天2夜',location:'丽水·莲都',emoji:'🏛️',
+      desc:'系统梳理丽水地区红色档案，开展田野调查与口述史采集实践。',
+      tags:['档案研学','口述史'],theme:'红色教育',hot:false,fav:false},
+    {id:4,title:'青田侨乡文化寻根',level:'海外华校',duration:'5天4夜',location:'丽水·青田',emoji:'🌏',
+      desc:'面向海外华裔青少年，探访侨乡档案，连接血脉中的中华记忆。',
+      tags:['侨乡文化','寻根之旅'],theme:'文化遗产',hot:true,fav:false},
+    {id:5,title:'龙泉宝剑与革命精神',level:'小学',duration:'1天',location:'丽水·龙泉',emoji:'⚔️',
+      desc:'在铸剑名城感受工匠精神，在游戏中了解革命年代的少年英雄故事。',
+      tags:['非遗体验','少年英雄'],theme:'文化遗产',hot:false,fav:false},
+    {id:6,title:'松阳古村落里的党史',level:'初中',duration:'2天1夜',location:'丽水·松阳',emoji:'🏘️',
+      desc:'漫步明清古村落，在宗祠、老宅与档案中读懂党领导下的乡村变迁。',
+      tags:['古村落','乡土党史'],theme:'红色教育',hot:false,fav:false},
+    {id:7,title:'缙云抗战遗址追忆',level:'高中',duration:'2天1夜',location:'丽水·缙云',emoji:'🗿',
+      desc:'寻访缙云抗战遗址，在真实历史场景中理解全民族抗战的伟大意义。',
+      tags:['抗战记忆','遗址考察'],theme:'革命历史',hot:false,fav:false},
+    {id:8,title:'遂昌汤显祖文化研学',level:'大学',duration:'1天',location:'丽水·遂昌',emoji:'🎭',
+      desc:'以汤显祖在遂昌的施政与戏曲档案为线索，探索传统文化与地方治理。',
+      tags:['戏曲文化','名人档案'],theme:'文化遗产',hot:false,fav:false}
+  ];
+  const grid=document.getElementById('routesGrid');
+  function render(){
+    grid.innerHTML=routes.map(r=>`
+      <div class="rc-card" data-id="${r.id}" onclick="goDetail(${r.id})">
+        <div class="rc-cover" style="background:linear-gradient(135deg,#c9a884 0%,#8a6c4a 100%)">
+          <div class="rc-emoji">${r.emoji}</div>
+          <div class="rc-tag ${r.hot?'hot':''}">${r.hot?'精选推荐':'研学路线'}</div>
+        </div>
+        <div class="rc-meta-strip">
+          <div class="left"><span class="rc-tag-pill">8个站点</span><span class="rc-tag-pill soft">${r.duration}路线</span></div>
+        </div>
+        <div class="rc-body">
+          <div class="rc-title">${r.title}</div>
+          <p class="rc-desc">${r.desc}</p>
+        </div>
+        <div class="rc-foot">
+          <span class="rc-level"><span class="dot"></span>${r.tags.slice(0,2).join(' · ')}</span>
+          <span class="rc-detail">查看详情<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><path d="m9 18 6-6-6-6"/></svg></span>
+        </div>
+      </div>
+    `).join('');
+  }
+  render();
+  function goDetail(id){window.location.href='yanxue-detail.html?id='+id;}
+  function resetFilters(){document.querySelectorAll('.side-row').forEach(x=>x.classList.remove('active'));document.querySelector('.side-row[data-cat="全部"]').classList.add('active');render();}
+  function toggleBlock(id){document.getElementById(id).classList.toggle('collapsed');}
+  document.querySelectorAll('.sidebar .side-row').forEach(function(r){r.addEventListener('click',function(){const g=r.closest('.side-body');g.querySelectorAll('.side-row').forEach(x=>x.classList.remove('active'));r.classList.add('active');});});
+</script>
+</body>
+</html>
