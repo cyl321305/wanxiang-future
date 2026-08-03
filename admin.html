@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>后台管理 · 万象未来</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=ZCOOL+XiaoWei&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+<style>
+  :root {
+    --bg-cream: #faf5ee;
+    --bg-warm: #f3e8db;
+    --bg-pink: #f8ece6;
+    --accent-red: #a62c2c;
+    --accent-red-light: #c94d4d;
+    --accent-gold: #c9a86c;
+    --text-primary: #3d2b1f;
+    --text-secondary: rgba(61, 43, 31, 0.72);
+    --text-muted: rgba(61, 43, 31, 0.5);
+    --glass: rgba(255, 250, 245, 0.82);
+    --glass-border: rgba(166, 44, 44, 0.12);
+    --card-shadow: rgba(92, 61, 46, 0.08);
+    --green: #4e8a5e;
+    --gold: #c9a86c;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Noto Sans SC', sans-serif;
+    color: var(--text-primary);
+    background: linear-gradient(180deg, #faf5ee 0%, #f8ece6 50%, #f3e8db 100%);
+    min-height: 100vh;
+  }
+  /* 祥云背景 */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='120' viewBox='0 0 200 120'%3E%3Cg fill='none' stroke='%23a62c2c' stroke-width='1.4' opacity='0.5'%3E%3Cpath d='M30 70c-12 0-12-14 0-14s12 14 0 14zm0 0c0 12 14 12 14 0s-14-12-14 0z'/%3E%3Cpath d='M120 40c-12 0-12-14 0-14s12 14 0 14zm0 0c0 12 14 12 14 0s-14-12-14 0z'/%3E%3Cpath d='M150 90c-10 0-10-12 0-12s10 12 0 12zm0 0c0 10 12 10 12 0s-12-10-12 0z'/%3E%3C/g%3E%3C/svg%3E");
+    opacity: 0.16;
+    animation: cloudDrift 60s linear infinite;
+    pointer-events: none; z-index: 0;
+  }
+  @keyframes cloudDrift { from { background-position: 0 0; } to { background-position: 400px 0; } }
+
+  /* 顶部导航 */
+  .navbar {
+    position: sticky; top: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 76px; padding: 0 36px;
+    background: rgba(255, 250, 245, 0.86);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(166, 44, 44, 0.08);
+  }
+  .logo { display: flex; align-items: center; gap: 12px; }
+  .logo-icon {
+    width: 44px; height: 44px; border-radius: 12px;
+    background: linear-gradient(135deg, var(--accent-red), var(--accent-red-light));
+    color: #fff; display: flex; align-items: center; justify-content: center;
+    font-family: 'Ma Shan Zheng', serif; font-size: 24px;
+    box-shadow: 0 6px 16px rgba(166, 44, 44, 0.3);
+  }
+  .logo-title { font-family: 'ZCOOL XiaoWei', serif; font-size: 20px; }
+  .logo-subtitle { font-size: 11px; color: var(--text-muted); letter-spacing: 1px; }
+  .nav-menu { display: flex; align-items: center; gap: 4px; list-style: none; }
+  .nav-item {
+    padding: 10px 22px; border-radius: 22px;
+    color: var(--text-secondary); font-size: 15px; text-decoration: none;
+    cursor: pointer; position: relative; transition: all 0.3s;
+  }
+  .nav-item:hover { color: var(--accent-red); background: rgba(166, 44, 44, 0.06); }
+  .nav-item.active { color: var(--accent-red); background: rgba(166, 44, 44, 0.1); font-weight: 500; }
+  .nav-item.active::after {
+    content: ''; position: absolute; left: 22px; right: 22px; bottom: 2px; height: 3px;
+    background: linear-gradient(90deg, var(--accent-red-light), var(--accent-gold)); border-radius: 2px;
+  }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-icon, .user-info { display: flex; align-items: center; gap: 8px; color: var(--text-secondary); cursor: pointer; }
+  .user-info span { font-size: 14px; }
+
+  /* 布局 */
+  .admin-layout { display: flex; align-items: flex-start; position: relative; z-index: 1; }
+  .admin-sidebar {
+    width: 232px; flex-shrink: 0; min-height: calc(100vh - 76px);
+    background: var(--glass); border-right: 1px solid var(--glass-border);
+    padding: 22px 14px; position: sticky; top: 76px;
+  }
+  .side-title {
+    font-family: 'ZCOOL XiaoWei', serif; font-size: 14px; color: var(--text-muted);
+    padding: 0 12px 12px; letter-spacing: 2px;
+  }
+  .side-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 12px 14px; border-radius: 12px; margin-bottom: 4px;
+    color: var(--text-secondary); font-size: 14px; cursor: pointer; transition: all 0.25s;
+  }
+  .side-item:hover { background: rgba(166, 44, 44, 0.06); color: var(--accent-red); }
+  .side-item.active { background: linear-gradient(135deg, rgba(166, 44, 44, 0.14), rgba(201, 168, 108, 0.12)); color: var(--accent-red); font-weight: 600; }
+
+  .admin-main { flex: 1; padding: 28px 32px; min-width: 0; }
+  .page-head { margin-bottom: 22px; }
+  .page-title { font-family: 'ZCOOL XiaoWei', serif; font-size: 26px; color: var(--accent-red); }
+  .page-sub { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+  .admin-section[hidden] { display: none; }
+
+  /* 数据汇总 */
+  .data-summary { background: #fff; border-radius: 12px; padding: 20px 24px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+  .summary-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+  .summary-title { font-size: 16px; font-weight: 600; color: var(--text-primary); }
+  .summary-time { font-size: 13px; color: var(--text-muted); }
+  .summary-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .summary-card { padding: 16px; background: #fafafa; border-radius: 8px; }
+  .summary-label { font-size: 13px; color: var(--text-secondary); margin-bottom: 12px; display: flex; align-items: center; gap: 4px; }
+  .help-icon { width: 14px; height: 14px; border: 1px solid #ddd; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; color: #999; cursor: help; }
+  .summary-value-row { display: flex; align-items: baseline; justify-content: space-between; }
+  .summary-num { font-size: 32px; font-weight: 600; color: var(--text-primary); }
+  .summary-trend { font-size: 12px; color: var(--text-muted); }
+
+  /* 数据概览 */
+  .data-overview { background: #fff; border-radius: 12px; padding: 20px 24px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+  .overview-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; }
+  .overview-title-row { display: flex; align-items: center; gap: 12px; }
+  .overview-title { font-size: 16px; font-weight: 600; color: var(--text-primary); }
+  .overview-time { font-size: 13px; color: var(--text-muted); }
+  .overview-controls { display: flex; align-items: center; gap: 12px; }
+  .time-tabs { display: flex; background: #f5f5f5; border-radius: 6px; padding: 2px; }
+  .time-tab { border: none; background: transparent; padding: 6px 16px; font-size: 13px; color: var(--text-secondary); cursor: pointer; border-radius: 4px; }
+  .time-tab.active { background: #fff; color: var(--accent-red); box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+  .date-picker { display: flex; align-items: center; gap: 8px; padding: 6px 12px; border: 1px solid #e8e8e8; border-radius: 6px; font-size: 13px; color: var(--text-secondary); background: #fff; }
+  .calendar-icon { font-size: 14px; }
+  .overview-charts { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .chart-panel { border: 1px solid #f0f0f0; border-radius: 8px; padding: 16px; }
+  .chart-panel-title { font-size: 14px; font-weight: 500; color: var(--text-primary); margin-bottom: 16px; }
+  .metric-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .metric-cards.single { grid-template-columns: 1fr; }
+  .metric-card { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: #fafafa; border-radius: 8px; }
+  .metric-icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+  .metric-icon.blue { background: #e6f4ff; }
+  .metric-icon.orange { background: #fff2e8; }
+  .metric-info { flex: 1; }
+  .metric-label { font-size: 12px; color: var(--text-muted); margin-bottom: 4px; }
+  .metric-value { font-size: 24px; font-weight: 600; color: var(--text-primary); }
+  .chart-area { height: 200px; }
+
+  /* 排行榜 */
+  .ranking-section { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .ranking-panel { background: #fff; border-radius: 12px; padding: 16px 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+  .ranking-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+  .ranking-title { font-size: 14px; font-weight: 500; color: var(--text-primary); }
+  .ranking-tabs { display: flex; background: #f5f5f5; border-radius: 6px; padding: 2px; }
+  .ranking-tab { border: none; background: transparent; padding: 5px 12px; font-size: 12px; color: var(--text-secondary); cursor: pointer; border-radius: 4px; }
+  .ranking-tab.active { background: #fff; color: var(--accent-red); box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+  .ranking-list { min-height: 120px; }
+  .ranking-empty { text-align: center; color: var(--text-muted); font-size: 13px; padding: 40px 0; }
+
+  /* KPI 卡片 */
+  .kpi-row { display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; margin-bottom: 22px; }
+  .kpi-card {
+    background: var(--glass); border: 1px solid var(--glass-border); border-radius: 14px;
+    padding: 16px; box-shadow: 0 8px 24px var(--card-shadow);
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .kpi-icon { font-size: 20px; line-height: 1; }
+  .kpi-value { font-family: 'ZCOOL XiaoWei', serif; font-size: 24px; color: var(--accent-red); line-height: 1.1; }
+  .kpi-value .unit { font-size: 12px; color: var(--text-muted); margin-left: 2px; font-family: 'Noto Sans SC', sans-serif; font-weight: 400; }
+  .kpi-label { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
+
+  .grid-2 { display: grid; grid-template-columns: 1.6fr 1fr; gap: 18px; margin-bottom: 22px; }
+  .panel {
+    background: var(--glass); border: 1px solid var(--glass-border); border-radius: 16px;
+    padding: 20px; box-shadow: 0 8px 24px var(--card-shadow);
+  }
+  .panel-title { font-family: 'ZCOOL XiaoWei', serif; font-size: 17px; color: var(--text-primary); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+  .panel-title::before { content: ''; width: 4px; height: 16px; background: linear-gradient(180deg, var(--accent-red-light), var(--accent-gold)); border-radius: 2px; }
+
+  .todo-item { display: flex; align-items: center; justify-content: space-between; padding: 11px 0; border-bottom: 1px solid rgba(166, 44, 44, 0.06); font-size: 14px; }
+  .todo-item:last-child { border-bottom: none; }
+  .todo-left { display: flex; align-items: center; gap: 10px; color: var(--text-secondary); }
+  .todo-num { background: rgba(166, 44, 44, 0.1); color: var(--accent-red); border-radius: 10px; padding: 2px 9px; font-size: 12px; font-weight: 600; }
+
+  /* 工具栏 */
+  .toolbar { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
+  .toolbar input, .toolbar select {
+    border: 1px solid rgba(166, 44, 44, 0.16); border-radius: 10px; padding: 9px 14px;
+    font-size: 13px; background: #fff; color: var(--text-primary); outline: none; font-family: inherit;
+  }
+  .toolbar input { flex: 1; min-width: 200px; }
+  .btn {
+    border: none; border-radius: 10px; padding: 9px 18px; font-size: 13px; cursor: pointer;
+    font-family: inherit; transition: all 0.25s; color: #fff;
+    background: linear-gradient(135deg, var(--accent-red), var(--accent-red-light));
+    box-shadow: 0 4px 14px rgba(166, 44, 44, 0.25);
+  }
+  .btn:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(166, 44, 44, 0.35); }
+  .btn.ghost { background: rgba(166, 44, 44, 0.08); color: var(--accent-red); box-shadow: none; }
+  .btn.ghost:hover { background: rgba(166, 44, 44, 0.14); }
+  .spacer { flex: 1; }
+
+  /* 表格 */
+  .data-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .data-table th {
+    text-align: left; padding: 12px 14px; color: var(--text-muted); font-weight: 500;
+    border-bottom: 2px solid rgba(166, 44, 44, 0.12); white-space: nowrap;
+  }
+  .data-table td { padding: 12px 14px; border-bottom: 1px solid rgba(166, 44, 44, 0.06); color: var(--text-secondary); }
+  .data-table tbody tr { transition: background 0.2s; }
+  .data-table tbody tr:hover { background: rgba(166, 44, 44, 0.04); }
+  .link-btn { color: var(--accent-red); cursor: pointer; margin-right: 10px; }
+  .link-btn:hover { text-decoration: underline; }
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 10px; font-size: 12px; font-weight: 500; }
+  .badge.green { background: rgba(78, 138, 94, 0.14); color: var(--green); }
+  .badge.gold { background: rgba(201, 168, 108, 0.2); color: #9a7b3f; }
+  .badge.red { background: rgba(166, 44, 44, 0.12); color: var(--accent-red); }
+  .badge.blue { background: rgba(86, 122, 138, 0.16); color: #3f6a7a; }
+
+  /* 知识库卡片 */
+  .kb-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .kb-card {
+    background: var(--glass); border: 1px solid var(--glass-border); border-radius: 16px; padding: 20px;
+    box-shadow: 0 8px 24px var(--card-shadow);
+  }
+  .kb-emoji { font-size: 30px; }
+  .kb-name { font-family: 'ZCOOL XiaoWei', serif; font-size: 18px; margin: 8px 0 4px; color: var(--text-primary); }
+  .kb-meta { font-size: 12px; color: var(--text-muted); line-height: 1.8; }
+  .kb-actions { margin-top: 14px; display: flex; gap: 8px; }
+
+  /* 设置表单 */
+  .form-row { display: flex; align-items: center; gap: 16px; padding: 14px 0; border-bottom: 1px solid rgba(166, 44, 44, 0.06); }
+  .form-label { width: 140px; font-size: 14px; color: var(--text-secondary); flex-shrink: 0; }
+  .form-row input, .form-row select {
+    flex: 1; max-width: 360px; border: 1px solid rgba(166, 44, 44, 0.16); border-radius: 10px;
+    padding: 9px 14px; font-size: 13px; font-family: inherit; color: var(--text-primary); outline: none;
+  }
+  .form-row input[type=color] { padding: 4px; height: 38px; }
+  .chart-box { width: 100%; height: 280px; }
+  .mt { margin-top: 22px; }
+  .empty-hint { color: var(--text-muted); font-size: 13px; padding: 12px 0; }
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="wanxiang-future.html" class="logo" style="text-decoration:none">
+    <div class="logo-icon">万</div>
+    <div class="logo-text"><div class="logo-title">万象未来</div><div class="logo-subtitle">AI 档案知识空间</div></div>
+  </a>
+  <ul class="nav-menu">
+    <li><a href="wanxiang-future.html" class="nav-item">首页</a></li>
+    <li><a href="archives.html" class="nav-item">档案资源</a></li>
+    <li><a href="knowledge-graph.html" class="nav-item">知识图谱</a></li>
+    <li><a href="sizheng-courses.html" class="nav-item">数字思政</a></li>
+    <li><a href="yanxue.html" class="nav-item">研学探索</a></li>
+    <li><a href="ai-chat.html" class="nav-item">智能问答</a></li>
+    <li><a href="admin.html" class="nav-item active">后台管理</a></li>
+  </ul>
+  <div class="nav-right">
+    <div class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path></svg></div>
+    <div class="user-info"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"/></svg><span>管理员</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="m6 9 6 6 6-6"/></svg></div>
+  </div>
+</nav>
+
+<div class="admin-layout">
+  <aside class="admin-sidebar">
+    <div class="side-title">管理中心</div>
+    <div class="side-item active" data-target="dashboard">📊 数据概览</div>
+    <div class="side-item" data-target="graph">🕸️ 知识图谱管理</div>
+    <div class="side-item" data-target="courses">🚩 思政课程管理</div>
+    <div class="side-item" data-target="routes">🗺️ 研学路线管理</div>
+    <div class="side-item" data-target="users">👥 用户与权限</div>
+    <div class="side-item" data-target="settings">⚙️ 系统设置</div>
+  </aside>
+
+  <main class="admin-main">
+
+    <!-- 数据概览 -->
+    <section id="dashboard" class="admin-section">
+      <!-- 数据汇总 -->
+      <div class="data-summary">
+        <div class="summary-header">
+          <span class="summary-title">数据汇总</span>
+          <span class="summary-time">数据统计时间：2026-08-02</span>
+        </div>
+        <div class="summary-cards">
+          <div class="summary-card">
+            <div class="summary-label">知识库数量 <span class="help-icon">?</span></div>
+            <div class="summary-value-row">
+              <span class="summary-num">2</span>
+              <span class="summary-trend">环比 -</span>
+            </div>
+          </div>
+          <div class="summary-card">
+            <div class="summary-label">现行有效知识总数 <span class="help-icon">?</span></div>
+            <div class="summary-value-row">
+              <span class="summary-num">2</span>
+              <span class="summary-trend">环比 -</span>
+            </div>
+          </div>
+          <div class="summary-card">
+            <div class="summary-label">AI解析知识总数 <span class="help-icon">?</span></div>
+            <div class="summary-value-row">
+              <span class="summary-num">2</span>
+              <span class="summary-trend">环比 -</span>
+            </div>
+          </div>
+          <div class="summary-card">
+            <div class="summary-label">AI问答引用知识总数 <span class="help-icon">?</span></div>
+            <div class="summary-value-row">
+              <span class="summary-num">0</span>
+              <span class="summary-trend">环比 -</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 数据概览 -->
+      <div class="data-overview">
+        <div class="overview-header">
+          <div class="overview-title-row">
+            <span class="overview-title">数据概览</span>
+            <span class="overview-time">数据统计时间：2026-08-02</span>
+          </div>
+          <div class="overview-controls">
+            <div class="time-tabs">
+              <button class="time-tab active">日</button>
+              <button class="time-tab">周</button>
+              <button class="time-tab">月</button>
+            </div>
+            <div class="date-picker">2026-08-02 <span class="calendar-icon">📅</span></div>
+          </div>
+        </div>
+        <div class="overview-charts">
+          <div class="chart-panel">
+            <div class="chart-panel-title">知识库使用数据</div>
+            <div class="metric-cards">
+              <div class="metric-card">
+                <div class="metric-icon blue">✈️</div>
+                <div class="metric-info">
+                  <div class="metric-label">访问次数</div>
+                  <div class="metric-value">0</div>
+                </div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-icon orange">👤</div>
+                <div class="metric-info">
+                  <div class="metric-label">访问人数</div>
+                  <div class="metric-value">0</div>
+                </div>
+              </div>
+            </div>
+            <div id="kbUsageChart" class="chart-area"></div>
+          </div>
+          <div class="chart-panel">
+            <div class="chart-panel-title">知识数据</div>
+            <div class="metric-cards single">
+              <div class="metric-card">
+                <div class="metric-icon blue">📄</div>
+                <div class="metric-info">
+                  <div class="metric-label">新增知识数</div>
+                  <div class="metric-value">0</div>
+                </div>
+              </div>
+            </div>
+            <div id="knowledgeChart" class="chart-area"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 排行榜 -->
+      <div class="ranking-section">
+        <div class="ranking-panel">
+          <div class="ranking-header">
+            <span class="ranking-title">知识排行榜</span>
+            <div class="ranking-tabs">
+              <button class="ranking-tab active">访问次数</button>
+              <button class="ranking-tab">访问人数</button>
+            </div>
+          </div>
+          <div class="ranking-list" id="kbRankingList">
+            <div class="ranking-empty">暂无数据</div>
+          </div>
+        </div>
+        <div class="ranking-panel">
+          <div class="ranking-header">
+            <span class="ranking-title">成员排行榜</span>
+            <div class="ranking-tabs">
+              <button class="ranking-tab active">访问次数</button>
+              <button class="ranking-tab">创建知识数</button>
+            </div>
+          </div>
+          <div class="ranking-list" id="memberRankingList">
+            <div class="ranking-empty">暂无数据</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 知识图谱管理 -->
+    <section id="graph" class="admin-section" hidden>
+      <div class="page-head">
+        <div class="page-title">知识图谱管理</div>
+        <div class="page-sub">专题图谱的实体、关系与发布状态管理</div>
+      </div>
+      <div class="toolbar">
+        <input type="text" placeholder="搜索图谱名称...">
+        <div class="spacer"></div>
+        <button class="btn">＋ 新建图谱</button>
+      </div>
+      <div class="panel" style="padding:0;overflow:hidden">
+        <table class="data-table">
+          <thead><tr><th>图谱名称</th><th>实体数</th><th>关系数</th><th>状态</th><th>更新时间</th><th>操作</th></tr></thead>
+          <tbody>
+            <tr><td>浙西南革命历史知识图谱</td><td>12,486</td><td>38,902</td><td><span class="badge green">已发布</span></td><td>2026-05-19</td><td><span class="link-btn">编辑</span><span class="link-btn">下线</span></td></tr>
+            <tr><td>红船精神发展脉络</td><td>8,213</td><td>25,671</td><td><span class="badge green">已发布</span></td><td>2026-05-12</td><td><span class="link-btn">编辑</span><span class="link-btn">下线</span></td></tr>
+            <tr><td>抗战时期浙江党组织</td><td>9,540</td><td>29,330</td><td><span class="badge green">已发布</span></td><td>2026-05-10</td><td><span class="link-btn">编辑</span><span class="link-btn">下线</span></td></tr>
+            <tr><td>丽水名人文化谱系</td><td>6,802</td><td>19,044</td><td><span class="badge green">已发布</span></td><td>2026-04-28</td><td><span class="link-btn">编辑</span><span class="link-btn">下线</span></td></tr>
+            <tr><td>革命遗址分布图谱</td><td>4,317</td><td>12,508</td><td><span class="badge green">已发布</span></td><td>2026-04-21</td><td><span class="link-btn">编辑</span><span class="link-btn">下线</span></td></tr>
+            <tr><td>档案文献传承关系</td><td>7,690</td><td>22,107</td><td><span class="badge green">已发布</span></td><td>2026-04-15</td><td><span class="link-btn">编辑</span><span class="link-btn">下线</span></td></tr>
+            <tr><td>重大历史事件关联</td><td>5,471</td><td>16,233</td><td><span class="badge green">已发布</span></td><td>2026-04-09</td><td><span class="link-btn">编辑</span><span class="link-btn">下线</span></td></tr>
+            <tr><td>浙西南英烈谱系</td><td>3,985</td><td>11,902</td><td><span class="badge gold">训练中</span></td><td>2026-05-21</td><td><span class="link-btn">编辑</span><span class="link-btn">下线</span></td></tr>
+            <tr><td>革命先辈社会关系</td><td>6,120</td><td>18,360</td><td><span class="badge green">已发布</span></td><td>2026-03-30</td><td><span class="link-btn">编辑</span><span class="link-btn">下线</span></td></tr>
+            <tr><td>红色文化资源网络</td><td>5,038</td><td>15,114</td><td><span class="badge green">已发布</span></td><td>2026-03-22</td><td><span class="link-btn">编辑</span><span class="link-btn">下线</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 思政课程管理 -->
+    <section id="courses" class="admin-section" hidden>
+      <div class="page-head">
+        <div class="page-title">思政课程管理</div>
+        <div class="page-sub">课程上下架、章节与学习数据统计</div>
+      </div>
+      <div class="panel" style="padding:0;overflow:hidden">
+        <table class="data-table">
+          <thead><tr><th>课程名称</th><th>学段</th><th>课时</th><th>学习人数</th><th>完成率</th><th>状态</th><th>操作</th></tr></thead>
+          <tbody>
+            <tr><td>红领巾讲红色故事</td><td>小学</td><td>24</td><td>85,000</td><td>68%</td><td><span class="badge green">已发布</span></td><td><span class="link-btn">编辑</span><span class="link-btn">章节</span></td></tr>
+            <tr><td>青春心向党·奋斗新征程</td><td>初中</td><td>32</td><td>123,000</td><td>55%</td><td><span class="badge green">已发布</span></td><td><span class="link-btn">编辑</span><span class="link-btn">章节</span></td></tr>
+            <tr><td>红色根脉·思政铸魂</td><td>高中</td><td>40</td><td>98,000</td><td>42%</td><td><span class="badge gold">待发布</span></td><td><span class="link-btn">编辑</span><span class="link-btn">发布</span></td></tr>
+            <tr><td>中国精神·青年担当</td><td>大学</td><td>48</td><td>46,000</td><td>35%</td><td><span class="badge green">已发布</span></td><td><span class="link-btn">编辑</span><span class="link-btn">章节</span></td></tr>
+            <tr><td>寻根中华·同心筑梦</td><td>海外华校</td><td>28</td><td>12,000</td><td>50%</td><td><span class="badge green">已发布</span></td><td><span class="link-btn">编辑</span><span class="link-btn">章节</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 研学路线管理 -->
+    <section id="routes" class="admin-section" hidden>
+      <div class="page-head">
+        <div class="page-title">研学路线管理</div>
+        <div class="page-sub">研学路线的发布、报名与站点维护</div>
+      </div>
+      <div class="panel" style="padding:0;overflow:hidden">
+        <table class="data-table">
+          <thead><tr><th>路线名称</th><th>学段</th><th>时长</th><th>站点数</th><th>报名人数</th><th>状态</th><th>操作</th></tr></thead>
+          <tbody>
+            <tr><td>浙西南革命根据地寻访之旅</td><td>初中/高中</td><td>2天1夜</td><td>6</td><td>1,240</td><td><span class="badge green">报名中</span></td><td><span class="link-btn">查看</span><span class="link-btn">编辑</span></td></tr>
+            <tr><td>红船起航·嘉兴南湖初心之旅</td><td>高中/大学</td><td>1天</td><td>4</td><td>2,310</td><td><span class="badge green">报名中</span></td><td><span class="link-btn">查看</span><span class="link-btn">编辑</span></td></tr>
+            <tr><td>丽水红色足迹研学</td><td>小学/初中</td><td>1天</td><td>5</td><td>3,560</td><td><span class="badge green">报名中</span></td><td><span class="link-btn">查看</span><span class="link-btn">编辑</span></td></tr>
+            <tr><td>青田侨乡文化寻根</td><td>海外华校</td><td>3天2夜</td><td>8</td><td>420</td><td><span class="badge green">报名中</span></td><td><span class="link-btn">查看</span><span class="link-btn">编辑</span></td></tr>
+            <tr><td>龙泉宝剑与革命精神</td><td>初中</td><td>1天</td><td>4</td><td>980</td><td><span class="badge green">报名中</span></td><td><span class="link-btn">查看</span><span class="link-btn">编辑</span></td></tr>
+            <tr><td>松阳古村落里的党史</td><td>小学/初中</td><td>2天1夜</td><td>6</td><td>1,150</td><td><span class="badge green">报名中</span></td><td><span class="link-btn">查看</span><span class="link-btn">编辑</span></td></tr>
+            <tr><td>缙云抗战遗址追忆</td><td>高中</td><td>1天</td><td>5</td><td>760</td><td><span class="badge gold">筹备中</span></td><td><span class="link-btn">查看</span><span class="link-btn">编辑</span></td></tr>
+            <tr><td>遂昌汤显祖文化研学</td><td>小学/初中</td><td>2天1夜</td><td>7</td><td>1,020</td><td><span class="badge green">报名中</span></td><td><span class="link-btn">查看</span><span class="link-btn">编辑</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 用户与权限 -->
+    <section id="users" class="admin-section" hidden>
+      <div class="page-head">
+        <div class="page-title">用户与权限</div>
+        <div class="page-sub">账号、角色与部门管理</div>
+      </div>
+      <div class="toolbar">
+        <input type="text" placeholder="搜索用户名 / 姓名...">
+        <select><option>全部角色</option><option>超级管理员</option><option>内容编辑</option><option>审核员</option><option>普通访客</option></select>
+        <div class="spacer"></div>
+        <button class="btn">＋ 新增用户</button>
+      </div>
+      <div class="panel" style="padding:0;overflow:hidden">
+        <table class="data-table">
+          <thead><tr><th>用户名</th><th>姓名</th><th>角色</th><th>部门</th><th>最后登录</th><th>状态</th><th>操作</th></tr></thead>
+          <tbody>
+            <tr><td>admin</td><td>系统管理员</td><td><span class="badge red">超级管理员</span></td><td>信息中心</td><td>2026-05-23 09:12</td><td><span class="badge green">正常</span></td><td><span class="link-btn">编辑</span></td></tr>
+            <tr><td>editor_li</td><td>李编辑</td><td><span class="badge blue">内容编辑</span></td><td>编研部</td><td>2026-05-22 16:40</td><td><span class="badge green">正常</span></td><td><span class="link-btn">编辑</span></td></tr>
+            <tr><td>reviewer_w</td><td>王审核</td><td><span class="badge gold">审核员</span></td><td>保管部</td><td>2026-05-21 11:05</td><td><span class="badge green">正常</span></td><td><span class="link-btn">编辑</span></td></tr>
+            <tr><td>editor_zhao</td><td>赵编辑</td><td><span class="badge blue">内容编辑</span></td><td>编研部</td><td>2026-05-20 14:22</td><td><span class="badge green">正常</span></td><td><span class="link-btn">编辑</span></td></tr>
+            <tr><td>visitor_01</td><td>访客用户</td><td><span class="badge">普通访客</span></td><td>—</td><td>2026-05-18 20:11</td><td><span class="badge red">已禁用</span></td><td><span class="link-btn">启用</span></td></tr>
+            <tr><td>reviewer_sun</td><td>孙审核</td><td><span class="badge gold">审核员</span></td><td>利用部</td><td>2026-05-22 09:48</td><td><span class="badge green">正常</span></td><td><span class="link-btn">编辑</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 系统设置 -->
+    <section id="settings" class="admin-section" hidden>
+      <div class="page-head">
+        <div class="page-title">系统设置</div>
+        <div class="page-sub">站点信息、视觉主题与运维配置</div>
+      </div>
+      <div class="panel">
+        <div class="form-row"><div class="form-label">站点名称</div><input type="text" value="万象未来 · AI 档案知识空间"></div>
+        <div class="form-row"><div class="form-label">站点副标题</div><input type="text" value="以档案为根，以AI为翼"></div>
+        <div class="form-row"><div class="form-label">主题主色</div><input type="color" value="#a62c2c"><span style="font-size:13px;color:var(--text-muted)">国风红</span></div>
+        <div class="form-row"><div class="form-label">辅助金色</div><input type="color" value="#c9a86c"></div>
+        <div class="form-row"><div class="form-label">备案信息</div><input type="text" value="浙ICP备 2026 第 0001 号"></div>
+        <div class="form-row"><div class="form-label">资源展示模式</div>
+          <select style="max-width:160px"><option>仅后台可见</option><option>部分公开展示</option><option>全部公开展示</option></select>
+        </div>
+        <div class="form-row"><div class="form-label">自动备份</div>
+          <select style="max-width:160px"><option>每日 02:00</option><option>每周日</option><option>关闭</option></select>
+        </div>
+        <div class="form-row" style="border-bottom:none">
+          <div class="form-label">AI 模型</div>
+          <select style="max-width:220px"><option>万象·档案大模型 v2</option><option>通用大模型 API</option></select>
+          <div class="spacer"></div>
+          <button class="btn">保存设置</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+  // 侧边栏切换
+  document.querySelectorAll('.side-item').forEach(function(item) {
+    item.addEventListener('click', function() {
+      document.querySelectorAll('.side-item').forEach(i => i.classList.remove('active'));
+      this.classList.add('active');
+      var target = this.getAttribute('data-target');
+      document.querySelectorAll('.admin-section').forEach(function(s) {
+        s.hidden = (s.id !== target);
+      });
+    });
+  });
+
+  // 表格操作按钮提示
+  document.querySelectorAll('.link-btn').forEach(function(b) {
+    b.addEventListener('click', function() { alert('操作：' + this.textContent + '（演示环境）'); });
+  });
+  document.querySelectorAll('.btn').forEach(function(b) {
+    if (b.textContent.indexOf('保存') > -1 || b.textContent.indexOf('上传') > -1 || b.textContent.indexOf('新建') > -1 || b.textContent.indexOf('新增') > -1 || b.textContent.indexOf('导出') > -1 || b.textContent.indexOf('训练') > -1 || b.textContent.indexOf('管理') > -1) {
+      b.addEventListener('click', function() { alert(this.textContent + '（演示环境）'); });
+    }
+  });
+
+  // 数据概览图表
+  if (window.echarts) {
+    // 知识库使用数据 - 访问次数/访问人数
+    var kbUsageChart = echarts.init(document.getElementById('kbUsageChart'));
+    kbUsageChart.setOption({
+      color: ['#1677ff', '#faad14'],
+      tooltip: { trigger: 'axis' },
+      legend: { bottom: 0, data: ['访问次数', '访问人数'], textStyle: { color: '#666' } },
+      grid: { left: 40, right: 20, top: 20, bottom: 40 },
+      xAxis: { 
+        type: 'category', 
+        data: ['07-24','07-25','07-26','07-27','07-28','07-29','07-30','07-31','08-01','08-02'],
+        axisLine: { lineStyle: { color: '#e8e8e8' } },
+        axisLabel: { color: '#999', fontSize: 11 }
+      },
+      yAxis: { 
+        type: 'value', 
+        max: 1,
+        splitLine: { lineStyle: { color: '#f0f0f0' } },
+        axisLabel: { color: '#999' }
+      },
+      series: [
+        { name: '访问次数', type: 'line', smooth: true, data: [0,0,0,0,0,0,0,0,0,0] },
+        { name: '访问人数', type: 'line', smooth: true, data: [0,0,0,0,0,0,0,0,0,0] }
+      ]
+    });
+
+    // 知识数据 - 新增知识数
+    var knowledgeChart = echarts.init(document.getElementById('knowledgeChart'));
+    knowledgeChart.setOption({
+      color: ['#1677ff'],
+      tooltip: { trigger: 'axis' },
+      legend: { bottom: 0, data: ['新增知识数'], textStyle: { color: '#666' } },
+      grid: { left: 40, right: 20, top: 20, bottom: 40 },
+      xAxis: { 
+        type: 'category', 
+        data: ['07-24','07-25','07-26','07-27','07-28','07-29','07-30','07-31','08-01','08-02'],
+        axisLine: { lineStyle: { color: '#e8e8e8' } },
+        axisLabel: { color: '#999', fontSize: 11 }
+      },
+      yAxis: { 
+        type: 'value', 
+        max: 1,
+        splitLine: { lineStyle: { color: '#f0f0f0' } },
+        axisLabel: { color: '#999' }
+      },
+      series: [
+        { name: '新增知识数', type: 'line', smooth: true, data: [0,0,0,0,0,0,0,0,0,0] }
+      ]
+    });
+
+    window.addEventListener('resize', function() { 
+      kbUsageChart.resize(); 
+      knowledgeChart.resize(); 
+    });
+
+    // 时间切换标签
+    document.querySelectorAll('.time-tab').forEach(function(tab) {
+      tab.addEventListener('click', function() {
+        document.querySelectorAll('.time-tab').forEach(t => t.classList.remove('active'));
+        this.classList.add('active');
+      });
+    });
+
+    // 排行榜标签切换
+    document.querySelectorAll('.ranking-tab').forEach(function(tab) {
+      tab.addEventListener('click', function() {
+        var parent = this.closest('.ranking-tabs');
+        parent.querySelectorAll('.ranking-tab').forEach(t => t.classList.remove('active'));
+        this.classList.add('active');
+      });
+    });
+  }
+</script>
+</body>
+</html>
