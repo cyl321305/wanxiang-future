@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>档案资源中心 - 万象未来 · AI 档案知识空间</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=ZCOOL+XiaoWei&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-cream: #faf5ee;
+      --bg-warm: #f3e8db;
+      --bg-pink: #f8ece6;
+      --accent-red: #a62c2c;
+      --accent-red-light: #c94d4d;
+      --accent-gold: #c9a86c;
+      --text-primary: #3d2b1f;
+      --text-secondary: rgba(61, 43, 31, 0.72);
+      --text-muted: rgba(61, 43, 31, 0.5);
+      --glass: rgba(255, 250, 245, 0.85);
+      --glass-border: rgba(166, 44, 44, 0.1);
+      --card-shadow: rgba(92, 61, 46, 0.08);
+      --doc-color: #d4a373;
+      --img-color: #6b9080;
+      --video-color: #8b5e83;
+      --audio-color: #5f7d8b;
+      --obj-color: #a45c5c;
+      --other-color: #8a8a8a;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Noto Sans SC', 'Microsoft YaHei', sans-serif; background: var(--bg-cream); color: var(--text-primary); min-height: 100vh; position: relative; }
+    .page-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; background: linear-gradient(180deg, #faf5ee 0%, #f8ece6 35%, #f3e8db 100%); }
+    .clouds { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; opacity: .2; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 400'%3E%3Cpath fill='%23c9a86c' fill-opacity='0.3' d='M100,200 Q130,160 170,180 T250,170 T320,190 T400,160 T480,180 T560,150 T640,170 T720,140'/%3E%3C/svg%3E") repeat-x; background-size: 800px 400px; animation: cloudMove 60s linear infinite; }
+    @keyframes cloudMove { from { background-position: 0 0; } to { background-position: -800px 0; } }
+    .app { position: relative; z-index: 10; }
+
+    /* 导航 */
+    .navbar { display: flex; align-items: center; justify-content: space-between; padding: 0 40px; height: 76px; background: rgba(250, 245, 238, 0.82); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(166, 44, 44, 0.08); position: sticky; top: 0; z-index: 100; }
+    .logo { display: flex; align-items: center; gap: 14px; cursor: pointer; text-decoration: none; }
+    .logo-icon { width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, #8b2c2c 0%, #a62c2c 100%); display: flex; align-items: center; justify-content: center; font-family: 'Ma Shan Zheng', cursive; font-size: 24px; color: #fff; border: 2px solid rgba(201, 168, 108, 0.5); box-shadow: 0 0 20px rgba(166, 44, 44, 0.2); }
+    .logo-title { font-family: 'Ma Shan Zheng', cursive; font-size: 28px; color: var(--accent-red); letter-spacing: 2px; }
+    .logo-subtitle { font-size: 12px; color: var(--text-muted); letter-spacing: 3px; margin-top: 4px; }
+    .nav-menu { display: flex; gap: 8px; list-style: none; }
+    .nav-item { padding: 10px 22px; font-size: 15px; color: var(--text-secondary); cursor: pointer; position: relative; transition: all .3s ease; border-radius: 20px; text-decoration: none; }
+    .nav-item:hover, .nav-item.active { color: var(--accent-red); background: rgba(166, 44, 44, 0.08); }
+    .nav-item.active::after { content: ''; position: absolute; bottom: -4px; left: 50%; transform: translateX(-50%); width: 24px; height: 2px; background: linear-gradient(90deg, transparent, var(--accent-red), transparent); border-radius: 2px; }
+    .nav-right { display: flex; align-items: center; gap: 20px; }
+    .nav-icon { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all .3s ease; color: var(--text-secondary); }
+    .nav-icon:hover { background: rgba(166, 44, 44, 0.08); color: var(--accent-red); }
+    .user-info { display: flex; align-items: center; gap: 8px; color: var(--text-secondary); font-size: 13px; cursor: pointer; }
+    .user-info span { color: var(--accent-red); }
+
+    .main-container { padding: 20px 40px 40px; }
+
+    /* 主体三栏 */
+    .resource-layout { display: grid; grid-template-columns: 220px 1fr 280px; gap: 20px; }
+
+    /* 左侧边栏 */
+    .sidebar-left { background: var(--glass); border: 1px solid var(--glass-border); border-radius: 16px; padding: 18px; box-shadow: 0 8px 24px var(--card-shadow); backdrop-filter: blur(10px); align-self: flex-start; position: sticky; top: 92px; }
+    .sidebar-title { display: flex; align-items: center; gap: 6px; font-size: 15px; font-weight: 600; color: var(--accent-red); margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid rgba(166, 44, 44, 0.08); }
+    .sidebar-title svg { width: 16px; height: 16px; }
+    .sidebar-section { margin-bottom: 18px; }
+    .sidebar-section:last-child { margin-bottom: 0; }
+    .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; cursor: pointer; }
+    .section-name { font-size: 13px; font-weight: 600; color: var(--text-primary); display: flex; align-items: center; gap: 6px; }
+    .section-name svg { width: 14px; height: 14px; color: var(--accent-red); }
+    .section-arrow { color: var(--text-muted); font-size: 12px; transition: transform .3s; }
+    .menu-item { display: flex; justify-content: space-between; align-items: center; padding: 9px 10px; border-radius: 8px; cursor: pointer; transition: all .3s ease; font-size: 13px; color: var(--text-secondary); }
+    .menu-item:hover { background: rgba(166, 44, 44, 0.04); color: var(--accent-red); }
+    .menu-item.active { background: rgba(166, 44, 44, 0.08); color: var(--accent-red); font-weight: 500; }
+    .menu-count { font-size: 12px; color: var(--text-muted); }
+    .menu-item.active .menu-count { color: var(--accent-red); }
+    .manage-link { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--text-muted); cursor: pointer; margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(166, 44, 44, 0.06); }
+    .manage-link:hover { color: var(--accent-red); }
+    .manage-link svg { width: 14px; height: 14px; }
+
+    /* 中间区域 */
+    .center-area { display: flex; flex-direction: column; gap: 20px; }
+
+    /* 顶部横幅 */
+    .hero-banner {
+      background: var(--glass); border: 1px solid var(--glass-border); border-radius: 16px; padding: 24px 30px;
+      box-shadow: 0 8px 24px var(--card-shadow); backdrop-filter: blur(10px); position: relative; overflow: hidden;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .hero-banner::before {
+      content: ''; position: absolute; right: 0; top: 0; width: 45%; height: 100%;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 200'%3E%3Cpath fill='%23a62c2c' fill-opacity='0.06' d='M50,180 C80,120 120,80 180,60 C240,40 320,50 380,20 L400,200 Z'/%3E%3C/svg%3E") no-repeat right bottom;
+      background-size: cover; opacity: .6;
+    }
+    .hero-content { position: relative; z-index: 1; }
+    .hero-title { font-family: 'ZCOOL XiaoWei', serif; font-size: 26px; color: var(--text-primary); margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
+    .hero-title svg { width: 24px; height: 24px; color: var(--accent-gold); }
+    .hero-slogan { font-size: 14px; color: var(--accent-red); font-weight: 500; margin-bottom: 6px; }
+    .hero-sub { font-size: 13px; color: var(--text-muted); }
+    .hero-building { position: relative; z-index: 1; font-size: 80px; opacity: .85; filter: drop-shadow(0 0 10px rgba(166, 44, 44, 0.15)); }
+
+    /* 统计卡片 */
+    .stats-row { display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; }
+    .stat-card {
+      background: var(--glass); border: 1px solid var(--glass-border); border-radius: 14px; padding: 16px;
+      box-shadow: 0 8px 24px var(--card-shadow); backdrop-filter: blur(10px); transition: all .3s ease;
+    }
+    .stat-card:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(92, 61, 46, 0.12); }
+    .stat-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+    .stat-icon { width: 34px; height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+    .stat-icon.doc { background: rgba(212, 163, 115, 0.15); color: var(--doc-color); }
+    .stat-icon.img { background: rgba(107, 144, 128, 0.15); color: var(--img-color); }
+    .stat-icon.video { background: rgba(139, 94, 131, 0.15); color: var(--video-color); }
+    .stat-icon.audio { background: rgba(95, 125, 139, 0.15); color: var(--audio-color); }
+    .stat-icon.kb { background: rgba(201, 168, 108, 0.15); color: var(--accent-gold); }
+    .stat-icon.total { background: rgba(166, 44, 44, 0.1); color: var(--accent-red); }
+    .stat-name { font-size: 12px; color: var(--text-muted); }
+    .stat-value { font-size: 22px; font-weight: 700; color: var(--text-primary); margin-bottom: 2px; }
+    .stat-unit { font-size: 12px; color: var(--text-muted); font-weight: 400; }
+    .stat-trend { font-size: 11px; color: var(--accent-red-light); display: flex; align-items: center; gap: 2px; }
+    .stat-trend svg { width: 10px; height: 10px; }
+
+    /* 搜索与筛选 */
+    .search-filter-box { background: var(--glass); border: 1px solid var(--glass-border); border-radius: 16px; padding: 18px 20px; box-shadow: 0 8px 24px var(--card-shadow); backdrop-filter: blur(10px); }
+    .search-row { display: flex; gap: 12px; margin-bottom: 14px; }
+    .search-dropdown {
+      display: flex; align-items: center; gap: 6px; padding: 0 16px; height: 44px; border-radius: 22px;
+      border: 1px solid rgba(166, 44, 44, 0.15); background: rgba(255,255,255,0.7); color: var(--text-primary); font-size: 14px; cursor: pointer; transition: all .3s ease; flex-shrink: 0;
+    }
+    .search-dropdown svg { width: 12px; height: 12px; color: var(--text-muted); }
+    .search-input { flex: 1; position: relative; }
+    .search-input input { width: 100%; height: 44px; padding: 0 120px 0 18px; border-radius: 22px; border: 1px solid rgba(166, 44, 44, 0.15); background: rgba(255,255,255,0.7); color: var(--text-primary); font-size: 14px; outline: none; transition: all .3s ease; }
+    .search-input input::placeholder { color: rgba(61, 43, 31, 0.35); }
+    .search-btn {
+      position: absolute; right: 4px; top: 4px; bottom: 4px; padding: 0 22px; border-radius: 18px; border: none;
+      background: linear-gradient(135deg, var(--accent-red) 0%, var(--accent-red-light) 100%); color: #fff; font-size: 14px;
+      cursor: pointer; transition: all .3s ease; box-shadow: 0 4px 12px rgba(166, 44, 44, 0.25); display: flex; align-items: center; gap: 4px;
+    }
+    .search-btn:hover { transform: scale(1.02); box-shadow: 0 6px 16px rgba(166, 44, 44, 0.35); }
+    .search-btn svg { width: 14px; height: 14px; }
+
+    .filter-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding-top: 12px; border-top: 1px solid rgba(166, 44, 44, 0.06); }
+    .filter-label { font-size: 13px; color: var(--text-muted); margin-right: 4px; }
+    .filter-item { display: flex; align-items: center; gap: 4px; padding: 7px 12px; border-radius: 16px; border: 1px solid rgba(166, 44, 44, 0.1); background: rgba(255,255,255,0.5); color: var(--text-secondary); font-size: 13px; cursor: pointer; transition: all .3s; }
+    .filter-item:hover { border-color: rgba(166, 44, 44, 0.25); color: var(--accent-red); }
+    .filter-item svg { width: 12px; height: 12px; color: var(--text-muted); }
+    .filter-result { margin-left: auto; font-size: 13px; color: var(--text-muted); }
+    .filter-result strong { color: var(--accent-red); font-weight: 600; }
+    .filter-actions { display: flex; gap: 8px; margin-left: 12px; }
+    .upload-btn { padding: 7px 16px; border-radius: 16px; border: none; background: var(--accent-red); color: #fff; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 4px; transition: all .3s; }
+    .upload-btn:hover { background: var(--accent-red-light); box-shadow: 0 4px 12px rgba(166, 44, 44, 0.25); }
+    .upload-btn svg { width: 14px; height: 14px; }
+    .batch-btn { padding: 7px 16px; border-radius: 16px; border: 1px solid rgba(166, 44, 44, 0.15); background: rgba(255,255,255,0.5); color: var(--text-secondary); font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 4px; transition: all .3s; }
+    .batch-btn:hover { background: rgba(166, 44, 44, 0.08); color: var(--accent-red); }
+
+    /* 资源卡片网格 */
+    .resource-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .resource-card { background: var(--glass); border: 1px solid var(--glass-border); border-radius: 14px; overflow: hidden; box-shadow: 0 8px 24px var(--card-shadow); transition: all .35s ease; cursor: pointer; backdrop-filter: blur(10px); }
+    .resource-card:hover { transform: translateY(-5px); box-shadow: 0 16px 40px rgba(92, 61, 46, 0.12), 0 0 30px rgba(166, 44, 44, 0.05); }
+    .card-media { height: 130px; position: relative; overflow: hidden; background: #eee; }
+    .card-media img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease; }
+    .resource-card:hover .card-media img { transform: scale(1.05); }
+    .type-badge { position: absolute; top: 10px; left: 10px; padding: 4px 10px; border-radius: 10px; font-size: 11px; font-weight: 500; color: #fff; }
+    .type-badge.doc { background: var(--doc-color); }
+    .type-badge.img { background: var(--img-color); }
+    .type-badge.video { background: var(--video-color); }
+    .type-badge.audio { background: var(--audio-color); }
+    .type-badge.obj { background: var(--obj-color); }
+    .card-action { position: absolute; top: 10px; right: 10px; width: 28px; height: 28px; border-radius: 50%; background: rgba(255,255,255,0.9); display: flex; align-items: center; justify-content: center; color: var(--accent-red); cursor: pointer; transition: all .3s; }
+    .card-action:hover { background: #fff; transform: scale(1.1); }
+    .card-action svg { width: 14px; height: 14px; }
+    .audio-wave { position: absolute; bottom: 0; left: 0; right: 0; height: 40px; display: flex; align-items: flex-end; justify-content: center; gap: 3px; padding-bottom: 8px; background: linear-gradient(transparent, rgba(0,0,0,0.3)); }
+    .wave-bar { width: 3px; background: rgba(255,255,255,0.8); border-radius: 2px; animation: wave 1.2s ease-in-out infinite; }
+    @keyframes wave { 0%, 100% { height: 6px; } 50% { height: 22px; } }
+    .play-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.25); }
+    .play-overlay svg { width: 40px; height: 40px; color: #fff; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); }
+    .card-body { padding: 14px; }
+    .card-title { font-size: 15px; font-weight: 600; color: var(--text-primary); margin-bottom: 10px; line-height: 1.4; }
+    .card-meta { display: flex; gap: 10px; font-size: 12px; color: var(--text-muted); margin-bottom: 10px; }
+    .card-meta svg { width: 12px; height: 12px; color: var(--text-muted); }
+    .card-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+    .card-tag { padding: 3px 8px; border-radius: 8px; font-size: 11px; background: rgba(166, 44, 44, 0.06); color: var(--text-secondary); border: 1px solid rgba(166, 44, 44, 0.06); }
+    .card-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 10px; border-top: 1px solid rgba(166, 44, 44, 0.06); font-size: 12px; color: var(--text-muted); }
+    .card-source { display: flex; align-items: center; gap: 4px; }
+
+    /* 分页 */
+    .pagination-area { display: flex; justify-content: space-between; align-items: center; margin-top: 24px; }
+    .pagination { display: flex; gap: 8px; }
+    .page-btn { min-width: 34px; height: 34px; border-radius: 10px; border: 1px solid rgba(166, 44, 44, 0.12); background: rgba(255,255,255,0.5); color: var(--text-secondary); font-size: 13px; cursor: pointer; transition: all .3s; display: flex; align-items: center; justify-content: center; }
+    .page-btn:hover { background: rgba(166, 44, 44, 0.08); color: var(--accent-red); }
+    .page-btn.active { background: var(--accent-red); color: #fff; border-color: var(--accent-red); }
+    .page-size { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--text-muted); }
+    .page-size select { padding: 5px 10px; border-radius: 8px; border: 1px solid rgba(166, 44, 44, 0.15); background: rgba(255,255,255,0.7); color: var(--text-primary); font-size: 13px; outline: none; }
+
+    /* 右侧边栏 */
+    .sidebar-right { display: flex; flex-direction: column; gap: 20px; }
+    .side-card { background: var(--glass); border: 1px solid var(--glass-border); border-radius: 16px; padding: 18px; box-shadow: 0 8px 24px var(--card-shadow); backdrop-filter: blur(10px); }
+    .side-title { font-size: 15px; font-weight: 600; color: var(--text-primary); margin-bottom: 14px; display: flex; align-items: center; gap: 6px; }
+    .side-title::before { content: ''; width: 4px; height: 14px; background: linear-gradient(180deg, var(--accent-red-light), var(--accent-gold)); border-radius: 2px; }
+    .tool-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .tool-item { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 12px 8px; border-radius: 10px; cursor: pointer; transition: all .3s; background: rgba(255,255,255,0.5); border: 1px solid rgba(166, 44, 44, 0.06); }
+    .tool-item:hover { background: rgba(166, 44, 44, 0.06); border-color: rgba(166, 44, 44, 0.15); }
+    .tool-icon { width: 32px; height: 32px; border-radius: 8px; background: rgba(166, 44, 44, 0.08); display: flex; align-items: center; justify-content: center; color: var(--accent-red); font-size: 16px; }
+    .tool-name { font-size: 11px; color: var(--text-secondary); text-align: center; }
+
+    .chart-container { display: flex; align-items: center; gap: 16px; }
+    .ring-chart { width: 100px; height: 100px; position: relative; flex-shrink: 0; }
+    .ring-chart svg { transform: rotate(-90deg); }
+    .chart-center { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+    .chart-center svg { width: 24px; height: 24px; color: var(--accent-red); transform: none; }
+    .chart-legend { flex: 1; display: flex; flex-direction: column; gap: 8px; }
+    .legend-item { display: flex; align-items: center; justify-content: space-between; font-size: 12px; }
+    .legend-left { display: flex; align-items: center; gap: 6px; }
+    .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+    .legend-name { color: var(--text-secondary); }
+    .legend-value { color: var(--text-primary); font-weight: 600; }
+
+    .upload-list { display: flex; flex-direction: column; gap: 10px; }
+    .upload-item { display: flex; gap: 10px; padding: 10px; border-radius: 10px; background: rgba(255,255,255,0.5); border: 1px solid rgba(166, 44, 44, 0.05); cursor: pointer; transition: all .3s; }
+    .upload-item:hover { background: rgba(166, 44, 44, 0.04); }
+    .upload-thumb { width: 40px; height: 40px; border-radius: 8px; background: rgba(166, 44, 44, 0.08); display: flex; align-items: center; justify-content: center; font-size: 18px; color: var(--accent-red); flex-shrink: 0; }
+    .upload-info { flex: 1; min-width: 0; }
+    .upload-title { font-size: 12px; color: var(--text-primary); margin-bottom: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .upload-meta { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted); }
+
+    .red-zone { background: linear-gradient(135deg, #a62c2c 0%, #c94d4d 100%); border-radius: 14px; padding: 18px; color: #fff; cursor: pointer; transition: all .3s; position: relative; overflow: hidden; }
+    .red-zone:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(166, 44, 44, 0.3); }
+    .red-zone::before { content: ''; position: absolute; right: -20px; top: -20px; width: 100px; height: 100px; background: rgba(255,255,255,0.1); border-radius: 50%; }
+    .red-zone-title { font-size: 16px; font-weight: 600; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+    .red-zone-desc { font-size: 12px; opacity: 0.9; line-height: 1.5; }
+    .red-zone-icon { font-size: 40px; position: absolute; right: 10px; bottom: 5px; opacity: 0.25; }
+
+    /* 悬浮按钮 */
+    .floating-actions { position: fixed; right: 20px; bottom: 120px; display: flex; flex-direction: column; gap: 14px; z-index: 100; }
+    .float-btn { width: 52px; height: 52px; border-radius: 50%; background: rgba(255, 250, 245, 0.9); border: 1px solid rgba(166, 44, 44, 0.15); display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; transition: all .3s ease; backdrop-filter: blur(10px); box-shadow: 0 4px 16px rgba(92, 61, 46, 0.1); }
+    .float-btn:hover { background: rgba(166, 44, 44, 0.08); border-color: rgba(166, 44, 44, 0.3); transform: translateY(-3px); box-shadow: 0 8px 24px rgba(166, 44, 44, 0.12); }
+    .float-btn svg { width: 20px; height: 20px; color: var(--accent-red); margin-bottom: 2px; }
+    .float-btn span { font-size: 10px; color: var(--text-secondary); }
+
+    @media (max-width: 1400px) {
+      .resource-layout { grid-template-columns: 200px 1fr 240px; }
+      .stats-row { grid-template-columns: repeat(3, 1fr); }
+      .resource-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 1024px) {
+      .resource-layout { grid-template-columns: 1fr; }
+      .sidebar-left, .sidebar-right { position: static; }
+      .stats-row { grid-template-columns: repeat(2, 1fr); }
+      .nav-menu { display: none; }
+    }
+    @media (max-width: 768px) {
+      .navbar { padding: 0 20px; }
+      .main-container { padding: 20px; }
+      .resource-grid { grid-template-columns: 1fr; }
+      .stats-row { grid-template-columns: 1fr; }
+    }
+    /* 知识库卡片 */
+    .kb-card { background: var(--glass); border: 1px solid var(--glass-border); border-radius: 16px; overflow: hidden; cursor: pointer; transition: all .3s ease; box-shadow: 0 8px 24px var(--card-shadow); backdrop-filter: blur(10px); display: flex; flex-direction: column; }
+    .kb-card:hover { transform: translateY(-5px); box-shadow: 0 16px 40px rgba(92, 61, 46, 0.18); }
+    .kb-cover { height: 96px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+    .kb-cover::before { content: ''; position: absolute; inset: 0; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 200'%3E%3Cpath fill='%23ffffff' fill-opacity='0.12' d='M50,180 C80,120 120,80 180,60 C240,40 320,50 380,20 L400,200 Z'/%3E%3C/svg%3E") no-repeat right bottom; background-size: cover; }
+    .kb-cover .kb-emoji { font-size: 40px; filter: drop-shadow(0 4px 8px rgba(0,0,0,.2)); position: relative; z-index: 1; }
+    .kb-count-badge { position: absolute; right: 10px; top: 10px; background: rgba(255,255,255,.9); color: var(--accent-red); font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,.12); z-index: 1; }
+    .kb-cover.red { background: linear-gradient(135deg, #a62c2c, #c94d4d); }
+    .kb-cover.gold { background: linear-gradient(135deg, #b8860b, #d4a373); }
+    .kb-cover.brown { background: linear-gradient(135deg, #7a5c3e, #a9855f); }
+    .kb-cover.green { background: linear-gradient(135deg, #5c7a6a, #8aa98f); }
+    .kb-cover.blue { background: linear-gradient(135deg, #4a6a8a, #7a9ab5); }
+    .kb-cover.purple { background: linear-gradient(135deg, #7a5c7a, #a58aa5); }
+    .kb-cover.dark { background: linear-gradient(135deg, #4a5a4a, #7a8f7a); }
+    .kb-body { padding: 14px 16px 16px; flex: 1; display: flex; flex-direction: column; }
+    .kb-name { font-family: 'ZCOOL XiaoWei', serif; font-size: 17px; color: var(--text-primary); margin-bottom: 6px; }
+    .kb-desc { font-size: 12px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 12px; flex: 1; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .kb-meta-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+    .kb-type-tag { font-size: 11px; padding: 2px 8px; border-radius: 10px; background: rgba(166,44,44,.06); color: var(--text-secondary); }
+    .kb-foot { display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed rgba(166,44,44,.12); padding-top: 10px; font-size: 12px; color: var(--text-muted); }
+    .kb-foot .kb-update { display: flex; align-items: center; gap: 4px; }
+    .kb-foot .kb-enter { color: var(--accent-red); display: flex; align-items: center; gap: 2px; font-weight: 500; }
+  </style>
+</head>
+<body>
+  <div class="page-bg"></div>
+  <div class="clouds"></div>
+
+  <div class="app">
+    <!-- 导航栏 -->
+    <nav class="navbar">
+      <a href="wanxiang-future.html" class="logo">
+        <div class="logo-icon">万</div>
+        <div class="logo-text"><div class="logo-title">万象未来</div><div class="logo-subtitle">AI 档案知识空间</div></div>
+      </a>
+      <ul class="nav-menu">
+        <li><a href="wanxiang-future.html" class="nav-item">首页</a></li>
+        <li><a href="archives.html" class="nav-item active">档案资源</a></li>
+        <li><a href="knowledge-graph.html" class="nav-item">知识图谱</a></li>
+        <li><a href="sizheng-courses.html" class="nav-item">数字思政</a></li>
+        <li><a href="yanxue.html" class="nav-item">研学探索</a></li>
+        <li><a href="ai-chat.html" class="nav-item">智能问答</a></li>
+        <li><a href="admin.html" class="nav-item">后台管理</a></li>
+      </ul>
+      <div class="nav-right">
+        <div class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path></svg>
+        </div>
+        <div class="user-info">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+          <span>欢迎您：管理员</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="m6 9 6 6 6-6"></path></svg>
+        </div>
+      </div>
+    </nav>
+
+    <div class="main-container">
+      <div class="resource-layout">
+        <!-- 左侧边栏 -->
+        <aside class="sidebar-left">
+          <div class="sidebar-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a2.5 2.5 0 0 1 0-5H20"></path></svg>
+            资源概览
+          </div>
+
+          <div class="sidebar-section">
+            <div class="section-name"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"></path><path d="M14 2v6h6"></path><path d="M16 13H8"></path><path d="M16 17H8"></path><path d="M10 9H8"></path></svg>资源类型</div>
+            <div class="menu-item active">📄 文档档案</div>
+            <div class="menu-item">🖼️ 图片档案</div>
+            <div class="menu-item">🎬 视频档案</div>
+            <div class="menu-item">🎙️ 音频档案</div>
+          </div>
+
+          <div class="sidebar-section">
+            <div class="section-name"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>收藏知识库</div>
+            <div class="menu-item" data-kb="红色记忆">🚩 红色记忆</div>
+            <div class="menu-item" data-kb="人物传记">⭐ 人物传记</div>
+            <div class="menu-item" data-kb="历史事件">📜 历史事件</div>
+            <div class="menu-item" data-kb="地方建设">🏗️ 地方建设</div>
+            <div class="menu-item" data-kb="组织机构">🏛️ 组织机构</div>
+            <div class="menu-item" data-kb="文化民俗">🎭 文化民俗</div>
+            <div class="menu-item" data-kb="专题库">📚 专题库</div>
+          </div>
+        </aside>
+
+        <!-- 中间区域 -->
+        <div class="center-area">
+          <!-- 顶部横幅 -->
+          <div class="hero-banner">
+            <div class="hero-content">
+              <div class="hero-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>档案资源中心</div>
+              <div class="hero-slogan">整合多类型档案资源，构建全面、精准、智能的知识库体系</div>
+              <div class="hero-sub">安全 · 准确 · 权威 · 可追溯</div>
+            </div>
+            <div class="hero-building">🏛️</div>
+          </div>
+
+          <!-- 统计卡片 -->
+          <div class="stats-row">
+            <div class="stat-card">
+              <div class="stat-header"><div class="stat-icon total">📦</div><div class="stat-name">资源总量</div></div>
+              <div class="stat-value">186,732<span class="stat-unit">条</span></div>
+              <div class="stat-trend"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"></path></svg>较上月 +12.5%</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-header"><div class="stat-icon doc">📄</div><div class="stat-name">文档档案</div></div>
+              <div class="stat-value">153,285<span class="stat-unit">页</span></div>
+              <div class="stat-trend"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"></path></svg>较上月 +8.3%</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-header"><div class="stat-icon img">🖼️</div><div class="stat-name">图片档案</div></div>
+              <div class="stat-value">18,542<span class="stat-unit">张</span></div>
+              <div class="stat-trend"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"></path></svg>较上月 +15.2%</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-header"><div class="stat-icon video">🎬</div><div class="stat-name">视频档案</div></div>
+              <div class="stat-value">8,652<span class="stat-unit">个</span></div>
+              <div class="stat-trend"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"></path></svg>较上月 +10.1%</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-header"><div class="stat-icon audio">🎙️</div><div class="stat-name">音频档案</div></div>
+              <div class="stat-value">3,842<span class="stat-unit">个</span></div>
+              <div class="stat-trend"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"></path></svg>较上月 +9.7%</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-header"><div class="stat-icon kb">📚</div><div class="stat-name">知识库总数</div></div>
+              <div class="stat-value">128<span class="stat-unit">个</span></div>
+              <div class="stat-trend"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"></path></svg>较上月 +6.4%</div>
+            </div>
+          </div>
+
+          <!-- 知识库筛选 -->
+          <div class="search-filter-box">
+            <div class="filter-row">
+              <span class="filter-label">知识库筛选：</span>
+              <div class="search-input" style="max-width:340px">
+                <input id="kbSearch" type="text" placeholder="搜索知识库名称...">
+                <button class="search-btn" onclick="filterKb()">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>搜索
+                </button>
+              </div>
+              <div class="filter-actions">
+                <button class="batch-btn" onclick="alert('批量管理（演示环境）')">批量操作</button>
+                <button class="upload-btn" onclick="alert('上传资源（演示环境）')">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                  上传资源
+                </button>
+              </div>
+              <div class="filter-result">共 <strong id="kbCount">7</strong> 个知识库</div>
+            </div>
+          </div>
+
+          <!-- 知识库卡片 -->
+          <div class="resource-grid" id="kbGrid"></div>
+        </div>
+
+        <!-- 右侧边栏 -->
+        <aside class="sidebar-right">
+          <div class="side-card">
+            <div class="side-title">资源统计</div>
+            <div class="chart-container">
+              <div class="ring-chart">
+                <svg viewBox="0 0 100 100" width="100" height="100">
+                  <circle cx="50" cy="50" r="40" fill="none" stroke="#e8d4c0" stroke-width="10"></circle>
+                  <circle cx="50" cy="50" r="40" fill="none" stroke="#d4a373" stroke-width="10" stroke-dasharray="207.3 44.9" stroke-linecap="round"></circle>
+                  <circle cx="50" cy="50" r="40" fill="none" stroke="#6b9080" stroke-width="10" stroke-dasharray="25.1 227.1" stroke-dashoffset="-207.3" stroke-linecap="round"></circle>
+                  <circle cx="50" cy="50" r="40" fill="none" stroke="#8b5e83" stroke-width="10" stroke-dasharray="12.6 239.6" stroke-dashoffset="-232.4" stroke-linecap="round"></circle>
+                  <circle cx="50" cy="50" r="40" fill="none" stroke="#5f7d8b" stroke-width="10" stroke-dasharray="5.6 246.6" stroke-dashoffset="-245.0" stroke-linecap="round"></circle>
+                  <circle cx="50" cy="50" r="40" fill="none" stroke="#a45c5c" stroke-width="10" stroke-dasharray="2.8 249.4" stroke-dashoffset="-250.6" stroke-linecap="round"></circle>
+                  <circle cx="50" cy="50" r="40" fill="none" stroke="#8a8a8a" stroke-width="10" stroke-dasharray="2.5 249.7" stroke-dashoffset="-253.4" stroke-linecap="round"></circle>
+                </svg>
+                <div class="chart-center"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></div>
+              </div>
+              <div class="chart-legend">
+                <div class="legend-item"><div class="legend-left"><span class="legend-dot" style="background:#d4a373"></span><span class="legend-name">📄 文档档案</span></div><span class="legend-value">82.2%</span></div>
+                <div class="legend-item"><div class="legend-left"><span class="legend-dot" style="background:#6b9080"></span><span class="legend-name">🖼️ 图片档案</span></div><span class="legend-value">9.9%</span></div>
+                <div class="legend-item"><div class="legend-left"><span class="legend-dot" style="background:#8b5e83"></span><span class="legend-name">🎬 视频档案</span></div><span class="legend-value">4.6%</span></div>
+                <div class="legend-item"><div class="legend-left"><span class="legend-dot" style="background:#5f7d8b"></span><span class="legend-name">🎙️ 音频档案</span></div><span class="legend-value">2.1%</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="side-card">
+            <div class="side-title">最近上传</div>
+            <div class="upload-list">
+              <div class="upload-item"><div class="upload-thumb">📄</div><div class="upload-info"><div class="upload-title">中共丽水县委扩大会议记录</div><div class="upload-meta"><span>文档档案</span><span>3.2 MB</span></div></div></div>
+              <div class="upload-item"><div class="upload-thumb">🖼️</div><div class="upload-info"><div class="upload-title">1953年丽水城区全景照片</div><div class="upload-meta"><span>图片档案</span><span>2.8 MB</span></div></div></div>
+              <div class="upload-item"><div class="upload-thumb">🎬</div><div class="upload-info"><div class="upload-title">革命老战士访谈录.mp4</div><div class="upload-meta"><span>视频档案</span><span>192.4 MB</span></div></div></div>
+              <div class="upload-item"><div class="upload-thumb">🎙️</div><div class="upload-info"><div class="upload-title">丽水方言民俗录音.mp3</div><div class="upload-meta"><span>音频档案</span><span>18.6 MB</span></div></div></div>
+            </div>
+          </div>
+
+          <div class="red-zone">
+            <div class="red-zone-title">红色档案专区</div>
+            <div class="red-zone-desc">传承红色基因 赓续精神血脉</div>
+            <div class="red-zone-icon">⭐</div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ===== 知识库数据 =====
+    const kbList = [
+      { name: '红色记忆', icon: '🚩', color: 'red', desc: '收录浙西南革命斗争的重要档案文献，传承红色基因、赓续精神血脉。', count: { doc: 4, img: 1, video: 0, audio: 0, obj: 1 }, update: '2026-05-17' },
+      { name: '人物传记', icon: '⭐', color: 'gold', desc: '汇集革命先辈、历史名人与行业翘楚的生平档案与口述资料。', count: { doc: 4, img: 0, video: 2, audio: 0, obj: 0 }, update: '2026-05-19' },
+      { name: '历史事件', icon: '📜', color: 'brown', desc: '系统整理重大历史事件的原始记录、报刊报道与亲历者回忆。', count: { doc: 5, img: 1, video: 0, audio: 0, obj: 0 }, update: '2026-05-16' },
+      { name: '地方建设', icon: '🏗️', color: 'green', desc: '记录丽水城乡发展变迁的建设档案、工程图纸与影像资料。', count: { doc: 2, img: 3, video: 1, audio: 0, obj: 0 }, update: '2026-05-14' },
+      { name: '组织机构', icon: '🏛️', color: 'blue', desc: '涵盖各级党政机关、社会团体的沿革文件与成立档案。', count: { doc: 4, img: 2, video: 0, audio: 0, obj: 0 }, update: '2026-05-12' },
+      { name: '文化民俗', icon: '🎭', color: 'purple', desc: '保存方言、民歌、非遗与民俗活动的珍贵声像与图文资料。', count: { doc: 0, img: 2, video: 1, audio: 3, obj: 0 }, update: '2026-05-18' },
+      { name: '专题库', icon: '📚', color: 'dark', desc: '围绕侨乡青田、口述历史、红色根脉等主题打造的专题资源包。', count: { doc: 4, img: 1, video: 1, audio: 0, obj: 0 }, update: '2026-05-20' }
+    ];
+
+    const totalOf = k => k.count.doc + k.count.img + k.count.video + k.count.audio + k.count.obj;
+
+    // ===== 渲染知识库卡片 =====
+    function renderKb(filter) {
+      const grid = document.getElementById('kbGrid');
+      grid.innerHTML = '';
+      const list = kbList.filter(k => !filter || k.name.indexOf(filter) > -1);
+      document.getElementById('kbCount').textContent = list.length;
+      list.forEach(k => {
+        const card = document.createElement('div');
+        card.className = 'kb-card';
+        card.innerHTML = `
+          <div class="kb-cover ${k.color}">
+            <div class="kb-emoji">${k.icon}</div>
+            <div class="kb-count-badge">${totalOf(k)} 条档案</div>
+          </div>
+          <div class="kb-body">
+            <div class="kb-name">${k.name}</div>
+            <div class="kb-desc">${k.desc}</div>
+            <div class="kb-meta-row">
+              ${k.count.doc ? `<span class="kb-type-tag">📄 文档 ${k.count.doc}</span>` : ''}
+              ${k.count.img ? `<span class="kb-type-tag">🖼️ 图片 ${k.count.img}</span>` : ''}
+              ${k.count.video ? `<span class="kb-type-tag">🎬 视频 ${k.count.video}</span>` : ''}
+              ${k.count.audio ? `<span class="kb-type-tag">🎙️ 音频 ${k.count.audio}</span>` : ''}
+            </div>
+            <div class="kb-foot">
+              <span class="kb-update">🕐 更新于 ${k.update}</span>
+              <span class="kb-enter">进入知识库 ›</span>
+            </div>
+          </div>
+        `;
+        card.addEventListener('click', () => {
+          window.location.href = 'kb-detail.html?kb=' + encodeURIComponent(k.name);
+        });
+        grid.appendChild(card);
+      });
+    }
+    renderKb();
+
+    function filterKb() {
+      const v = document.getElementById('kbSearch').value.trim();
+      renderKb(v);
+    }
+    document.getElementById('kbSearch').addEventListener('keydown', e => { if (e.key === 'Enter') filterKb(); });
+
+    // 菜单交互：资源类型高亮 / 收藏知识库跳转
+    document.querySelectorAll('.menu-item').forEach(item => {
+      item.addEventListener('click', function() {
+        if (this.hasAttribute('data-kb')) {
+          window.location.href = 'kb-detail.html?kb=' + encodeURIComponent(this.getAttribute('data-kb'));
+          return;
+        }
+        this.parentElement.querySelectorAll('.menu-item').forEach(i => i.classList.remove('active'));
+        this.classList.add('active');
+      });
+    });
+  </script>
+</body>
+</html>
