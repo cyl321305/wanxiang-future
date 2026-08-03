@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>知识库详情 - 万象未来 · AI 档案知识空间</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=ZCOOL+XiaoWei&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-cream: #faf5ee;
+      --bg-warm: #f3e8db;
+      --bg-pink: #f8ece6;
+      --accent-red: #a62c2c;
+      --accent-red-light: #c94d4d;
+      --accent-gold: #c9a86c;
+      --text-primary: #3d2b1f;
+      --text-secondary: rgba(61, 43, 31, 0.72);
+      --text-muted: rgba(61, 43, 31, 0.5);
+      --glass: rgba(255, 250, 245, 0.85);
+      --glass-border: rgba(166, 44, 44, 0.1);
+      --card-shadow: rgba(92, 61, 46, 0.08);
+      --doc-color: #d4a373;
+      --img-color: #6b9080;
+      --video-color: #8b5e83;
+      --audio-color: #5f7d8b;
+      --obj-color: #a45c5c;
+      --other-color: #8a8a8a;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Noto Sans SC', 'Microsoft YaHei', sans-serif; background: var(--bg-cream); color: var(--text-primary); min-height: 100vh; position: relative; }
+    .page-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; background: linear-gradient(180deg, #faf5ee 0%, #f8ece6 35%, #f3e8db 100%); }
+    .clouds { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; opacity: .2; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 400'%3E%3Cpath fill='%23c9a86c' fill-opacity='0.3' d='M100,200 Q130,160 170,180 T250,170 T320,190 T400,160 T480,180 T560,150 T640,170 T720,140'/%3E%3C/svg%3E") repeat-x; background-size: 800px 400px; animation: cloudMove 60s linear infinite; }
+    @keyframes cloudMove { from { background-position: 0 0; } to { background-position: -800px 0; } }
+    .app { position: relative; z-index: 10; }
+
+    /* 导航 */
+    .navbar { display: flex; align-items: center; justify-content: space-between; padding: 0 40px; height: 76px; background: rgba(250, 245, 238, 0.82); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(166, 44, 44, 0.08); position: sticky; top: 0; z-index: 100; }
+    .logo { display: flex; align-items: center; gap: 14px; cursor: pointer; text-decoration: none; }
+    .logo-icon { width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, #8b2c2c 0%, #a62c2c 100%); display: flex; align-items: center; justify-content: center; font-family: 'Ma Shan Zheng', cursive; font-size: 24px; color: #fff; border: 2px solid rgba(201, 168, 108, 0.5); box-shadow: 0 0 20px rgba(166, 44, 44, 0.2); }
+    .logo-title { font-family: 'Ma Shan Zheng', cursive; font-size: 28px; color: var(--accent-red); letter-spacing: 2px; }
+    .logo-subtitle { font-size: 12px; color: var(--text-muted); letter-spacing: 3px; margin-top: 4px; }
+    .nav-menu { display: flex; gap: 8px; list-style: none; }
+    .nav-item { padding: 10px 22px; font-size: 15px; color: var(--text-secondary); cursor: pointer; position: relative; transition: all .3s ease; border-radius: 20px; text-decoration: none; }
+    .nav-item:hover, .nav-item.active { color: var(--accent-red); background: rgba(166, 44, 44, 0.08); }
+    .nav-item.active::after { content: ''; position: absolute; bottom: -4px; left: 50%; transform: translateX(-50%); width: 24px; height: 2px; background: linear-gradient(90deg, transparent, var(--accent-red), transparent); border-radius: 2px; }
+    .nav-right { display: flex; align-items: center; gap: 20px; }
+    .nav-icon { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all .3s ease; color: var(--text-secondary); }
+    .nav-icon:hover { background: rgba(166, 44, 44, 0.08); color: var(--accent-red); }
+    .user-info { display: flex; align-items: center; gap: 8px; color: var(--text-secondary); font-size: 13px; cursor: pointer; }
+    .user-info span { color: var(--accent-red); }
+
+    .main-container { padding: 20px 40px 40px; }
+
+    /* 主体三栏 */
+    .resource-layout { display: grid; grid-template-columns: 220px 1fr 280px; gap: 20px; }
+
+    /* 左侧边栏 */
+    .sidebar-left { background: var(--glass); border: 1px solid var(--glass-border); border-radius: 16px; padding: 18px; box-shadow: 0 8px 24px var(--card-shadow); backdrop-filter: blur(10px); align-self: flex-start; position: sticky; top: 92px; }
+    .sidebar-title { display: flex; align-items: center; gap: 6px; font-size: 15px; font-weight: 600; color: var(--accent-red); margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid rgba(166, 44, 44, 0.08); }
+    .sidebar-title svg { width: 16px; height: 16px; }
+    .sidebar-section { margin-bottom: 18px; }
+    .sidebar-section:last-child { margin-bottom: 0; }
+    .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; cursor: pointer; }
+    .section-name { font-size: 13px; font-weight: 600; color: var(--text-primary); display: flex; align-items: center; gap: 6px; }
+    .section-name svg { width: 14px; height: 14px; color: var(--accent-red); }
+    .section-arrow { color: var(--text-muted); font-size: 12px; transition: transform .3s; }
+    .menu-item { display: flex; justify-content: space-between; align-items: center; padding: 9px 10px; border-radius: 8px; cursor: pointer; transition: all .3s ease; font-size: 13px; color: var(--text-secondary); }
+    .menu-item:hover { background: rgba(166, 44, 44, 0.04); color: var(--accent-red); }
+    .menu-item.active { background: rgba(166, 44, 44, 0.08); color: var(--accent-red); font-weight: 500; }
+    .menu-count { font-size: 12px; color: var(--text-muted); }
+    .menu-item.active .menu-count { color: var(--accent-red); }
+    .manage-link { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--text-muted); cursor: pointer; margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(166, 44, 44, 0.06); }
+    .manage-link:hover { color: var(--accent-red); }
+    .manage-link svg { width: 14px; height: 14px; }
+
+    /* 中间区域 */
+    .center-area { display: flex; flex-direction: column; gap: 20px; }
+
+    /* 顶部横幅 */
+    .hero-banner {
+      background: var(--glass); border: 1px solid var(--glass-border); border-radius: 16px; padding: 24px 30px;
+      box-shadow: 0 8px 24px var(--card-shadow); backdrop-filter: blur(10px); position: relative; overflow: hidden;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .hero-banner::before {
+      content: ''; position: absolute; right: 0; top: 0; width: 45%; height: 100%;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 200'%3E%3Cpath fill='%23a62c2c' fill-opacity='0.06' d='M50,180 C80,120 120,80 180,60 C240,40 320,50 380,20 L400,200 Z'/%3E%3C/svg%3E") no-repeat right bottom;
+      background-size: cover; opacity: .6;
+    }
+    .hero-content { position: relative; z-index: 1; }
+    .hero-title { font-family: 'ZCOOL XiaoWei', serif; font-size: 26px; color: var(--text-primary); margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
+    .hero-title svg { width: 24px; height: 24px; color: var(--accent-gold); }
+    .hero-slogan { font-size: 14px; color: var(--accent-red); font-weight: 500; margin-bottom: 6px; }
+    .hero-sub { font-size: 13px; color: var(--text-muted); }
+    .hero-building { position: relative; z-index: 1; font-size: 80px; opacity: .85; filter: drop-shadow(0 0 10px rgba(166, 44, 44, 0.15)); }
+
+    /* 统计卡片 */
+    .stats-row { display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; }
+    .stat-card {
+      background: var(--glass); border: 1px solid var(--glass-border); border-radius: 14px; padding: 16px;
+      box-shadow: 0 8px 24px var(--card-shadow); backdrop-filter: blur(10px); transition: all .3s ease;
+    }
+    .stat-card:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(92, 61, 46, 0.12); }
+    .stat-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+    .stat-icon { width: 34px; height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+    .stat-icon.doc { background: rgba(212, 163, 115, 0.15); color: var(--doc-color); }
+    .stat-icon.img { background: rgba(107, 144, 128, 0.15); color: var(--img-color); }
+    .stat-icon.video { background: rgba(139, 94, 131, 0.15); color: var(--video-color); }
+    .stat-icon.audio { background: rgba(95, 125, 139, 0.15); color: var(--audio-color); }
+    .stat-icon.kb { background: rgba(201, 168, 108, 0.15); color: var(--accent-gold); }
+    .stat-icon.total { background: rgba(166, 44, 44, 0.1); color: var(--accent-red); }
+    .stat-name { font-size: 12px; color: var(--text-muted); }
+    .stat-value { font-size: 22px; font-weight: 700; color: var(--text-primary); margin-bottom: 2px; }
+    .stat-unit { font-size: 12px; color: var(--text-muted); font-weight: 400; }
+    .stat-trend { font-size: 11px; color: var(--accent-red-light); display: flex; align-items: center; gap: 2px; }
+    .stat-trend svg { width: 10px; height: 10px; }
+
+    /* 搜索与筛选 */
+    .search-filter-box { background: var(--glass); border: 1px solid var(--glass-border); border-radius: 16px; padding: 18px 20px; box-shadow: 0 8px 24px var(--card-shadow); backdrop-filter: blur(10px); }
+    .search-row { display: flex; gap: 12px; margin-bottom: 14px; }
+    .search-dropdown {
+      display: flex; align-items: center; gap: 6px; padding: 0 16px; height: 44px; border-radius: 22px;
+      border: 1px solid rgba(166, 44, 44, 0.15); background: rgba(255,255,255,0.7); color: var(--text-primary); font-size: 14px; cursor: pointer; transition: all .3s ease; flex-shrink: 0;
+    }
+    .search-dropdown svg { width: 12px; height: 12px; color: var(--text-muted); }
+    .search-input { flex: 1; position: relative; }
+    .search-input input { width: 100%; height: 44px; padding: 0 120px 0 18px; border-radius: 22px; border: 1px solid rgba(166, 44, 44, 0.15); background: rgba(255,255,255,0.7); color: var(--text-primary); font-size: 14px; outline: none; transition: all .3s ease; }
+    .search-input input::placeholder { color: rgba(61, 43, 31, 0.35); }
+    .search-btn {
+      position: absolute; right: 4px; top: 4px; bottom: 4px; padding: 0 22px; border-radius: 18px; border: none;
+      background: linear-gradient(135deg, var(--accent-red) 0%, var(--accent-red-light) 100%); color: #fff; font-size: 14px;
+      cursor: pointer; transition: all .3s ease; box-shadow: 0 4px 12px rgba(166, 44, 44, 0.25); display: flex; align-items: center; gap: 4px;
+    }
+    .search-btn:hover { transform: scale(1.02); box-shadow: 0 6px 16px rgba(166, 44, 44, 0.35); }
+    .search-btn svg { width: 14px; height: 14px; }
+
+    .filter-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding-top: 12px; border-top: 1px solid rgba(166, 44, 44, 0.06); }
+    .filter-label { font-size: 13px; color: var(--text-muted); margin-right: 4px; }
+    .filter-item { display: flex; align-items: center; gap: 4px; padding: 7px 12px; border-radius: 16px; border: 1px solid rgba(166, 44, 44, 0.1); background: rgba(255,255,255,0.5); color: var(--text-secondary); font-size: 13px; cursor: pointer; transition: all .3s; }
+    .filter-item:hover { border-color: rgba(166, 44, 44, 0.25); color: var(--accent-red); }
+    .filter-item svg { width: 12px; height: 12px; color: var(--text-muted); }
+    .filter-result { margin-left: auto; font-size: 13px; color: var(--text-muted); }
+    .filter-result strong { color: var(--accent-red); font-weight: 600; }
+    .filter-actions { display: flex; gap: 8px; margin-left: 12px; }
+    .upload-btn { padding: 7px 16px; border-radius: 16px; border: none; background: var(--accent-red); color: #fff; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 4px; transition: all .3s; }
+    .upload-btn:hover { background: var(--accent-red-light); box-shadow: 0 4px 12px rgba(166, 44, 44, 0.25); }
+    .upload-btn svg { width: 14px; height: 14px; }
+    .batch-btn { padding: 7px 16px; border-radius: 16px; border: 1px solid rgba(166, 44, 44, 0.15); background: rgba(255,255,255,0.5); color: var(--text-secondary); font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 4px; transition: all .3s; }
+    .batch-btn:hover { background: rgba(166, 44, 44, 0.08); color: var(--accent-red); }
+
+    /* 资源卡片网格 */
+    .resource-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .resource-card { background: var(--glass); border: 1px solid var(--glass-border); border-radius: 14px; overflow: hidden; box-shadow: 0 8px 24px var(--card-shadow); transition: all .35s ease; cursor: pointer; backdrop-filter: blur(10px); }
+    .resource-card:hover { transform: translateY(-5px); box-shadow: 0 16px 40px rgba(92, 61, 46, 0.12), 0 0 30px rgba(166, 44, 44, 0.05); }
+    .card-media { height: 130px; position: relative; overflow: hidden; background: #eee; }
+    .card-media img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease; }
+    .resource-card:hover .card-media img { transform: scale(1.05); }
+    .type-badge { position: absolute; top: 10px; left: 10px; padding: 4px 10px; border-radius: 10px; font-size: 11px; font-weight: 500; color: #fff; }
+    .type-badge.doc { background: var(--doc-color); }
+    .type-badge.img { background: var(--img-color); }
+    .type-badge.video { background: var(--video-color); }
+    .type-badge.audio { background: var(--audio-color); }
+    .type-badge.obj { background: var(--obj-color); }
+    .card-action { position: absolute; top: 10px; right: 10px; width: 28px; height: 28px; border-radius: 50%; background: rgba(255,255,255,0.9); display: flex; align-items: center; justify-content: center; color: var(--accent-red); cursor: pointer; transition: all .3s; }
+    .card-action:hover { background: #fff; transform: scale(1.1); }
+    .card-action svg { width: 14px; height: 14px; }
+    .audio-wave { position: absolute; bottom: 0; left: 0; right: 0; height: 40px; display: flex; align-items: flex-end; justify-content: center; gap: 3px; padding-bottom: 8px; background: linear-gradient(transparent, rgba(0,0,0,0.3)); }
+    .wave-bar { width: 3px; background: rgba(255,255,255,0.8); border-radius: 2px; animation: wave 1.2s ease-in-out infinite; }
+    @keyframes wave { 0%, 100% { height: 6px; } 50% { height: 22px; } }
+    .play-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.25); }
+    .play-overlay svg { width: 40px; height: 40px; color: #fff; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); }
+    .card-body { padding: 14px; }
+    .card-title { font-size: 15px; font-weight: 600; color: var(--text-primary); margin-bottom: 10px; line-height: 1.4; }
+    .card-meta { display: flex; gap: 10px; font-size: 12px; color: var(--text-muted); margin-bottom: 10px; }
+    .card-meta svg { width: 12px; height: 12px; color: var(--text-muted); }
+    .card-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+    .card-tag { padding: 3px 8px; border-radius: 8px; font-size: 11px; background: rgba(166, 44, 44, 0.06); color: var(--text-secondary); border: 1px solid rgba(166, 44, 44, 0.06); }
+    .card-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 10px; border-top: 1px solid rgba(166, 44, 44, 0.06); font-size: 12px; color: var(--text-muted); }
+    .card-source { display: flex; align-items: center; gap: 4px; }
+
+    /* 分页 */
+    .pagination-area { display: flex; justify-content: space-between; align-items: center; margin-top: 24px; }
+    .pagination { display: flex; gap: 8px; }
+    .page-btn { min-width: 34px; height: 34px; border-radius: 10px; border: 1px solid rgba(166, 44, 44, 0.12); background: rgba(255,255,255,0.5); color: var(--text-secondary); font-size: 13px; cursor: pointer; transition: all .3s; display: flex; align-items: center; justify-content: center; }
+    .page-btn:hover { background: rgba(166, 44, 44, 0.08); color: var(--accent-red); }
+    .page-btn.active { background: var(--accent-red); color: #fff; border-color: var(--accent-red); }
+    .page-size { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--text-muted); }
+    .page-size select { padding: 5px 10px; border-radius: 8px; border: 1px solid rgba(166, 44, 44, 0.15); background: rgba(255,255,255,0.7); color: var(--text-primary); font-size: 13px; outline: none; }
+
+    /* 右侧边栏 */
+    .sidebar-right { display: flex; flex-direction: column; gap: 20px; }
+    .side-card { background: var(--glass); border: 1px solid var(--glass-border); border-radius: 16px; padding: 18px; box-shadow: 0 8px 24px var(--card-shadow); backdrop-filter: blur(10px); }
+    .side-title { font-size: 15px; font-weight: 600; color: var(--text-primary); margin-bottom: 14px; display: flex; align-items: center; gap: 6px; }
+    .side-title::before { content: ''; width: 4px; height: 14px; background: linear-gradient(180deg, var(--accent-red-light), var(--accent-gold)); border-radius: 2px; }
+    .tool-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .tool-item { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 12px 8px; border-radius: 10px; cursor: pointer; transition: all .3s; background: rgba(255,255,255,0.5); border: 1px solid rgba(166, 44, 44, 0.06); }
+    .tool-item:hover { background: rgba(166, 44, 44, 0.06); border-color: rgba(166, 44, 44, 0.15); }
+    .tool-icon { width: 32px; height: 32px; border-radius: 8px; background: rgba(166, 44, 44, 0.08); display: flex; align-items: center; justify-content: center; color: var(--accent-red); font-size: 16px; }
+    .tool-name { font-size: 11px; color: var(--text-secondary); text-align: center; }
+
+    .chart-container { display: flex; align-items: center; gap: 16px; }
+    .ring-chart { width: 100px; height: 100px; position: relative; flex-shrink: 0; }
+    .ring-chart svg { transform: rotate(-90deg); }
+    .chart-center { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+    .chart-center svg { width: 24px; height: 24px; color: var(--accent-red); transform: none; }
+    .chart-legend { flex: 1; display: flex; flex-direction: column; gap: 8px; }
+    .legend-item { display: flex; align-items: center; justify-content: space-between; font-size: 12px; }
+    .legend-left { display: flex; align-items: center; gap: 6px; }
+    .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+    .legend-name { color: var(--text-secondary); }
+    .legend-value { color: var(--text-primary); font-weight: 600; }
+
+    .upload-list { display: flex; flex-direction: column; gap: 10px; }
+    .upload-item { display: flex; gap: 10px; padding: 10px; border-radius: 10px; background: rgba(255,255,255,0.5); border: 1px solid rgba(166, 44, 44, 0.05); cursor: pointer; transition: all .3s; }
+    .upload-item:hover { background: rgba(166, 44, 44, 0.04); }
+    .upload-thumb { width: 40px; height: 40px; border-radius: 8px; background: rgba(166, 44, 44, 0.08); display: flex; align-items: center; justify-content: center; font-size: 18px; color: var(--accent-red); flex-shrink: 0; }
+    .upload-info { flex: 1; min-width: 0; }
+    .upload-title { font-size: 12px; color: var(--text-primary); margin-bottom: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .upload-meta { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted); }
+
+    .red-zone { background: linear-gradient(135deg, #a62c2c 0%, #c94d4d 100%); border-radius: 14px; padding: 18px; color: #fff; cursor: pointer; transition: all .3s; position: relative; overflow: hidden; }
+    .red-zone:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(166, 44, 44, 0.3); }
+    .red-zone::before { content: ''; position: absolute; right: -20px; top: -20px; width: 100px; height: 100px; background: rgba(255,255,255,0.1); border-radius: 50%; }
+    .red-zone-title { font-size: 16px; font-weight: 600; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+    .red-zone-desc { font-size: 12px; opacity: 0.9; line-height: 1.5; }
+    .red-zone-icon { font-size: 40px; position: absolute; right: 10px; bottom: 5px; opacity: 0.25; }
+
+    /* 悬浮按钮 */
+    .floating-actions { position: fixed; right: 20px; bottom: 120px; display: flex; flex-direction: column; gap: 14px; z-index: 100; }
+    .float-btn { width: 52px; height: 52px; border-radius: 50%; background: rgba(255, 250, 245, 0.9); border: 1px solid rgba(166, 44, 44, 0.15); display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; transition: all .3s ease; backdrop-filter: blur(10px); box-shadow: 0 4px 16px rgba(92, 61, 46, 0.1); }
+    .float-btn:hover { background: rgba(166, 44, 44, 0.08); border-color: rgba(166, 44, 44, 0.3); transform: translateY(-3px); box-shadow: 0 8px 24px rgba(166, 44, 44, 0.12); }
+    .float-btn svg { width: 20px; height: 20px; color: var(--accent-red); margin-bottom: 2px; }
+    .float-btn span { font-size: 10px; color: var(--text-secondary); }
+
+    @media (max-width: 1400px) {
+      .resource-layout { grid-template-columns: 200px 1fr 240px; }
+      .stats-row { grid-template-columns: repeat(3, 1fr); }
+      .resource-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 1024px) {
+      .resource-layout { grid-template-columns: 1fr; }
+      .sidebar-left, .sidebar-right { position: static; }
+      .stats-row { grid-template-columns: repeat(2, 1fr); }
+      .nav-menu { display: none; }
+    }
+    @media (max-width: 768px) {
+      .navbar { padding: 0 20px; }
+      .main-container { padding: 20px; }
+      .resource-grid { grid-template-columns: 1fr; }
+      .stats-row { grid-template-columns: 1fr; }
+    }
+    /* 知识库详情头部 */
+    .kb-hero { align-items: flex-start; }
+    .kb-breadcrumb { font-size: 12px; color: var(--text-muted); margin-bottom: 12px; letter-spacing: .5px; }
+    .kb-breadcrumb span { color: var(--accent-red); font-weight: 500; }
+    .kb-hero-row { display: flex; align-items: center; gap: 18px; }
+    .kb-hero-icon { width: 66px; height: 66px; border-radius: 18px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 36px; background: linear-gradient(135deg, rgba(166,44,44,.12), rgba(201,168,108,.16)); border: 1px solid rgba(166,44,44,.16); box-shadow: inset 0 0 0 4px rgba(255,255,255,.4); }
+    .kb-back { position: relative; z-index: 1; flex-shrink: 0; padding: 8px 16px; border-radius: 10px; border: 1px solid rgba(166,44,44,.22); background: rgba(255,255,255,.5); color: var(--accent-red); font-size: 13px; cursor: pointer; transition: all .25s ease; font-family: inherit; }
+    .kb-back:hover { background: var(--accent-red); color: #fff; transform: translateY(-1px); box-shadow: 0 6px 14px rgba(166,44,44,.25); }
+    @media (max-width: 768px) { .kb-hero { flex-direction: column; } .kb-back { align-self: flex-start; } }
+  </style>
+</head>
+<body>
+  <div class="page-bg"></div>
+  <div class="clouds"></div>
+
+  <div class="app">
+    <!-- 导航栏 -->
+    <nav class="navbar">
+      <a href="wanxiang-future.html" class="logo">
+        <div class="logo-icon">万</div>
+        <div class="logo-text"><div class="logo-title">万象未来</div><div class="logo-subtitle">AI 档案知识空间</div></div>
+      </a>
+      <ul class="nav-menu">
+        <li><a href="wanxiang-future.html" class="nav-item">首页</a></li>
+        <li><a href="archives.html" class="nav-item active">档案资源</a></li>
+        <li><a href="knowledge-graph.html" class="nav-item">知识图谱</a></li>
+        <li><a href="sizheng-courses.html" class="nav-item">数字思政</a></li>
+        <li><a href="yanxue.html" class="nav-item">研学探索</a></li>
+        <li><a href="ai-chat.html" class="nav-item">智能问答</a></li>
+        <li><a href="admin.html" class="nav-item">后台管理</a></li>
+      </ul>
+      <div class="nav-right">
+        <div class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path></svg>
+        </div>
+        <div class="user-info">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+          <span>欢迎您：管理员</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="m6 9 6 6 6-6"></path></svg>
+        </div>
+      </div>
+    </nav>
+
+    <div class="main-container">
+      <div class="resource-layout">
+        <!-- 左侧边栏 -->
+        <aside class="sidebar-left">
+          <div class="sidebar-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a2.5 2.5 0 0 1 0-5H20"></path></svg>
+            资源概览
+          </div>
+
+          <div class="sidebar-section">
+            <div class="section-name"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"></path><path d="M14 2v6h6"></path><path d="M16 13H8"></path><path d="M16 17H8"></path><path d="M10 9H8"></path></svg>资源类型</div>
+            <div class="menu-item active">📄 文档档案</div>
+            <div class="menu-item">🖼️ 图片档案</div>
+            <div class="menu-item">🎬 视频档案</div>
+            <div class="menu-item">🎙️ 音频档案</div>
+          </div>
+
+          <div class="sidebar-section">
+            <div class="section-name"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>收藏知识库</div>
+            <div class="menu-item" data-kb="红色记忆">🚩 红色记忆</div>
+            <div class="menu-item" data-kb="人物传记">⭐ 人物传记</div>
+            <div class="menu-item" data-kb="历史事件">📜 历史事件</div>
+            <div class="menu-item" data-kb="地方建设">🏗️ 地方建设</div>
+            <div class="menu-item" data-kb="组织机构">🏛️ 组织机构</div>
+            <div class="menu-item" data-kb="文化民俗">🎭 文化民俗</div>
+            <div class="menu-item" data-kb="专题库">📚 专题库</div>
+          </div>
+        </aside>
+
+        <!-- 中间区域 -->
+        <div class="center-area">
+          <!-- 知识库头部 -->
+          <div class="hero-banner kb-hero">
+            <div class="hero-content">
+              <div class="kb-breadcrumb">档案资源中心 / <span id="kbCrumb">红色记忆</span></div>
+              <div class="kb-hero-row">
+                <div class="kb-hero-icon" id="kbIcon">🚩</div>
+                <div>
+                  <div class="hero-title" id="kbTitle">红色记忆</div>
+                  <div class="hero-slogan" id="kbDesc">革命历史档案专题知识库</div>
+                  <div class="hero-sub" id="kbUpdate">最近更新：2026-05-17</div>
+                </div>
+              </div>
+            </div>
+            <button class="kb-back" onclick="window.location.href='archives.html'">← 返回知识库列表</button>
+          </div>
+
+          <!-- 资源筛选 -->
+          <div class="search-filter-box">
+            <div class="filter-row">
+              <span class="filter-label">资源筛选：</span>
+              <div class="filter-item">时间范围 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></div>
+              <div class="filter-item">档案类型 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></div>
+              <div class="filter-item">知识库 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></div>
+              <div class="filter-actions">
+                <button class="batch-btn">批量操作</button>
+                <button class="upload-btn">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                  上传资源
+                </button>
+              </div>
+              <div class="filter-result">共 <strong>186,732</strong> 条</div>
+            </div>
+          </div>
+
+          <!-- 资源卡片 -->
+          <div class="resource-grid" id="resourceGrid"></div>
+
+          <!-- 分页信息 -->
+          <div class="pagination-area">
+            <div class="page-size" style="margin:0 auto;color:var(--text-muted);font-size:13px">
+              共 <strong id="pageInfo" style="color:var(--accent-red)">6</strong> 条档案 · 单页完整展示
+            </div>
+          </div>
+        </div>
+
+        <!-- 右侧边栏 -->
+        <aside class="sidebar-right">
+          <div class="side-card">
+            <div class="side-title">资源统计</div>
+            <div class="chart-container">
+              <div class="ring-chart">
+                <svg viewBox="0 0 100 100" width="100" height="100">
+                  <circle cx="50" cy="50" r="40" fill="none" stroke="#e8d4c0" stroke-width="10"></circle>
+                  <circle cx="50" cy="50" r="40" fill="none" stroke="#d4a373" stroke-width="10" stroke-dasharray="207.3 44.9" stroke-linecap="round"></circle>
+                  <circle cx="50" cy="50" r="40" fill="none" stroke="#6b9080" stroke-width="10" stroke-dasharray="25.1 227.1" stroke-dashoffset="-207.3" stroke-linecap="round"></circle>
+                  <circle cx="50" cy="50" r="40" fill="none" stroke="#8b5e83" stroke-width="10" stroke-dasharray="12.6 239.6" stroke-dashoffset="-232.4" stroke-linecap="round"></circle>
+                  <circle cx="50" cy="50" r="40" fill="none" stroke="#5f7d8b" stroke-width="10" stroke-dasharray="5.6 246.6" stroke-dashoffset="-245.0" stroke-linecap="round"></circle>
+                  <circle cx="50" cy="50" r="40" fill="none" stroke="#a45c5c" stroke-width="10" stroke-dasharray="2.8 249.4" stroke-dashoffset="-250.6" stroke-linecap="round"></circle>
+                  <circle cx="50" cy="50" r="40" fill="none" stroke="#8a8a8a" stroke-width="10" stroke-dasharray="2.5 249.7" stroke-dashoffset="-253.4" stroke-linecap="round"></circle>
+                </svg>
+                <div class="chart-center"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></div>
+              </div>
+              <div class="chart-legend">
+                <div class="legend-item"><div class="legend-left"><span class="legend-dot" style="background:#d4a373"></span><span class="legend-name">📄 文档档案</span></div><span class="legend-value">82.2%</span></div>
+                <div class="legend-item"><div class="legend-left"><span class="legend-dot" style="background:#6b9080"></span><span class="legend-name">🖼️ 图片档案</span></div><span class="legend-value">9.9%</span></div>
+                <div class="legend-item"><div class="legend-left"><span class="legend-dot" style="background:#8b5e83"></span><span class="legend-name">🎬 视频档案</span></div><span class="legend-value">4.6%</span></div>
+                <div class="legend-item"><div class="legend-left"><span class="legend-dot" style="background:#5f7d8b"></span><span class="legend-name">🎙️ 音频档案</span></div><span class="legend-value">2.1%</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="side-card">
+            <div class="side-title">最近上传</div>
+            <div class="upload-list">
+              <div class="upload-item"><div class="upload-thumb">📄</div><div class="upload-info"><div class="upload-title">中共丽水县委扩大会议记录</div><div class="upload-meta"><span>文档档案</span><span>3.2 MB</span></div></div></div>
+              <div class="upload-item"><div class="upload-thumb">🖼️</div><div class="upload-info"><div class="upload-title">1953年丽水城区全景照片</div><div class="upload-meta"><span>图片档案</span><span>2.8 MB</span></div></div></div>
+              <div class="upload-item"><div class="upload-thumb">🎬</div><div class="upload-info"><div class="upload-title">革命老战士访谈录.mp4</div><div class="upload-meta"><span>视频档案</span><span>192.4 MB</span></div></div></div>
+              <div class="upload-item"><div class="upload-thumb">🎙️</div><div class="upload-info"><div class="upload-title">丽水方言民俗录音.mp3</div><div class="upload-meta"><span>音频档案</span><span>18.6 MB</span></div></div></div>
+            </div>
+          </div>
+
+          <div class="red-zone">
+            <div class="red-zone-title">红色档案专区</div>
+            <div class="red-zone-desc">传承红色基因 赓续精神血脉</div>
+            <div class="red-zone-icon">⭐</div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ===== 知识库数据 =====
+    const kbMap = [
+      { name: '红色记忆', icon: '🚩', desc: '收录浙西南革命斗争的重要档案文献，传承红色基因、赓续精神血脉。', update: '2026-05-17' },
+      { name: '人物传记', icon: '⭐', desc: '汇集革命先辈、历史名人与行业翘楚的生平档案与口述资料。', update: '2026-05-19' },
+      { name: '历史事件', icon: '📜', desc: '系统整理重大历史事件的原始记录、报刊报道与亲历者回忆。', update: '2026-05-16' },
+      { name: '地方建设', icon: '🏗️', desc: '记录丽水城乡发展变迁的建设档案、工程图纸与影像资料。', update: '2026-05-14' },
+      { name: '组织机构', icon: '🏛️', desc: '涵盖各级党政机关、社会团体的沿革文件与成立档案。', update: '2026-05-12' },
+      { name: '文化民俗', icon: '🎭', desc: '保存方言、民歌、非遗与民俗活动的珍贵声像与图文资料。', update: '2026-05-18' },
+      { name: '专题库', icon: '📚', desc: '围绕侨乡青田、口述历史、红色根脉等主题打造的专题资源包。', update: '2026-05-20' }
+    ];
+
+    // ===== 档案资源数据（仅文档+图片）=====
+    const resources = [
+      // 红色记忆
+      { kb: '红色记忆', type: 'doc', title: '中共浙西南区委文件', date: '1949-11-23', size: '3.7 MB', tags: ['组织机构', '历史事件'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1532012197267-da84d127e765?w=400&h=300&fit=crop' },
+      { kb: '红色记忆', type: 'doc', title: '红军挺进师浙西南作战命令', date: '1935-05', size: '2.1 MB', tags: ['作战档案', '红军'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=400&h=300&fit=crop' },
+      { kb: '红色记忆', type: 'doc', title: '浙西南革命根据地斗争史稿', date: '1981-07', size: '8.4 MB', tags: ['革命历史', '史稿'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400&h=300&fit=crop' },
+      { kb: '红色记忆', type: 'doc', title: '革命烈士英名录', date: '1953-04', size: '1.8 MB', tags: ['烈士', '名录'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1506784365847-bbad939e8fd5?w=400&h=300&fit=crop' },
+      { kb: '红色记忆', type: 'img', title: '解放丽水战役照片集', date: '1949-05', size: '24 MB', tags: ['解放战争', '照片'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1548013146-72479768b3f5?w=400&h=300&fit=crop' },
+      { kb: '红色记忆', type: 'img', title: '浙西南革命根据地旧址照片', date: '1965-08', size: '18.3 MB', tags: ['革命旧址', '照片'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1590736969955-71cc94901144?w=400&h=300&fit=crop' },
+      // 人物传记
+      { kb: '人物传记', type: 'doc', title: '粟裕将军生平档案', date: '1984-02', size: '5.2 MB', tags: ['人物传记', '将军'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1532012197267-da84d127e765?w=400&h=300&fit=crop' },
+      { kb: '人物传记', type: 'doc', title: '青田华侨领袖陈凤生档案', date: '1978-11', size: '3.9 MB', tags: ['侨界人物', '人物档案'], source: '青田县档案馆', image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400&h=300&fit=crop' },
+      { kb: '人物传记', type: 'doc', title: '丽水名人手稿集', date: '1965-09', size: '7.6 MB', tags: ['手稿', '名人'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=400&h=300&fit=crop' },
+      { kb: '人物传记', type: 'doc', title: '汤显祖在遂昌治理档案', date: '1595-1601', size: '4.1 MB', tags: ['人物传记', '地方治理'], source: '遂昌县档案馆', image: 'https://images.unsplash.com/photo-1512813195386-6cf811ad3542?w=400&h=300&fit=crop' },
+      { kb: '人物传记', type: 'img', title: '粟裕将军历史照片', date: '1950年代', size: '6.8 MB', tags: ['将军', '照片'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1548013146-72479768b3f5?w=400&h=300&fit=crop' },
+      { kb: '人物传记', type: 'img', title: '陈凤生先生工作照', date: '1968年', size: '4.2 MB', tags: ['人物', '照片'], source: '青田县档案馆', image: 'https://images.unsplash.com/photo-1590736969955-71cc94901144?w=400&h=300&fit=crop' },
+      // 历史事件
+      { kb: '历史事件', type: 'doc', title: '丽水日报1951年7月1日', date: '1951-07-01', size: '4.5 MB', tags: ['报纸', '历史事件'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400&h=300&fit=crop' },
+      { kb: '历史事件', type: 'doc', title: '土地改革工作总结报告', date: '1952-12-30', size: '6.3 MB', tags: ['土地改革', '历史事件'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1506784365847-bbad939e8fd5?w=400&h=300&fit=crop' },
+      { kb: '历史事件', type: 'doc', title: '丽水撤地设市批复文件', date: '2003-05', size: '1.2 MB', tags: ['行政区划', '批复文件'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1532012197267-da84d127e765?w=400&h=300&fit=crop' },
+      { kb: '历史事件', type: 'doc', title: '1935年红军过境大事记', date: '1935-06', size: '2.6 MB', tags: ['大事记', '红军过境'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=400&h=300&fit=crop' },
+      { kb: '历史事件', type: 'doc', title: '青田华侨支援抗战记录', date: '1940-09', size: '5.8 MB', tags: ['侨乡', '抗战'], source: '青田县档案馆', image: 'https://images.unsplash.com/photo-1599571234909-29ed5d1321d6?w=400&h=300&fit=crop' },
+      { kb: '历史事件', type: 'img', title: '松阳古村落土地契约档案', date: '民国时期', size: '11.2 MB', tags: ['契约', '古村落'], source: '松阳县档案馆', image: 'https://images.unsplash.com/photo-1590736969955-71cc94901144?w=400&h=300&fit=crop' },
+      // 地方建设
+      { kb: '地方建设', type: 'doc', title: '瓯江大桥建设档案', date: '1992-10', size: '9.3 MB', tags: ['桥梁', '基建档案'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1548013146-72479768b3f5?w=400&h=300&fit=crop' },
+      { kb: '地方建设', type: 'doc', title: '城乡道路建设规划图', date: '1985-03', size: '6.8 MB', tags: ['道路规划', '城乡'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1506784365847-bbad939e8fd5?w=400&h=300&fit=crop' },
+      { kb: '地方建设', type: 'doc', title: '通济堰维修工程报告', date: '1988-06', size: '3.4 MB', tags: ['水利', '维修'], source: '莲都区档案馆', image: 'https://images.unsplash.com/photo-1532012197267-da84d127e765?w=400&h=300&fit=crop' },
+      { kb: '地方建设', type: 'doc', title: '丽水旧城改造规划图', date: '1999-12', size: '7.9 MB', tags: ['城市规划', '改造'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=400&h=300&fit=crop' },
+      { kb: '地方建设', type: 'img', title: '1953年丽水城区全景照片', date: '1953-08-12', size: '2.8 MB', tags: ['城市建设', '地理沿革'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1599571234909-29ed5d1321d6?w=400&h=300&fit=crop' },
+      { kb: '地方建设', type: 'img', title: '丽水城市变迁航拍图集', date: '2008-2020', size: '86 MB', tags: ['航拍', '城市变迁'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1512813195386-6cf811ad3542?w=400&h=300&fit=crop' },
+      // 组织机构
+      { kb: '组织机构', type: 'doc', title: '中共丽水县委扩大会议记录', date: '1950-06-15', size: '3.2 MB', tags: ['会议', '组织机构'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=400&h=300&fit=crop' },
+      { kb: '组织机构', type: 'doc', title: '丽水县档案馆沿革资料', date: '1983-05', size: '2.9 MB', tags: ['档案馆', '沿革'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1532012197267-da84d127e765?w=400&h=300&fit=crop' },
+      { kb: '组织机构', type: 'doc', title: '浙西南特委组织系统表', date: '1942-08', size: '1.5 MB', tags: ['党组织', '系统表'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400&h=300&fit=crop' },
+      { kb: '组织机构', type: 'doc', title: '丽水师专建校批复文件', date: '1978-12', size: '1.1 MB', tags: ['教育', '建校'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1506784365847-bbad939e8fd5?w=400&h=300&fit=crop' },
+      { kb: '组织机构', type: 'img', title: '1950年农民协会成立大会', date: '1950-03-18', size: '19 MB', tags: ['组织机构', '社会生活'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1548013146-72479768b3f5?w=400&h=300&fit=crop' },
+      { kb: '组织机构', type: 'img', title: '青田县侨联成立大会合影', date: '1986-11', size: '8.7 MB', tags: ['侨联', '合影'], source: '青田县档案馆', image: 'https://images.unsplash.com/photo-1599571234909-29ed5d1321d6?w=400&h=300&fit=crop' },
+      // 文化民俗
+      { kb: '文化民俗', type: 'img', title: '古堰画乡景区图片', date: '2015-06-21', size: '3.6 MB', tags: ['文化旅游', '景点'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1512813195386-6cf811ad3542?w=400&h=300&fit=crop' },
+      { kb: '文化民俗', type: 'img', title: '青田石雕艺术图册', date: '2012-04-18', size: '42.3 MB', tags: ['石雕', '非遗'], source: '青田县档案馆', image: 'https://images.unsplash.com/photo-1590736969955-71cc94901144?w=400&h=300&fit=crop' },
+      { kb: '文化民俗', type: 'img', title: '畲族传统服饰图录', date: '2009-03-15', size: '28.7 MB', tags: ['畲族', '服饰'], source: '景宁县档案馆', image: 'https://images.unsplash.com/photo-1548013146-72479768b3f5?w=400&h=300&fit=crop' },
+      { kb: '文化民俗', type: 'img', title: '处州乱弹戏服照片', date: '1986-09', size: '16.5 MB', tags: ['戏曲', '非遗'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1599571234909-29ed5d1321d6?w=400&h=300&fit=crop' },
+      { kb: '文化民俗', type: 'img', title: '丽水老街巷照片集', date: '1998-07-22', size: '9.4 MB', tags: ['老街', '民俗'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1512813195386-6cf811ad3542?w=400&h=300&fit=crop' },
+      { kb: '文化民俗', type: 'img', title: '丽水传统节庆照片', date: '2005-02-12', size: '11.8 MB', tags: ['节庆', '民俗'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400&h=300&fit=crop' },
+      // 专题库
+      { kb: '专题库', type: 'doc', title: '侨乡青田家书合集', date: '1930-1990', size: '22.7 MB', tags: ['侨乡', '家书'], source: '青田县档案馆', image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400&h=300&fit=crop' },
+      { kb: '专题库', type: 'doc', title: '海外侨胞数字档案采集稿', date: '2015-08-30', size: '15.2 MB', tags: ['侨胞', '数字档案'], source: '青田县档案馆', image: 'https://images.unsplash.com/photo-1532012197267-da84d127e765?w=400&h=300&fit=crop' },
+      { kb: '专题库', type: 'doc', title: '红色根脉·思政教学资源包', date: '2026-03-15', size: '48.9 MB', tags: ['思政', '教学资源'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=400&h=300&fit=crop' },
+      { kb: '专题库', type: 'doc', title: '非遗名录专题资料', date: '2020-06-30', size: '9.8 MB', tags: ['非遗', '名录'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1512813195386-6cf811ad3542?w=400&h=300&fit=crop' },
+      { kb: '专题库', type: 'img', title: '丽水老照片专题展', date: '2019-10-01', size: '132 MB', tags: ['老照片', '专题展'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1599571234909-29ed5d1321d6?w=400&h=300&fit=crop' },
+      { kb: '专题库', type: 'img', title: '侨乡青田影像档案', date: '2008-2020', size: '86.3 MB', tags: ['侨乡', '影像'], source: '青田县档案馆', image: 'https://images.unsplash.com/photo-1548013146-72479768b3f5?w=400&h=300&fit=crop' }
+    ];
+
+    const typeMap = {
+      doc: { label: '文档', color: 'doc', icon: '📄' },
+      img: { label: '图片', color: 'img', icon: '🖼️' }
+    };
+
+    // ===== 读取 URL 参数，确定当前知识库 =====
+    const params = new URLSearchParams(window.location.search);
+    const kbName = params.get('kb') || '红色记忆';
+    const kb = kbMap.find(k => k.name === kbName) || kbMap[0];
+
+    // ===== 渲染知识库头部 =====
+    document.getElementById('kbCrumb').textContent = kb.name;
+    document.getElementById('kbIcon').textContent = kb.icon;
+    document.getElementById('kbTitle').textContent = kb.name;
+    document.getElementById('kbDesc').textContent = kb.desc;
+    document.getElementById('kbUpdate').textContent = '最近更新：' + kb.update;
+
+    // ===== 渲染档案卡片（仅文档+图片）=====
+    const list = resources.filter(r => r.kb === kb.name);
+    const grid = document.getElementById('resourceGrid');
+    list.forEach(res => {
+      const type = typeMap[res.type];
+      const card = document.createElement('div');
+      card.className = 'resource-card';
+      card.innerHTML = `
+        <div class="card-media">
+          <img src="${res.image}" alt="${res.title}" onerror="this.style.display='none';this.parentElement.style.background='linear-gradient(135deg,#e8d4c0,#d4bfa6)'">
+          <div class="type-badge ${type.color}">${type.label}</div>
+          <div class="card-action"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></div>
+        </div>
+        <div class="card-body">
+          <div class="card-title">${res.title}</div>
+          <div class="card-meta">
+            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>${res.date}</span>
+            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>${res.size}</span>
+          </div>
+          <div class="card-tags">${res.tags.map(t => `<span class="card-tag">${t}</span>`).join('')}</div>
+          <div class="card-footer">
+            <div class="card-source">来源：${res.source}</div>
+            <span>...</span>
+          </div>
+        </div>
+      `;
+      card.addEventListener('click', () => {
+        const p = new URLSearchParams({ title: res.title, type: type.label, date: res.date, size: res.size, source: res.source });
+        window.location.href = 'archive-preview.html?' + p.toString();
+      });
+      grid.appendChild(card);
+    });
+
+    // 更新底部条数
+    const pageInfo = document.getElementById('pageInfo');
+    if (pageInfo) pageInfo.textContent = list.length;
+
+    // 菜单交互：资源类型高亮 / 收藏知识库跳转
+    document.querySelectorAll('.menu-item').forEach(item => {
+      item.addEventListener('click', function() {
+        if (this.hasAttribute('data-kb')) {
+          window.location.href = 'kb-detail.html?kb=' + encodeURIComponent(this.getAttribute('data-kb'));
+          return;
+        }
+        this.parentElement.querySelectorAll('.menu-item').forEach(i => i.classList.remove('active'));
+        this.classList.add('active');
+      });
+    });
+
+    // 左侧收藏知识库高亮当前库
+    document.querySelectorAll('.menu-item[data-kb]').forEach(item => {
+      if (item.getAttribute('data-kb') === kb.name) item.classList.add('active');
+    });
+  </script>
+</body>
+</html>
