@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>智能问答 · 万象未来</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=ZCOOL+XiaoWei&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-cream:#faf5ee;--bg-warm:#f3e8db;--bg-pink:#f8ece6;
+    --accent-red:#a62c2c;--accent-red-light:#c94d4d;--accent-gold:#c9a86c;
+    --text-primary:#3d2b1f;--text-secondary:rgba(61,43,31,.72);--text-muted:rgba(61,43,31,.5);
+    --glass:rgba(255,250,245,.9);--glass-border:rgba(166,44,44,.12);
+    --card-shadow:rgba(92,61,46,.08);--bg-blue:#165DFF;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{font-family:'Noto Sans SC','Microsoft YaHei',sans-serif;color:var(--text-primary);background:var(--bg-cream);height:100vh;overflow:hidden}
+
+  /* 背景祥云纹理 */
+  body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 400'%3E%3Cpath fill='%23a62c2c' fill-opacity='0.04' d='M100,200 Q130,160 170,180 T250,170 T320,190 T400,160 T480,180 T560,150 T640,170 T720,140 M50,80 Q90,50 140,70 T220,60 T300,80 T380,50 T460,70 M200,300 Q250,280 310,300 T400,280 T480,300 T560,280'/%3E%3C/svg%3E") repeat;background-size:800px 400px;opacity:.6}
+  body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background:linear-gradient(180deg,rgba(250,245,238,.6) 0%,rgba(248,236,230,.4) 50%,rgba(243,232,219,.6) 100%)}
+
+  /* 顶部导航 */
+  .navbar{display:flex;align-items:center;justify-content:space-between;padding:0 32px;height:64px;background:rgba(255,250,245,.92);backdrop-filter:blur(14px);border-bottom:1px solid rgba(166,44,44,.08);position:relative;z-index:50}
+  .logo{display:flex;align-items:center;gap:12px;cursor:pointer;text-decoration:none}
+  .logo-icon{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#8b2c2c 0%,#a62c2c 100%);display:flex;align-items:center;justify-content:center;font-family:'Ma Shan Zheng',cursive;font-size:20px;color:#fff;border:2px solid rgba(201,168,108,.5)}
+  .logo-text{display:flex;flex-direction:column;line-height:1}
+  .logo-title{font-family:'Ma Shan Zheng',cursive;font-size:22px;color:var(--accent-red);letter-spacing:2px}
+  .logo-subtitle{font-size:10px;color:var(--text-muted);letter-spacing:2px;margin-top:3px}
+  .nav-menu{display:flex;gap:6px;list-style:none}
+  .nav-item{padding:8px 18px;font-size:14px;color:var(--text-secondary);cursor:pointer;position:relative;transition:all .3s;border-radius:18px;text-decoration:none}
+  .nav-item:hover,.nav-item.active{color:var(--accent-red);background:rgba(166,44,44,.08)}
+  .nav-item.active::after{content:'';position:absolute;bottom:-2px;left:50%;transform:translateX(-50%);width:22px;height:2px;background:linear-gradient(90deg,transparent,var(--accent-red),transparent);border-radius:2px}
+  .nav-right{display:flex;align-items:center;gap:14px}
+  .user-info{display:flex;align-items:center;gap:6px;color:var(--text-secondary);font-size:12px}
+  .user-info span{color:var(--accent-red)}
+
+  /* 主布局 */
+  .main{display:flex;height:calc(100vh - 64px);position:relative;z-index:10}
+
+  /* 左侧栏 */
+  .sidebar-left{width:260px;background:rgba(255,250,245,.85);backdrop-filter:blur(14px);border-right:1px solid rgba(166,44,44,.08);display:flex;flex-direction:column;flex-shrink:0;transition:width .3s}
+  .sidebar-left.collapsed{width:0;border-right:none;overflow:hidden}
+  .sidebar-header{padding:18px 16px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(166,44,44,.06)}
+  .sidebar-title{font-family:'ZCOOL XiaoWei',serif;font-size:16px;color:var(--text-primary);display:flex;align-items:center;gap:8px}
+  .sidebar-title svg{width:16px;height:16px;color:var(--accent-red)}
+  .collapse-btn{width:26px;height:26px;border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-muted);transition:all .2s}
+  .collapse-btn:hover{background:rgba(166,44,44,.08);color:var(--accent-red)}
+  .new-chat-btn{margin:14px 16px;padding:11px;border-radius:10px;background:rgba(166,44,44,.04);border:1px solid rgba(166,44,44,.12);display:flex;align-items:center;justify-content:center;gap:8px;color:var(--accent-red);font-size:14px;cursor:pointer;transition:all .25s;font-weight:500}
+  .new-chat-btn:hover{background:rgba(166,44,44,.1);border-color:var(--accent-red)}
+  .new-chat-btn svg{width:16px;height:16px}
+  .history-list{flex:1;overflow-y:auto;padding:0 8px 16px}
+  .history-group-label{padding:14px 10px 6px;font-size:11px;color:var(--text-muted);font-weight:500;letter-spacing:1px}
+  .history-item{padding:10px 12px;margin:2px 0;border-radius:8px;font-size:13px;color:var(--text-secondary);cursor:pointer;transition:all .2s;line-height:1.5;display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .history-item:hover{background:rgba(166,44,44,.06);color:var(--text-primary)}
+  .history-item.active{background:rgba(166,44,44,.1);color:var(--accent-red);font-weight:500}
+  .history-text{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .history-delete{opacity:0;width:18px;height:18px;border-radius:4px;display:flex;align-items:center;justify-content:center;color:var(--text-muted)}
+  .history-item:hover .history-delete{opacity:1}
+  .history-delete:hover{background:rgba(166,44,44,.15);color:var(--accent-red)}
+  .history-delete svg{width:14px;height:14px}
+
+  /* 展开按钮 */
+  .expand-btn{position:absolute;left:0;top:18px;z-index:30;width:28px;height:28px;border-radius:0 8px 8px 0;background:#fff;border:1px solid rgba(166,44,44,.15);border-left:none;display:none;align-items:center;justify-content:center;cursor:pointer;color:var(--text-secondary)}
+  .expand-btn.show{display:flex}
+  .expand-btn:hover{color:var(--accent-red)}
+
+  /* 中央对话区 */
+  .chat-area{flex:1;display:flex;flex-direction:column;background:transparent;position:relative;overflow:hidden}
+
+  /* 对话顶部 */
+  .chat-header{padding:14px 28px;border-bottom:1px solid rgba(166,44,44,.06);display:flex;align-items:center;justify-content:space-between;background:rgba(255,250,245,.5);backdrop-filter:blur(8px)}
+  .chat-header-left{display:flex;align-items:center;gap:10px}
+  .chat-header-title{font-size:15px;color:var(--text-primary);font-weight:500}
+  .chat-header-actions{display:flex;gap:8px}
+  .chat-action{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-muted);transition:all .2s}
+  .chat-action:hover{background:rgba(166,44,44,.08);color:var(--accent-red)}
+  .chat-action svg{width:16px;height:16px}
+
+  /* 消息区 */
+  .messages{flex:1;overflow-y:auto;padding:24px 28px 12px;display:flex;flex-direction:column;gap:18px}
+  .welcome-msg{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;padding:60px 20px;text-align:center}
+  .welcome-title{font-family:'ZCOOL XiaoWei',serif;font-size:36px;color:var(--text-primary);margin-bottom:8px;letter-spacing:2px}
+  .welcome-sub{font-size:14px;color:var(--text-secondary);margin-bottom:32px}
+  .welcome-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:780px;width:100%;margin-top:8px}
+  .welcome-card{padding:18px 16px;border-radius:12px;background:rgba(255,250,245,.7);border:1px solid rgba(166,44,44,.1);cursor:pointer;transition:all .25s;text-align:left}
+  .welcome-card:hover{border-color:var(--accent-red);transform:translateY(-2px);box-shadow:0 8px 24px rgba(166,44,44,.1)}
+  .welcome-card-icon{font-size:22px;margin-bottom:8px}
+  .welcome-card-title{font-size:14px;font-weight:500;color:var(--text-primary);margin-bottom:4px}
+  .welcome-card-desc{font-size:12px;color:var(--text-muted);line-height:1.5}
+
+  /* 消息项 */
+  .msg{display:flex;gap:12px;max-width:780px;width:100%;margin:0 auto}
+  .msg.user{flex-direction:row-reverse}
+  .msg-avatar{width:34px;height:34px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:14px}
+  .msg.user .msg-avatar{background:var(--bg-warm);color:var(--text-primary);font-weight:500}
+  .msg.ai .msg-avatar{background:linear-gradient(135deg,var(--accent-red),var(--accent-red-light));color:#fff}
+  .msg-content{max-width:680px;padding:13px 16px;border-radius:14px;font-size:14px;line-height:1.7}
+  .msg.user .msg-content{background:var(--accent-red);color:#fff;border-top-right-radius:4px}
+  .msg.ai .msg-content{background:rgba(255,255,245,.92);color:var(--text-primary);border:1px solid rgba(166,44,44,.1);border-top-left-radius:4px}
+  .msg-content p{margin-bottom:8px}
+  .msg-content p:last-child{margin-bottom:0}
+  .msg-content .source{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:12px;background:rgba(166,44,44,.06);font-size:12px;color:var(--accent-red);margin-top:10px;margin-right:6px}
+
+  /* 输入区 */
+  .input-area{padding:16px 28px 28px;background:rgba(250,245,238,.6);backdrop-filter:blur(8px)}
+  .input-box{max-width:780px;margin:0 auto;background:#fff;border:1px solid rgba(166,44,44,.18);border-radius:16px;display:flex;flex-direction:column;transition:all .25s;box-shadow:0 4px 20px rgba(92,61,46,.06)}
+  .input-box:focus-within{border-color:var(--accent-red);box-shadow:0 4px 20px rgba(166,44,44,.12)}
+  .input-content{padding:14px 16px 6px;display:flex;align-items:flex-start;gap:8px}
+  .input-content textarea{flex:1;border:none;outline:none;background:transparent;font-size:14px;font-family:inherit;color:var(--text-primary);resize:none;min-height:24px;max-height:120px;line-height:1.6}
+  .input-content textarea::placeholder{color:var(--text-muted)}
+  .input-bottom{padding:6px 12px 12px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .input-tools{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+  .kb-selector{position:relative}
+  .kb-btn{display:flex;align-items:center;gap:5px;padding:6px 12px;border-radius:8px;background:rgba(22,93,255,.06);color:var(--bg-blue);font-size:13px;cursor:pointer;transition:all .2s;border:1px solid rgba(22,93,255,.12);font-weight:500}
+  .kb-btn:hover{background:rgba(22,93,255,.12)}
+  .kb-btn svg{width:14px;height:14px}
+  .input-extra-btn{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-muted);transition:all .2s}
+  .input-extra-btn:hover{background:rgba(166,44,44,.06);color:var(--accent-red)}
+  .input-extra-btn svg{width:16px;height:16px}
+  .send-btn{width:36px;height:36px;border-radius:50%;background:var(--bg-blue);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;border:none}
+  .send-btn:hover{opacity:.9;transform:scale(1.05)}
+  .send-btn:disabled{background:#ccc;cursor:not-allowed;transform:none}
+  .send-btn svg{width:18px;height:18px}
+  .input-hint{text-align:center;font-size:11px;color:var(--text-muted);margin-top:8px}
+
+  /* 知识库弹窗 */
+  .kb-popup{position:absolute;bottom:calc(100% + 6px);left:0;width:320px;max-height:420px;background:#fff;border-radius:14px;box-shadow:0 12px 40px rgba(0,0,0,.15);border:1px solid rgba(166,44,44,.1);display:none;flex-direction:column;z-index:200;overflow:hidden}
+  .kb-popup.show{display:flex}
+  .kb-popup-header{padding:14px 16px;border-bottom:1px solid rgba(166,44,44,.08);display:flex;align-items:center;justify-content:space-between}
+  .kb-popup-title{font-size:14px;font-weight:600;color:var(--text-primary)}
+  .kb-popup-close{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-muted)}
+  .kb-popup-close:hover{background:rgba(166,44,44,.08);color:var(--accent-red)}
+  .kb-popup-close svg{width:14px;height:14px}
+  .kb-popup-search{padding:10px 14px;border-bottom:1px solid rgba(166,44,44,.06)}
+  .kb-popup-search input{width:100%;height:30px;padding:0 12px;border-radius:8px;border:1px solid rgba(166,44,44,.12);background:#f8f9fa;font-size:13px;outline:none}
+  .kb-popup-search input:focus{border-color:var(--accent-red)}
+  .kb-popup-list{flex:1;overflow-y:auto;padding:6px}
+  .kb-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;cursor:pointer;transition:all .2s}
+  .kb-item:hover{background:rgba(22,93,255,.06)}
+  .kb-item.selected{background:rgba(22,93,255,.1)}
+  .kb-icon{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#165DFF,#4080FF);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:500;flex-shrink:0}
+  .kb-info{flex:1;min-width:0}
+  .kb-name{font-size:13px;color:var(--text-primary);font-weight:500;margin-bottom:2px}
+  .kb-desc{font-size:11px;color:var(--text-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .kb-checkbox{width:18px;height:18px;border-radius:4px;border:1.5px solid #d4d4d8;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:#fff;transition:all .2s}
+  .kb-item.selected .kb-checkbox{background:var(--bg-blue);border-color:var(--bg-blue)}
+  .kb-item.selected .kb-checkbox::after{content:'✓';color:#fff;font-size:12px;font-weight:700}
+  .kb-item.all .kb-icon{background:linear-gradient(135deg,#a62c2c,#c94d4d)}
+
+  /* 滚动条 */
+  ::-webkit-scrollbar{width:6px;height:6px}
+  ::-webkit-scrollbar-track{background:transparent}
+  ::-webkit-scrollbar-thumb{background:rgba(166,44,44,.2);border-radius:3px}
+  ::-webkit-scrollbar-thumb:hover{background:rgba(166,44,44,.3)}
+</style>
+</head>
+<body>
+
+<!-- 顶部导航 -->
+<nav class="navbar">
+  <a href="wanxiang-future.html" class="logo" style="text-decoration:none">
+    <div class="logo-icon">万</div>
+    <div class="logo-text">
+      <div class="logo-title">万象未来</div>
+      <div class="logo-subtitle">AI 档案知识空间</div>
+    </div>
+  </a>
+  <ul class="nav-menu">
+    <li><a href="wanxiang-future.html" class="nav-item">首页</a></li>
+    <li><a href="archives.html" class="nav-item">档案资源</a></li>
+    <li><a href="knowledge-graph.html" class="nav-item">知识图谱</a></li>
+    <li><a href="sizheng-courses.html" class="nav-item">数字思政</a></li>
+    <li><a href="yanxue.html" class="nav-item">研学探索</a></li>
+    <li><a href="ai-chat.html" class="nav-item active">智能问答</a></li>
+    <li><a href="admin.html" class="nav-item">后台管理</a></li>
+  </ul>
+  <div class="nav-right">
+    <div class="user-info">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span>欢迎您：管理员</span>
+    </div>
+  </div>
+</nav>
+
+<div class="main">
+  <!-- 左侧历史记录 -->
+  <aside class="sidebar-left" id="sidebarLeft">
+    <div class="sidebar-header">
+      <div class="sidebar-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        历史记录
+      </div>
+      <div class="collapse-btn" id="collapseBtn" title="收起">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="m15 18-6-6 6-6"/></svg>
+      </div>
+    </div>
+    <div class="new-chat-btn" id="newChatBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+      新会话
+    </div>
+    <div class="history-list" id="historyList">
+      <div class="history-group-label">近七天</div>
+      <div class="history-item" data-text="我需要设计一座青田革命纪念馆的展陈大纲"><span class="history-text">我需要设计一座青田革命纪念馆的展陈大纲</span><div class="history-delete" title="删除"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></div></div>
+      <div class="history-item" data-text="抽取出来三个最频繁的三元组"><span class="history-text">抽取出来三个最频繁的三元组</span><div class="history-delete"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></div></div>
+      <div class="history-item" data-text="你知道什么"><span class="history-text">你知道什么</span><div class="history-delete"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></div></div>
+      <div class="history-item" data-text="带我了解下青田县革命历史纪念馆"><span class="history-text">带我了解下青田县革命历史纪念馆</span><div class="history-delete"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></div></div>
+      <div class="history-item" data-text="叫我讲青田话"><span class="history-text">叫我讲青田话</span><div class="history-delete"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></div></div>
+      <div class="history-item" data-text="你有哪些文档可以查阅"><span class="history-text">你有哪些文档可以查阅</span><div class="history-delete"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></div></div>
+      <div class="history-item" data-text="带我认识青田"><span class="history-text">带我认识青田</span><div class="history-delete"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></div></div>
+      <div class="history-item" data-text="青田话怎么说"><span class="history-text">青田话怎么说</span><div class="history-delete"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></div></div>
+      <div class="history-item" data-text="了解下青田"><span class="history-text">了解下青田</span><div class="history-delete"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></div></div>
+      <div class="history-item" data-text="带我了解下青田"><span class="history-text">带我了解下青田</span><div class="history-delete"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></div></div>
+      <div class="history-item" data-text="革命纪念馆"><span class="history-text">革命纪念馆</span><div class="history-delete"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></div></div>
+      <div class="history-item" data-text="教我说青田话"><span class="history-text">教我说青田话</span><div class="history-delete"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></div></div>
+
+      <div class="history-group-label">更早</div>
+      <div class="history-item" data-text="青田县革命历史纪念馆"><span class="history-text">青田县革命历史纪念馆</span><div class="history-delete"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></div></div>
+      <div class="history-item" data-text="青田县革命历史纪念馆"><span class="history-text">青田县革命历史纪念馆</span><div class="history-delete"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></div></div>
+      <div class="history-item" data-text="黄垟战斗遗址"><span class="history-text">黄垟战斗遗址</span><div class="history-delete"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></div></div>
+      <div class="history-item" data-text="带我认识下青田"><span class="history-text">带我认识下青田</span><div class="history-delete"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></div></div>
+      <div class="history-item" data-text="带我认识下青田"><span class="history-text">带我认识下青田</span><div class="history-delete"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></div></div>
+      <div class="history-item" data-text="我想了解下青田"><span class="history-text">我想了解下青田</span><div class="history-delete"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></div></div>
+      <div class="history-item" data-text="我想了解下青田"><span class="history-text">我想了解下青田</span><div class="history-delete"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></div></div>
+      <div class="history-item" data-text="总结下知识库里的材料"><span class="history-text">总结下知识库里的材料</span><div class="history-delete"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></div></div>
+    </div>
+  </aside>
+
+  <!-- 展开按钮 -->
+  <div class="expand-btn" id="expandBtn" title="展开历史记录">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="m9 18 6-6-6-6"/></svg>
+  </div>
+
+  <!-- 中央对话区 -->
+  <main class="chat-area">
+    <div class="chat-header">
+      <div class="chat-header-left">
+        <div class="chat-header-title" id="chatTitle">新会话</div>
+      </div>
+      </div>
+
+    <div class="messages" id="messages">
+      <div class="welcome-msg" id="welcomeMsg">
+        <div class="welcome-title">下午好</div>
+        <div class="welcome-sub">我是您的 AI 档案助手，可以帮我从档案库中查找、解答问题</div>
+        <div class="welcome-cards">
+          <div class="welcome-card" data-q="讲讲粟裕在浙西南的游击抗战事迹">
+            <div class="welcome-card-icon">🚩</div>
+            <div class="welcome-card-title">粟裕浙西南抗战</div>
+            <div class="welcome-card-desc">介绍粟裕将军在浙西南革命根据地的游击抗战事迹</div>
+          </div>
+          <div class="welcome-card" data-q="介绍龙泉革命英雄陈凤生的生平">
+            <div class="welcome-card-icon">⭐</div>
+            <div class="welcome-card-title">陈凤生生平</div>
+            <div class="welcome-card-desc">介绍龙泉革命英雄陈凤生的生平事迹</div>
+          </div>
+          <div class="welcome-card" data-q="青田有哪些著名的红色革命遗址？">
+            <div class="welcome-card-icon">🏛️</div>
+            <div class="welcome-card-title">青田红色遗址</div>
+            <div class="welcome-card-desc">梳理青田县著名的红色革命遗址与纪念馆</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="input-area">
+      <div class="input-box">
+        <div class="input-content">
+          <textarea id="chatInput" placeholder="发消息或输入 / 选择知识库" rows="1"></textarea>
+        </div>
+        <div class="input-bottom">
+          <div class="input-tools">
+            <div class="kb-selector">
+              <div class="kb-btn" id="kbBtn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                <span id="kbBtnText">全部知识库</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><path d="m6 9 6 6 6-6"/></svg>
+              </div>
+              <!-- 知识库弹窗 -->
+              <div class="kb-popup" id="kbPopup">
+                <div class="kb-popup-header">
+                  <div class="kb-popup-title">选择知识库</div>
+                  <div class="kb-popup-close" id="kbPopupClose">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+                  </div>
+                </div>
+                <div class="kb-popup-search">
+                  <input type="text" placeholder="搜索知识库" id="kbSearch">
+                </div>
+                <div class="kb-popup-list" id="kbList">
+                  <div class="kb-item all selected" data-name="全部知识库" data-desc="包含全部知识库内容">
+                    <div class="kb-icon">全</div>
+                    <div class="kb-info">
+                      <div class="kb-name">全部知识库</div>
+                      <div class="kb-desc">包含全部知识库内容</div>
+                    </div>
+                    <div class="kb-checkbox"></div>
+                  </div>
+                  <div class="kb-item" data-name="党史故事" data-desc="中国共产党的革命、建设、改革历程">
+                    <div class="kb-icon">党</div>
+                    <div class="kb-info">
+                      <div class="kb-name">党史故事</div>
+                      <div class="kb-desc">中国共产党的革命、建设、改革历程</div>
+                    </div>
+                    <div class="kb-checkbox"></div>
+                  </div>
+                  <div class="kb-item" data-name="畲族文化" data-desc="畲族历史、民俗、节庆与非遗">
+                    <div class="kb-icon">畲</div>
+                    <div class="kb-info">
+                      <div class="kb-name">畲族文化</div>
+                      <div class="kb-desc">畲族历史、民俗、节庆与非遗</div>
+                    </div>
+                    <div class="kb-checkbox"></div>
+                  </div>
+                  <div class="kb-item" data-name="侨乡青田文库" data-desc="青田华侨、侨团、侨批与侨乡文化">
+                    <div class="kb-icon">侨</div>
+                    <div class="kb-info">
+                      <div class="kb-name">侨乡青田文库</div>
+                      <div class="kb-desc">青田华侨、侨团、侨批与侨乡文化</div>
+                    </div>
+                    <div class="kb-checkbox"></div>
+                  </div>
+                  <div class="kb-item" data-name="测试" data-desc="测试用知识库">
+                    <div class="kb-icon">测</div>
+                    <div class="kb-info">
+                      <div class="kb-name">测试</div>
+                      <div class="kb-desc">测试用知识库</div>
+                    </div>
+                    <div class="kb-checkbox"></div>
+                  </div>
+                  <div class="kb-item" data-name="ces" data-desc="内部验证知识库">
+                    <div class="kb-icon">C</div>
+                    <div class="kb-info">
+                      <div class="kb-name">ces</div>
+                      <div class="kb-desc">内部验证知识库</div>
+                    </div>
+                    <div class="kb-checkbox"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+          <button class="send-btn" id="sendBtn" disabled>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="input-hint">内容由 AI 生成仅供参考</div>
+    </div>
+  </main>
+</div>
+
+<script>
+// ========== 侧边栏折叠 ==========
+const sidebarLeft = document.getElementById('sidebarLeft');
+const collapseBtn = document.getElementById('collapseBtn');
+const expandBtn = document.getElementById('expandBtn');
+
+collapseBtn.addEventListener('click', () => {
+  sidebarLeft.classList.add('collapsed');
+  expandBtn.classList.add('show');
+});
+expandBtn.addEventListener('click', () => {
+  sidebarLeft.classList.remove('collapsed');
+  expandBtn.classList.remove('show');
+});
+
+// ========== 新会话 ==========
+const newChatBtn = document.getElementById('newChatBtn');
+const messages = document.getElementById('messages');
+const welcomeMsg = document.getElementById('welcomeMsg');
+const chatTitle = document.getElementById('chatTitle');
+
+newChatBtn.addEventListener('click', () => {
+  chatTitle.textContent = '新会话';
+  messages.innerHTML = '';
+  messages.appendChild(welcomeMsg.cloneNode(true));
+  // 重新绑定快捷卡片事件
+  bindWelcomeCards();
+  document.querySelectorAll('.history-item').forEach(i => i.classList.remove('active'));
+});
+
+// ========== 历史记录点击 ==========
+document.querySelectorAll('.history-item').forEach(item => {
+  item.addEventListener('click', (e) => {
+    if (e.target.closest('.history-delete')) return;
+    document.querySelectorAll('.history-item').forEach(i => i.classList.remove('active'));
+    item.classList.add('active');
+    const text = item.dataset.text;
+    chatTitle.textContent = text.length > 18 ? text.substring(0, 18) + '...' : text;
+    // 模拟加载历史消息
+    loadHistoryConversation(text);
+  });
+  // 删除按钮
+  item.querySelector('.history-delete').addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (confirm('确定删除这条历史记录？')) {
+      item.remove();
+    }
+  });
+});
+
+// ========== 快捷卡片点击 ==========
+function bindWelcomeCards() {
+  document.querySelectorAll('.welcome-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const q = card.dataset.q;
+      document.getElementById('chatInput').value = q;
+      sendMessage();
+    });
+  });
+}
+bindWelcomeCards();
+
+function loadHistoryConversation(question) {
+  messages.innerHTML = '';
+  appendMessage(question, 'user');
+  setTimeout(() => {
+    appendMessage('这是历史会话的回复内容（演示）。针对您之前的提问："' + question + '"，我从档案库中检索到相关内容...', 'ai');
+  }, 500);
+}
+
+// ========== 输入框自动伸缩 ==========
+const chatInput = document.getElementById('chatInput');
+const sendBtn = document.getElementById('sendBtn');
+
+chatInput.addEventListener('input', () => {
+  chatInput.style.height = 'auto';
+  chatInput.style.height = Math.min(chatInput.scrollHeight, 120) + 'px';
+  sendBtn.disabled = !chatInput.value.trim();
+});
+
+chatInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    sendMessage();
+  }
+});
+
+// ========== 知识库选择弹窗 ==========
+const kbBtn = document.getElementById('kbBtn');
+const kbPopup = document.getElementById('kbPopup');
+const kbBtnText = document.getElementById('kbBtnText');
+const kbPopupClose = document.getElementById('kbPopupClose');
+const kbSearch = document.getElementById('kbSearch');
+const kbList = document.getElementById('kbList');
+
+kbBtn.addEventListener('click', (e) => {
+  e.stopPropagation();
+  kbPopup.classList.toggle('show');
+});
+kbPopupClose.addEventListener('click', () => kbPopup.classList.remove('show'));
+document.addEventListener('click', (e) => {
+  if (!kbPopup.contains(e.target) && !kbBtn.contains(e.target)) {
+    kbPopup.classList.remove('show');
+  }
+});
+
+// 知识库单选
+document.querySelectorAll('.kb-item').forEach(item => {
+  item.addEventListener('click', () => {
+    document.querySelectorAll('.kb-item').forEach(i => i.classList.remove('selected'));
+    item.classList.add('selected');
+    kbBtnText.textContent = item.dataset.name;
+    kbPopup.classList.remove('show');
+  });
+});
+
+// 知识库搜索
+kbSearch.addEventListener('input', () => {
+  const q = kbSearch.value.trim().toLowerCase();
+  document.querySelectorAll('.kb-item').forEach(item => {
+    const name = item.dataset.name.toLowerCase();
+    const desc = item.dataset.desc.toLowerCase();
+    item.style.display = (!q || name.includes(q) || desc.includes(q)) ? 'flex' : 'none';
+  });
+});
+
+// ========== 发送消息 ==========
+sendBtn.addEventListener('click', sendMessage);
+
+function sendMessage() {
+  const text = chatInput.value.trim();
+  if (!text) return;
+  
+  // 移除欢迎页
+  const welcome = messages.querySelector('.welcome-msg');
+  if (welcome) welcome.remove();
+  
+  chatTitle.textContent = text.length > 18 ? text.substring(0, 18) + '...' : text;
+  appendMessage(text, 'user');
+  chatInput.value = '';
+  chatInput.style.height = 'auto';
+  sendBtn.disabled = true;
+  
+  // 模拟AI回复
+  setTimeout(() => {
+    const kb = kbBtnText.textContent;
+    const response = generateResponse(text, kb);
+    appendMessage(response, 'ai');
+  }, 800);
+}
+
+function appendMessage(text, role) {
+  const msg = document.createElement('div');
+  msg.className = 'msg ' + role;
+  if (role === 'user') {
+    msg.innerHTML = `<div class="msg-avatar">陈</div><div class="msg-content">${escapeHtml(text)}</div>`;
+  } else {
+    msg.innerHTML = `<div class="msg-avatar">🤖</div><div class="msg-content">${text}<div><span class="source">📄 党史故事</span><span class="source">📚 浙西南档案</span></div></div>`;
+  }
+  messages.appendChild(msg);
+  messages.scrollTop = messages.scrollHeight;
+}
+
+function escapeHtml(s) {
+  return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function generateResponse(question, kb) {
+  const responses = {
+    '粟裕': '<p>粟裕（1907-1984），湖南会同人，无产阶级革命家、军事家。1935年至1938年间，粟裕率中国工农红军挺进师在浙西南地区开展艰苦卓绝的游击战争，建立了浙西南革命根据地。</p><p>1935年4月，粟裕率部进入浙西南，以遂昌、松阳、龙泉、丽水等地为中心，开展了三年游击战争。面对敌军多次"围剿"，粟裕运用灵活机动的战略战术，粉碎了敌人的多次进攻，巩固和发展了浙南游击根据地。</p><p>他的军事思想和实践经验，为浙西南革命根据地的巩固和发展作出了重大贡献，被誉为"浙西南游击战的杰出指挥员"。</p>',
+    '陈凤生': '<p>陈凤生（1902-1934），龙泉县安仁镇人，浙西南早期革命活动家。1927年加入中国共产党，曾任中共龙泉县委书记，领导了龙泉地区的农民运动和武装斗争。</p><p>1934年，陈凤生在一次战斗中英勇牺牲，年仅32岁。他的一生虽然短暂，却为浙西南革命事业谱写了光辉的篇章。</p><p>龙泉人民为纪念他，将他的事迹整理成档案资料永久保存，并建立了陈凤生烈士纪念馆。</p>',
+    '青田': '<p>青田县位于浙江省东南部，是著名的侨乡。青田有着光荣的革命传统，红色文化资源丰富，主要红色遗址包括：</p><p>1. <b>青田县革命历史纪念馆</b>：位于鹤城镇，展示青田革命斗争的光辉历程</p><p>2. <b>万山革命纪念馆</b>：位于万山乡，是浙西南重要的革命根据地之一</p><p>3. <b>高湖革命旧址</b>：见证了青田早期党组织的建立和发展</p><p>4. <b>东源革命纪念碑</b>：为纪念在革命战争中牺牲的青田籍烈士而建</p>'
+  };
+  for (const key in responses) {
+    if (question.includes(key)) return responses[key];
+  }
+  return `<p>我已根据您的问题"${question}"，在【${kb}】中检索到相关内容。</p><p>目前该问题可以从档案库中获得以下参考信息，建议您查阅相关档案以获得更详尽的解答。如果您需要了解某个具体方面，欢迎进一步提问。</p>`;
+}
+
+// ========== URL 参数预填充 ==========
+const urlParams = new URLSearchParams(window.location.search);
+const initQ = urlParams.get('q') || '';
+const initKb = urlParams.get('kb') || '';
+if (initKb) {
+  document.querySelectorAll('.kb-item').forEach(i => {
+    if (i.dataset.name === initKb) {
+      i.click();
+    }
+  });
+}
+if (initQ) {
+  document.getElementById('chatInput').value = initQ;
+  sendBtn.disabled = false;
+  setTimeout(() => sendMessage(), 100);
+}
+</script>
+</body>
+</html>
