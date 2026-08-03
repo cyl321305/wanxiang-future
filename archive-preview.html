@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>档案预览 · 万象未来</title>
+  <script>
+    // 读取URL参数
+    const urlParams = new URLSearchParams(window.location.search);
+    const archiveData = {
+      title: urlParams.get('title') || '世界青田2013年第3期 总第5期 增刊.pdf',
+      type: urlParams.get('type') || '文档档案',
+      date: urlParams.get('date') || '',
+      size: urlParams.get('size') || '',
+      source: urlParams.get('source') || ''
+    };
+  </script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=ZCOOL+XiaoWei&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-cream:#faf5ee;--bg-warm:#f3e8db;--bg-pink:#f8ece6;
+    --accent-red:#a62c2c;--accent-red-light:#c94d4d;--accent-gold:#c9a86c;
+    --text-primary:#3d2b1f;--text-secondary:rgba(61,43,31,.72);--text-muted:rgba(61,43,31,.5);
+    --glass:rgba(255,250,245,.9);--glass-border:rgba(166,44,44,.12);
+    --card-shadow:rgba(92,61,46,.08);--radius:12px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{font-family:'Noto Sans SC','Microsoft YaHei',sans-serif;color:var(--text-primary);background:var(--bg-cream);height:100vh;overflow:hidden}
+  
+  .app{display:flex;flex-direction:column;height:100vh}
+  
+  /* 顶部栏 */
+  .header{height:56px;background:#fff;border-bottom:1px solid rgba(166,44,44,.1);display:flex;align-items:center;justify-content:space-between;padding:0 20px;flex-shrink:0}
+  .header-left{display:flex;align-items:center;gap:16px}
+  .back-btn{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-secondary);transition:all .3s}
+  .back-btn:hover{background:rgba(166,44,44,.08);color:var(--accent-red)}
+  .doc-title{display:flex;flex-direction:column}
+  .doc-title h1{font-size:15px;font-weight:500;color:var(--text-primary);margin-bottom:2px}
+  .doc-title span{font-size:12px;color:var(--text-muted)}
+  .header-right{display:flex;align-items:center;gap:12px}
+  
+  /* 操作按钮 */
+  .action-btn{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-secondary);transition:all .3s;position:relative}
+  .action-btn:hover{background:rgba(166,44,44,.08);color:var(--accent-red)}
+  .action-btn.ai-btn{background:linear-gradient(135deg,var(--accent-red),var(--accent-red-light));color:#fff}
+  .action-btn.ai-btn:hover{opacity:.9}
+  
+  /* 下拉菜单 */
+  .dropdown{position:absolute;top:44px;right:0;width:180px;background:#fff;border-radius:10px;box-shadow:0 8px 32px rgba(0,0,0,.15);opacity:0;visibility:hidden;transform:translateY(-8px);transition:all .25s;z-index:1000;padding:8px 0}
+  .dropdown.show{opacity:1;visibility:visible;transform:translateY(0)}
+  .dropdown-item{display:flex;align-items:center;gap:10px;padding:10px 16px;font-size:13px;color:var(--text-secondary);cursor:pointer;transition:all .2s}
+  .dropdown-item:hover{background:rgba(166,44,44,.06);color:var(--accent-red)}
+  .dropdown-item svg{width:16px;height:16px}
+  .dropdown-divider{height:1px;background:rgba(166,44,44,.1);margin:6px 0}
+  
+  /* 主内容区 */
+  .main{flex:1;display:flex;overflow:hidden}
+  
+  /* 左侧工具栏 */
+  .toolbar{width:56px;background:#fff;border-right:1px solid rgba(166,44,44,.1);display:flex;flex-direction:column;align-items:center;padding:12px 0;gap:8px}
+  .tool-btn{width:40px;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-secondary);transition:all .3s}
+  .tool-btn:hover,.tool-btn.active{background:rgba(166,44,44,.08);color:var(--accent-red)}
+  
+  /* 文档预览区 */
+  .preview-area{flex:1;background:#f5f5f5;display:flex;flex-direction:column;position:relative;transition:margin-right .3s}
+  .preview-area.with-ai{margin-right:360px}
+  
+  /* 缩放工具条 */
+  .zoom-bar{height:44px;background:#fff;border-top:1px solid rgba(166,44,44,.1);display:flex;align-items:center;justify-content:center;gap:16px;padding:0 20px}
+  .zoom-btn{width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-secondary);transition:all .2s}
+  .zoom-btn:hover{background:rgba(166,44,44,.08);color:var(--accent-red)}
+  .zoom-text{font-size:13px;color:var(--text-secondary);min-width:60px;text-align:center}
+  
+  /* 文档内容 */
+  .doc-content{flex:1;overflow:auto;padding:40px;display:flex;justify-content:center}
+  .doc-page{width:794px;min-height:1123px;background:#fff;box-shadow:0 4px 20px rgba(0,0,0,.1);padding:60px}
+  .doc-page h2{font-family:'ZCOOL XiaoWei',serif;font-size:28px;color:var(--accent-red);text-align:center;margin-bottom:40px;padding-bottom:20px;border-bottom:2px solid var(--accent-red)}
+  .doc-page p{font-size:14px;line-height:2;color:var(--text-primary);text-indent:2em;margin-bottom:16px;text-align:justify}
+  .doc-page .foreword-title{font-size:20px;color:var(--accent-red);margin-bottom:30px;text-align:center;font-weight:500}
+  
+  /* 页码 */
+  .page-info{position:absolute;bottom:60px;left:20px;font-size:12px;color:var(--text-muted)}
+  
+  /* AI侧边栏 */
+  .ai-sidebar{width:360px;background:#fff;border-left:1px solid rgba(166,44,44,.1);display:flex;flex-direction:column;position:fixed;right:0;top:56px;bottom:0;transform:translateX(100%);transition:transform .3s;z-index:100}
+  .ai-sidebar.open{transform:translateX(0)}
+  
+  /* AI头部 */
+  .ai-header{height:56px;border-bottom:1px solid rgba(166,44,44,.1);display:flex;align-items:center;justify-content:space-between;padding:0 16px}
+  .ai-title{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:500}
+  .ai-title-icon{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--accent-red),var(--accent-red-light));display:flex;align-items:center;justify-content:center;color:#fff}
+  .ai-close{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-secondary)}
+  .ai-close:hover{background:rgba(166,44,44,.08);color:var(--accent-red)}
+  
+  /* AI内容区 */
+  .ai-content{flex:1;overflow-y:auto;padding:16px}
+  .ai-welcome{margin-bottom:20px}
+  .ai-welcome h3{font-size:16px;margin-bottom:8px}
+  .ai-welcome p{font-size:13px;color:var(--text-secondary);line-height:1.6}
+  .ai-suggestion{display:flex;align-items:center;gap:8px;padding:10px 14px;background:rgba(166,44,44,.06);border-radius:8px;margin-top:12px;font-size:13px;color:var(--accent-red);cursor:pointer;transition:all .2s}
+  .ai-suggestion:hover{background:rgba(166,44,44,.1)}
+  
+  /* 消息列表 */
+  .messages{display:flex;flex-direction:column;gap:16px}
+  .message{display:flex;gap:12px}
+  .message.ai{flex-direction:row}
+  .message.user{flex-direction:row-reverse}
+  .msg-avatar{width:32px;height:32px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:14px}
+  .message.ai .msg-avatar{background:linear-gradient(135deg,var(--accent-red),var(--accent-red-light));color:#fff}
+  .message.user .msg-avatar{background:var(--bg-warm);color:var(--text-primary)}
+  .msg-content{max-width:280px;padding:12px 14px;border-radius:12px;font-size:13px;line-height:1.6}
+  .message.ai .msg-content{background:#f8f9fa;color:var(--text-primary);border-bottom-left-radius:4px}
+  .message.user .msg-content{background:var(--accent-red);color:#fff;border-bottom-right-radius:4px}
+  
+  /* AI输入区 */
+  .ai-input{height:80px;border-top:1px solid rgba(166,44,44,.1);padding:12px 16px;display:flex;flex-direction:column;gap:8px}
+  .input-row{display:flex;gap:8px;align-items:center}
+  .ai-select{padding:6px 12px;border-radius:6px;border:1px solid rgba(166,44,44,.2);background:rgba(166,44,44,.04);font-size:12px;color:var(--accent-red);cursor:pointer}
+  .input-box{flex:1;display:flex;align-items:center;gap:8px;padding:8px 12px;background:#f8f9fa;border-radius:20px;border:1px solid rgba(166,44,44,.1)}
+  .input-box input{flex:1;border:none;background:transparent;outline:none;font-size:13px;color:var(--text-primary)}
+  .input-box input::placeholder{color:var(--text-muted)}
+  .send-btn{width:32px;height:32px;border-radius:50%;background:var(--accent-red);display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;transition:all .2s}
+  .send-btn:hover{opacity:.9}
+  .input-hint{font-size:11px;color:var(--text-muted);text-align:center}
+  
+  /* 滚动条 */
+  ::-webkit-scrollbar{width:6px;height:6px}
+  ::-webkit-scrollbar-track{background:transparent}
+  ::-webkit-scrollbar-thumb{background:rgba(166,44,44,.2);border-radius:3px}
+</style>
+</head>
+<body>
+<div class="app">
+  <!-- 顶部栏 -->
+  <header class="header">
+    <div class="header-left">
+      <div class="back-btn" onclick="history.back()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="m15 18-6-6 6-6"/></svg>
+      </div>
+      <div class="doc-title">
+        <h1 id="docTitle">世界青田2013年第3期 总第5期 增刊.pdf</h1>
+        <span id="docMeta">侨乡青田文库 · 55页</span>
+      </div>
+    </div>
+    <div class="header-right">
+      <!-- AI按钮 -->
+      <div class="action-btn ai-btn" id="aiBtn" title="问AI">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><rect x="4" y="8" width="16" height="11" rx="3.2"/><path d="M12 8V4.2"/><circle cx="12" cy="3" r="1.5" fill="currentColor"/><circle cx="9" cy="13.5" r="1.3" fill="currentColor" stroke="none"/><circle cx="15" cy="13.5" r="1.3" fill="currentColor" stroke="none"/><path d="M9.5 16.5h5"/></svg>
+      </div>
+      <!-- 更多操作 -->
+      <div class="action-btn" id="moreBtn" title="更多操作">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+        <!-- 下拉菜单 -->
+        <div class="dropdown" id="dropdown">
+          <div class="dropdown-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            下载
+          </div>
+          <div class="dropdown-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+            浏览记录
+          </div>
+          <div class="dropdown-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            创建副本
+          </div>
+          <div class="dropdown-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            历史版本
+          </div>
+          <div class="dropdown-divider"></div>
+          <div class="dropdown-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            重新上传
+          </div>
+          <div class="dropdown-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            重命名
+          </div>
+          <div class="dropdown-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+            移动到
+          </div>
+          <div class="dropdown-divider"></div>
+          <div class="dropdown-item" style="color:#dc3545">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+            删除
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 主内容 -->
+  <div class="main">
+    <!-- 左侧工具栏 -->
+    <div class="toolbar">
+      <div class="tool-btn active" title="目录">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      </div>
+      <div class="tool-btn" title="搜索">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      </div>
+      <div class="tool-btn" title="批注">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      </div>
+    </div>
+
+    <!-- 文档预览区 -->
+    <div class="preview-area" id="previewArea">
+      <div class="doc-content">
+        <div class="doc-page">
+          <div class="foreword-title">前言/Foreword</div>
+          <p>2013年3月25日至4月1日，由国务院侨务办公室国外司、浙江省政府侨务办公室主办，丽水市外侨办、青田县人民政府承办的浙江华侨华人社团负责人研习班在青田县举办。这是国侨办首次在县级办班。研习班共有学员89名，由来自20个欧洲国家的78个华侨华人社团的中青年负责人组成。他们年富力强、事业有成，是海外侨领的中坚力量。开班仪式由浙江省侨办副巡视员季培培主持，国务院侨办国外司副司长林旭、外交部领事司副司长邱学军、国侨办国外司欧非处处长刘敬师、浙江省侨办联络处调研员杨金坤、丽水市外侨办主任潘志强、中共青田县委副书记李华生、中共青田县委常委、统战部长吴飞飞、青田县人民政府副县长陈海民等参加了开班仪式。丽水市委副书记、市长黄志平专程赴青田，看望参加研习班的学员，向他们表示亲切慰问。丽水市人民政府副市长陈重出席研习班欢迎晚宴并致辞。中共青田县委书记徐光文、中共青田县委副书记、县人民政府县长戴邦和为学员专题授课。</p>
+          <p>本次研习班的主题是"文明守法、和谐团结、共谋发展"，授课老师既有中央与省级主管部门的领导，也有侨务和经济领域的专家学者，更有侨领、侨商代表。为强化海外侨胞的文明守法意识，提升侨领的综合素质，切实维护华侨的正当合法权益，扶持华侨的长期生存和发展构筑了优质的培训平台。</p>
+          <p>3月31日，为期一周的2013浙江华侨华人社团负责人研习班即将落下帷幕，国务院侨办国外司司长王晓萍、浙江省侨办党组书记王文娟、浙江省侨办副巡视员季培培、丽水市委常委、统战部长廖思红、国侨办国外司欧非处处长刘敬师、丽水市外侨办主任潘志强、中共青田县委书记徐光文、中共青田县委常委、统战部长吴飞飞、青田县人民政府副县长陈海民等出席结业典礼。</p>
+          <p>王晓萍在结业典礼上对研习班学员授予集体"三好学生"的称号，这也表达了国侨办对此次研习班的高度认可，对在县一级举行此类研习班创举的充分肯定。显然也为今后继续在青田举办高规格华侨华人研习班埋下了伏笔。</p>
+          <p>研习班成果并没有因为课程结束戛然而止。研习班全体学员联合向全球海外侨胞发出倡议书，希望世界各国侨胞从现在做起，从我做起，为提升文明形象、促进侨社和谐发展、实现可持续发展做贡献。</p>
+          <p>许多侨领将研习班上获取的知识、经验和投资信息等当下海外侨胞急需的"真知与真经"带回各自所在国，传授给社团的其他侨领侨胞。在意大利威尼斯，华侨总会会长团主要负责人召开座谈会，传达学习2013浙江华侨华人社团负责人研习班精神。在德国柏林，德国华侨华人公共外交协会组织举办会计税务、进出口贸易等知识讲座，提高华商依法经营意识。在西班牙马德里，西班牙中国工商联合会组织活动，引导侨胞遵纪守法融入当地社会，做促进中外友好交往的使者。</p>
+        </div>
+      </div>
+      <div class="page-info">第3页 共55页</div>
+      
+      <!-- 缩放工具条 -->
+      <div class="zoom-bar">
+        <div class="zoom-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+        </div>
+        <span class="zoom-text">100%</span>
+        <div class="zoom-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+        </div>
+        <div class="zoom-btn" style="margin-left:12px">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AI侧边栏 -->
+  <div class="ai-sidebar" id="aiSidebar">
+    <div class="ai-header">
+      <div class="ai-title">
+        <div class="ai-title-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><rect x="4" y="8" width="16" height="11" rx="3.2"/><path d="M12 8V4.2"/><circle cx="12" cy="3" r="1.5" fill="currentColor"/><circle cx="9" cy="13.5" r="1.3" fill="currentColor" stroke="none"/><circle cx="15" cy="13.5" r="1.3" fill="currentColor" stroke="none"/><path d="M9.5 16.5h5"/></svg>
+        </div>
+        问AI
+      </div>
+      <div class="ai-close" id="aiClose">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </div>
+    </div>
+    <div class="ai-content">
+      <div class="ai-welcome">
+        <h3>下午好，管理员</h3>
+        <p>我可以帮你解读这份档案的内容，提取关键信息，或者回答任何相关问题。</p>
+        <div class="ai-suggestion">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+          总结当前文档的主要内容
+        </div>
+      </div>
+      <div class="messages" id="messages">
+        <!-- 消息将动态添加 -->
+      </div>
+    </div>
+    <div class="ai-input">
+      <div class="input-row">
+        <select class="ai-select">
+          <option>侨乡青田文库</option>
+          <option>当前文档</option>
+          <option>全部资源</option>
+        </select>
+        <div class="input-box">
+          <input type="text" placeholder="@ 输入问题..." id="aiInput">
+          <div class="send-btn" id="sendBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+          </div>
+        </div>
+      </div>
+      <div class="input-hint">内容由AI生成仅供参考</div>
+    </div>
+  </div>
+</div>
+
+<script>
+// 应用URL参数
+if (archiveData.title) {
+  document.getElementById('docTitle').textContent = archiveData.title;
+  let metaText = archiveData.type || '档案文档';
+  if (archiveData.date) metaText += ' · ' + archiveData.date;
+  if (archiveData.size) metaText += ' · ' + archiveData.size;
+  if (archiveData.source) metaText += ' · 来源：' + archiveData.source;
+  document.getElementById('docMeta').textContent = metaText;
+}
+
+// 更多操作下拉菜单
+const moreBtn = document.getElementById('moreBtn');
+const dropdown = document.getElementById('dropdown');
+
+moreBtn.addEventListener('click', (e) => {
+  e.stopPropagation();
+  dropdown.classList.toggle('show');
+});
+
+document.addEventListener('click', () => {
+  dropdown.classList.remove('show');
+});
+
+// AI侧边栏切换
+const aiBtn = document.getElementById('aiBtn');
+const aiSidebar = document.getElementById('aiSidebar');
+const aiClose = document.getElementById('aiClose');
+const previewArea = document.getElementById('previewArea');
+
+aiBtn.addEventListener('click', () => {
+  aiSidebar.classList.add('open');
+  previewArea.classList.add('with-ai');
+});
+
+aiClose.addEventListener('click', () => {
+  aiSidebar.classList.remove('open');
+  previewArea.classList.remove('with-ai');
+});
+
+// AI对话功能
+const aiInput = document.getElementById('aiInput');
+const sendBtn = document.getElementById('sendBtn');
+const messages = document.getElementById('messages');
+
+function addMessage(text, isUser = false) {
+  const msg = document.createElement('div');
+  msg.className = `message ${isUser ? 'user' : 'ai'}`;
+  msg.innerHTML = `
+    <div class="msg-avatar">${isUser ? '管' : '🤖'}</div>
+    <div class="msg-content">${text}</div>
+  `;
+  messages.appendChild(msg);
+  messages.scrollTop = messages.scrollHeight;
+}
+
+function sendMessage() {
+  const text = aiInput.value.trim();
+  if (!text) return;
+  
+  addMessage(text, true);
+  aiInput.value = '';
+  
+  // 模拟AI回复
+  setTimeout(() => {
+    const responses = [
+      '这是一份关于2013年浙江华侨华人社团负责人研习班的档案资料，记录了在青田县举办的培训活动详情。',
+      '根据文档内容，本次研习班共有89名学员，来自20个欧洲国家的78个华侨华人社团。',
+      '研习班的主题是"文明守法、和谐团结、共谋发展"，旨在提升海外侨领的综合素质。',
+      '国务院侨办国外司司长王晓萍在结业典礼上授予学员集体"三好学生"称号。'
+    ];
+    const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+    addMessage(randomResponse);
+  }, 800);
+}
+
+sendBtn.addEventListener('click', sendMessage);
+aiInput.addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') sendMessage();
+});
+
+// 快捷建议点击
+document.querySelector('.ai-suggestion').addEventListener('click', () => {
+  aiInput.value = '总结当前文档的主要内容';
+  sendMessage();
+});
+</script>
+</body>
+</html>
