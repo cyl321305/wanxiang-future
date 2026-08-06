@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>图片档案 · 万象未来</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=ZCOOL+XiaoWei&family=Noto+Serif+SC:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg-cream:#faf5ee;--bg-warm:#f3e8db;--bg-pink:#f8ece6;
+  --accent-red:#a62c2c;--accent-red-light:#c94d4d;--accent-gold:#c9a86c;
+  --text-primary:#3d2b1f;--text-secondary:rgba(61,43,31,.72);--text-muted:rgba(61,43,31,.5);
+  --glass:rgba(255,250,245,.9);--glass-border:rgba(166,44,44,.12);
+  --card-shadow:rgba(92,61,46,.08);--radius:12px;
+  --img-color:#5d8a7b;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{font-family:'Noto Sans SC','Microsoft YaHei',sans-serif;color:var(--text-primary);background:var(--bg-cream);min-height:100vh}
+body::before{content:"";position:fixed;inset:0;background:radial-gradient(circle at 20% 10%,rgba(201,168,108,.08),transparent 50%),radial-gradient(circle at 80% 90%,rgba(93,138,123,.05),transparent 50%);pointer-events:none;z-index:0}
+
+/* ===== 顶部导航 ===== */
+.nav{position:relative;z-index:10;background:var(--glass);backdrop-filter:blur(20px);border-bottom:1px solid var(--glass-border);padding:14px 40px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text-primary)}
+.nav-logo-mark{width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,#a62c2c,#c94d4d);display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Ma Shan Zheng',serif;font-size:20px}
+.nav-logo-text{font-family:'ZCOOL XiaoWei',serif;font-size:18px;font-weight:700}
+.nav-right{display:flex;gap:24px}
+.nav-link{color:var(--text-secondary);text-decoration:none;font-size:14px;padding:6px 12px;border-radius:6px;transition:all .2s}
+.nav-link:hover{color:var(--accent-red);background:rgba(166,44,44,.06)}
+.nav-link.active{color:var(--accent-red);font-weight:500}
+
+/* ===== 面包屑 ===== */
+.crumb{padding:20px 40px 0;font-size:13px;color:var(--text-muted);position:relative;z-index:5}
+.crumb a{color:var(--text-secondary);text-decoration:none}
+.crumb a:hover{color:var(--accent-red)}
+.crumb .sep{margin:0 8px;opacity:.4}
+
+/* ===== 主体 ===== */
+.wrap{position:relative;z-index:5;max-width:1100px;margin:20px auto 60px;padding:0 40px}
+.back-btn{display:inline-flex;align-items:center;gap:6px;color:var(--text-secondary);text-decoration:none;font-size:14px;padding:8px 14px;border-radius:8px;background:var(--glass);border:1px solid var(--glass-border);margin-bottom:20px;transition:all .2s}
+.back-btn:hover{color:var(--accent-red);border-color:var(--accent-red)}
+
+/* ===== 图片卡片 ===== */
+.image-card{background:var(--glass);backdrop-filter:blur(20px);border:1px solid var(--glass-border);border-radius:var(--radius);overflow:hidden;box-shadow:0 8px 32px var(--card-shadow)}
+.image-stage{position:relative;width:100%;min-height:480px;max-height:640px;background:#1a1410;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.image-stage img{max-width:100%;max-height:640px;display:block}
+.image-stage .placeholder{width:100%;height:480px;display:flex;align-items:center;justify-content:center;color:var(--text-muted);background:linear-gradient(135deg,#e8d4c0,#d4bfa6)}
+.image-stage .placeholder svg{width:80px;height:80px;opacity:.4}
+
+/* ===== 信息区 ===== */
+.image-info{padding:32px}
+.type-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:500;background:var(--img-color);color:#fff;margin-bottom:16px}
+.type-badge svg{width:14px;height:14px}
+.image-title{font-family:'Noto Serif SC',serif;font-size:28px;font-weight:700;color:var(--text-primary);line-height:1.3;margin-bottom:20px}
+
+/* 信息字段表格 */
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px 32px;padding:24px;background:rgba(93,138,123,.04);border-radius:10px;border-left:3px solid var(--img-color)}
+.info-cell{display:flex;flex-direction:column;gap:6px}
+.info-label{font-size:13px;color:var(--text-muted);font-weight:500}
+.info-value{font-size:14px;color:var(--text-primary);line-height:1.6;word-break:break-all}
+.info-value a{color:var(--accent-red);text-decoration:none}
+.info-value a:hover{text-decoration:underline}
+
+/* 操作栏 */
+.action-bar{display:flex;gap:12px;margin-top:24px}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:10px 20px;border-radius:8px;font-size:14px;text-decoration:none;cursor:pointer;border:none;font-family:inherit;transition:all .2s}
+.btn-default{background:var(--glass);color:var(--text-primary);border:1px solid var(--glass-border)}
+.btn-default:hover{border-color:var(--accent-red);color:var(--accent-red)}
+.btn-primary{background:var(--accent-red);color:#fff}
+.btn-primary:hover{background:var(--accent-red-light);transform:translateY(-1px);box-shadow:0 4px 12px rgba(166,44,44,.25)}
+.btn svg{width:16px;height:16px}
+
+/* 响应式 */
+@media(max-width:768px){
+  .nav{padding:12px 20px}
+  .nav-right{display:none}
+  .wrap{padding:0 20px}
+  .image-title{font-size:22px}
+  .info-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="nav-logo" href="wanxiang-future.html">
+    <div class="nav-logo-mark">万</div>
+    <div class="nav-logo-text">万象未来 · AI 档案知识空间</div>
+  </a>
+  <div class="nav-right">
+    <a class="nav-link" href="wanxiang-future.html">首页</a>
+    <a class="nav-link" href="archives.html">档案资源</a>
+    <a class="nav-link" href="knowledge-graph.html">知识图谱</a>
+    <a class="nav-link" href="sizheng-courses.html">数字思政</a>
+    <a class="nav-link" href="yanxue.html">研学探索</a>
+    <a class="nav-link" href="ai-chat.html">智能问答</a>
+    <a class="nav-link" href="admin.html">后台管理</a>
+  </div>
+</nav>
+
+<div class="crumb">
+  <a href="wanxiang-future.html">首页</a>
+  <span class="sep">/</span>
+  <a href="archives.html">档案资源</a>
+  <span class="sep">/</span>
+  <a id="kbCrumbLink" href="kb-detail.html">知识库</a>
+  <span class="sep">/</span>
+  <span>图片档案</span>
+</div>
+
+<div class="wrap">
+  <a class="back-btn" href="javascript:history.back()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+    返回
+  </a>
+
+  <div class="image-card">
+    <!-- 图片展示区 -->
+    <div class="image-stage" id="imageStage">
+      <div class="placeholder">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></svg>
+      </div>
+    </div>
+
+    <!-- 信息区 -->
+    <div class="image-info">
+      <div class="type-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></svg>
+        图片档案
+      </div>
+
+      <h1 class="image-title" id="imageTitle">图片档案</h1>
+
+      <div class="info-grid">
+        <div class="info-cell" style="grid-column:1/-1">
+          <div class="info-label">图片说明</div>
+          <div class="info-value" id="imageDesc">--</div>
+        </div>
+        <div class="info-cell">
+          <div class="info-label">来源文档</div>
+          <div class="info-value" id="sourceDoc">--</div>
+        </div>
+        <div class="info-cell">
+          <div class="info-label">来源知识库</div>
+          <div class="info-value" id="sourceKb">--</div>
+        </div>
+        <div class="info-cell">
+          <div class="info-label">原始文件名</div>
+          <div class="info-value" id="sourceFile">--</div>
+        </div>
+        <div class="info-cell">
+          <div class="info-label">文件大小</div>
+          <div class="info-value" id="fileSize">--</div>
+        </div>
+        <div class="info-cell">
+          <div class="info-label">档案日期</div>
+          <div class="info-value" id="fileDate">--</div>
+        </div>
+        <div class="info-cell">
+          <div class="info-label">创建时间</div>
+          <div class="info-value" id="fileCreated">--</div>
+        </div>
+        <div class="info-cell" style="grid-column:1/-1">
+          <div class="info-label">Markdown 地址</div>
+          <div class="info-value"><a id="mdLink" href="#" target="_blank">--</a> <span style="color:var(--text-muted);font-size:12px">📋</span></div>
+        </div>
+      </div>
+
+      <div class="action-bar">
+        <button class="btn btn-primary" onclick="downloadImage()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          下载原图
+        </button>
+        <button class="btn btn-default" onclick="copyLink()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          复制链接
+        </button>
+        <a class="btn btn-default" id="kbBackBtn" href="kb-detail.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+          返回知识库
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// 读取URL参数
+const p = new URLSearchParams(window.location.search);
+const data = {
+  title: p.get('title') || '青田迎宾景观照片',
+  date: p.get('date') || '2024-09-15',
+  size: p.get('size') || '198.66 KB',
+  source: p.get('source') || '青田县档案馆',
+  kb: p.get('kb') || '文化民俗',
+  desc: p.get('desc') || '',
+  img: p.get('img') || ''
+};
+
+// 填充信息
+document.getElementById('imageTitle').textContent = data.title;
+document.getElementById('imageDesc').textContent = data.desc || `图片展示了${data.title}的相关内容。`;
+document.getElementById('sourceDoc').textContent = data.title + '.png';
+document.getElementById('sourceKb').textContent = data.kb;
+document.getElementById('sourceFile').textContent = 'imgs/img_in_image_box_' + Math.floor(Math.random()*9000+1000) + '.jpg';
+document.getElementById('fileSize').textContent = data.size;
+document.getElementById('fileDate').textContent = data.date;
+document.getElementById('fileCreated').textContent = data.date + ' 11:08:19';
+
+// 模拟图片
+const stage = document.getElementById('imageStage');
+if (data.img) {
+  stage.innerHTML = '<img src="' + data.img + '" alt="' + data.title + '">';
+}
+
+// Markdown链接（演示）
+const mdLink = document.getElementById('mdLink');
+mdLink.href = 'https://zx.lszwfw.cn:7869/kb-webapi-v2/common/image/parser-images/202607/' + (Math.random().toString(16).slice(2,50)) + '.jpg';
+mdLink.textContent = mdLink.href;
+
+// 面包屑跳转
+const kbLink = document.getElementById('kbCrumbLink');
+kbLink.textContent = data.kb;
+kbLink.href = 'kb-detail.html?kb=' + encodeURIComponent(data.kb);
+document.getElementById('kbBackBtn').href = 'kb-detail.html?kb=' + encodeURIComponent(data.kb);
+
+function downloadImage() {
+  alert('原图下载功能（演示版）：高清图片将推送到您的邮箱。');
+}
+
+function copyLink() {
+  navigator.clipboard.writeText(location.href).then(() => {
+    alert('链接已复制到剪贴板');
+  }).catch(() => {
+    prompt('请手动复制：', location.href);
+  });
+}
+</script>
+
+</body>
+</html>
