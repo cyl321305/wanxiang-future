@@ -479,12 +479,21 @@
       { kb: '专题库', type: 'doc', title: '红色根脉·思政教学资源包', date: '2026-03-15', size: '48.9 MB', tags: ['思政', '教学资源'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=400&h=300&fit=crop' },
       { kb: '专题库', type: 'doc', title: '非遗名录专题资料', date: '2020-06-30', size: '9.8 MB', tags: ['非遗', '名录'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1512813195386-6cf811ad3542?w=400&h=300&fit=crop' },
       { kb: '专题库', type: 'img', title: '丽水老照片专题展', date: '2019-10-01', size: '132 MB', tags: ['老照片', '专题展'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1599571234909-29ed5d1321d6?w=400&h=300&fit=crop' },
-      { kb: '专题库', type: 'img', title: '侨乡青田影像档案', date: '2008-2020', size: '86.3 MB', tags: ['侨乡', '影像'], source: '青田县档案馆', image: 'https://images.unsplash.com/photo-1548013146-72479768b3f5?w=400&h=300&fit=crop' }
+      { kb: '专题库', type: 'img', title: '侨乡青田影像档案', date: '2008-2020', size: '86.3 MB', tags: ['侨乡', '影像'], source: '青田县档案馆', image: 'https://images.unsplash.com/photo-1548013146-72479768b3f5?w=400&h=300&fit=crop' },
+      // 视频档案样本
+      { kb: '红色记忆', type: 'video', title: '2021青田召开陈慕华座谈会', date: '2021-12-08', size: '156 MB', duration: '02:16', tags: ['陈慕华', '诞辰100周年', '座谈会'], source: '青田县档案馆', image: 'https://images.unsplash.com/photo-1485846234645-a62644f84728?w=400&h=300&fit=crop', desc: '该视频时长约2分16秒，记录了2021年在青田县召开的纪念陈慕华同志诞辰100周年座谈会。视频以新闻报道形式呈现，展示了会议现场的场景。' },
+      { kb: '人物传记', type: 'video', title: '粟裕将军纪念影像', date: '1984-04-22', size: '320 MB', duration: '15:48', tags: ['粟裕', '将军', '纪念'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1499346030926-9a72daac6c63?w=400&h=300&fit=crop', desc: '粟裕将军百年诞辰纪念活动影像资料。含历史照片、讲话录像及家属访谈，时长约15分钟。' },
+      { kb: '历史事件', type: 'video', title: '红军挺进师浙西南战斗纪录', date: '1985-08', size: '480 MB', duration: '28:30', tags: ['红军', '战斗纪录', '浙西南'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400&h=300&fit=crop', desc: '1985年制作的浙西南革命斗争纪录片，含老红军采访、战场遗址实拍、历史照片再现。' },
+      { kb: '地方建设', type: 'video', title: '瓯江大桥建成通车典礼', date: '1992-10-28', size: '210 MB', duration: '08:42', tags: ['瓯江大桥', '通车典礼', '基建'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1517089596392-fb9a9033e05b?w=400&h=300&fit=crop', desc: '1992年瓯江大桥建成通车仪式实录，含领导讲话、车队通过、航拍全景。' },
+      { kb: '组织机构', type: 'video', title: '青田县侨联成立大会纪实', date: '1986-11-15', size: '180 MB', duration: '12:15', tags: ['侨联', '成立大会', '纪实'], source: '青田县档案馆', image: 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=400&h=300&fit=crop', desc: '1986年青田县侨联成立大会现场录像，含揭牌仪式、各界代表发言。' },
+      { kb: '文化民俗', type: 'video', title: '青田石雕非遗技艺记录', date: '2018-05-10', size: '560 MB', duration: '45:20', tags: ['石雕', '非遗', '技艺'], source: '青田县档案馆', image: 'https://images.unsplash.com/photo-1561214115-f2f134cc4912?w=400&h=300&fit=crop', desc: '青田石雕国家级非遗代表性传承人技艺实录，含选料、雕刻、打磨全过程。' },
+      { kb: '专题库', type: 'video', title: '侨乡青田海外联谊纪实', date: '2019-09-20', size: '420 MB', duration: '32:18', tags: ['侨乡', '海外联谊', '纪实'], source: '青田县档案馆', image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400&h=300&fit=crop', desc: '2019年侨乡青田海外联谊活动现场记录，含侨胞访谈、文化展示、文艺演出。' }
     ];
 
     const typeMap = {
       doc: { label: '文档', color: 'doc', icon: '📄' },
-      img: { label: '图片', color: 'img', icon: '🖼️' }
+      img: { label: '图片', color: 'img', icon: '🖼️' },
+      video: { label: '视频', color: 'video', icon: '🎬' }
     };
 
     // ===== 读取 URL 参数，确定当前知识库 =====
@@ -526,8 +535,14 @@
         </div>
       `;
       card.addEventListener('click', () => {
-        const p = new URLSearchParams({ title: res.title, type: type.label, date: res.date, size: res.size, source: res.source });
-        window.location.href = 'archive-preview.html?' + p.toString();
+        const p = new URLSearchParams({ title: res.title, type: res.type, date: res.date, size: res.size, source: res.source, kb: res.kb, desc: res.desc || res.title, tags: (res.tags||[]).join(',') });
+        if (res.type === 'video') {
+          window.location.href = 'archive-video.html?' + p.toString();
+        } else if (res.type === 'img') {
+          window.location.href = 'archive-image.html?' + p.toString();
+        } else {
+          window.location.href = 'archive-preview.html?' + p.toString();
+        }
       });
       grid.appendChild(card);
     });
