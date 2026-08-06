@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>视频档案 · 万象未来</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=ZCOOL+XiaoWei&family=Noto+Serif+SC:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg-cream:#faf5ee;--bg-warm:#f3e8db;--bg-pink:#f8ece6;
+  --accent-red:#a62c2c;--accent-red-light:#c94d4d;--accent-gold:#c9a86c;
+  --text-primary:#3d2b1f;--text-secondary:rgba(61,43,31,.72);--text-muted:rgba(61,43,31,.5);
+  --glass:rgba(255,250,245,.9);--glass-border:rgba(166,44,44,.12);
+  --card-shadow:rgba(92,61,46,.08);--radius:12px;
+  --video-color:#8b5e83;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{font-family:'Noto Sans SC','Microsoft YaHei',sans-serif;color:var(--text-primary);background:var(--bg-cream);min-height:100vh}
+body::before{content:"";position:fixed;inset:0;background:radial-gradient(circle at 20% 10%,rgba(201,168,108,.08),transparent 50%),radial-gradient(circle at 80% 90%,rgba(166,44,44,.05),transparent 50%);pointer-events:none;z-index:0}
+
+/* ===== 顶部导航 ===== */
+.nav{position:relative;z-index:10;background:var(--glass);backdrop-filter:blur(20px);border-bottom:1px solid var(--glass-border);padding:14px 40px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text-primary)}
+.nav-logo-mark{width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,#a62c2c,#c94d4d);display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Ma Shan Zheng',serif;font-size:20px}
+.nav-logo-text{font-family:'ZCOOL XiaoWei',serif;font-size:18px;font-weight:700}
+.nav-right{display:flex;gap:24px}
+.nav-link{color:var(--text-secondary);text-decoration:none;font-size:14px;padding:6px 12px;border-radius:6px;transition:all .2s}
+.nav-link:hover{color:var(--accent-red);background:rgba(166,44,44,.06)}
+.nav-link.active{color:var(--accent-red);font-weight:500}
+
+/* ===== 面包屑 ===== */
+.crumb{padding:20px 40px 0;font-size:13px;color:var(--text-muted);position:relative;z-index:5}
+.crumb a{color:var(--text-secondary);text-decoration:none}
+.crumb a:hover{color:var(--accent-red)}
+.crumb .sep{margin:0 8px;opacity:.4}
+
+/* ===== 主体 ===== */
+.wrap{position:relative;z-index:5;max-width:1200px;margin:20px auto 60px;padding:0 40px}
+.back-btn{display:inline-flex;align-items:center;gap:6px;color:var(--text-secondary);text-decoration:none;font-size:14px;padding:8px 14px;border-radius:8px;background:var(--glass);border:1px solid var(--glass-border);margin-bottom:20px;transition:all .2s}
+.back-btn:hover{color:var(--accent-red);border-color:var(--accent-red)}
+
+/* ===== 视频播放器 ===== */
+.video-card{background:var(--glass);backdrop-filter:blur(20px);border:1px solid var(--glass-border);border-radius:var(--radius);overflow:hidden;box-shadow:0 8px 32px var(--card-shadow)}
+.video-stage{position:relative;width:100%;aspect-ratio:16/9;background:linear-gradient(135deg,#1a0f0a,#3d2b1f);display:flex;align-items:center;justify-content:center;cursor:pointer}
+.video-stage::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at center,rgba(139,94,131,.3),transparent 70%)}
+.play-btn-large{position:relative;width:88px;height:88px;border-radius:50%;background:rgba(255,255,255,.95);display:flex;align-items:center;justify-content:center;box-shadow:0 8px 32px rgba(0,0,0,.3);transition:transform .2s;z-index:2}
+.play-btn-large:hover{transform:scale(1.08)}
+.play-btn-large svg{width:36px;height:36px;margin-left:4px}
+.play-btn-large svg path{fill:#a62c2c}
+.video-duration{position:absolute;bottom:16px;right:16px;background:rgba(0,0,0,.7);color:#fff;padding:4px 10px;border-radius:4px;font-size:13px;font-family:'Noto Sans SC';z-index:2}
+
+/* ===== 视频信息 ===== */
+.video-info{padding:32px}
+.type-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:500;background:var(--video-color);color:#fff;margin-bottom:16px}
+.type-badge svg{width:14px;height:14px}
+.video-title{font-family:'Noto Serif SC',serif;font-size:32px;font-weight:700;color:var(--text-primary);line-height:1.3;margin-bottom:20px}
+.video-meta{display:flex;flex-wrap:wrap;gap:20px;padding:20px 0;border-top:1px solid var(--glass-border);border-bottom:1px solid var(--glass-border);margin-bottom:24px}
+.meta-item{display:flex;align-items:center;gap:8px;color:var(--text-secondary);font-size:14px}
+.meta-item svg{width:16px;height:16px;color:var(--accent-red);opacity:.7}
+.meta-item strong{color:var(--text-primary);font-weight:500}
+
+/* ===== 简介与关键词 ===== */
+.section{margin-bottom:24px}
+.section-title{font-size:15px;font-weight:600;color:var(--text-primary);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.section-title::before{content:"";width:3px;height:14px;background:var(--accent-red);border-radius:2px}
+.section-desc{color:var(--text-secondary);font-size:15px;line-height:1.8;background:rgba(139,94,131,.04);padding:16px 20px;border-radius:8px;border-left:3px solid var(--video-color)}
+.tags-wrap{display:flex;flex-wrap:wrap;gap:8px}
+.tag-chip{padding:6px 14px;background:rgba(139,94,131,.08);color:var(--video-color);border-radius:16px;font-size:13px;border:1px solid rgba(139,94,131,.15)}
+
+/* ===== 操作栏 ===== */
+.action-bar{display:flex;gap:12px;padding-top:8px}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:10px 20px;border-radius:8px;font-size:14px;text-decoration:none;cursor:pointer;border:none;font-family:inherit;transition:all .2s}
+.btn-primary{background:var(--accent-red);color:#fff}
+.btn-primary:hover{background:var(--accent-red-light);transform:translateY(-1px);box-shadow:0 4px 12px rgba(166,44,44,.25)}
+.btn-default{background:var(--glass);color:var(--text-primary);border:1px solid var(--glass-border)}
+.btn-default:hover{border-color:var(--accent-red);color:var(--accent-red)}
+.btn svg{width:16px;height:16px}
+
+/* 响应式 */
+@media(max-width:768px){
+  .nav{padding:12px 20px}
+  .nav-right{display:none}
+  .wrap{padding:0 20px}
+  .video-title{font-size:24px}
+  .video-meta{flex-direction:column;gap:10px}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="nav-logo" href="wanxiang-future.html">
+    <div class="nav-logo-mark">万</div>
+    <div class="nav-logo-text">万象未来 · AI 档案知识空间</div>
+  </a>
+  <div class="nav-right">
+    <a class="nav-link" href="wanxiang-future.html">首页</a>
+    <a class="nav-link" href="archives.html">档案资源</a>
+    <a class="nav-link" href="knowledge-graph.html">知识图谱</a>
+    <a class="nav-link" href="sizheng-courses.html">数字思政</a>
+    <a class="nav-link" href="yanxue.html">研学探索</a>
+    <a class="nav-link" href="ai-chat.html">智能问答</a>
+    <a class="nav-link" href="admin.html">后台管理</a>
+  </div>
+</nav>
+
+<div class="crumb">
+  <a href="wanxiang-future.html">首页</a>
+  <span class="sep">/</span>
+  <a href="archives.html">档案资源</a>
+  <span class="sep">/</span>
+  <a id="kbCrumbLink" href="kb-detail.html">知识库</a>
+  <span class="sep">/</span>
+  <span id="typeCrumb">视频档案</span>
+</div>
+
+<div class="wrap">
+  <a class="back-btn" href="javascript:history.back()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+    返回
+  </a>
+
+  <div class="video-card">
+    <!-- 视频播放区 -->
+    <div class="video-stage" id="videoStage" onclick="togglePlay()">
+      <div class="play-btn-large" id="playBtn">
+        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+      </div>
+      <div class="video-duration" id="videoDuration">--:--</div>
+    </div>
+
+    <!-- 信息区 -->
+    <div class="video-info">
+      <div class="type-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+        视频档案
+      </div>
+
+      <h1 class="video-title" id="videoTitle">视频档案</h1>
+
+      <div class="video-meta">
+        <div class="meta-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <span id="metaDate">--</span>
+        </div>
+        <div class="meta-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <span id="metaDuration">--</span>
+        </div>
+        <div class="meta-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          <span id="metaSize">--</span>
+        </div>
+        <div class="meta-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          <span>来源：<strong id="metaSource">--</strong></span>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">视频简介</div>
+        <div class="section-desc" id="videoDesc">--</div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">关键词</div>
+        <div class="tags-wrap" id="tagsWrap"></div>
+      </div>
+
+      <div class="action-bar">
+        <button class="btn btn-default" onclick="downloadVideo()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          下载原片
+        </button>
+        <button class="btn btn-default" onclick="shareVideo()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          分享
+        </button>
+        <a class="btn btn-default" id="kbBackBtn" href="kb-detail.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+          返回知识库
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// 读取URL参数
+const p = new URLSearchParams(window.location.search);
+const data = {
+  title: p.get('title') || '2021青田召开陈慕华座谈会',
+  date: p.get('date') || '2021-12-08',
+  size: p.get('size') || '156 MB',
+  source: p.get('source') || '青田县档案馆',
+  kb: p.get('kb') || '红色记忆',
+  desc: p.get('desc') || '',
+  tags: (p.get('tags') || '陈慕华,诞辰100周年,座谈会,青田,革命先辈').split(',').filter(Boolean),
+  duration: '--:--'
+};
+
+// 视频时长按大小估算（每10MB约1分钟）
+const sizeNum = parseFloat(data.size);
+if (!isNaN(sizeNum)) {
+  const mins = Math.max(1, Math.round(sizeNum / 10));
+  const secs = Math.floor(Math.random() * 60);
+  data.duration = `${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
+}
+
+// 填充内容
+document.getElementById('videoTitle').textContent = data.title;
+document.getElementById('metaDate').textContent = data.date;
+document.getElementById('metaDuration').textContent = data.duration;
+document.getElementById('metaSize').textContent = data.size;
+document.getElementById('metaSource').textContent = data.source;
+document.getElementById('videoDesc').textContent = data.desc || `《${data.title}》为${data.kb}知识库收录视频档案，时长${data.duration}。`;
+document.getElementById('videoDuration').textContent = data.duration;
+
+// 关键词
+const tagsWrap = document.getElementById('tagsWrap');
+data.tags.forEach(t => {
+  const chip = document.createElement('span');
+  chip.className = 'tag-chip';
+  chip.textContent = t;
+  tagsWrap.appendChild(chip);
+});
+
+// 面包屑跳转
+const kbLink = document.getElementById('kbCrumbLink');
+kbLink.textContent = data.kb;
+kbLink.href = 'kb-detail.html?kb=' + encodeURIComponent(data.kb);
+document.getElementById('kbBackBtn').href = 'kb-detail.html?kb=' + encodeURIComponent(data.kb);
+
+// 播放/暂停模拟
+let playing = false;
+function togglePlay() {
+  playing = !playing;
+  const btn = document.getElementById('playBtn');
+  if (playing) {
+    btn.innerHTML = '<svg viewBox="0 0 24 24"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>';
+    btn.style.opacity = '0.5';
+  } else {
+    btn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';
+    btn.style.opacity = '1';
+  }
+}
+
+function downloadVideo() {
+  alert('视频下载功能（演示版）：原片链接将推送到您的邮箱。');
+}
+
+function shareVideo() {
+  if (navigator.share) {
+    navigator.share({ title: data.title, text: data.title, url: location.href });
+  } else {
+    alert('链接已复制：' + location.href);
+  }
+}
+</script>
+
+</body>
+</html>
