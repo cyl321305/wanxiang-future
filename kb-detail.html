@@ -253,38 +253,7 @@
       .stats-row { grid-template-columns: 1fr; }
     }
 
-    /* 知识库分类入口卡片 */
-    .resource-grid.kb-overview { display: flex; flex-direction: column; gap: 14px; grid-template-columns: none; }
-    .kb-cat-card { display: flex; align-items: center; gap: 20px; padding: 22px 26px; background: var(--glass); border: 1px solid var(--glass-border); border-radius: 14px; backdrop-filter: blur(10px); box-shadow: 0 8px 24px var(--card-shadow); cursor: pointer; transition: all .3s ease; text-decoration: none; color: inherit; position: relative; overflow: hidden; }
-    .kb-cat-card::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--accent-red); transition: width .25s ease; }
-    .kb-cat-card.doc::before { background: #c9a86c; }
-    .kb-cat-card.video::before { background: #8b5e83; }
-    .kb-cat-card.img::before { background: #5d8a7b; }
-    .kb-cat-card:hover { transform: translateX(6px); box-shadow: 0 12px 32px rgba(92, 61, 46, 0.14); }
-    .kb-cat-card:hover::before { width: 6px; }
-    .kb-cat-icon { width: 64px; height: 64px; flex-shrink: 0; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 36px; }
-    .kb-cat-card.doc .kb-cat-icon { background: linear-gradient(135deg, rgba(201,168,108,.18), rgba(201,168,108,.06)); }
-    .kb-cat-card.video .kb-cat-icon { background: linear-gradient(135deg, rgba(139,94,131,.18), rgba(139,94,131,.06)); }
-    .kb-cat-card.img .kb-cat-icon { background: linear-gradient(135deg, rgba(93,138,123,.18), rgba(93,138,123,.06)); }
-    .kb-cat-body { flex: 1; min-width: 0; }
-    .kb-cat-name { font-family: 'Noto Serif SC', serif; font-size: 19px; font-weight: 600; color: var(--text-primary); margin-bottom: 4px; }
-    .kb-cat-desc { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
-    .kb-cat-count { display: flex; align-items: baseline; gap: 4px; padding: 0 8px; }
-    .kb-cat-num { font-family: 'Noto Serif SC', serif; font-size: 32px; font-weight: 700; color: var(--accent-red); }
-    .kb-cat-card.video .kb-cat-num { color: #8b5e83; }
-    .kb-cat-card.img .kb-cat-num { color: #5d8a7b; }
-    .kb-cat-card.doc .kb-cat-num { color: #c9a86c; }
-    .kb-cat-unit { font-size: 13px; color: var(--text-muted); }
-    .kb-cat-arrow { width: 20px; height: 20px; color: var(--text-muted); flex-shrink: 0; transition: all .25s ease; }
-    .kb-cat-card:hover .kb-cat-arrow { color: var(--accent-red); transform: translateX(4px); }
-
-    @media (max-width: 768px) {
-      .kb-cat-card { padding: 16px; gap: 14px; }
-      .kb-cat-icon { width: 48px; height: 48px; font-size: 28px; }
-      .kb-cat-name { font-size: 16px; }
-      .kb-cat-desc { display: none; }
-      .kb-cat-num { font-size: 24px; }
-    }
+    /* 知识库分类入口卡片（已停用，回归卡片网格） */
     /* 知识库详情头部 */
     .kb-hero { align-items: flex-start; }
     .kb-breadcrumb { font-size: 12px; color: var(--text-muted); margin-bottom: 12px; letter-spacing: .5px; }
@@ -541,43 +510,47 @@
     document.getElementById('kbDesc').textContent = kb.desc;
     document.getElementById('kbUpdate').textContent = '最近更新：' + kb.update;
 
-    // ===== 统计当前知识库下各类型档案数量 =====
+    // ===== 渲染档案卡片（按类型分流到不同详情页）=====
     const list = resources.filter(r => r.kb === kb.name);
-    const counts = { doc: 0, video: 0, img: 0 };
-    list.forEach(r => counts[r.type] = (counts[r.type] || 0) + 1);
-
-    // ===== 渲染3个分类入口卡片（文档/视频/图片）=====
     const grid = document.getElementById('resourceGrid');
     grid.innerHTML = '';
-    grid.classList.add('kb-overview');
-
-    const categories = [
-      { key: 'doc', name: '文档档案', desc: '历史文献 / 报刊资料 / 档案文件', icon: '📄', color: 'doc', href: 'archive-doc-list.html' },
-      { key: 'video', name: '视频档案', desc: '纪念影像 / 纪录片 / 现场录像', icon: '🎬', color: 'video', href: 'archive-video-list.html' },
-      { key: 'img', name: '图片档案', desc: '历史照片 / 旧址实景 / 图像集', icon: '🖼️', color: 'img', href: 'archive-image-list.html' }
-    ];
-
-    categories.forEach(cat => {
-      const n = counts[cat.key] || 0;
-      const card = document.createElement('a');
-      card.className = 'kb-cat-card kb-cat-' + cat.color;
-      card.href = cat.href + '?kb=' + encodeURIComponent(kb.name);
+    list.forEach(res => {
+      const type = typeMap[res.type];
+      const card = document.createElement('div');
+      card.className = 'resource-card';
       card.innerHTML = `
-        <div class="kb-cat-icon">${cat.icon}</div>
-        <div class="kb-cat-body">
-          <div class="kb-cat-name">${cat.name}</div>
-          <div class="kb-cat-desc">${cat.desc}</div>
+        <div class="card-media">
+          <img src="${res.image}" alt="${res.title}" onerror="this.style.display='none';this.parentElement.style.background='linear-gradient(135deg,#e8d4c0,#d4bfa6)'">
+          <div class="type-badge ${type.color}">${type.label}</div>
+          <div class="card-action"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></div>
         </div>
-        <div class="kb-cat-count">
-          <div class="kb-cat-num">${n}</div>
-          <div class="kb-cat-unit">条</div>
+        <div class="card-body">
+          <div class="card-title">${res.title}</div>
+          <div class="card-meta">
+            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>${res.date}</span>
+            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>${res.size}</span>
+          </div>
+          <div class="card-tags">${res.tags.map(t => `<span class="card-tag">${t}</span>`).join('')}</div>
+          <div class="card-footer">
+            <div class="card-source">来源：${res.source}</div>
+            <span>...</span>
+          </div>
         </div>
-        <svg class="kb-cat-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
       `;
+      card.addEventListener('click', () => {
+        const p = new URLSearchParams({ title: res.title, type: res.type, date: res.date, size: res.size, source: res.source, kb: res.kb, desc: res.desc || res.title, tags: (res.tags||[]).join(','), img: res.image || '' });
+        if (res.type === 'video') {
+          window.location.href = 'archive-video.html?' + p.toString();
+        } else if (res.type === 'img') {
+          window.location.href = 'archive-image.html?' + p.toString();
+        } else {
+          window.location.href = 'archive-preview.html?' + p.toString();
+        }
+      });
       grid.appendChild(card);
     });
 
-    // 底部条数
+    // 更新底部条数
     const pageInfo = document.getElementById('pageInfo');
     if (pageInfo) pageInfo.textContent = list.length;
 
