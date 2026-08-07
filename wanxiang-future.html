@@ -271,25 +271,26 @@
       flex: 1;
       display: flex;
       align-items: flex-start;
-      justify-content: center;
-      padding: 30px 40px;
-      min-height: 580px;
-      gap: 24px;
+      justify-content: space-between;
+      padding: 20px 24px 0;
+      min-height: 520px;
+      gap: 16px;
     }
 
     /* 左侧历史上的今天 */
     .history-sidebar {
-      width: 260px;
+      width: 240px;
       flex-shrink: 0;
       position: relative;
       z-index: 20;
+      margin-left: 0;
     }
 
     .history-card-main {
       background: var(--glass);
       border: 1px solid var(--glass-border);
       border-radius: 16px;
-      padding: 18px;
+      padding: 16px;
       backdrop-filter: blur(16px);
       box-shadow: 0 10px 40px rgba(92, 61, 46, 0.1);
     }
@@ -754,16 +755,17 @@
 
     /* 右侧数据概览 */
     .data-overview {
-      width: 320px;
+      width: 300px;
       flex-shrink: 0;
       background: var(--glass);
       border: 1px solid var(--glass-border);
       border-radius: 16px;
-      padding: 20px;
+      padding: 18px;
       backdrop-filter: blur(16px);
       box-shadow: 0 10px 40px rgba(92, 61, 46, 0.1), 0 0 30px rgba(166, 44, 44, 0.05);
       z-index: 20;
       position: relative;
+      margin-right: 0;
     }
 
     .overview-header {
@@ -883,11 +885,13 @@
     /* 功能区卡片 */
     .feature-cards {
       display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 18px;
-      padding: 30px 40px 20px;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      padding: 16px 24px 20px;
       position: relative;
       z-index: 20;
+      max-width: 1200px;
+      margin: 0 auto;
     }
 
     .feature-card {
@@ -1258,27 +1262,34 @@
 
     /* 响应式 */
     @media (max-width: 1400px) {
-      .feature-cards { grid-template-columns: repeat(4, 1fr); }
-      .data-overview { width: 280px; }
-      .history-sidebar { width: 240px; }
-      .main-title { font-size: 90px; }
+      .feature-cards { grid-template-columns: repeat(4, 1fr); max-width: 1100px; }
+      .data-overview { width: 260px; }
+      .history-sidebar { width: 220px; }
+      .main-title { font-size: 80px; }
+    }
+
+    @media (max-width: 1200px) {
+      .feature-cards { grid-template-columns: repeat(2, 1fr); max-width: 700px; }
+      .hero-section { padding: 16px; gap: 12px; }
+      .data-overview { width: 240px; }
+      .history-sidebar { width: 200px; }
     }
 
     @media (max-width: 1024px) {
       .feature-cards { grid-template-columns: repeat(2, 1fr); }
-      .hero-section { flex-direction: column; align-items: center; padding: 20px; }
-      .history-sidebar { width: 100%; max-width: 480px; }
-      .data-overview { width: 100%; max-width: 480px; }
+      .hero-section { flex-direction: column; align-items: center; padding: 16px; }
+      .history-sidebar { width: 100%; max-width: 480px; margin-left: 0; }
+      .data-overview { width: 100%; max-width: 480px; margin-right: 0; }
       .nav-menu { display: none; }
     }
 
     @media (max-width: 768px) {
-      .feature-cards { grid-template-columns: 1fr; }
+      .feature-cards { grid-template-columns: 1fr; max-width: 400px; }
       .hero-search { width: 90vw; }
-      .main-title { font-size: 60px; }
+      .main-title { font-size: 56px; }
       .main-title::after { display: none; }
-      .hero-section { padding: 16px; }
-      .history-sidebar, .data-overview { padding: 14px; }
+      .hero-section { padding: 12px; }
+      .history-sidebar, .data-overview { padding: 12px; }
     }
   </style>
 </head>
@@ -1338,15 +1349,6 @@
 
     <!-- 主视觉 -->
     <section class="hero-section">
-      <!-- 左侧竖排书法 -->
-      <div class="side-poem">
-        <div class="big">丽水</div>
-        <div class="small">秀山丽水</div>
-        <div class="small">红绿染金</div>
-        <div class="small">六九八之大业</div>
-        <div class="seal">档案</div>
-      </div>
-
       <!-- 中央科技 HUD -->
       <div class="hud-platform">
         <div class="hud-ring hud-ring-4"></div>
