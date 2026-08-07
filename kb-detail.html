@@ -149,6 +149,36 @@
     .batch-btn { padding: 7px 16px; border-radius: 16px; border: 1px solid rgba(166, 44, 44, 0.15); background: rgba(255,255,255,0.5); color: var(--text-secondary); font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 4px; transition: all .3s; }
     .batch-btn:hover { background: rgba(166, 44, 44, 0.08); color: var(--accent-red); }
 
+    /* KB-Detail 顶部操作行 + 收起筛选 */
+    .kb-action-row { display: flex; align-items: center; gap: 14px; padding-bottom: 12px; }
+    .kb-action-row .kb-action-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+    .kb-check { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--text-secondary); cursor: pointer; user-select: none; }
+    .kb-check input { width: 14px; height: 14px; accent-color: var(--accent-red); cursor: pointer; }
+    .kb-action-spacer { flex: 1; }
+    .kb-btn-primary { padding: 7px 18px; border-radius: 16px; border: none; background: var(--accent-red); color: #fff; font-size: 13px; cursor: pointer; transition: all .3s; font-family: inherit; }
+    .kb-btn-primary:hover { background: var(--accent-red-light); box-shadow: 0 4px 12px rgba(166, 44, 44, 0.25); }
+    .kb-btn-ghost { padding: 7px 16px; border-radius: 16px; border: 1px solid rgba(166, 44, 44, 0.18); background: rgba(255,255,255,0.5); color: var(--text-secondary); font-size: 13px; cursor: pointer; transition: all .3s; font-family: inherit; }
+    .kb-btn-ghost:hover { border-color: var(--accent-red); color: var(--accent-red); }
+
+    .kb-filter-toggle-row { display: flex; align-items: center; padding: 10px 14px; background: rgba(166,44,44,0.04); border-radius: 8px; gap: 14px; flex-wrap: wrap; }
+    .kb-filter-summary { font-size: 13px; color: var(--text-secondary); display: flex; gap: 14px; flex-wrap: wrap; }
+    .kb-filter-summary span { color: var(--text-primary); font-weight: 500; }
+    .kb-filter-toggle { margin-left: auto; font-size: 13px; color: var(--accent-red); cursor: pointer; user-select: none; display: inline-flex; align-items: center; gap: 4px; }
+    .kb-filter-toggle:hover { color: var(--accent-red-light); }
+    .kb-filter-toggle .arrow { transition: transform .3s; }
+    .kb-filter-toggle.collapsed .arrow { transform: rotate(180deg); }
+
+    .kb-filter-expand { padding: 16px 14px 4px; display: grid; grid-template-columns: auto 1fr; row-gap: 14px; column-gap: 14px; align-items: center; }
+    .kb-filter-expand .filter-label { font-size: 13px; color: var(--text-primary); font-weight: 500; }
+    .kb-pill-group { display: inline-flex; gap: 8px; flex-wrap: wrap; }
+    .kb-pill { padding: 6px 16px; border-radius: 16px; border: 1px solid rgba(166, 44, 44, 0.12); background: rgba(255,255,255,0.6); color: var(--text-secondary); font-size: 13px; cursor: pointer; transition: all .25s; user-select: none; font-family: inherit; }
+    .kb-pill:hover { border-color: rgba(166,44,44,.32); color: var(--accent-red); }
+    .kb-pill.active { background: rgba(166,44,44,.1); border-color: rgba(166,44,44,.35); color: var(--accent-red); font-weight: 500; }
+    .kb-filter-name-input { padding: 7px 14px; border-radius: 16px; border: 1px solid rgba(166,44,44,0.12); background: rgba(255,255,255,0.6); color: var(--text-primary); font-size: 13px; outline: none; min-width: 240px; transition: all .25s; font-family: inherit; }
+    .kb-filter-name-input:focus { border-color: var(--accent-red); background: #fff; }
+    .kb-filter-name-input::placeholder { color: rgba(61,43,31,.4); }
+    .kb-filter-expand.collapsed { display: none; }
+
     /* 资源卡片网格 */
     .resource-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
     .resource-card { background: var(--glass); border: 1px solid var(--glass-border); border-radius: 14px; overflow: hidden; box-shadow: 0 8px 24px var(--card-shadow); transition: all .35s ease; cursor: pointer; backdrop-filter: blur(10px); }
@@ -337,21 +367,38 @@
             <button class="kb-back" onclick="window.location.href='archives.html'">← 返回知识库列表</button>
           </div>
 
+          <!-- 顶部操作行 -->
+          <div class="kb-action-row">
+            <div class="kb-action-title">全部文件</div>
+            <div class="kb-action-spacer"></div>
+            <label class="kb-check"><input type="checkbox" id="kbSelectAll"> 全选</label>
+            <button class="kb-btn-primary" id="kbBtnAdd">添加知识</button>
+            <button class="kb-btn-ghost" id="kbBtnNewFolder">新建文件夹</button>
+          </div>
+
           <!-- 资源筛选 -->
           <div class="search-filter-box">
-            <div class="filter-row">
-              <span class="filter-label">资源筛选：</span>
-              <div class="filter-item">时间范围 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></div>
-              <div class="filter-item">档案类型 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></div>
-              <div class="filter-item">知识库 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></div>
-              <div class="filter-actions">
-                <button class="batch-btn">批量操作</button>
-                <button class="upload-btn">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
-                  上传资源
-                </button>
+            <div class="kb-filter-toggle-row">
+              <div class="kb-action-title" style="font-size:13px;font-weight:500;color:var(--text-muted)">搜索筛选</div>
+              <div class="kb-filter-summary" id="kbFilterSummary">
+                排序：<span id="sumSort">按更新时间倒序</span>　类型：<span id="sumType">全部</span>　名称：<span id="sumName">全部</span>
               </div>
-              <div class="filter-result">共 <strong>186,732</strong> 条</div>
+              <div class="kb-filter-toggle collapsed" id="kbFilterToggle">收起筛选 <span class="arrow">▾</span></div>
+            </div>
+            <div class="kb-filter-expand collapsed" id="kbFilterExpand">
+              <div class="filter-label">排序：</div>
+              <div class="kb-pill-group" data-key="sort">
+                <div class="kb-pill" data-val="asc">按更新时间正序</div>
+                <div class="kb-pill active" data-val="desc">按更新时间倒序</div>
+              </div>
+              <div class="filter-label">类型：</div>
+              <div class="kb-pill-group" data-key="type">
+                <div class="kb-pill active" data-val="all">全部</div>
+                <div class="kb-pill" data-val="folder">文件夹</div>
+                <div class="kb-pill" data-val="file">文件</div>
+              </div>
+              <div class="filter-label">名称：</div>
+              <input class="kb-filter-name-input" id="kbFilterName" placeholder="请输入文件或文件夹名称">
             </div>
           </div>
 
@@ -557,6 +604,44 @@
     });
 
     // 左侧收藏知识库高亮当前库
+    // ===== 文件筛选状态 =====
+    const fileFilter = { sort: 'desc', type: 'all', name: '' };
+
+    // ===== 收起/展开筛选 =====
+    const kbFilterToggle = document.getElementById('kbFilterToggle');
+    const kbFilterExpand = document.getElementById('kbFilterExpand');
+    kbFilterToggle.addEventListener('click', () => {
+      kbFilterExpand.classList.toggle('collapsed');
+      kbFilterToggle.classList.toggle('collapsed');
+      kbFilterToggle.firstChild.textContent = kbFilterExpand.classList.contains('collapsed') ? '展开筛选 ' : '收起筛选 ';
+    });
+
+    // ===== Pill 筛选交互 =====
+    document.querySelectorAll('.kb-pill-group').forEach(g => {
+      const key = g.getAttribute('data-key');
+      g.querySelectorAll('.kb-pill').forEach(p => {
+        p.addEventListener('click', () => {
+          g.querySelectorAll('.kb-pill').forEach(o => o.classList.remove('active'));
+          p.classList.add('active');
+          fileFilter[key] = p.getAttribute('data-val');
+          // 更新摘要
+          if (key === 'sort') document.getElementById('sumSort').textContent = p.textContent;
+          if (key === 'type') document.getElementById('sumType').textContent = p.textContent;
+        });
+      });
+    });
+    document.getElementById('kbFilterName').addEventListener('input', e => {
+      fileFilter.name = e.target.value.trim();
+      document.getElementById('sumName').textContent = fileFilter.name ? fileFilter.name : '全部';
+    });
+
+    // ===== 全选 + 添加知识 + 新建文件夹 =====
+    document.getElementById('kbSelectAll').addEventListener('change', e => {
+      console.log('全选:', e.target.checked);
+    });
+    document.getElementById('kbBtnAdd').addEventListener('click', () => alert('添加知识（演示环境）'));
+    document.getElementById('kbBtnNewFolder').addEventListener('click', () => alert('新建文件夹（演示环境）'));
+
     document.querySelectorAll('.menu-item[data-kb]').forEach(item => {
       if (item.getAttribute('data-kb') === kb.name) item.classList.add('active');
     });
