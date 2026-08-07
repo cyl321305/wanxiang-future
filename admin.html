@@ -266,7 +266,7 @@
     <div class="side-item" data-target="courses">🚩 思政课程管理</div>
     <div class="side-item" data-target="routes">🗺️ 研学路线管理</div>
     <div class="side-item" data-target="users">👥 用户与权限</div>
-    <div class="side-item" data-target="settings">⚙️ 系统设置</div>
+    <div class="side-item" data-target="blacklist">🚫 黑名单管理</div>
   </aside>
 
   <main class="admin-main">
@@ -494,29 +494,87 @@
     </section>
 
     <!-- 系统设置 -->
-    <section id="settings" class="admin-section" hidden>
+    <section id="blacklist" class="admin-section" hidden>
       <div class="page-head">
-        <div class="page-title">系统设置</div>
-        <div class="page-sub">站点信息、视觉主题与运维配置</div>
+        <div class="page-title">黑名单管理</div>
+        <div class="page-sub">维护问答召回过滤词库：添加到黑名单的词汇不会在智能问答中召回</div>
       </div>
-      <div class="panel">
-        <div class="form-row"><div class="form-label">站点名称</div><input type="text" value="万象未来 · AI 档案知识空间"></div>
-        <div class="form-row"><div class="form-label">站点副标题</div><input type="text" value="以档案为根，以AI为翼"></div>
-        <div class="form-row"><div class="form-label">主题主色</div><input type="color" value="#a62c2c"><span style="font-size:13px;color:var(--text-muted)">国风红</span></div>
-        <div class="form-row"><div class="form-label">辅助金色</div><input type="color" value="#c9a86c"></div>
-        <div class="form-row"><div class="form-label">备案信息</div><input type="text" value="浙ICP备 2026 第 0001 号"></div>
-        <div class="form-row"><div class="form-label">资源展示模式</div>
-          <select style="max-width:160px"><option>仅后台可见</option><option>部分公开展示</option><option>全部公开展示</option></select>
+      
+      <!-- 添加黑名单 -->
+      <div class="panel" style="margin-bottom: 18px;">
+        <div class="panel-title">添加黑名单词汇</div>
+        <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+          <input type="text" id="blInput" placeholder="输入要屏蔽的词汇或短语（支持中英文，最多 50 字）..." style="flex:1;min-width:240px;border:1px solid rgba(166,44,44,0.16);border-radius:10px;padding:10px 14px;font-size:14px;font-family:inherit;color:var(--text-primary);outline:none">
+          <select id="blLevel" style="border:1px solid rgba(166,44,44,0.16);border-radius:10px;padding:10px 14px;font-size:14px;font-family:inherit;color:var(--text-primary);background:#fff;cursor:pointer">
+            <option value="high">高 - 严格召回过滤</option>
+            <option value="medium" selected>中 - 常规召回过滤</option>
+            <option value="low">低 - 仅在明确命中时过滤</option>
+          </select>
+          <select id="blScope" style="border:1px solid rgba(166,44,44,0.16);border-radius:10px;padding:10px 14px;font-size:14px;font-family:inherit;color:var(--text-primary);background:#fff;cursor:pointer">
+            <option value="all">全部知识库</option>
+            <option value="red">红色记忆</option>
+            <option value="people">人物传记</option>
+            <option value="event">历史事件</option>
+            <option value="build">地方建设</option>
+            <option value="org">组织机构</option>
+            <option value="culture">文化民俗</option>
+            <option value="topic">专题库</option>
+          </select>
+          <button class="btn" id="blAdd">＋ 添加黑名单</button>
         </div>
-        <div class="form-row"><div class="form-label">自动备份</div>
-          <select style="max-width:160px"><option>每日 02:00</option><option>每周日</option><option>关闭</option></select>
+        <div style="margin-top:10px;font-size:12px;color:var(--text-muted)">提示：黑名单词汇将在智能问答召回阶段被自动过滤，不影响档案资源浏览与展示。</div>
+      </div>
+
+      <!-- 统计与搜索 -->
+      <div class="panel" style="margin-bottom: 18px;">
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px">
+          <div style="padding:14px;background:rgba(166,44,44,0.06);border-radius:10px">
+            <div style="font-size:12px;color:var(--text-muted);margin-bottom:6px">黑名单总数</div>
+            <div style="font-size:24px;font-weight:600;color:var(--accent-red)" id="blTotal">0</div>
+          </div>
+          <div style="padding:14px;background:rgba(166,44,44,0.06);border-radius:10px">
+            <div style="font-size:12px;color:var(--text-muted);margin-bottom:6px">高优先级</div>
+            <div style="font-size:24px;font-weight:600;color:var(--accent-red)" id="blHigh">0</div>
+          </div>
+          <div style="padding:14px;background:rgba(166,44,44,0.06);border-radius:10px">
+            <div style="font-size:12px;color:var(--text-muted);margin-bottom:6px">中优先级</div>
+            <div style="font-size:24px;font-weight:600;color:var(--accent-red)" id="blMedium">0</div>
+          </div>
+          <div style="padding:14px;background:rgba(166,44,44,0.06);border-radius:10px">
+            <div style="font-size:12px;color:var(--text-muted);margin-bottom:6px">本周新增</div>
+            <div style="font-size:24px;font-weight:600;color:var(--accent-red)" id="blWeek">0</div>
+          </div>
         </div>
-        <div class="form-row" style="border-bottom:none">
-          <div class="form-label">AI 模型</div>
-          <select style="max-width:220px"><option>万象·档案大模型 v2</option><option>通用大模型 API</option></select>
+        <div class="toolbar">
+          <input type="text" id="blSearch" placeholder="搜索黑名单词汇 / 范围 / 添加人...">
+          <select id="blFilterLevel">
+            <option value="">全部等级</option>
+            <option value="high">高优先级</option>
+            <option value="medium">中优先级</option>
+            <option value="low">低优先级</option>
+          </select>
+          <select id="blFilterScope">
+            <option value="">全部范围</option>
+            <option value="all">全部知识库</option>
+            <option value="red">红色记忆</option>
+            <option value="people">人物传记</option>
+            <option value="event">历史事件</option>
+            <option value="build">地方建设</option>
+            <option value="org">组织机构</option>
+            <option value="culture">文化民俗</option>
+            <option value="topic">专题库</option>
+          </select>
           <div class="spacer"></div>
-          <button class="btn">保存设置</button>
+          <button class="btn ghost" id="blExport">导出词表</button>
         </div>
+      </div>
+
+      <!-- 黑名单列表 -->
+      <div class="panel" style="padding:0;overflow:hidden">
+        <table class="data-table">
+          <thead><tr><th style="width:24%">词汇</th><th style="width:10%">等级</th><th style="width:14%">生效范围</th><th style="width:12%">添加人</th><th style="width:14%">添加时间</th><th style="width:10%">命中次数</th><th style="width:16%">操作</th></tr></thead>
+          <tbody id="blTableBody"></tbody>
+        </table>
       </div>
     </section>
 
@@ -619,6 +677,161 @@
       });
     });
   }
+
+  // ===== 黑名单管理 =====
+  (function() {
+    var scopeMap = { all: '全部知识库', red: '红色记忆', people: '人物传记', event: '历史事件', build: '地方建设', org: '组织机构', culture: '文化民俗', topic: '专题库' };
+    var levelMap = { high: { label: '高', cls: 'red' }, medium: { label: '中', cls: 'gold' }, low: { label: '低', cls: 'blue' } };
+
+    var blData = [
+      { id: 1, word: '色情', level: 'high', scope: 'all', operator: '系统管理员', date: '2026-05-23 09:12', hits: 0 },
+      { id: 2, word: '暴力', level: 'high', scope: 'all', operator: '系统管理员', date: '2026-05-23 09:14', hits: 0 },
+      { id: 3, word: '赌博', level: 'high', scope: 'all', operator: '系统管理员', date: '2026-05-23 09:15', hits: 0 },
+      { id: 4, word: '毒品', level: 'high', scope: 'all', operator: '系统管理员', date: '2026-05-23 09:16', hits: 0 },
+      { id: 5, word: '邪教组织', level: 'high', scope: 'all', operator: '李编辑', date: '2026-05-22 16:40', hits: 0 },
+      { id: 6, word: '谣言', level: 'medium', scope: 'all', operator: '王审核', date: '2026-05-21 11:05', hits: 0 },
+      { id: 7, word: '政治敏感', level: 'high', scope: 'all', operator: '系统管理员', date: '2026-05-20 14:22', hits: 0 },
+      { id: 8, word: '商业广告', level: 'low', scope: 'red', operator: '孙审核', date: '2026-05-19 10:30', hits: 0 },
+      { id: 9, word: '刷单', level: 'medium', scope: 'all', operator: '赵编辑', date: '2026-05-18 15:20', hits: 0 },
+      { id: 10, word: '低俗笑话', level: 'medium', scope: 'culture', operator: '李编辑', date: '2026-05-17 09:45', hits: 0 },
+      { id: 11, word: '恶意词汇', level: 'high', scope: 'all', operator: '系统管理员', date: '2026-05-16 08:50', hits: 0 },
+      { id: 12, word: '不可描述', level: 'high', scope: 'all', operator: '系统管理员', date: '2026-05-15 11:25', hits: 0 }
+    ];
+
+    function renderBl() {
+      var search = (document.getElementById('blSearch') || {}).value || '';
+      var lvl = (document.getElementById('blFilterLevel') || {}).value || '';
+      var scp = (document.getElementById('blFilterScope') || {}).value || '';
+      var tbody = document.getElementById('blTableBody');
+      if (!tbody) return;
+      var list = blData.filter(function(x) {
+        if (lvl && x.level !== lvl) return false;
+        if (scp && x.scope !== scp) return false;
+        if (search) {
+          var s = search.toLowerCase();
+          if (x.word.indexOf(search) === -1 && scopeMap[x.scope].indexOf(search) === -1 && x.operator.indexOf(search) === -1) return false;
+        }
+        return true;
+      });
+      tbody.innerHTML = list.map(function(x) {
+        var lv = levelMap[x.level];
+        return '<tr>' +
+          '<td><span style="font-weight:500;color:var(--text-primary)">' + escapeHtml(x.word) + '</span></td>' +
+          '<td><span class="badge ' + lv.cls + '">' + lv.label + '</span></td>' +
+          '<td>' + scopeMap[x.scope] + '</td>' +
+          '<td>' + escapeHtml(x.operator) + '</td>' +
+          '<td>' + x.date + '</td>' +
+          '<td>' + x.hits + '</td>' +
+          '<td><span class="link-btn" data-act="edit" data-id="' + x.id + '">编辑</span><span class="link-btn" data-act="del" data-id="' + x.id + '">删除</span></td>' +
+          '</tr>';
+      }).join('');
+      if (list.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--text-muted);padding:32px 0">暂无黑名单词汇</td></tr>';
+      }
+
+      // 绑定行内按钮
+      tbody.querySelectorAll('.link-btn').forEach(function(b) {
+        b.addEventListener('click', function() {
+          var id = parseInt(this.getAttribute('data-id'));
+          var act = this.getAttribute('data-act');
+          if (act === 'del') {
+            if (confirm('确定删除该黑名单词汇吗？')) {
+              blData = blData.filter(function(x) { return x.id !== id; });
+              renderBl();
+              updateBlStats();
+            }
+          } else if (act === 'edit') {
+            var item = blData.find(function(x) { return x.id === id; });
+            if (!item) return;
+            var newWord = prompt('编辑词汇：', item.word);
+            if (newWord === null) return;
+            newWord = newWord.trim();
+            if (!newWord) { alert('词汇不能为空'); return; }
+            if (newWord.length > 50) { alert('词汇长度不能超过 50 字'); return; }
+            item.word = newWord;
+            renderBl();
+          }
+        });
+      });
+
+      // 统计
+      updateBlStats();
+    }
+
+    function updateBlStats() {
+      var total = blData.length;
+      var high = blData.filter(function(x) { return x.level === 'high'; }).length;
+      var medium = blData.filter(function(x) { return x.level === 'medium'; }).length;
+      // 本周新增（模拟：根据当前日期 2026-05-23 计算 7 天内）
+      var weekStart = new Date('2026-05-17');
+      var week = blData.filter(function(x) {
+        var d = new Date(x.date);
+        return d >= weekStart;
+      }).length;
+      var t = document.getElementById('blTotal');
+      var h = document.getElementById('blHigh');
+      var m = document.getElementById('blMedium');
+      var w = document.getElementById('blWeek');
+      if (t) t.textContent = total;
+      if (h) h.textContent = high;
+      if (m) m.textContent = medium;
+      if (w) w.textContent = week;
+    }
+
+    function escapeHtml(s) {
+      return String(s).replace(/[<>&"']/g, function(c) {
+        return { '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;', "'": '&#39;' }[c];
+      });
+    }
+
+    // 添加黑名单
+    var addBtn = document.getElementById('blAdd');
+    if (addBtn) {
+      addBtn.addEventListener('click', function() {
+        var input = document.getElementById('blInput');
+        var lv = document.getElementById('blLevel');
+        var sc = document.getElementById('blScope');
+        var word = (input.value || '').trim();
+        if (!word) { alert('请输入要屏蔽的词汇'); input.focus(); return; }
+        if (word.length > 50) { alert('词汇长度不能超过 50 字'); return; }
+        var newId = blData.length ? Math.max.apply(null, blData.map(function(x) { return x.id; })) + 1 : 1;
+        var now = new Date();
+        var dateStr = now.getFullYear() + '-' +
+          String(now.getMonth() + 1).padStart(2, '0') + '-' +
+          String(now.getDate()).padStart(2, '0') + ' ' +
+          String(now.getHours()).padStart(2, '0') + ':' +
+          String(now.getMinutes()).padStart(2, '0');
+        blData.unshift({
+          id: newId, word: word, level: lv.value, scope: sc.value,
+          operator: '系统管理员', date: dateStr, hits: 0
+        });
+        input.value = '';
+        renderBl();
+      });
+    }
+
+    // 搜索/筛选
+    ['blSearch', 'blFilterLevel', 'blFilterScope'].forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el) el.addEventListener('input', renderBl);
+    });
+
+    // 导出
+    var exp = document.getElementById('blExport');
+    if (exp) {
+      exp.addEventListener('click', function() {
+        var text = '词汇\t等级\t范围\t添加人\t添加时间\t命中次数\n' +
+          blData.map(function(x) {
+            return x.word + '\t' + levelMap[x.level].label + '\t' + scopeMap[x.scope] + '\t' + x.operator + '\t' + x.date + '\t' + x.hits;
+          }).join('\n');
+        alert('黑名单词表内容（演示）：\n\n' + text);
+      });
+    }
+
+    // 初始渲染
+    renderBl();
+  })();
+</script>
 </script>
 </body>
 </html>
