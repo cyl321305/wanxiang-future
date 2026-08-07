@@ -265,68 +265,149 @@
       color: var(--accent-red);
     }
 
-    /* 主视觉区域 */
+    /* 主视觉区域 - 三栏布局 */
     .hero-section {
       position: relative;
       flex: 1;
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      padding-top: 40px;
-      min-height: 520px;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 30px 40px;
+      min-height: 580px;
+      gap: 24px;
     }
 
-    /* 左侧竖排书法字 */
-    .side-poem {
-      position: absolute;
-      left: 50px;
-      top: 50%;
-      transform: translateY(-50%);
-      writing-mode: vertical-rl;
-      text-orientation: upright;
-      font-family: 'Ma Shan Zheng', cursive;
+    /* 左侧历史上的今天 */
+    .history-sidebar {
+      width: 260px;
+      flex-shrink: 0;
+      position: relative;
       z-index: 20;
-      pointer-events: none;
     }
 
-    .side-poem .big {
-      font-size: 52px;
+    .history-card-main {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      padding: 18px;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 10px 40px rgba(92, 61, 46, 0.1);
+    }
+
+    .history-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(166, 44, 44, 0.08);
+    }
+
+    .history-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .history-title::before {
+      content: '';
+      width: 4px;
+      height: 14px;
+      background: linear-gradient(180deg, var(--accent-red-light), var(--accent-gold));
+      border-radius: 2px;
+    }
+
+    .history-date-badge {
+      padding: 3px 10px;
+      background: rgba(166, 44, 44, 0.08);
       color: var(--accent-red);
-      text-shadow: 0 0 25px rgba(166, 44, 44, 0.2);
-      letter-spacing: 8px;
+      font-size: 12px;
+      font-weight: 500;
+      border-radius: 10px;
+    }
+
+    .history-timeline-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .ht-item {
+      display: flex;
+      gap: 10px;
+      padding: 10px;
+      background: rgba(166, 44, 44, 0.03);
+      border-radius: 10px;
+      transition: all 0.3s ease;
+    }
+
+    .ht-item:hover {
+      background: rgba(166, 44, 44, 0.08);
+      transform: translateX(4px);
+    }
+
+    .ht-year {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--accent-red);
+      min-width: 38px;
+      padding-top: 2px;
+    }
+
+    .ht-content {
+      flex: 1;
+    }
+
+    .ht-event {
+      font-size: 13px;
+      color: var(--text-primary);
+      margin-bottom: 6px;
       line-height: 1.4;
     }
 
-    .side-poem .small {
-      font-size: 20px;
-      color: rgba(61, 43, 31, 0.7);
-      margin-top: 16px;
-      letter-spacing: 6px;
+    .ht-btn {
+      padding: 3px 10px;
+      background: var(--accent-red);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 11px;
+      cursor: pointer;
+      transition: all 0.2s ease;
     }
 
-    .seal {
-      display: inline-block;
-      width: 34px;
-      height: 34px;
-      border: 2px solid var(--accent-red);
+    .ht-btn:hover {
+      background: var(--accent-red-light);
+      transform: scale(1.05);
+    }
+
+    .history-more-link {
+      margin-top: 14px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(166, 44, 44, 0.08);
+      text-align: center;
+      font-size: 12px;
       color: var(--accent-red);
-      font-size: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-top: 16px;
-      font-family: 'Noto Serif SC', serif;
-      border-radius: 4px;
-      background: rgba(166, 44, 44, 0.05);
+      cursor: pointer;
+      transition: all 0.2s ease;
     }
 
-    /* 中央标题区 */
+    .history-more-link:hover {
+      color: var(--accent-red-light);
+    }
+
+    /* 中央内容区 */
     .hero-content {
       text-align: center;
       z-index: 20;
       position: relative;
-      margin-top: 20px;
+      flex: 1;
+      max-width: 680px;
+      padding-top: 20px;
     }
 
     .main-title {
@@ -673,10 +754,8 @@
 
     /* 右侧数据概览 */
     .data-overview {
-      position: absolute;
-      right: 40px;
-      top: 30px;
       width: 320px;
+      flex-shrink: 0;
       background: var(--glass);
       border: 1px solid var(--glass-border);
       border-radius: 16px;
@@ -684,6 +763,7 @@
       backdrop-filter: blur(16px);
       box-shadow: 0 10px 40px rgba(92, 61, 46, 0.1), 0 0 30px rgba(166, 44, 44, 0.05);
       z-index: 20;
+      position: relative;
     }
 
     .overview-header {
@@ -1178,17 +1258,17 @@
 
     /* 响应式 */
     @media (max-width: 1400px) {
-      .feature-cards { grid-template-columns: repeat(3, 1fr); }
+      .feature-cards { grid-template-columns: repeat(4, 1fr); }
       .data-overview { width: 280px; }
-      .side-poem { left: 30px; }
+      .history-sidebar { width: 240px; }
       .main-title { font-size: 90px; }
     }
 
     @media (max-width: 1024px) {
       .feature-cards { grid-template-columns: repeat(2, 1fr); }
-      .bottom-section { grid-template-columns: 1fr; }
-      .data-overview { position: relative; right: auto; top: auto; margin: 20px auto 0; }
-      .side-poem { display: none; }
+      .hero-section { flex-direction: column; align-items: center; padding: 20px; }
+      .history-sidebar { width: 100%; max-width: 480px; }
+      .data-overview { width: 100%; max-width: 480px; }
       .nav-menu { display: none; }
     }
 
@@ -1197,6 +1277,8 @@
       .hero-search { width: 90vw; }
       .main-title { font-size: 60px; }
       .main-title::after { display: none; }
+      .hero-section { padding: 16px; }
+      .history-sidebar, .data-overview { padding: 14px; }
     }
   </style>
 </head>
@@ -1313,6 +1395,47 @@
           <span class="hot-label">你可以这样问：</span>
           <span class="hot-tag">讲讲粟裕在浙西南的游击抗战事迹</span>
           <span class="hot-tag">介绍龙泉革命英雄陈凤生的生平事迹</span>
+        </div>
+      </div>
+
+      <!-- 左侧历史上的今天 -->
+      <div class="history-sidebar">
+        <div class="history-card-main">
+          <div class="history-header">
+            <div class="history-title">历史上的今天</div>
+            <div class="history-date-badge">5月22日</div>
+          </div>
+          <div class="history-timeline-list">
+            <div class="ht-item">
+              <div class="ht-year">1935</div>
+              <div class="ht-content">
+                <div class="ht-event">红军挺进师进入丽水地区</div>
+                <button class="ht-btn">查看档案</button>
+              </div>
+            </div>
+            <div class="ht-item">
+              <div class="ht-year">1942</div>
+              <div class="ht-content">
+                <div class="ht-event">中共浙西南区委成立</div>
+                <button class="ht-btn">查看档案</button>
+              </div>
+            </div>
+            <div class="ht-item">
+              <div class="ht-year">1949</div>
+              <div class="ht-content">
+                <div class="ht-event">丽水解放</div>
+                <button class="ht-btn">查看档案</button>
+              </div>
+            </div>
+            <div class="ht-item">
+              <div class="ht-year">2003</div>
+              <div class="ht-content">
+                <div class="ht-event">丽水撤地设市</div>
+                <button class="ht-btn">查看档案</button>
+              </div>
+            </div>
+          </div>
+          <div class="history-more-link" id="historyMoreBtn2">查看更多 →</div>
         </div>
       </div>
 
@@ -1449,92 +1572,6 @@
           <div class="card-icon">🗺️</div>
         </div>
       </a>
-
-      <a href="ai-chat.html" class="feature-card" style="text-decoration:none">
-        <div class="card-header">
-          <div>
-            <div class="card-title">智能问答助手</div>
-            <div class="card-desc">AI赋能 · 智慧探索</div>
-          </div>
-          <div class="card-arrow">›</div>
-        </div>
-        <div class="card-illustration">
-          <div class="card-halo"></div>
-          <div class="card-halo"></div>
-          <div class="card-base"></div>
-          <div class="card-icon">🤖</div>
-        </div>
-      </a>
-    </section>
-
-    <!-- 底部区域 -->
-    <section class="bottom-section">
-      <div class="bottom-card">
-        <div class="bottom-card-header">
-          <div class="bottom-card-title">历史上的今天</div>
-          <div class="bottom-card-more" id="historyMoreBtn" style="cursor:pointer">
-            更多
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="12" height="12">
-              <path d="m9 18 6-6-6-6"></path>
-            </svg>
-          </div>
-        </div>
-        <div class="today-in-history">
-          <div class="history-left">
-            <div class="history-date">5月22日</div>
-            <div class="history-lunar">农历四月廿五</div>
-            <div class="history-book">📖</div>
-          </div>
-          <div class="history-timeline">
-            <div class="timeline-item">
-              <div class="timeline-year">1935</div>
-              <div class="timeline-event">红军挺进师进入丽水地区</div>
-              <button class="timeline-btn">查看档案</button>
-            </div>
-            <div class="timeline-item">
-              <div class="timeline-year">1942</div>
-              <div class="timeline-event">中共浙西南区委成立</div>
-              <button class="timeline-btn">查看档案</button>
-            </div>
-            <div class="timeline-item">
-              <div class="timeline-year">1949</div>
-              <div class="timeline-event">丽水解放</div>
-              <button class="timeline-btn">查看档案</button>
-            </div>
-            <div class="timeline-item">
-              <div class="timeline-year">2003</div>
-              <div class="timeline-event">丽水撤地设市</div>
-              <button class="timeline-btn">查看档案</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="bottom-card">
-        <div class="bottom-card-header">
-          <div class="bottom-card-title">平台公告</div>
-          <div class="bottom-card-more">
-            更多
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="12" height="12">
-              <path d="m9 18 6-6-6-6"></path>
-            </svg>
-          </div>
-        </div>
-        <div class="notice-list">
-          <div class="notice-item">
-            <div class="notice-text">关于平台系统升级维护的通知</div>
-            <div class="notice-date">05-20</div>
-          </div>
-          <div class="notice-item">
-            <div class="notice-text">新增一批档案资源上线公告</div>
-            <div class="notice-date">05-18</div>
-          </div>
-          <div class="notice-item">
-            <div class="notice-text">丽水市档案馆数字化成果展示活动预告</div>
-            <div class="notice-date">05-15</div>
-          </div>
-        </div>
-      </div>
     </section>
   </div>
 
