@@ -161,19 +161,19 @@
     /* 新增知识库卡片 */
     .kb-card-add {
       background: var(--glass);
-      border: 2px dashed rgba(166,44,44,.28);
-      border-radius: 16px;
+      border: 2.5px dashed rgba(166,44,44,.35);
+      border-radius: 24px;
       cursor: pointer;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      min-height: 220px; padding: 24px;
-      transition: all .3s ease;
-      color: var(--text-muted);
-      box-shadow: 0 4px 12px rgba(92,61,46,.04);
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 8px 20px;
+      transition: all .25s ease;
+      color: rgba(166,44,44,.7);
+      font-size: 14px; font-weight: 500;
+      margin-bottom: 16px;
     }
-    .kb-card-add:hover { border-color: var(--accent-red); color: var(--accent-red); background: rgba(166,44,44,.04); transform: translateY(-3px); box-shadow: 0 12px 28px rgba(166,44,44,.12); }
-    .kb-card-add-icon { width: 56px; height: 56px; border-radius: 50%; background: rgba(166,44,44,.08); display: flex; align-items: center; justify-content: center; font-size: 28px; margin-bottom: 12px; transition: all .3s; }
-    .kb-card-add:hover .kb-card-add-icon { background: rgba(166,44,44,.16); transform: scale(1.05); }
-    .kb-card-add-text { font-size: 15px; font-weight: 500; }
+    .kb-card-add:hover { border-color: var(--accent-red); color: var(--accent-red); background: rgba(166,44,44,.06); transform: translateY(-1px); box-shadow: 0 4px 14px rgba(166,44,44,.1); }
+    .kb-card-add-icon { width: 28px; height: 28px; border-radius: 50%; background: rgba(166,44,44,.1); display: flex; align-items: center; justify-content: center; font-size: 16px; transition: all .25s; flex-shrink: 0; }
+    .kb-card-add:hover .kb-card-add-icon { background: rgba(166,44,44,.18); transform: scale(1.08); }
 
     /* 添加知识库弹窗 */
     .kb-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.45); backdrop-filter: blur(4px); z-index: 1000; display: none; align-items: center; justify-content: center; }
@@ -485,12 +485,15 @@
            </div>
          </div>
 
-          <!-- 知识库卡片 -->
-          <div class="resource-grid" id="kbGrid"></div>
+          <!-- 添加知识库（紧凑横向芯片） -->
           <div class="kb-card-add" id="kbCardAdd">
             <div class="kb-card-add-icon">＋</div>
-            <div class="kb-card-add-text">新增知识库</div>
+            <span>新增知识库</span>
           </div>
+
+          <!-- 知识库卡片 -->
+          <div class="resource-grid" id="kbGrid"></div>
+
         </div>
 
         <!-- 右侧边栏 -->
