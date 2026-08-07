@@ -519,7 +519,43 @@ function escapeHtml(s) {
   return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
 
+// ===== 黑名单过滤（与后台 admin.html 中的词表保持一致）=====
+const BLACKLIST = [
+  { word: '色情', level: 'high', scope: 'all' },
+  { word: '暴力', level: 'high', scope: 'all' },
+  { word: '赌博', level: 'high', scope: 'all' },
+  { word: '毒品', level: 'high', scope: 'all' },
+  { word: '邪教组织', level: 'high', scope: 'all' },
+  { word: '政治敏感', level: 'high', scope: 'all' },
+  { word: '恶意词汇', level: 'high', scope: 'all' },
+  { word: '不可描述', level: 'high', scope: 'all' },
+  { word: '谣言', level: 'medium', scope: 'all' },
+  { word: '刷单', level: 'medium', scope: 'all' },
+  { word: '低俗笑话', level: 'medium', scope: 'culture' },
+  { word: '商业广告', level: 'low', scope: 'red' }
+];
+
+function checkBlacklist(question, kb) {
+  const kbScopeMap = {
+    '红色记忆': 'red', '人物传记': 'people', '历史事件': 'event',
+    '地方建设': 'build', '组织机构': 'org', '文化民俗': 'culture', '专题库': 'topic'
+  };
+  const currentScope = kbScopeMap[kb] || '';
+  for (const item of BLACKLIST) {
+    if (!question.includes(item.word)) continue;
+    if (item.scope === 'all' || item.scope === currentScope) {
+      return item;
+    }
+  }
+  return null;
+}
+
 function generateResponse(question, kb) {
+  // 黑名单过滤
+  const blocked = checkBlacklist(question, kb);
+  if (blocked) {
+    return `<div style="padding:14px 16px;background:rgba(166,44,44,0.06);border-left:3px solid var(--accent-red);border-radius:8px;color:var(--text-primary);font-size:14px"><div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;color:var(--accent-red);font-weight:600"><span style="font-size:16px">🚫</span> 提问被召回过滤</div><p style="margin:0 0 6px 0;color:var(--text-secondary)">您的问题包含受限词汇“<b>${blocked.word}</b>”（${blocked.level === 'high' ? '高' : blocked.level === 'medium' ? '中' : '低'}优先级），无法在【${kb}】中召回相关档案。</p><p style="margin:0;color:var(--text-muted);font-size:13px">请调整您的提问后重试。如有疑问，可联系系统管理员。</p></div>`;
+  }
   const responses = {
     '粟裕': '<p>粟裕（1907-1984），湖南会同人，无产阶级革命家、军事家。1935年至1938年间，粟裕率中国工农红军挺进师在浙西南地区开展艰苦卓绝的游击战争，建立了浙西南革命根据地。</p><p>1935年4月，粟裕率部进入浙西南，以遂昌、松阳、龙泉、丽水等地为中心，开展了三年游击战争。面对敌军多次"围剿"，粟裕运用灵活机动的战略战术，粉碎了敌人的多次进攻，巩固和发展了浙南游击根据地。</p><p>他的军事思想和实践经验，为浙西南革命根据地的巩固和发展作出了重大贡献，被誉为"浙西南游击战的杰出指挥员"。</p>',
     '陈凤生': '<p>陈凤生（1902-1934），龙泉县安仁镇人，浙西南早期革命活动家。1927年加入中国共产党，曾任中共龙泉县委书记，领导了龙泉地区的农民运动和武装斗争。</p><p>1934年，陈凤生在一次战斗中英勇牺牲，年仅32岁。他的一生虽然短暂，却为浙西南革命事业谱写了光辉的篇章。</p><p>龙泉人民为纪念他，将他的事迹整理成档案资料永久保存，并建立了陈凤生烈士纪念馆。</p>',
