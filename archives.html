@@ -321,8 +321,7 @@
             <div class="section-name"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"></path><path d="M14 2v6h6"></path><path d="M16 13H8"></path><path d="M16 17H8"></path><path d="M10 9H8"></path></svg>资源类型</div>
             <div class="menu-item active">📄 文档档案</div>
             <div class="menu-item">🖼️ 图片档案</div>
-            <div class="menu-item">🎬 视频档案</div>
-            <div class="menu-item">🎙️ 音频档案</div>
+            <div class="menu-item">🎬 声像档案</div>
           </div>
 
           <div class="sidebar-section">
@@ -367,14 +366,9 @@
               <div class="stat-trend"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"></path></svg>较上月 +15.2%</div>
             </div>
             <div class="stat-card">
-              <div class="stat-header"><div class="stat-icon video">🎬</div><div class="stat-name">视频档案</div></div>
-              <div class="stat-value">8,652<span class="stat-unit">个</span></div>
+              <div class="stat-header"><div class="stat-icon video">🎬</div><div class="stat-name">声像档案</div></div>
+              <div class="stat-value">12,494<span class="stat-unit">个</span></div>
               <div class="stat-trend"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"></path></svg>较上月 +10.1%</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-header"><div class="stat-icon audio">🎙️</div><div class="stat-name">音频档案</div></div>
-              <div class="stat-value">3,842<span class="stat-unit">个</span></div>
-              <div class="stat-trend"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"></path></svg>较上月 +9.7%</div>
             </div>
             <div class="stat-card">
               <div class="stat-header"><div class="stat-icon kb">📚</div><div class="stat-name">知识库总数</div></div>
@@ -428,8 +422,7 @@
               <div class="chart-legend">
                 <div class="legend-item"><div class="legend-left"><span class="legend-dot" style="background:#d4a373"></span><span class="legend-name">📄 文档档案</span></div><span class="legend-value">82.2%</span></div>
                 <div class="legend-item"><div class="legend-left"><span class="legend-dot" style="background:#6b9080"></span><span class="legend-name">🖼️ 图片档案</span></div><span class="legend-value">9.9%</span></div>
-                <div class="legend-item"><div class="legend-left"><span class="legend-dot" style="background:#8b5e83"></span><span class="legend-name">🎬 视频档案</span></div><span class="legend-value">4.6%</span></div>
-                <div class="legend-item"><div class="legend-left"><span class="legend-dot" style="background:#5f7d8b"></span><span class="legend-name">🎙️ 音频档案</span></div><span class="legend-value">2.1%</span></div>
+                <div class="legend-item"><div class="legend-left"><span class="legend-dot" style="background:#8b5e83"></span><span class="legend-name">🎬 声像档案</span></div><span class="legend-value">6.7%</span></div>
               </div>
             </div>
           </div>
@@ -439,8 +432,7 @@
             <div class="upload-list">
               <div class="upload-item"><div class="upload-thumb">📄</div><div class="upload-info"><div class="upload-title">中共丽水县委扩大会议记录</div><div class="upload-meta"><span>文档档案</span><span>3.2 MB</span></div></div></div>
               <div class="upload-item"><div class="upload-thumb">🖼️</div><div class="upload-info"><div class="upload-title">1953年丽水城区全景照片</div><div class="upload-meta"><span>图片档案</span><span>2.8 MB</span></div></div></div>
-              <div class="upload-item"><div class="upload-thumb">🎬</div><div class="upload-info"><div class="upload-title">革命老战士访谈录.mp4</div><div class="upload-meta"><span>视频档案</span><span>192.4 MB</span></div></div></div>
-              <div class="upload-item"><div class="upload-thumb">🎙️</div><div class="upload-info"><div class="upload-title">丽水方言民俗录音.mp3</div><div class="upload-meta"><span>音频档案</span><span>18.6 MB</span></div></div></div>
+              <div class="upload-item"><div class="upload-thumb">🎬</div><div class="upload-info"><div class="upload-title">革命老战士访谈录.mp4</div><div class="upload-meta"><span>声像档案</span><span>192.4 MB</span></div></div></div>
             </div>
           </div>
 
@@ -457,16 +449,16 @@
   <script>
     // ===== 知识库数据 =====
     const kbList = [
-      { name: '红色记忆', icon: '🚩', color: 'red', desc: '收录浙西南革命斗争的重要档案文献，传承红色基因、赓续精神血脉。', count: { doc: 4, img: 1, video: 0, audio: 0, obj: 1 }, update: '2026-05-17' },
-      { name: '人物传记', icon: '⭐', color: 'gold', desc: '汇集革命先辈、历史名人与行业翘楚的生平档案与口述资料。', count: { doc: 4, img: 0, video: 2, audio: 0, obj: 0 }, update: '2026-05-19' },
-      { name: '历史事件', icon: '📜', color: 'brown', desc: '系统整理重大历史事件的原始记录、报刊报道与亲历者回忆。', count: { doc: 5, img: 1, video: 0, audio: 0, obj: 0 }, update: '2026-05-16' },
-      { name: '地方建设', icon: '🏗️', color: 'green', desc: '记录丽水城乡发展变迁的建设档案、工程图纸与影像资料。', count: { doc: 2, img: 3, video: 1, audio: 0, obj: 0 }, update: '2026-05-14' },
-      { name: '组织机构', icon: '🏛️', color: 'blue', desc: '涵盖各级党政机关、社会团体的沿革文件与成立档案。', count: { doc: 4, img: 2, video: 0, audio: 0, obj: 0 }, update: '2026-05-12' },
-      { name: '文化民俗', icon: '🎭', color: 'purple', desc: '保存方言、民歌、非遗与民俗活动的珍贵声像与图文资料。', count: { doc: 0, img: 2, video: 1, audio: 3, obj: 0 }, update: '2026-05-18' },
-      { name: '专题库', icon: '📚', color: 'dark', desc: '围绕侨乡青田、口述历史、红色根脉等主题打造的专题资源包。', count: { doc: 4, img: 1, video: 1, audio: 0, obj: 0 }, update: '2026-05-20' }
+      { name: '红色记忆', icon: '🚩', color: 'red', desc: '收录浙西南革命斗争的重要档案文献，传承红色基因、赓续精神血脉。', count: { doc: 4, img: 1, video: 0, obj: 1 }, update: '2026-05-17' },
+      { name: '人物传记', icon: '⭐', color: 'gold', desc: '汇集革命先辈、历史名人与行业翘楚的生平档案与口述资料。', count: { doc: 4, img: 0, video: 2, obj: 0 }, update: '2026-05-19' },
+      { name: '历史事件', icon: '📜', color: 'brown', desc: '系统整理重大历史事件的原始记录、报刊报道与亲历者回忆。', count: { doc: 5, img: 1, video: 0, obj: 0 }, update: '2026-05-16' },
+      { name: '地方建设', icon: '🏗️', color: 'green', desc: '记录丽水城乡发展变迁的建设档案、工程图纸与影像资料。', count: { doc: 2, img: 3, video: 1, obj: 0 }, update: '2026-05-14' },
+      { name: '组织机构', icon: '🏛️', color: 'blue', desc: '涵盖各级党政机关、社会团体的沿革文件与成立档案。', count: { doc: 4, img: 2, video: 0, obj: 0 }, update: '2026-05-12' },
+      { name: '文化民俗', icon: '🎭', color: 'purple', desc: '保存方言、民歌、非遗与民俗活动的珍贵声像与图文资料。', count: { doc: 0, img: 2, video: 4, obj: 0 }, update: '2026-05-18' },
+      { name: '专题库', icon: '📚', color: 'dark', desc: '围绕侨乡青田、口述历史、红色根脉等主题打造的专题资源包。', count: { doc: 4, img: 1, video: 1, obj: 0 }, update: '2026-05-20' }
     ];
 
-    const totalOf = k => k.count.doc + k.count.img + k.count.video + k.count.audio + k.count.obj;
+    const totalOf = k => k.count.doc + k.count.img + k.count.video + k.count.obj;
 
     // ===== 渲染知识库卡片 =====
     function renderKb(filter) {
@@ -488,8 +480,7 @@
             <div class="kb-meta-row">
               ${k.count.doc ? `<span class="kb-type-tag">📄 文档 ${k.count.doc}</span>` : ''}
               ${k.count.img ? `<span class="kb-type-tag">🖼️ 图片 ${k.count.img}</span>` : ''}
-              ${k.count.video ? `<span class="kb-type-tag">🎬 视频 ${k.count.video}</span>` : ''}
-              ${k.count.audio ? `<span class="kb-type-tag">🎙️ 音频 ${k.count.audio}</span>` : ''}
+              ${k.count.video ? `<span class="kb-type-tag">🎬 声像 ${k.count.video}</span>` : ''}
             </div>
             <div class="kb-foot">
               <span class="kb-update">🕐 更新于 ${k.update}</span>
