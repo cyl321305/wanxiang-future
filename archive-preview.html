@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>档案详情 · 万象未来</title>
+<title>档案预览 · 万象未来</title>
 <script>
   const urlParams = new URLSearchParams(window.location.search);
   const archiveData = {
@@ -29,113 +29,96 @@
     --card-shadow:rgba(92,61,46,.08);
   }
   *{margin:0;padding:0;box-sizing:border-box}
-  html,body{font-family:'Noto Sans SC','Microsoft YaHei',sans-serif;color:var(--text-primary);background:var(--bg-cream)}
+  html,body{font-family:'Noto Sans SC','Microsoft YaHei',sans-serif;color:var(--text-primary);background:var(--bg-cream);height:100%;overflow:hidden}
 
   /* 背景 */
   .page-bg{position:fixed;inset:0;z-index:0;background:linear-gradient(180deg,#faf5ee 0%,#f8ece6 40%,#f3e8db 100%);pointer-events:none}
   .clouds{position:fixed;top:0;left:0;width:100%;height:100%;z-index:1;pointer-events:none;opacity:.15;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 400'%3E%3Cpath fill='%23c9a86c' fill-opacity='0.4' d='M100,200 Q130,160 170,180 T250,170 T320,190 T400,160 T480,180 T560,150 T640,170 T720,140'/%3E%3C/svg%3E") repeat-x;background-size:800px 400px;animation:cloudMove 60s linear infinite}
   @keyframes cloudMove{from{background-position:0 0}to{background-position:-800px 0}}
 
-  .app{position:relative;z-index:10;min-height:100vh;display:flex;flex-direction:column}
+  .app{position:relative;z-index:10;height:100vh;display:flex;flex-direction:column}
 
   /* 顶部导航 */
-  .header{height:64px;background:rgba(250,245,238,.88);backdrop-filter:blur(12px);border-bottom:1px solid rgba(166,44,44,.08);display:flex;align-items:center;justify-content:space-between;padding:0 28px;flex-shrink:0;position:sticky;top:0;z-index:100}
-  .header-left{display:flex;align-items:center;gap:14px}
-  .back-btn{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-secondary);transition:all .3s;flex-shrink:0}
+  .header{height:56px;background:rgba(250,245,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid rgba(166,44,44,.08);display:flex;align-items:center;justify-content:space-between;padding:0 20px;flex-shrink:0;z-index:100}
+  .header-left{display:flex;align-items:center;gap:12px}
+  .back-btn{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-secondary);transition:all .3s;flex-shrink:0}
   .back-btn:hover{background:rgba(166,44,44,.08);color:var(--accent-red)}
-  .doc-title-wrap{display:flex;flex-direction:column;gap:2px}
-  .doc-title-wrap h1{font-size:15px;font-weight:500;color:var(--text-primary)}
-  .doc-title-wrap span{font-size:12px;color:var(--text-muted)}
-  .header-right{display:flex;align-items:center;gap:10px}
+  .doc-title-wrap{display:flex;flex-direction:column}
+  .doc-title-wrap h1{font-size:14px;font-weight:500;color:var(--text-primary);max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .doc-title-wrap span{font-size:11px;color:var(--text-muted)}
+  .header-right{display:flex;align-items:center;gap:8px}
 
-  /* 操作按钮 */
-  .h-btn{height:34px;padding:0 16px;border-radius:17px;border:1px solid rgba(166,44,44,.18);background:rgba(255,255,255,.6);color:var(--text-secondary);font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all .3s;font-family:inherit}
+  /* 按钮样式 */
+  .h-btn{height:32px;padding:0 14px;border-radius:16px;border:1px solid rgba(166,44,44,.18);background:rgba(255,255,255,.6);color:var(--text-secondary);font-size:12px;cursor:pointer;display:flex;align-items:center;gap:5px;transition:all .3s;font-family:inherit}
   .h-btn:hover{background:rgba(166,44,44,.08);color:var(--accent-red);border-color:rgba(166,44,44,.3)}
   .h-btn svg{width:14px;height:14px}
   .h-btn-primary{background:var(--accent-red);color:#fff;border-color:var(--accent-red)}
   .h-btn-primary:hover{background:var(--accent-red-light);border-color:var(--accent-red-light);color:#fff}
-  .h-btn-icon{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-secondary);transition:all .3s;position:relative;flex-shrink:0}
+  .h-btn-icon{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-secondary);transition:all .3s;position:relative;flex-shrink:0;border:1px solid rgba(166,44,44,.18);background:rgba(255,255,255,.6)}
   .h-btn-icon:hover{background:rgba(166,44,44,.08);color:var(--accent-red)}
 
-  /* 面包屑 */
-  .breadcrumb-bar{padding:14px 40px 0;font-size:13px;color:var(--text-muted);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-  .breadcrumb-bar a{color:var(--accent-red);text-decoration:none}
-  .breadcrumb-bar a:hover{text-decoration:underline}
-  .breadcrumb-bar .sep{color:var(--text-muted)}
+  /* 更多下拉菜单 */
+  .dropdown-menu{position:absolute;top:40px;right:0;width:160px;background:#fff;border-radius:10px;box-shadow:0 8px 32px rgba(0,0,0,.15);opacity:0;visibility:hidden;transition:all .2s;z-index:200;padding:6px 0;display:none}
+  .dropdown-menu.show{opacity:1;visibility:visible;display:block}
+  .dropdown-item{display:flex;align-items:center;gap:8px;padding:10px 14px;font-size:12px;color:var(--text-secondary);cursor:pointer;transition:all .2s}
+  .dropdown-item:hover{background:rgba(166,44,44,.06);color:var(--accent-red)}
+  .dropdown-item svg{width:14px;height:14px}
+  .dropdown-divider{height:1px;background:rgba(166,44,44,.1);margin:4px 0}
+  .dropdown-item.danger{color:#dc3545}
+  .dropdown-item.danger:hover{background:rgba(220,53,69,.06)}
 
   /* 主内容区 */
-  .main{padding:24px 40px 60px;max-width:1100px;margin:0 auto;width:100%}
+  .main{flex:1;display:flex;overflow:hidden}
 
-  /* 目录封面卡 */
-  .cover-card{background:var(--glass);border:1px solid var(--glass-border);border-radius:20px;padding:36px 48px;box-shadow:0 8px 32px var(--card-shadow);backdrop-filter:blur(10px);margin-bottom:24px;position:relative;overflow:hidden}
-  .cover-card::before{content:'';position:absolute;right:-20px;top:-20px;width:200px;height:200px;background:linear-gradient(135deg,rgba(166,44,44,.06),transparent);border-radius:50%}
-  .cover-inner{display:flex;gap:32px;align-items:center}
-  .cover-thumb{width:120px;height:160px;border-radius:10px;overflow:hidden;flex-shrink:0;background:linear-gradient(135deg,#e8d4c0,#d4bfa6);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(166,44,44,.15)}
-  .cover-thumb img{width:100%;height:100%;object-fit:cover}
-  .cover-thumb .type-icon{font-size:52px;opacity:.7}
-  .cover-meta{flex:1}
-  .cover-type-row{display:flex;align-items:center;gap:10px;margin-bottom:12px}
-  .cover-type-badge{padding:4px 14px;border-radius:12px;font-size:12px;font-weight:500;color:#fff}
-  .cover-type-badge.doc{background:var(--doc-color,#d4a373)}
-  .cover-type-badge.img{background:var(--img-color,#6b9080)}
-  .cover-type-badge.video{background:var(--video-color,#8b5e83)}
-  .cover-kb-badge{padding:4px 12px;border-radius:12px;font-size:12px;background:rgba(166,44,44,.1);color:var(--accent-red)}
-  .cover-title{font-family:'ZCOOL XiaoWei',serif;font-size:26px;color:var(--text-primary);margin-bottom:10px;line-height:1.4}
-  .cover-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
-  .cover-tag{padding:4px 12px;border-radius:8px;font-size:12px;background:rgba(166,44,44,.06);color:var(--text-secondary);border:1px solid rgba(166,44,44,.08)}
-  .cover-info{display:flex;flex-wrap:wrap;gap:18px;font-size:13px;color:var(--text-muted)}
-  .cover-info-item{display:flex;align-items:center;gap:5px}
-  .cover-info-item svg{width:13px;height:13px}
-  .cover-actions{display:flex;gap:10px;margin-top:20px}
+  /* 左侧预览区 */
+  .preview-area{flex:1;display:flex;flex-direction:column;background:#f5f0e8;position:relative}
+  .preview-toolbar{height:40px;display:flex;align-items:center;justify-content:center;gap:16px;background:rgba(250,245,238,.9);border-bottom:1px solid rgba(166,44,44,.08)}
+  .toolbar-btn{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-secondary);transition:all .2s}
+  .toolbar-btn:hover{background:rgba(166,44,44,.1);color:var(--accent-red)}
+  .toolbar-btn svg{width:16px;height:16px}
+  .page-info{font-size:12px;color:var(--text-muted);min-width:80px;text-align:center}
 
-  /* 目录区域 */
-  .toc-section{background:var(--glass);border:1px solid var(--glass-border);border-radius:20px;padding:30px 40px;box-shadow:0 8px 32px var(--card-shadow);backdrop-filter:blur(10px)}
-  .toc-header{display:flex;align-items:center;gap:10px;margin-bottom:24px;padding-bottom:18px;border-bottom:1px solid rgba(166,44,44,.08)}
-  .toc-header-icon{width:36px;height:36px;border-radius:10px;background:rgba(166,44,44,.1);display:flex;align-items:center;justify-content:center;color:var(--accent-red)}
-  .toc-header h2{font-family:'ZCOOL XiaoWei',serif;font-size:20px;color:var(--text-primary)}
-  .toc-subtitle{font-size:13px;color:var(--text-muted);margin-left:auto}
+  .preview-content{flex:1;overflow:auto;display:flex;align-items:center;justify-content:center;padding:20px}
+  .doc-container{background:#fff;box-shadow:0 4px 20px rgba(0,0,0,.1);border-radius:4px;max-width:800px;width:100%;min-height:600px;padding:60px;position:relative}
+  .doc-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:var(--text-muted);gap:16px}
+  .doc-placeholder .icon{font-size:64px;opacity:.5}
+  .doc-placeholder p{font-size:14px}
+  .doc-page{width:100%;height:auto;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.1);margin-bottom:20px}
 
-  /* 绪论 */
-  .toc-intro{background:linear-gradient(135deg,rgba(166,44,44,.06),rgba(201,168,108,.08));border-radius:14px;padding:20px 24px;margin-bottom:28px;border:1px solid rgba(166,44,44,.08)}
-  .toc-intro-title{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:var(--accent-red);margin-bottom:10px}
-  .toc-intro-title svg{width:15px;height:15px}
-  .toc-intro p{font-size:13px;color:var(--text-secondary);line-height:1.9;text-align:justify}
+  /* 右侧AI侧边栏 */
+  .ai-sidebar{width:360px;background:#fff;border-left:1px solid rgba(166,44,44,.1);display:flex;flex-direction:column;transform:translateX(100%);transition:transform .3s ease;flex-shrink:0}
+  .ai-sidebar.open{transform:translateX(0)}
+  .ai-header{height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;border-bottom:1px solid rgba(166,44,44,.08)}
+  .ai-header-title{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:500}
+  .ai-header-title .ai-badge{width:20px;height:20px;border-radius:50%;background:var(--accent-red);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px}
+  .ai-close{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-muted);transition:all .2s}
+  .ai-close:hover{background:rgba(166,44,44,.08);color:var(--accent-red)}
+  .ai-content{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:16px}
+  .ai-welcome{background:linear-gradient(135deg,rgba(166,44,44,.06),rgba(201,168,108,.08));border-radius:12px;padding:16px}
+  .ai-welcome-title{font-size:13px;font-weight:500;color:var(--accent-red);margin-bottom:8px}
+  .ai-welcome-text{font-size:12px;color:var(--text-secondary);line-height:1.6}
+  .ai-suggestions{display:flex;flex-direction:column;gap:8px}
+  .ai-suggestion{padding:10px 12px;border-radius:8px;background:rgba(166,44,44,.04);border:1px solid rgba(166,44,44,.08);font-size:12px;color:var(--text-secondary);cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:8px}
+  .ai-suggestion:hover{background:rgba(166,44,44,.08);color:var(--accent-red)}
+  .ai-suggestion svg{width:14px;height:14px}
+  .ai-input-wrap{padding:12px 16px;border-top:1px solid rgba(166,44,44,.08)}
+  .ai-input-box{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:20px;border:1px solid rgba(166,44,44,.2);background:#fff}
+  .ai-input-box input{flex:1;border:none;outline:none;font-size:13px;font-family:inherit;color:var(--text-primary);background:transparent}
+  .ai-input-box input::placeholder{color:var(--text-muted)}
+  .ai-send{width:28px;height:28px;border-radius:50%;background:var(--accent-red);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s}
+  .ai-send:hover{background:var(--accent-red-light)}
+  .ai-send svg{width:14px;height:14px}
 
-  /* 目录篇章 */
-  .toc-volumes{display:flex;flex-direction:column;gap:16px}
-  .toc-vol{background:rgba(255,255,255,.5);border:1px solid rgba(166,44,44,.08);border-radius:14px;padding:20px 24px;transition:all .25s}
-  .toc-vol:hover{background:rgba(166,44,44,.04);border-color:rgba(166,44,44,.18);transform:translateY(-2px);box-shadow:0 6px 20px rgba(92,61,46,.08)}
-  .toc-vol-header{display:flex;align-items:center;gap:12px;cursor:pointer;margin-bottom:16px}
-  .toc-vol-num{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--accent-red),var(--accent-red-light));display:flex;align-items:center;justify-content:center;color:#fff;font-size:15px;font-weight:700;flex-shrink:0}
-  .toc-vol-title-wrap{flex:1}
-  .toc-vol-title{font-size:15px;font-weight:600;color:var(--text-primary);margin-bottom:3px}
-  .toc-vol-meta{font-size:12px;color:var(--text-muted)}
-  .toc-vol-badge{padding:4px 10px;border-radius:8px;font-size:11px;background:rgba(166,44,44,.1);color:var(--accent-red)}
-  .toc-vol-arrow{color:var(--text-muted);transition:transform .3s}
-  .toc-vol.open .toc-vol-arrow{transform:rotate(180deg)}
+  /* 底部信息栏 */
+  .info-bar{height:36px;background:rgba(250,245,238,.95);border-top:1px solid rgba(166,44,44,.08);display:flex;align-items:center;justify-content:space-between;padding:0 20px;font-size:12px;color:var(--text-muted)}
+  .info-bar-left{display:flex;align-items:center;gap:16px}
+  .info-bar-item{display:flex;align-items:center;gap:4px}
+  .info-bar-item svg{width:12px;height:12px}
 
-  /* 章节列表 */
-  .toc-chapters{display:none;flex-direction:column;gap:2px;padding-top:4px}
-  .toc-vol.open .toc-chapters{display:flex}
-  .toc-chapter{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:8px;cursor:pointer;transition:all .2s;font-size:13px;color:var(--text-secondary)}
-  .toc-chapter:hover{background:rgba(166,44,44,.06);color:var(--accent-red)}
-  .toc-chapter-num{width:22px;height:22px;border-radius:6px;background:rgba(166,44,44,.08);color:var(--accent-red);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex-shrink:0}
-  .toc-chapter-title{flex:1}
-  .toc-chapter-page{font-size:12px;color:var(--text-muted);flex-shrink:0}
-
-  /* 档案描述卡 */
-  .desc-card{background:var(--glass);border:1px solid var(--glass-border);border-radius:16px;padding:22px 28px;box-shadow:0 8px 24px var(--card-shadow);backdrop-filter:blur(10px);margin-top:20px}
-  .desc-card-title{font-size:14px;font-weight:600;color:var(--text-primary);margin-bottom:12px;display:flex;align-items:center;gap:8px}
-  .desc-card-title::before{content:'';width:4px;height:14px;background:linear-gradient(180deg,var(--accent-red-light),var(--accent-gold));border-radius:2px}
-  .desc-card p{font-size:13px;color:var(--text-secondary);line-height:1.9;text-align:justify}
-
-  @media (max-width:768px){
-    .main{padding:20px 16px 40px}
-    .cover-card{padding:24px}
-    .cover-inner{flex-direction:column;gap:16px}
-    .cover-thumb{width:100px;height:130px}
-    .toc-section{padding:20px}
-    .header{padding:0 16px}
+  /* 响应式 */
+  @media (max-width:900px){
+    .ai-sidebar{width:100%;position:fixed;right:0;top:56px;bottom:36px;z-index:99}
+    .doc-title-wrap h1{max-width:150px}
   }
 </style>
 </head>
@@ -148,245 +131,169 @@
   <header class="header">
     <div class="header-left">
       <div class="back-btn" onclick="history.back()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="m15 18-6-6 6-6"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="m15 18-6-6 6-6"/></svg>
       </div>
       <div class="doc-title-wrap">
         <h1 id="docTitle">档案文档.pdf</h1>
-        <span id="docMeta">档案详情</span>
+        <span id="docMeta">陈杨磊 · 79天前更新</span>
       </div>
     </div>
     <div class="header-right">
-      <button class="h-btn">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        下载
-      </button>
-      <button class="h-btn h-btn-primary">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-        编辑元数据
-      </button>
-      <div class="h-btn-icon" title="更多操作" id="moreBtn" style="position:relative">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
-        <div id="dropdownInner" style="position:absolute;top:44px;right:0;width:170px;background:#fff;border-radius:10px;box-shadow:0 8px 32px rgba(0,0,0,.15);opacity:0;visibility:hidden;transition:all .2s;z-index:200;padding:6px 0;display:none">
-          <div style="display:flex;align-items:center;gap:8px;padding:10px 14px;font-size:13px;color:var(--text-secondary);cursor:pointer" class="dd-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>创建副本</div>
-          <div style="display:flex;align-items:center;gap:8px;padding:10px 14px;font-size:13px;color:var(--text-secondary);cursor:pointer" class="dd-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>移动到</div>
-          <div style="height:1px;background:rgba(166,44,44,.1);margin:4px 0"></div>
-          <div style="display:flex;align-items:center;gap:8px;padding:10px 14px;font-size:13px;color:#dc3545;cursor:pointer" class="dd-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>删除</div>
+      <button class="h-btn" id="moreBtn" style="position:relative">
+        <span>更多</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="m6 9 6 6 6-6"/></svg>
+        <div class="dropdown-menu" id="moreMenu">
+          <div class="dropdown-item" onclick="handleAction('download')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>下载</div>
+          <div class="dropdown-item" onclick="handleAction('history')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>浏览记录</div>
+          <div class="dropdown-item" onclick="handleAction('copy')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>创建副本</div>
+          <div class="dropdown-item" onclick="handleAction('version')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 16"/></svg>历史版本</div>
+          <div class="dropdown-item" onclick="handleAction('reupload')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>重新上传</div>
+          <div class="dropdown-item" onclick="handleAction('rename')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>重命名</div>
+          <div class="dropdown-item" onclick="handleAction('move')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>移动到</div>
+          <div class="dropdown-divider"></div>
+          <div class="dropdown-item danger" onclick="handleAction('delete')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>删除</div>
         </div>
-      </div>
+      </button>
+      <button class="h-btn h-btn-primary" id="aiBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+        问 AI
+      </button>
     </div>
   </header>
 
+  <!-- 主内容 -->
   <div class="main">
-    <!-- 封面卡 -->
-    <div class="cover-card">
-      <div class="cover-inner">
-        <div class="cover-thumb" id="coverThumb">
-          <span class="type-icon" id="coverIcon">📄</span>
-        </div>
-        <div class="cover-meta">
-          <div class="cover-type-row">
-            <span class="cover-type-badge" id="coverTypeBadge">文档档案</span>
-            <span class="cover-kb-badge" id="coverKbBadge">红色记忆</span>
-          </div>
-          <div class="cover-title" id="coverTitle">档案文档.pdf</div>
-          <div class="cover-tags" id="coverTags"></div>
-          <div class="cover-info">
-            <div class="cover-info-item" id="coverDate"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span></span></div>
-            <div class="cover-info-item" id="coverSize"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg><span></span></div>
-            <div class="cover-info-item" id="coverSource"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span></span></div>
-          </div>
-          <div class="cover-actions">
-            <button class="h-btn h-btn-primary" onclick="window.open(coverThumbImg || 'https://www.baidu.com','_blank')">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-              打开档案
-            </button>
-            <button class="h-btn">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
-              导出
-            </button>
+    <!-- 预览区 -->
+    <div class="preview-area">
+      <div class="preview-toolbar">
+        <div class="toolbar-btn" onclick="zoomOut()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div>
+        <span class="page-info">第2页共93页</span>
+        <div class="toolbar-btn" onclick="zoomIn()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div>
+      </div>
+      <div class="preview-content" id="previewContent">
+        <div class="doc-container" id="docContainer">
+          <div class="doc-placeholder">
+            <div class="icon" id="docIcon">📄</div>
+            <p>文档预览区域</p>
+            <p style="font-size:12px">实际部署时可嵌入 PDF.js 或其他文档渲染组件</p>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- 目录 -->
-    <div class="toc-section">
-      <div class="toc-header">
-        <div class="toc-header-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+    <!-- AI侧边栏 -->
+    <div class="ai-sidebar" id="aiSidebar">
+      <div class="ai-header">
+        <div class="ai-header-title">
+          <div class="ai-badge">AI</div>
+          <span>问 AI</span>
         </div>
-        <h2>档案目录</h2>
-        <div class="toc-subtitle">共 4 编，18 个章节</div>
-      </div>
-
-      <!-- 绪论 -->
-      <div class="toc-intro">
-        <div class="toc-intro-title">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-          绪论
+        <div class="ai-close" onclick="toggleAI()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </div>
-        <p id="tocIntroText">档案文献资料，系统记录了相关历史事件始末。本档案源自丽水市档案馆，经数字化整理归档，供研究参考使用。档案内容涵盖事件背景、发展过程、重要人物及历史意义等核心要素。</p>
       </div>
-
-      <!-- 各编 -->
-      <div class="toc-volumes" id="tocVolumes"></div>
+      <div class="ai-content">
+        <div class="ai-welcome">
+          <div class="ai-welcome-title">@这篇知识，获取更聚焦的解读</div>
+          <div class="ai-welcome-text">试一试：</div>
+        </div>
+        <div class="ai-suggestions">
+          <div class="ai-suggestion" onclick="askAI('总结当前知识')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+            总结当前知识
+          </div>
+        </div>
+      </div>
+      <div class="ai-input-wrap">
+        <div class="ai-input-box">
+          <input type="text" id="aiInput" placeholder="输入问题..." onkeypress="if(event.key==='Enter')sendAI()">
+          <div class="ai-send" onclick="sendAI()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 
-    <!-- 档案描述 -->
-    <div class="desc-card" id="descCard" style="display:none">
-      <div class="desc-card-title">档案简介</div>
-      <p id="descCardText"></p>
+  <!-- 底部信息栏 -->
+  <div class="info-bar">
+    <div class="info-bar-left">
+      <div class="info-bar-item" id="infoDate"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span></span></div>
+      <div class="info-bar-item" id="infoSize"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg><span></span></div>
+      <div class="info-bar-item" id="infoKb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg><span></span></div>
     </div>
+    <div>内容由AI生成仅供参考</div>
   </div>
 </div>
 
 <script>
-// ===== 填充页面内容 =====
+// 初始化数据
 (function init() {
   const d = archiveData;
-  const typeColors = { doc: '#d4a373', img: '#6b9080', video: '#8b5e83' };
   const typeIcons = { doc: '📄', img: '🖼️', video: '🎬' };
-  const typeLabels = { doc: '文档档案', img: '图片档案', video: '声像档案' };
-
-  // 顶部标题
-  document.getElementById('docTitle').textContent = d.title || '档案文档';
-  let metaText = typeLabels[d.type] || '文档档案';
-  if (d.date) metaText += ' · ' + d.date;
-  if (d.size) metaText += ' · ' + d.size;
-  if (d.source) metaText += ' · ' + d.source;
-  document.getElementById('docMeta').textContent = metaText;
-
-  // 封面
-  const thumb = document.getElementById('coverThumb');
-  const coverIcon = document.getElementById('coverIcon');
-  window.coverThumbImg = d.img;
-  if (d.img) {
-    thumb.innerHTML = '<img src="' + d.img + '" alt="缩略图" onerror="this.parentElement.innerHTML=\'<span class=type-icon>\'+(typeIcons[\"'+d.type+'\"]||\'📄\')+\'</span>\'">';
-  } else {
-    coverIcon.textContent = typeIcons[d.type] || '📄';
-  }
-
-  document.getElementById('coverTypeBadge').textContent = typeLabels[d.type] || '文档档案';
-  document.getElementById('coverTypeBadge').style.background = typeColors[d.type] || '#d4a373';
-  if (d.kb) document.getElementById('coverKbBadge').textContent = d.kb;
-  document.getElementById('coverTitle').textContent = d.title || '档案文档';
-
-  // 标签
-  const tagsEl = document.getElementById('coverTags');
-  if (d.tags && d.tags.length) {
-    d.tags.forEach(t => {
-      if (!t) return;
-      const tag = document.createElement('span');
-      tag.className = 'cover-tag';
-      tag.textContent = t;
-      tagsEl.appendChild(tag);
-    });
-  }
-
-  // 信息行
-  if (d.date) document.querySelector('#coverDate span').textContent = d.date;
-  else document.getElementById('coverDate').style.display = 'none';
-  if (d.size) document.querySelector('#coverSize span').textContent = d.size;
-  else document.getElementById('coverSize').style.display = 'none';
-  if (d.source) document.querySelector('#coverSource span').textContent = d.source;
-  else document.getElementById('coverSource').style.display = 'none';
-
-  // 绪论
-  if (d.desc) {
-    document.getElementById('tocIntroText').textContent = d.desc;
-    document.getElementById('descCardText').textContent = d.desc;
-    document.getElementById('descCard').style.display = 'block';
-  }
-
-  // ===== 目录章节数据 =====
-  const volumes = [
-    {
-      title: '第一编  党的创立和大革命时期',
-      meta: '1919年5月 — 1927年7月',
-      chapters: [
-        { title: '第一章  马克思主义在丽水的传播', page: '001' },
-        { title: '第二章  五四运动与丽水青年运动', page: '008' },
-        { title: '第三章  中共丽水小组的成立', page: '015' },
-        { title: '第四章  大革命时期丽水的工农运动', page: '022' },
-        { title: '第五章  国共合作与丽水统一战线', page: '031' }
-      ]
-    },
-    {
-      title: '第二编  土地革命战争时期',
-      meta: '1927年8月 — 1937年7月',
-      chapters: [
-        { title: '第六章  丽水土地革命运动的兴起', page: '038' },
-        { title: '第七章  浙西南革命根据地的创建', page: '046' },
-        { title: '第八章  红军挺进师在浙西南的活动', page: '055' },
-        { title: '第九章  根据地的经济建设与文化建设', page: '063' },
-        { title: '第十章  游击战争与战略转移', page: '072' }
-      ]
-    },
-    {
-      title: '第三编  抗日战争时期',
-      meta: '1937年7月 — 1945年8月',
-      chapters: [
-        { title: '第十一章  全面抗战爆发与丽水响应', page: '081' },
-        { title: '第十二章  抗日民主政权的建立', page: '088' },
-        { title: '第十三章  抗日根据地的斗争', page: '095' },
-        { title: '第十四章  抗日民族统一战线的实践', page: '103' }
-      ]
-    },
-    {
-      title: '第四编  解放战争时期',
-      meta: '1945年8月 — 1949年10月',
-      chapters: [
-        { title: '第十五章  抗战胜利后的形势', page: '112' },
-        { title: '第十六章  爱国民主运动的高涨', page: '120' },
-        { title: '第十七章  丽水解放与接管', page: '128' },
-        { title: '第十八章  新民主主义革命的胜利', page: '137' }
-      ]
-    }
-  ];
-
-  const tocContainer = document.getElementById('tocVolumes');
-  volumes.forEach((vol, vi) => {
-    const volEl = document.createElement('div');
-    volEl.className = 'toc-vol';
-    volEl.innerHTML = `
-      <div class="toc-vol-header" onclick="this.parentElement.classList.toggle('open')">
-        <div class="toc-vol-num">${vi + 1}</div>
-        <div class="toc-vol-title-wrap">
-          <div class="toc-vol-title">${vol.title}</div>
-          <div class="toc-vol-meta">${vol.meta}</div>
-        </div>
-        <span class="toc-vol-badge">${vol.chapters.length}章</span>
-        <svg class="toc-vol-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="m6 9 6 6 6-6"/></svg>
-      </div>
-      <div class="toc-chapters">
-        ${vol.chapters.map((ch, ci) => `
-          <div class="toc-chapter" onclick="alert('正在加载第 ${ch.page} 页：${ch.title}（演示环境）')">
-            <div class="toc-chapter-num">${ci + 1}</div>
-            <div class="toc-chapter-title">${ch.title}</div>
-            <div class="toc-chapter-page">— ${ch.page} —</div>
-          </div>
-        `).join('')}
-      </div>
-    `;
-    tocContainer.appendChild(volEl);
-  });
+  document.getElementById('docTitle').textContent = d.title || '档案文档.pdf';
+  document.getElementById('docIcon').textContent = typeIcons[d.type] || '📄';
+  document.getElementById('infoDate').querySelector('span').textContent = d.date || '2024-01-01';
+  document.getElementById('infoSize').querySelector('span').textContent = d.size || '2.5 MB';
+  document.getElementById('infoKb').querySelector('span').textContent = d.kb || '红色记忆';
 })();
 
-// 更多操作下拉
+// 更多菜单
 const moreBtn = document.getElementById('moreBtn');
-const dropdown = document.getElementById('dropdownInner');
+const moreMenu = document.getElementById('moreMenu');
 moreBtn.addEventListener('click', (e) => {
   e.stopPropagation();
-  const isShown = dropdown.style.display === 'block';
-  dropdown.style.display = isShown ? 'none' : 'block';
-  dropdown.style.opacity = isShown ? '0' : '1';
-  dropdown.style.visibility = isShown ? 'hidden' : 'visible';
+  moreMenu.classList.toggle('show');
 });
-document.addEventListener('click', () => {
-  dropdown.style.display = 'none';
-  dropdown.style.opacity = '0';
-  dropdown.style.visibility = 'hidden';
-});
+document.addEventListener('click', () => moreMenu.classList.remove('show'));
+moreMenu.addEventListener('click', (e) => e.stopPropagation());
+
+// AI侧边栏
+const aiBtn = document.getElementById('aiBtn');
+const aiSidebar = document.getElementById('aiSidebar');
+aiBtn.addEventListener('click', toggleAI);
+function toggleAI() {
+  aiSidebar.classList.toggle('open');
+}
+
+// 操作处理
+function handleAction(action) {
+  const actions = {
+    download: () => alert('下载功能'),
+    history: () => alert('浏览记录'),
+    copy: () => alert('创建副本'),
+    version: () => alert('历史版本'),
+    reupload: () => alert('重新上传'),
+    rename: () => alert('重命名'),
+    move: () => alert('移动到'),
+    delete: () => confirm('确定删除此档案？') && alert('已删除')
+  };
+  if (actions[action]) actions[action]();
+}
+
+// AI问答
+function askAI(text) {
+  document.getElementById('aiInput').value = text;
+  sendAI();
+}
+function sendAI() {
+  const input = document.getElementById('aiInput');
+  const text = input.value.trim();
+  if (!text) return;
+  alert('AI回答：关于"' + text + '"的解读...');
+  input.value = '';
+}
+
+// 缩放
+let zoom = 100;
+function zoomIn() {
+  zoom = Math.min(zoom + 10, 200);
+  document.getElementById('docContainer').style.transform = 'scale(' + (zoom/100) + ')';
+}
+function zoomOut() {
+  zoom = Math.max(zoom - 10, 50);
+  document.getElementById('docContainer').style.transform = 'scale(' + (zoom/100) + ')';
+}
 </script>
 </body>
 </html>
