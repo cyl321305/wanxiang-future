@@ -70,20 +70,27 @@
   /* 主内容区 */
   .main{flex:1;display:flex;overflow:hidden}
 
-  /* 左侧预览区 */
+  /* 左侧预览区 - 铺满全屏 */
   .preview-area{flex:1;display:flex;flex-direction:column;background:#f5f0e8;position:relative}
-  .preview-toolbar{height:40px;display:flex;align-items:center;justify-content:center;gap:16px;background:rgba(250,245,238,.9);border-bottom:1px solid rgba(166,44,44,.08)}
-  .toolbar-btn{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-secondary);transition:all .2s}
+  .preview-toolbar{height:36px;display:flex;align-items:center;justify-content:center;gap:16px;background:rgba(250,245,238,.9);border-bottom:1px solid rgba(166,44,44,.08)}
+  .toolbar-btn{width:26px;height:26px;border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-secondary);transition:all .2s}
   .toolbar-btn:hover{background:rgba(166,44,44,.1);color:var(--accent-red)}
-  .toolbar-btn svg{width:16px;height:16px}
-  .page-info{font-size:12px;color:var(--text-muted);min-width:80px;text-align:center}
+  .toolbar-btn svg{width:15px;height:15px}
+  .page-info{font-size:11px;color:var(--text-muted);min-width:80px;text-align:center}
 
-  .preview-content{flex:1;overflow:auto;display:flex;align-items:center;justify-content:center;padding:20px}
-  .doc-container{background:#fff;box-shadow:0 4px 20px rgba(0,0,0,.1);border-radius:4px;max-width:800px;width:100%;min-height:600px;padding:60px;position:relative}
-  .doc-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:var(--text-muted);gap:16px}
-  .doc-placeholder .icon{font-size:64px;opacity:.5}
-  .doc-placeholder p{font-size:14px}
-  .doc-page{width:100%;height:auto;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.1);margin-bottom:20px}
+  /* 文档铺满全屏 */
+  .preview-content{flex:1;overflow:auto;padding:30px 60px}
+  .doc-container{background:#fff;width:100%;max-width:900px;margin:0 auto;padding:80px 90px;position:relative;font-family:'SimSun','宋体','Noto Serif SC',serif;color:#000}
+  .doc-chapter{text-align:center;font-size:18pt;font-weight:bold;margin:30px 0 20px;letter-spacing:4px}
+  .doc-section{text-align:center;font-size:15pt;font-weight:bold;margin:25px 0 15px;letter-spacing:2px}
+  .doc-sub{font-size:13pt;font-weight:bold;margin:20px 0 10px}
+  .doc-para{text-indent:2em;font-size:11.5pt;line-height:2;color:#000;margin:8px 0;text-align:justify}
+  .doc-page-num{text-align:center;font-size:10pt;color:#333;margin-top:30px;padding-top:10px;border-top:1px dashed #999}
+  .doc-empty{color:transparent;user-select:none}
+  .doc-cover{text-align:center;padding:80px 0}
+  .doc-cover-title{font-size:24pt;font-weight:bold;letter-spacing:6px;margin-bottom:30px}
+  .doc-cover-sub{font-size:14pt;color:#333;margin-bottom:50px}
+  .doc-cover-line{width:60%;margin:30px auto;border-top:1px solid #666}
 
   /* 右侧AI侧边栏 */
   .ai-sidebar{width:360px;background:#fff;border-left:1px solid rgba(166,44,44,.1);display:flex;flex-direction:column;transform:translateX(100%);transition:transform .3s ease;flex-shrink:0}
@@ -135,7 +142,7 @@
       </div>
       <div class="doc-title-wrap">
         <h1 id="docTitle">档案文档.pdf</h1>
-        <span id="docMeta">陈杨磊 · 79天前更新</span>
+        <span id="docMeta"><span id="metaDate"></span>天前 更新</span>
       </div>
     </div>
     <div class="header-right">
@@ -171,13 +178,7 @@
         <div class="toolbar-btn" onclick="zoomIn()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div>
       </div>
       <div class="preview-content" id="previewContent">
-        <div class="doc-container" id="docContainer">
-          <div class="doc-placeholder">
-            <div class="icon" id="docIcon">📄</div>
-            <p>文档预览区域</p>
-            <p style="font-size:12px">实际部署时可嵌入 PDF.js 或其他文档渲染组件</p>
-          </div>
-        </div>
+        <div class="doc-container" id="docContainer"></div>
       </div>
     </div>
 
@@ -230,13 +231,39 @@
 // 初始化数据
 (function init() {
   const d = archiveData;
-  const typeIcons = { doc: '📄', img: '🖼️', video: '🎬' };
   document.getElementById('docTitle').textContent = d.title || '档案文档.pdf';
-  document.getElementById('docIcon').textContent = typeIcons[d.type] || '📄';
-  document.getElementById('infoDate').querySelector('span').textContent = d.date || '2024-01-01';
+  document.getElementById('metaDate').textContent = d.date || '33';
+  document.getElementById('infoDate').querySelector('span').textContent = d.date || '2024-06-28';
   document.getElementById('infoSize').querySelector('span').textContent = d.size || '2.5 MB';
   document.getElementById('infoKb').querySelector('span').textContent = d.kb || '红色记忆';
+  renderDoc(d.kb || '红色记忆', d.title || '档案文档.pdf');
 })();
+
+// 渲染文档正文
+function renderDoc(kb, title) {
+  const el = document.getElementById('docContainer');
+  if (kb.includes('丽水') || kb.includes('历史') || title.includes('丽水')) {
+    el.innerHTML = `
+      <div class="doc-para">与此同时，张新锦积极指导、帮助国民党丽水县临时党部的工作，介绍中共党员温麟、潘涯进入县临时党部开展工作、担任干事，并到青田与戴宝椿一起解决青田县国民党组织内部的派系斗争，帮助改组国民党青田县党部筹备处。</div>
+      <div class="doc-para">由此，遂昌、丽水、青田三县国共合作的革命统一战线初步形成。</div>
+      <div class="doc-section">第二节  开展国民革命运动</div>
+      <div class="doc-sub">一、五卅运动在丽水</div>
+      <div class="doc-para">自五四运动以后，丽水人民反对帝国主义侵略的斗争热情日益高涨，抵制日货、反对帝国主义欺侮中国的爱国运动每年都在丽水各地持续进行。1925年5月15日，上海日商内外棉七厂资本家借口存纱不敷，故意关闭工厂，停发工人工资，打死要求复工的工人代表、共产党员顾正红，打伤10多人。30日，英国巡捕捕示威游行的学生100多人，打死要求释放被捕学生的集会群众13人，打伤数十人，制造了举国震惊的五卅惨案。对此，中共中央号召全国人民团结起来，反抗帝国主义的野蛮大屠杀。五卅反帝爱国运动由此迅速席卷全国。在上海商务印书馆工作的青田籍中共党员章秋阳，参与了上海五卅运动的组织领导工作。</div>
+      <div class="doc-para">6月，丽水、缙云、龙泉、松阳等县各界民众纷纷集会，声援五卅</div>
+      <div class="doc-page-num">121</div>
+    `;
+  } else {
+    el.innerHTML = `
+      <div class="doc-cover">
+        <div class="doc-cover-title">${title}</div>
+        <div class="doc-cover-line"></div>
+        <div class="doc-cover-sub">${kb}知识库 · 档案文献</div>
+      </div>
+      <div class="doc-para">本档案文献资料，系统记录了相关历史事件始末。本档案源自丽水市档案馆，经数字化整理归档，供研究参考使用。档案内容涵盖事件背景、发展过程、重要人物及历史意义等核心要素。</div>
+      <div class="doc-page-num">1</div>
+    `;
+  }
+}
 
 // 更多菜单
 const moreBtn = document.getElementById('moreBtn');
@@ -288,11 +315,11 @@ function sendAI() {
 let zoom = 100;
 function zoomIn() {
   zoom = Math.min(zoom + 10, 200);
-  document.getElementById('docContainer').style.transform = 'scale(' + (zoom/100) + ')';
+  document.getElementById('docContainer').style.fontSize = (11.5 * zoom/100) + 'pt';
 }
 function zoomOut() {
   zoom = Math.max(zoom - 10, 50);
-  document.getElementById('docContainer').style.transform = 'scale(' + (zoom/100) + ')';
+  document.getElementById('docContainer').style.fontSize = (11.5 * zoom/100) + 'pt';
 }
 </script>
 </body>
