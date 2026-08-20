@@ -463,7 +463,529 @@
       transform: translateX(4px);
     }
 
-    /* 历史弹窗样式 */
+    /* 查看更多按钮 */
+    .history-more-btn {
+      padding: 3px 12px;
+      background: linear-gradient(135deg, rgba(166, 44, 44, 0.1), rgba(166, 44, 44, 0.05));
+      color: var(--accent-red);
+      font-size: 11px;
+      font-weight: 600;
+      border-radius: 10px;
+      border: 1px solid rgba(166, 44, 44, 0.15);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .history-more-btn:hover {
+      background: var(--accent-red);
+      color: #fff;
+      transform: translateX(2px);
+    }
+
+    /* 视频库弹窗（参考图样式） */
+    .video-library-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(40, 20, 12, 0.55);
+      backdrop-filter: blur(6px);
+      z-index: 1001;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .video-library-overlay.show {
+      display: flex;
+    }
+    .video-library {
+      width: 1280px;
+      max-width: 100%;
+      max-height: 92vh;
+      background: linear-gradient(180deg, #fdf8f0, #f5ebd9);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      box-shadow: 0 30px 80px rgba(60, 30, 20, 0.4);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      animation: vpIn 0.3s ease;
+    }
+    .video-library-header {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding: 18px 28px;
+      border-bottom: 1px solid rgba(166, 44, 44, 0.1);
+    }
+    .video-library-title {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .title-main {
+      font-family: 'ZCOOL XiaoWei', serif;
+      font-size: 26px;
+      color: var(--text-primary);
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+    .title-sub {
+      font-size: 13px;
+      color: var(--text-secondary);
+      letter-spacing: 2px;
+    }
+    .video-library-dots {
+      display: flex;
+      gap: 6px;
+      margin-left: auto;
+    }
+    .video-library-dots .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(166, 44, 44, 0.2);
+    }
+    .video-library-dots .dot.active {
+      background: var(--accent-red);
+      width: 22px;
+      border-radius: 4px;
+    }
+    .video-library-close {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(166, 44, 44, 0.08);
+      color: var(--text-secondary);
+      font-size: 18px;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-left: 10px;
+    }
+    .video-library-close:hover {
+      background: var(--accent-red);
+      color: #fff;
+      transform: rotate(90deg);
+    }
+    .video-library-body {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 24px;
+      padding: 24px 28px;
+      overflow-y: auto;
+      flex: 1;
+    }
+    .video-main {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .video-main-player {
+      position: relative;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #000;
+      aspect-ratio: 16/9;
+      box-shadow: 0 12px 40px rgba(60, 30, 20, 0.25);
+    }
+    .video-main-player video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .video-main-badge {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      padding: 6px 14px;
+      background: var(--accent-red);
+      color: #fff;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+      box-shadow: 0 4px 12px rgba(166, 44, 44, 0.4);
+    }
+    .video-main-info {
+      padding: 0 4px;
+    }
+    .video-main-title {
+      font-family: 'ZCOOL XiaoWei', serif;
+      font-size: 28px;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+      font-weight: 600;
+    }
+    .video-main-stats {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+      color: var(--text-secondary);
+      font-size: 14px;
+    }
+    .stat-divider {
+      width: 1px;
+      height: 12px;
+      background: rgba(166, 44, 44, 0.2);
+    }
+    .video-main-tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .tag-pill {
+      padding: 5px 14px;
+      background: rgba(255, 255, 255, 0.6);
+      border: 1px solid rgba(166, 44, 44, 0.12);
+      border-radius: 14px;
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+    .tag-pill.tag-active {
+      background: rgba(166, 44, 44, 0.08);
+      color: var(--accent-red);
+      border-color: rgba(166, 44, 44, 0.3);
+    }
+    .video-main-desc {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.8;
+      margin-bottom: 14px;
+      padding: 12px 14px;
+      background: rgba(166, 44, 44, 0.04);
+      border-left: 3px solid var(--accent-red);
+      border-radius: 0 8px 8px 0;
+    }
+    .tag-pill.tag-keyword {
+      background: rgba(166, 44, 44, 0.08);
+      color: var(--accent-red);
+      border-color: rgba(166, 44, 44, 0.2);
+      font-size: 12px;
+      padding: 5px 12px;
+      border-radius: 12px;
+    }
+    .video-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      max-height: 100%;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+    .sidebar-card {
+      display: flex;
+      flex-direction: column;
+      background: rgba(255, 255, 255, 0.7);
+      border: 1px solid rgba(166, 44, 44, 0.08);
+      border-radius: 14px;
+      padding: 10px;
+      cursor: pointer;
+      transition: all 0.3s;
+      position: relative;
+    }
+    .sidebar-card:hover {
+      background: #fff;
+      border-color: rgba(166, 44, 44, 0.3);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(166, 44, 44, 0.12);
+    }
+    .sidebar-card.active {
+      border-color: var(--accent-red);
+      background: rgba(166, 44, 44, 0.04);
+    }
+    .sidebar-thumb {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16/9;
+      border-radius: 10px;
+      overflow: hidden;
+      background: linear-gradient(135deg, #d4a373, #8b5e83);
+    }
+    .sidebar-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .sidebar-thumb .play-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.2);
+      transition: all 0.3s;
+    }
+    .sidebar-card:hover .play-overlay {
+      background: rgba(0, 0, 0, 0.35);
+    }
+    .sidebar-thumb .play-overlay svg {
+      width: 28px;
+      height: 28px;
+      fill: #fff;
+      filter: drop-shadow(0 2px 6px rgba(0,0,0,0.4));
+    }
+    .sidebar-thumb .badge {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      padding: 3px 9px;
+      background: var(--accent-red);
+      color: #fff;
+      border-radius: 10px;
+      font-size: 11px;
+      font-weight: 500;
+    }
+    .sidebar-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 4px 2px;
+    }
+    .sidebar-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    .sidebar-stats {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+    .sidebar-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 2px 4px 4px;
+    }
+    .sidebar-source {
+      font-size: 11px;
+      color: var(--text-secondary);
+    }
+    .sidebar-play {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--accent-red);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .sidebar-play:hover {
+      transform: scale(1.1);
+      box-shadow: 0 4px 12px rgba(166, 44, 44, 0.4);
+    }
+    .sidebar-play svg {
+      width: 14px;
+      height: 14px;
+      fill: #fff;
+    }
+
+    /* 旧的单视频播放器样式 */
+    .video-list-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.4);
+      border: 1px solid rgba(166, 44, 44, 0.06);
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+    .video-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 8px;
+    }
+    .video-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.4);
+      border: 1px solid rgba(166, 44, 44, 0.06);
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+    .video-item:hover {
+      background: rgba(166, 44, 44, 0.05);
+      border-color: rgba(166, 44, 44, 0.2);
+      transform: translateX(2px);
+    }
+    .video-thumb {
+      position: relative;
+      width: 70px;
+      height: 50px;
+      flex-shrink: 0;
+      border-radius: 6px;
+      overflow: hidden;
+      background: linear-gradient(135deg, #d4a373, #8b5e83);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .video-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .video-thumb .play-icon {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.25);
+      color: #fff;
+    }
+    .video-thumb .play-icon svg {
+      width: 20px;
+      height: 20px;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+    }
+    .video-thumb .duration {
+      position: absolute;
+      bottom: 2px;
+      right: 3px;
+      background: rgba(0, 0, 0, 0.7);
+      color: #fff;
+      font-size: 9px;
+      padding: 1px 4px;
+      border-radius: 3px;
+      font-weight: 500;
+    }
+    .video-info {
+      flex: 1;
+      min-width: 0;
+    }
+    .video-title {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-primary);
+      line-height: 1.3;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      margin-bottom: 3px;
+    }
+    .video-meta {
+      font-size: 10px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .video-meta .dot {
+      width: 4px;
+      height: 4px;
+      background: var(--accent-red);
+      border-radius: 50%;
+    }
+
+    /* 视频播放器弹窗 */
+    .video-player-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(6px);
+      z-index: 1001;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .video-player-overlay.show {
+      display: flex;
+    }
+    .video-player {
+      background: #000;
+      border-radius: 16px;
+      width: 900px;
+      max-width: 100%;
+      overflow: hidden;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+      animation: vpIn 0.3s ease;
+    }
+    @keyframes vpIn {
+      from { opacity: 0; transform: scale(0.92); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    .video-player video {
+      width: 100%;
+      height: auto;
+      display: block;
+      max-height: 70vh;
+      background: #000;
+    }
+    .video-player-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 20px;
+      background: linear-gradient(135deg, #2a1810, #1a0f08);
+      color: #f5e6d3;
+    }
+    .video-player-title {
+      font-size: 15px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .video-player-title::before {
+      content: '🎙️';
+      font-size: 16px;
+    }
+    .video-player-close {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(255, 255, 255, 0.1);
+      color: #f5e6d3;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .video-player-close:hover {
+      background: var(--accent-red);
+      color: #fff;
+      transform: rotate(90deg);
+    }
+    .video-player-info {
+      padding: 16px 20px;
+      background: linear-gradient(135deg, #faf5ee, #f3e8db);
+      color: var(--text-primary);
+    }
+    .video-player-desc {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 10px;
+    }
+    .video-player-tags {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .video-player-tag {
+      padding: 3px 10px;
+      background: rgba(166, 44, 44, 0.08);
+      color: var(--accent-red);
+      border-radius: 10px;
+      font-size: 11px;
+      border: 1px solid rgba(166, 44, 44, 0.15);
+    }
+
+    /* 旧的 history-modal 样式（保留兼容，未使用） */
     .history-modal-overlay {
       position: fixed;
       inset: 0;
@@ -1598,44 +2120,16 @@
         <div class="hud-particles" id="hudParticles"></div>
       </div>
 
-      <!-- 左侧历史上的今天 -->
+      <!-- 左侧口述档案 -->
       <div class="history-sidebar">
         <div class="history-card-main">
           <div class="history-header">
-            <div class="history-title">历史上的今天</div>
-            <div class="history-date-badge">5月22日</div>
+            <div class="history-title">口述档案</div>
+            <div class="history-more-btn" id="videoMoreBtn">查看更多</div>
           </div>
-          <div class="history-timeline-list">
-            <div class="ht-item">
-              <div class="ht-year">1935</div>
-              <div class="ht-content">
-                <div class="ht-event">红军挺进师进入丽水地区</div>
-                <button class="ht-btn">查看档案</button>
-              </div>
-            </div>
-            <div class="ht-item">
-              <div class="ht-year">1942</div>
-              <div class="ht-content">
-                <div class="ht-event">中共浙西南区委成立</div>
-                <button class="ht-btn">查看档案</button>
-              </div>
-            </div>
-            <div class="ht-item">
-              <div class="ht-year">1949</div>
-              <div class="ht-content">
-                <div class="ht-event">丽水解放</div>
-                <button class="ht-btn">查看档案</button>
-              </div>
-            </div>
-            <div class="ht-item">
-              <div class="ht-year">2003</div>
-              <div class="ht-content">
-                <div class="ht-event">丽水撤地设市</div>
-                <button class="ht-btn">查看档案</button>
-              </div>
-            </div>
+          <div class="video-list" id="videoList">
+            <!-- 视频项JS动态生成 -->
           </div>
-          <div class="history-more-link" id="historyMoreBtn2">查看更多 →</div>
         </div>
       </div>
 
@@ -1810,74 +2304,47 @@
     </section>
   </div>
 
-  <!-- 历史上的今天 弹窗 -->
-  <div class="history-modal-overlay" id="historyModal">
-    <div class="history-modal">
-      <div class="history-modal-header">
-        <div class="history-modal-title">历史上的今天 · 5月22日</div>
-        <button class="history-modal-close" id="historyCloseBtn">×</button>
+  <!-- 口述档案视频库弹窗 -->
+  <div class="video-library-overlay" id="videoLibrary">
+    <div class="video-library">
+      <div class="video-library-header">
+        <div class="video-library-title">
+          <span class="title-main">口述档案</span>
+          <span class="title-sub">视频列表</span>
+        </div>
+        <div class="video-library-dots">
+          <span class="dot active"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+        </div>
+        <button class="video-library-close" id="videoLibraryClose">×</button>
       </div>
-      <div class="history-modal-body">
-        <div class="history-modal-list">
-          <div class="history-modal-item">
-            <div class="history-modal-year">1935年</div>
-            <div class="history-modal-event">红军挺进师进入浙西南</div>
-            <div class="history-modal-desc">中国工农红军挺进师在粟裕、刘英率领下进入丽水地区,开辟浙西南游击根据地,开展艰苦卓绝的游击战争。</div>
-            <button class="history-modal-btn">查看档案</button>
+      <div class="video-library-body">
+        <!-- 左侧主播放器 -->
+        <div class="video-main">
+          <div class="video-main-player">
+            <video id="videoMainEl" controls></video>
+            <div class="video-main-badge" id="videoMainBadge">精选列表</div>
           </div>
-          <div class="history-modal-item">
-            <div class="history-modal-year">1942年</div>
-            <div class="history-modal-event">中共浙西南特委重建</div>
-            <div class="history-modal-desc">在艰苦环境下重建党的组织体系,坚持敌后斗争,保存革命力量,为最终胜利奠定基础。</div>
-            <button class="history-modal-btn">查看档案</button>
+          <div class="video-main-info">
+            <h2 class="video-main-title" id="videoMainTitle"></h2>
+            <div class="video-main-stats">
+              <span class="stat-item" id="videoMainBadge"></span>
+              <span class="stat-divider"></span>
+              <span class="stat-item" id="videoMainViews">02</span>
+              <span class="stat-divider"></span>
+              <span class="stat-item" id="videoMainTime">04:05</span>
+              <span class="stat-divider"></span>
+              <span class="stat-item" id="videoMainDate">9-25</span>
+            </div>
+            <div class="video-main-desc" id="videoMainDesc"></div>
+            <div class="video-main-tags" id="videoMainTags"></div>
           </div>
-          <div class="history-modal-item">
-            <div class="history-modal-year">1949年</div>
-            <div class="history-modal-event">丽水解放</div>
-            <div class="history-modal-desc">人民解放军进驻丽水,人民政权建立,历史翻开新篇章,开启社会主义建设新纪元。</div>
-            <button class="history-modal-btn">查看档案</button>
-          </div>
-          <div class="history-modal-item">
-            <div class="history-modal-year">1956年</div>
-            <div class="history-modal-event">文物史料普查启动</div>
-            <div class="history-modal-desc">丽水开展大规模文物与史料普查,地方档案事业起步,为后续档案工作奠定基础。</div>
-            <button class="history-modal-btn">查看档案</button>
-          </div>
-          <div class="history-modal-item">
-            <div class="history-modal-year">1978年</div>
-            <div class="history-modal-event">档案工作恢复发展</div>
-            <div class="history-modal-desc">改革开放春风下,丽水档案事业步入正轨,开始系统收集整理各类档案资料。</div>
-            <button class="history-modal-btn">查看档案</button>
-          </div>
-          <div class="history-modal-item">
-            <div class="history-modal-year">1986年</div>
-            <div class="history-modal-event">地区档案馆成立</div>
-            <div class="history-modal-desc">丽水地区档案馆正式挂牌,系统收集整理红色档案,标志着档案事业进入新阶段。</div>
-            <button class="history-modal-btn">查看档案</button>
-          </div>
-          <div class="history-modal-item">
-            <div class="history-modal-year">1998年</div>
-            <div class="history-modal-event">革命旧址列入文保</div>
-            <div class="history-modal-desc">浙西南革命根据地旧址群列入省级文物保护单位,红色文化遗产得到有效保护。</div>
-            <button class="history-modal-btn">查看档案</button>
-          </div>
-          <div class="history-modal-item">
-            <div class="history-modal-year">2003年</div>
-            <div class="history-modal-event">丽水撤地设市</div>
-            <div class="history-modal-desc">丽水撤地设市,城市发展与档案信息化开启新篇章,档案工作迈上新台阶。</div>
-            <button class="history-modal-btn">查看档案</button>
-          </div>
-          <div class="history-modal-item">
-            <div class="history-modal-year">2015年</div>
-            <div class="history-modal-event">侨乡档案数字化工程</div>
-            <div class="history-modal-desc">"侨乡青田"海外档案数字化抢救工程启动,留住乡愁记忆,保护珍贵的华侨历史。</div>
-            <button class="history-modal-btn">查看档案</button>
-          </div>
-          <div class="history-modal-item">
-            <div class="history-modal-year">2021年</div>
-            <div class="history-modal-event">浙西南革命精神研究成果发布</div>
-            <div class="history-modal-desc">革命精神研究成果集中发布,纳入红色档案资源体系,传承红色基因。</div>
-            <button class="history-modal-btn">查看档案</button>
+        </div>
+        <!-- 右侧视频列表 -->
+        <div class="video-sidebar">
+          <div class="video-sidebar-list" id="videoSidebarList">
+            <!-- JS动态生成 -->
           </div>
         </div>
       </div>
@@ -1926,24 +2393,119 @@
       });
     });
 
-    // 历史上的今天 弹窗
-    const historyModal = document.getElementById('historyModal');
-    const historyMoreBtn2 = document.getElementById('historyMoreBtn2');
-    const historyCloseBtn = document.getElementById('historyCloseBtn');
-    
-    if (historyMoreBtn2) {
-      historyMoreBtn2.addEventListener('click', () => historyModal.classList.add('active'));
-    }
-    if (historyCloseBtn) {
-      historyCloseBtn.addEventListener('click', () => historyModal.classList.remove('active'));
-    }
-    historyModal.addEventListener('click', e => { 
-      if (e.target === historyModal) historyModal.classList.remove('active'); 
-    });
-    historyModal.querySelectorAll('.history-modal-btn').forEach(b => {
-      b.addEventListener('click', () => {
-        alert('正在打开相关档案…');
+    // 口述档案视频库数据（贴合丽水本地历史主题）
+    const oralVideos = [
+      { id: 1, title: '刘英·挺进浙西南', badge: '口述史', views: '02', date: '04:05', date2: '9-25', keywords: '刘英 | 挺进师 | 浙西南革命 | 红色记忆', desc: '通过老同志口述，还原刘英率领挺进师在浙西南开展游击战争的峥嵘岁月，再现革命先辈在丽水山区的战斗足迹与坚定信念。', cover: 'linear-gradient(135deg, #4a3220, #2a1c10)', coverImg: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=600&h=400&fit=crop', source: '丽水市档案馆', src: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4' },
+      { id: 2, title: '粟裕·根据地的灯', badge: '口述史', views: '03', date: '1:20:45', date2: '8-20', keywords: '粟裕 | 革命根据地 | 浙西南 | 游击战争', desc: '亲历者讲述粟裕在浙西南创建革命根据地的亲身经历，回忆那段在丽水山林间与敌人周旋、以弱胜强的革命斗争岁月。', cover: 'linear-gradient(135deg, #8b1a1a, #4a0e0e)', coverImg: 'https://images.unsplash.com/photo-1551264187-9c0d4e2ca8b5?w=400&h=240&fit=crop', source: '松阳县档案馆', src: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4' },
+      { id: 3, title: '红色通讯网', badge: '口述史', views: '02', date: '1:20:45', date2: '8-20', keywords: '地下交通 | 秘密联络 | 浙西南 | 红色通讯', desc: '亲历者讲述革命战争年代丽水地区地下交通站的秘密联络故事，再现那条隐匿于崇山峻岭间、传递情报与希望的生命线。', cover: 'linear-gradient(135deg, #3a4a2a, #1f2a15)', coverImg: 'https://images.unsplash.com/photo-1505664194779-8beaceb93744?w=400&h=240&fit=crop', source: '云和县档案馆', src: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4' },
+      { id: 4, title: '浙西南·星火岁月', badge: '口述史', views: '02', date: '1:20:45', date2: '8-20', keywords: '浙西南三年游击战争 | 革命老区 | 丽水 | 口述历史', desc: '以丽水革命老区为视角，通过老党员、老战士及其后代的深情口述，讲述浙西南三年游击战争时期革命先辈浴血奋战的真实故事。', cover: 'linear-gradient(135deg, #4a4a2a, #2a2a15)', coverImg: 'https://images.unsplash.com/photo-1488972685288-c3fd157d7c7a?w=400&h=240&fit=crop', source: '莲都区档案馆', src: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4' },
+      { id: 5, title: '丽水革命遗址寻访', badge: '口述史', views: '02', date: '1:20:45', date2: '8-20', keywords: '革命遗址 | 丽水 | 红色教育 | 口述档案', desc: '档案工作人员与党史研究者实地寻访丽水境内重要革命遗址，通过口述与影像结合，记录那些承载红色记忆的山水与建筑。', cover: 'linear-gradient(135deg, #2a4a3a, #152a20)', coverImg: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=400&h=240&fit=crop', source: '缙云县档案馆', src: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4' },
+      { id: 6, title: '老党员的红色家书', badge: '口述史', views: '12', date: '12:36', date2: '7-15', keywords: '红色家书 | 党员 | 革命精神 | 丽水', desc: '珍藏于丽水档案馆的红色家书原件，配合老党员及其家属的口述解读，讲述一封封家书背后的革命情怀与家国记忆。', cover: 'linear-gradient(135deg, #6b2d2d, #3a1a1a)', coverImg: 'https://images.unsplash.com/photo-1574717024653-61fd2cf4b4d9?w=400&h=240&fit=crop', source: '丽水市档案馆', src: 'https://www.w3schools.com/html/mov_bbb.mp4' },
+      { id: 7, title: '青田华侨与革命', badge: '口述史', views: '08', date: '08:52', date2: '6-20', keywords: '华侨 | 革命资助 | 青田 | 海外关系', desc: '青田籍华侨后代口述老一辈华侨在海外支持国内革命的真实经历，展现丽水青田作为著名侨乡与革命历史的深厚渊源。', cover: 'linear-gradient(135deg, #2c3e50, #1a2530)', coverImg: 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=400&h=240&fit=crop', source: '青田县档案馆', src: 'https://www.w3schools.com/html/movie.mp4' },
+      { id: 8, title: '畲族山寨的革命火种', badge: '口述史', views: '15', date: '15:20', date2: '5-10', keywords: '畲族 | 革命 | 民族团结 | 景宁', desc: '景宁畲族老人讲述革命战争年代红军在畲族山寨的故事，呈现丽水畲汉同胞并肩作战、共同守护革命火种的动人篇章。', cover: 'linear-gradient(135deg, #1d4e3a, #0f2a1f)', coverImg: 'https://images.unsplash.com/photo-1532012197267-da84d127e765?w=400&h=240&fit=crop', source: '景宁县档案馆', src: 'https://www.w3schools.com/html/mov_bbb.mp4' }
+    ];
+
+    // 渲染左侧视频列表（4条）
+    const videoList = document.getElementById('videoList');
+    if (videoList) {
+      videoList.innerHTML = oralVideos.slice(0, 4).map((v, i) =>
+        '<div class="video-item" data-id="' + v.id + '">' +
+          '<div class="video-thumb" style="background:' + v.cover + '">' +
+            '<img src="' + v.coverImg + '" alt="" onerror="this.style.display=\'none\'">' +
+            '<div class="play-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>' +
+            '<div class="duration">' + v.date + '</div>' +
+          '</div>' +
+          '<div class="video-info">' +
+            '<div class="video-title">' + v.title + '</div>' +
+            '<div class="video-meta"><span class="dot"></span>' + v.source + '</div>' +
+          '</div>' +
+        '</div>'
+      ).join('');
+      // 点击左侧视频列表条目 → 打开弹窗并播放对应视频
+      videoList.querySelectorAll('.video-item').forEach(item => {
+        item.addEventListener('click', () => {
+          const id = parseInt(item.dataset.id);
+          openVideoLibrary(id);
+        });
       });
+    }
+
+    // 视频库弹窗
+    const videoLibrary = document.getElementById('videoLibrary');
+    const videoLibraryClose = document.getElementById('videoLibraryClose');
+    const videoMoreBtn = document.getElementById('videoMoreBtn');
+    const videoSidebarList = document.getElementById('videoSidebarList');
+    const videoMainEl = document.getElementById('videoMainEl');
+    const videoMainTitle = document.getElementById('videoMainTitle');
+    const videoMainViews = document.getElementById('videoMainViews');
+    const videoMainTime = document.getElementById('videoMainTime');
+    const videoMainDate = document.getElementById('videoMainDate');
+
+    function renderSidebar() {
+      if (!videoSidebarList) return;
+      videoSidebarList.innerHTML = oralVideos.map(v =>
+        '<div class="sidebar-card" data-id="' + v.id + '">' +
+          '<div class="sidebar-thumb" style="background:' + v.cover + '">' +
+            '<img src="' + v.coverImg + '" alt="' + v.title + '" onerror="this.style.display=\'none\'">' +
+            '<div class="play-overlay"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>' +
+            '<div class="badge">' + v.badge + '</div>' +
+          '</div>' +
+          '<div class="sidebar-meta">' +
+            '<div class="sidebar-title">' + v.title + '</div>' +
+            '<div class="sidebar-stats">' + v.views + ' · ' + v.date + '</div>' +
+          '</div>' +
+          '<div class="sidebar-bottom">' +
+            '<div class="sidebar-source">' + v.source + '</div>' +
+            '<div class="sidebar-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>' +
+          '</div>' +
+        '</div>'
+      ).join('');
+
+      videoSidebarList.querySelectorAll('.sidebar-card').forEach(card => {
+        card.addEventListener('click', () => playVideo(parseInt(card.dataset.id)));
+      });
+    }
+
+    function playVideo(id) {
+      const v = oralVideos.find(x => x.id === id);
+      if (!v || !videoMainEl) return;
+      videoMainTitle.textContent = v.title;
+      videoMainViews.textContent = v.views;
+      videoMainTime.textContent = v.date;
+      videoMainDate.textContent = v.date2;
+      videoMainBadge.textContent = v.badge;
+      videoMainDesc.textContent = v.desc;
+      videoMainTags.innerHTML = '<span class="tag-pill tag-keyword">' + v.keywords + '</span>';
+      videoMainEl.poster = v.coverImg;
+      videoMainEl.src = v.src;
+      videoMainEl.play().catch(() => {});
+      document.querySelectorAll('.sidebar-card').forEach(c => c.classList.remove('active'));
+      const activeCard = document.querySelector('.sidebar-card[data-id="' + id + '"]');
+      if (activeCard) activeCard.classList.add('active');
+    }
+
+    function openVideoLibrary(initialId) {
+      if (!videoLibrary) return;
+      renderSidebar();
+      videoLibrary.classList.add('show');
+      playVideo(initialId || 1);
+    }
+
+    function closeVideoLibrary() {
+      if (!videoLibrary) return;
+      videoLibrary.classList.remove('show');
+      if (videoMainEl) { videoMainEl.pause(); videoMainEl.currentTime = 0; }
+    }
+
+    if (videoMoreBtn) videoMoreBtn.addEventListener('click', openVideoLibrary);
+    if (videoLibraryClose) videoLibraryClose.addEventListener('click', closeVideoLibrary);
+    if (videoLibrary) {
+      videoLibrary.addEventListener('click', e => {
+        if (e.target === videoLibrary) closeVideoLibrary();
+      });
+    }
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && videoLibrary && videoLibrary.classList.contains('show')) closeVideoLibrary();
     });
   </script>
 </body>
