@@ -1336,6 +1336,47 @@
     .site-footer{margin-top:40px;padding:24px 20px;text-align:center;font-size:13px;color:var(--text-muted);background:rgba(250,245,238,.5);border-top:1px solid rgba(166,44,44,.08)}
     .site-footer strong{color:var(--accent-red);font-weight:500}
     .site-footer .sep{margin:0 8px;color:rgba(166,44,44,.3)}
+
+    /* AI assessment */
+    .ai-assessment{margin-top:32px}
+    .ai-start-area{background:linear-gradient(135deg,#fef9f3 0%,#fdf2e9 100%);border:1.5px solid rgba(201,168,108,.4);border-radius:16px;padding:32px 28px;text-align:center;margin-bottom:24px}
+    .ai-start-icon{font-size:42px;margin-bottom:12px}
+    .ai-start-title{font-size:17px;font-weight:600;color:var(--accent-red,#a62c2c);margin-bottom:8px;font-family:'Noto Serif SC',serif}
+    .ai-start-desc{font-size:13.5px;color:var(--text-secondary,#666);margin-bottom:20px;line-height:1.6}
+    .ai-start-btn{background:linear-gradient(135deg,var(--accent-red,#a62c2c) 0%,#c94d4d 100%);color:#fff;border:none;border-radius:24px;padding:11px 36px;font-size:15px;font-weight:600;cursor:pointer;box-shadow:0 4px 14px rgba(166,44,44,.3);font-family:'Noto Sans SC',sans-serif;transition:all .3s}
+    .ai-start-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(166,44,44,.4)}
+    .ai-progress-bar{height:8px;background:rgba(166,44,44,.1);border-radius:4px;margin-bottom:20px;overflow:hidden}
+    .ai-progress-fill{height:100%;background:linear-gradient(90deg,var(--accent-red,#a62c2c),#c94d4d);border-radius:4px;transition:width .4s ease}
+    .ai-question-card{background:#fff;border:1.5px solid rgba(201,168,108,.25);border-radius:14px;padding:22px 24px;margin-bottom:18px;box-shadow:0 2px 10px rgba(0,0,0,.05)}
+    .ai-q-num{font-size:12px;color:var(--accent-red,#a62c2c);font-weight:600;margin-bottom:8px}
+    .ai-q-text{font-size:15px;color:var(--text-primary,#3d2b1f);margin-bottom:14px;line-height:1.7}
+    .ai-q-opts{display:flex;flex-direction:column;gap:10px}
+    .ai-q-opt{padding:10px 16px;border:1.5px solid rgba(201,168,108,.35);border-radius:10px;cursor:pointer;font-size:14px;color:var(--text-primary,#3d2b1f);background:#fff;text-align:left;transition:all .2s;font-family:'Noto Sans SC',sans-serif}
+    .ai-q-opt:hover{border-color:var(--accent-red,#a62c2c);background:rgba(166,44,44,.04)}
+    .ai-q-opt.selected{border-color:var(--accent-red,#a62c2c);background:rgba(166,44,44,.08);color:var(--accent-red,#a62c2c)}
+    .ai-q-opt.correct{border-color:#2e8b57;background:rgba(46,139,87,.1);color:#2e8b57}
+    .ai-q-opt.wrong{border-color:#c33;background:rgba(204,51,51,.08);color:#c33}
+    .ai-q-opt.disabled{pointer-events:none;opacity:.75}
+    .ai-analysis{background:rgba(201,168,108,.08);border-left:3px solid var(--accent-gold,#c9a86c);border-radius:0 8px 8px 0;padding:12px 16px;margin-top:10px;font-size:13px;color:var(--text-secondary,#666);line-height:1.6}
+    .ai-score-area{text-align:center;padding:24px 0}
+    .ai-score-circle{width:110px;height:110px;border-radius:50%;background:conic-gradient(var(--accent-red,#a62c2c) 0%,rgba(166,44,44,.1) 0%);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;position:relative}
+    .ai-score-inner{width:90px;height:90px;border-radius:50%;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center}
+    .ai-score-num{font-size:28px;font-weight:700;color:var(--accent-red,#a62c2c);line-height:1}
+    .ai-score-label{font-size:11px;color:#999}
+    .ai-result-title{font-size:18px;font-weight:600;color:var(--text-primary,#3d2b1f);margin-bottom:12px}
+    .ai-result-detail{font-size:13.5px;color:var(--text-secondary,#666);line-height:1.7;margin-bottom:20px}
+    .ai-result-item{display:flex;align-items:flex-start;gap:10px;padding:12px 0;border-bottom:1px solid rgba(0,0,0,.05)}
+    .ai-result-item:last-child{border-bottom:none}
+    .ai-result-q{font-size:13px;color:#555;flex:1;line-height:1.5}
+    .ai-result-a{font-size:12px;font-weight:600;min-width:36px}
+    .ai-a-correct{color:#2e8b57}
+    .ai-a-wrong{color:#c33}
+    .ai-submit-btn{background:linear-gradient(135deg,var(--accent-red,#a62c2c) 0%,#c94d4d 100%);color:#fff;border:none;border-radius:24px;padding:11px 36px;font-size:15px;font-weight:600;cursor:pointer;margin-top:16px;box-shadow:0 4px 14px rgba(166,44,44,.3);font-family:'Noto Sans SC',sans-serif}
+    .ai-submit-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(166,44,44,.4)}
+    .ai-submit-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+    .ai-retry-btn{background:#fff;color:var(--accent-red,#a62c2c);border:1.5px solid var(--accent-red,#a62c2c);border-radius:24px;padding:10px 32px;font-size:14px;cursor:pointer;margin-top:12px;font-family:'Noto Sans SC',sans-serif}
+    .ai-retry-btn:hover{background:rgba(166,44,44,.04)}
+
 </style>
 </head>
 <body>
@@ -1467,6 +1508,7 @@
       </div>
       <div class="modal-footer">
         <button class="btn-secondary" onclick="closeModal()">关闭</button>
+        <button class="btn-secondary" style="background:var(--accent-gold,#c9a86c);color:#fff;border-color:var(--accent-gold,#c9a86c)" onclick="downloadCourseware()">下载课件</button>
         <button class="btn-primary" id="modalStartBtn" onclick="startLearningFromModal()">开始学习</button>
       </div>
     </div>
@@ -1887,7 +1929,48 @@
       ]
     };
 
-    // 为每门课程设置章节状态（基于progress）
+
+    var assessmentBank = {
+  primary: [
+    [{q:'中华人民共和国国旗的设计者是谁？',o:['曾联松','毛泽东','周恩来','孙中山'],a:0,x:'曾联松是浙江瑞安人，1949年设计了五星红旗。'},{q:'五星红旗上，大五角星代表什么？',o:['全国各族人民','中国共产党','人民解放军','工人阶级'],a:1,x:'大五角星象征中国共产党的领导核心地位。'},{q:'红色旗面象征什么？',o:['革命胜利','和平发展','科技创新','经济建设'],a:0,x:'红色象征革命，寓意红色江山来之不易。'},{q:'国旗上四颗小五角星代表什么？',o:['四个民族','工人、农民、知识分子和其他劳动人民','四大地区','四个党派'],a:1,x:'四颗小星代表工人、农民、知识分子和其他劳动人民。'},{q:'1949年10月1日，五星红旗在哪里首次升起？',o:['北京天安门广场','上海外滩','广州海珠广场','南京中山陵'],a:0,x:'1949年10月1日，开国大典在北京天安门广场隆重举行。'},{q:'五星红旗于哪一年正式成为国旗？',o:['1948年','1949年','1950年','1951年'],a:1,x:'1949年9月政协一届会议决定五星红旗为国旗。'},{q:'国旗红色使用的是哪种标准色？',o:['朱红','中国红','革命红','国旗红'],a:2,x:'国旗标准色为革命红，代码#DE2910。'},{q:'下列哪项不是国旗的象征意义？',o:['工农联盟','民族团结','领土完整','宗教信仰'],a:3,x:'国旗象征国家主权和民族精神，不涉及宗教信仰。'}],
+    [{q:'中国少年先锋队的前身是什么？',o:['少年共青团','儿童团','劳动童子团','少年党'],a:2,x:'1922年成立的劳动童子团是党领导的最早儿童组织。'},{q:'红领巾的寓意是什么？',o:['时尚装饰','队旗的一角，象征红旗的一角','革命遗物','民族象征'],a:1,x:'红领巾是革命红旗的一角，是正义、光荣的象征。'},{q:'安源儿童团成立于哪一年？',o:['1920年','1921年','1922年','1923年'],a:2,x:'1922年，中国共产党在安源建立了第一个少年儿童组织。'},{q:'加入中国少年先锋队的年龄范围是？',o:['6-12岁','7-14岁','8-15岁','10-16岁'],a:1,x:'《队章》规定：14岁以下的少年儿童可申请加入。'},{q:'正确的红领巾佩戴方法是？',o:['披在肩上','缠绕脖子上','左尖压右尖，右尖绕一圈','随意佩戴'],a:2,x:'正确方法：领巾披在肩，左尖压右尖，右尖绕一圈。'},{q:'中国少年先锋队的建队日是？',o:['1949年10月1日','1949年10月13日','1950年1月1日','1951年10月1日'],a:1,x:'1949年10月13日是新中国第一个少年先锋队建队日。'},{q:'浙西南根据地最早的红军学校成立于？',o:['1928年','1929年','1930年','1931年'],a:2,x:'1930年，浙西南建立了第一所红军学校。'},{q:'红领巾结应系几折？',o:['1折','2折','3折','不用折'],a:1,x:'红领巾结应折叠两层后再系于领口。'}],
+    [{q:'粟裕大将在浙西南坚持斗争了多少年？',o:['2年','3年','5年','8年'],a:2,x:'粟裕在浙西南坚持了三年游击战争。'},{q:'刘英是哪一年在永康被捕牺牲？',o:['1938年','1939年','1940年','1942年'],a:3,x:'1942年2月，省委书记刘英在永康被捕，5月英勇就义。'},{q:'浙西南革命根据地正式建立于哪一年？',o:['1927年','1928年','1929年','1930年'],a:2,x:'1935年，粟裕、刘英率红军挺进师建立浙西南根据地。'},{q:'陈凤生是哪里人？',o:['温州','丽水','金华','宁波'],a:1,x:'陈凤生（1896-1936），遂昌县人，浙西南根据地重要领导人。'},{q:'浙西南革命根据地又被称为什么？',o:['浙东革命区','浙西苏区','闽浙赣苏区的一部分','钱江根据地'],a:2,x:'浙西南根据地是闽浙赣苏区的重要组成部分。'},{q:'在丽水被捕牺牲的中共浙江省委书记是？',o:['刘英','粟裕','黄富武','陈凤生'],a:0,x:'刘英是浙江省委书记，1942年在永康被捕后英勇牺牲。'},{q:'红军挺进师进入浙西南时有多少人？',o:['200多人','500多人','1000多人','3000多人'],a:1,x:'1935年初，粟裕、刘英率500多人进入浙西南开展游击战。'},{q:'陈凤生牺牲于哪一年？',o:['1934年','1935年','1936年','1937年'],a:2,x:'1936年，陈凤生在遂昌被敌人杀害，年仅40岁。'}],
+    [{q:'浙西南红色记忆专题档案共分几大部分？',o:['3部分','4部分','5部分','6部分'],a:2,x:'专题档案分为历史风云、革命人物、遗址遗迹、精神传承、文化遗产五大部分。'},{q:'浙西南第一个县级苏维埃政府成立于？',o:['遂昌','龙泉','松阳','云和'],a:0,x:'1935年5月，遂昌县苏维埃政府在湖山成立。'},{q:'浙西南根据地最重要的精神遗产是？',o:['创新精神','突围精神','忠诚精神','浙西南革命精神'],a:3,x:'浙西南革命精神是革命先辈留下的宝贵精神遗产。'},{q:'遂昌王村口红军标语现存有多少条？',o:['10多条','30多条','50多条','80多条'],a:2,x:'王村口现存红军标语50多条，是珍贵的革命历史遗存。'},{q:'浙西南革命纪念馆位于哪个县？',o:['丽水市','遂昌县','龙泉市','松阳县'],a:1,x:'浙西南革命纪念馆位于遂昌县，是省级爱国主义教育基地。'},{q:'以下哪项不是浙西南红色档案的价值？',o:['历史凭证价值','经济开发价值','爱国主义教育价值','革命精神传承价值'],a:1,x:'红色档案主要用于教育传承，不以经济开发为主要目的。'},{q:'浙西南革命根据地坚持游击战争长达？',o:['1年多','2年多','3年多','5年多'],a:2,x:'红军挺进师在浙西南坚持了三年多艰苦卓绝的游击战争。'},{q:'王村口在哪一年被列为省级爱国主义教育基地？',o:['2015年','2016年','2017年','2018年'],a:2,x:'2017年，遂昌王村口被列为省级爱国主义教育基地。'}],
+    [{q:'丽水市被称为浙江绿谷，年均气温约多少？',o:['14-16C','16-18C','18-20C','20-22C'],a:1,x:'丽水年均气温约16.9C，属亚热带季风气候。'},{q:'丽水市下辖几个县（市、区）？',o:['6个','7个','8个','9个'],a:2,x:'丽水市下辖莲都区、龙泉市和7县，共9个。'},{q:'丽水生态旅游的核心理念是什么？',o:['经济发展优先','生态优先','工业立市','商业开发'],a:1,x:'丽水坚持生态立市，是国家级生态示范区。'},{q:'瓯江是浙江第几大河？',o:['第一','第二','第三','第四'],a:1,x:'瓯江是浙江第二大河，全长388公里，丽水境内长309公里。'},{q:'丽水古堰画乡位于哪个县？',o:['莲都区','龙泉市','云和县','松阳县'],a:0,x:'古堰画乡位于莲都区碧湖镇，是国家4A级景区。'},{q:'丽水是哪一年撤地设市，成为地级市的？',o:['1999年','2000年','2001年','2002年'],a:1,x:'2000年，丽水撤地设市，成为浙江省地级市。'},{q:'以下哪个不是丽水的国家级荣誉？',o:['中国生态第一市','中国长寿之乡','国家森林城市','国家级高新区'],a:3,x:'丽水暂无国家级高新区，生态、森林、长寿之乡均为国家级荣誉。'},{q:'丽水被誉为天然氧吧，负氧离子浓度一般可达？',o:['100-300个/立方厘米','500-1000个/立方厘米','2000-5000个/立方厘米','10000个以上/立方厘米'],a:2,x:'丽水森林覆盖率达81.7%，负氧离子浓度2000-5000个/立方厘米。'}],
+    [{q:'两山理念是哪位领导人首次提出的？',o:['胡锦涛','习近平','温家宝','李克强'],a:1,x:'2005年8月，时任浙江省委书记习近平在安吉县首次提出"绿水青山就是金山银山"。'},{q:'两山理念发源地是浙江哪个县？',o:['淳安','安吉','开化','临安'],a:1,x:'2005年8月，习近平在安吉县余村考察时提出两山理念。'},{q:'丽水在哪一年获得两山实践创新基地？',o:['2017年','2018年','2019年','2020年'],a:2,x:'2019年11月，丽水被生态环境部授予两山实践创新基地。'},{q:'丽水践行两山理念的核心战略是？',o:['工业强市','旅游富市','生态立市','商业兴市'],a:2,x:'丽水坚定不移走生态绿色发展之路，实施生态立市战略。'},{q:'绿水青山向金山银山转化的关键是？',o:['破坏生态搞开发','保护生态基础上适度利用','先污染后治理','放弃发展保护生态'],a:1,x:'两山转化强调在保护好生态的前提下实现绿色发展。'},{q:'丽水市在哪一年在浙江省率先实现全域剿灭劣V类水？',o:['2016年','2017年','2018年','2019年'],a:1,x:'2017年，丽水在浙江省率先实现全域剿灭劣V类水。'},{q:'丽水市GDP增速连续多少年居浙江省前三位？',o:['2年','3年','4年','5年'],a:2,x:'丽水GDP增速连续4年居浙江省前三位，实现绿色崛起。'},{q:'丽水山系品牌不包括以下哪个？',o:['丽水山耕','丽水山居','丽水山游','丽水山泉'],a:3,x:'丽水山系品牌包括丽水山耕、丽水山居、丽水山游。'}],
+    [{q:'习近平号召广大青少年要争当什么样的时代新人？',o:['有知识的人','有理想、有本领、有担当','有技术的人','有财富的人'],a:1,x:'习近平勉励广大青少年要做有理想、有本领、有担当的时代新人。'},{q:'社会主义核心价值观在个人层面的内容是？',o:['富强、民主、文明、和谐','自由、平等、公正、法治','爱国、敬业、诚信、友善','创新、协调、绿色、开放、共享'],a:2,x:'社会主义核心价值观个人层面：爱国、敬业、诚信、友善。'},{q:'以下哪项不是新时代好少年的标准？',o:['爱党爱国爱人民','好逸恶劳享乐主义','热心公益勤学创新','文明礼让诚实守信'],a:1,x:'好逸恶劳享乐主义与新时代好少年标准完全相反。'},{q:'浙西南革命精神的核心内涵是？',o:['敢为人先','百折不挠','不怕牺牲','以上都是'],a:3,x:'浙西南革命精神包括坚定信念、敢为人先、百折不挠、不怕牺牲等丰富内涵。'},{q:'中国梦的本质内涵是？',o:['经济发展','国家富强、民族振兴、人民幸福','科技进步','军事强大'],a:1,x:'中国梦的本质是国家富强、民族振兴、人民幸福。'},{q:'丽水市是哪一年实现脱贫攻坚全面胜利？',o:['2018年','2019年','2020年','2021年'],a:2,x:'2020年，丽水市实现脱贫攻坚全面胜利。'},{q:'浙江省提出的两个高水平目标指的是？',o:['高水平经济和高水平文化','高水平全面建成小康社会和高水平推进社会主义现代化建设','高水平教育和医疗','高水平科技和创新'],a:1,x:'两个高水平是浙江省发展的重要战略目标。'},{q:'习近平强调，青少年阶段是人生的什么时期？',o:['学习知识的黄金期','拔节孕穗期','性格形成的定型期','就业选择的迷茫期'],a:1,x:'习近平用拔节孕穗期形容青少年阶段需要精心引导和栽培。'}],
+    [{q:'红领巾是哪个组织的标志？',o:['共青团','少年先锋队','儿童团','劳动童子团'],a:1,x:'红领巾是中国少年先锋队员的标志。'},{q:'国旗上五颗五角星的排列有什么寓意？',o:['无特定寓意','大星居中，四星环绕拱卫','大星在前四星在后','五颗星排成一线'],a:1,x:'大五角星象征中国共产党，四颗小星象征全国各族人民，拱卫在大星周围。'},{q:'浙西南革命根据地建立于哪一年？',o:['1933年','1934年','1935年','1936年'],a:2,x:'1935年，红军挺进师进入浙西南，建立了革命根据地。'},{q:'习近平提出两山理念的具体地点是？',o:['丽水','安吉','千岛湖','乌镇'],a:1,x:'2005年8月15日，习近平在安吉县余村考察时提出两山理念。'},{q:'社会主义核心价值观共多少个字？',o:['12个字','16个字','20个字','24个字'],a:3,x:'社会主义核心价值观共24个字。'},{q:'中国少年先锋队的建队日是？',o:['1949年10月1日','1949年10月13日','1950年6月1日','1951年10月1日'],a:1,x:'1949年10月13日，新中国第一个少年先锋队建队日。'},{q:'丽水市是哪一年撤地设市的？',o:['1998年','1999年','2000年','2001年'],a:2,x:'2000年，丽水从地区改为地级市。'},{q:'下列哪项体现了新时代好少年的担当精神？',o:['只顾自己不管他人','积极参与社会公益活动','遇到困难就退缩','浪费资源不环保'],a:1,x:'积极参与公益活动体现担当精神，是新时代好少年的重要标准。'}],
+  ],
+  middle: [
+    [{q:'中共一大在哪一年召开？',o:['1920年','1921年','1922年','1923年'],a:1,x:'1921年7月，中国共产党第一次全国代表大会在上海召开。'},{q:'中共一大最后一天的会议在哪里举行？',o:['上海','杭州','嘉兴南湖','南京'],a:2,x:'1921年7月31日，一大在南湖一艘游船上闭幕。'},{q:'红船精神的核心内涵是？',o:['开天辟地、敢为人先','不怕牺牲、敢于斗争','自力更生、艰苦奋斗','改革创新、开放合作'],a:0,x:'红船精神：开天辟地、敢为人先的首创精神是核心。'},{q:'中国共产党第一次全国代表大会共有多少名代表？',o:['7名','8名','12名','13名'],a:2,x:'中共一大有13名代表，代表全国50多名党员。'},{q:'中共一大确定党的名称是？',o:['中国社会党','中国共产党','中华革命党','中国劳动党'],a:1,x:'大会确定党的名称为中国共产党。'}],
+    [{q:'毛泽东是哪一年加入中国共产党的？',o:['1920年','1921年','1922年','1923年'],a:1,x:'1921年，毛泽东出席中共一大，成为党的创始人之一。'},{q:'周恩来曾担任过以下哪个职务？',o:['红一方面军总司令','中央军委副主席','八路军总指挥','新四军军长'],a:1,x:'周恩来长期担任中央军委副主席。'},{q:'朱德元帅被誉为永远的总司令主要是因为？',o:['军衔最高','指挥了所有重大战役','始终坚定维护党的领导','年龄最大'],a:2,x:'朱德始终坚定维护党对军队的绝对领导。'},{q:'邓小平理论的正式确立是在哪次大会上？',o:['十二大','十三大','十四大','十五大'],a:3,x:'1997年十五大正式确立邓小平理论为党的指导思想。'},{q:'下列哪项不是革命先辈的共同特质？',o:['坚定的理想信念','不怕牺牲的奉献精神','个人英雄主义','实事求是的品格'],a:2,x:'革命先辈具有集体主义精神，从不搞个人英雄主义。'}],
+    [{q:'红船精神是哪一年被正式提出的？',o:['2002年','2005年','2010年','2015年'],a:1,x:'2005年6月，习近平首次提出红船精神。'},{q:'井冈山精神的核心是？',o:['独立自主','实事求是、敢闯新路','军事优先','经济改革'],a:1,x:'井冈山精神的核心是实事求是、敢闯新路。'},{q:'长征精神的核心内涵不包括？',o:['不怕牺牲','一往无前','军事独裁','百折不挠'],a:2,x:'长征精神强调革命必胜的信念和顾全大局的团结精神。'},{q:'革命理想高于天这句话体现了中国共产党的什么精神？',o:['经济理性','理想信念','物质利益','技术优势'],a:1,x:'这句话强调共产党人把革命理想放在最高位置。'},{q:'西柏坡精神的核心内容是？',o:['独立自主','两个务必','武装斗争','土地革命'],a:1,x:'西柏坡精神的核心是两个务必。'}],
+    [{q:'中华苏维埃共和国临时中央政府成立于哪一年？',o:['1929年','1930年','1931年','1932年'],a:2,x:'1931年11月，中华苏维埃第一次全国代表大会在江西瑞金召开。'},{q:'第一个红色政权是在哪里建立的？',o:['井冈山','瑞金','延安','西柏坡'],a:0,x:'1927年10月，毛泽东在井冈山建立了第一个农村革命根据地。'},{q:'革命根据地实行的土地政策是？',o:['没收地主土地给农民','维持原有土地制度','地主减租减息','土地国有化'],a:0,x:'土地革命时期，没收地主土地分配给农民。'},{q:'工农武装割据理论是谁提出的？',o:['周恩来','刘少奇','毛泽东','朱德'],a:2,x:'毛泽东提出了工农武装割据的光辉思想。'},{q:'红色政权能够存在和发展的根本原因是？',o:['敌人的软弱','外援的支持','中国政治经济发展不平衡','军事力量强大'],a:2,x:'中国政治经济发展不平衡是红色政权能够存在和发展的根本原因。'}],
+    [{q:'全面依法治国的总目标是？',o:['建设社会主义发达国家','建设社会主义法治国家','建设资本主义法治','废除法律体系'],a:1,x:'全面依法治国的总目标是建设中国特色社会主义法治体系、建设社会主义法治国家。'},{q:'《中华人民共和国民法典》被称为什么？',o:['公民权利宪章','社会生活的百科全书','经济法典','刑法典'],a:1,x:'民法典被称为社会生活的百科全书。'},{q:'全面依法治国是谁领导人民治理国家的基本方略？',o:['资本家','中国共产党','外国政府','知识分子'],a:1,x:'中国共产党领导人民依法治国是基本方略。'},{q:'中国特色社会主义法治体系包括哪五大体系？',o:['立法、执法、司法、守法、普法','法律、执法、司法、守法、护法','立法、执法、司法、守法、监管','立法、执法、司法、普法、党建'],a:0,x:'法治体系包括法律规范、法治实施、法治监督、法治保障、党内法规五大体系。'},{q:'法治兴则国家强，说明了什么道理？',o:['法治无关紧要','法治是国家强盛的重要保障','人治比法治重要','经济发展最重要'],a:1,x:'历史和现实反复证明，法治是国家强盛的重要保障。'}],
+  ],
+  high: [
+    [{q:'鸦片战争爆发于哪一年？',o:['1839年','1840年','1842年','1850年'],a:1,x:'1840年，英国发动侵略中国的鸦片战争。'},{q:'《南京条约》开放的通商口岸不包括？',o:['广州','厦门','宁波','天津'],a:3,x:'《南京条约》开放广州、厦门、福州、宁波、上海五处，天津不在其中。'},{q:'辛亥革命的历史意义是？',o:['推翻清朝统治','建立社会主义制度','消除阶级差别','实现国家统一'],a:0,x:'辛亥革命推翻了清朝统治，结束了两千多年的封建帝制。'},{q:'五四运动的直接导火索是？',o:['一战结束','巴黎和会拒绝中国合理要求','十月革命','新文化运动'],a:1,x:'1919年巴黎和会拒绝中国收回山东的正当要求，引发五四运动。'},{q:'中国共产党正式成立的标志是？',o:['中共一大召开','中共二大召开','五四运动','第一次工人运动高潮'],a:0,x:'1921年7月中共一大的召开，宣告中国共产党正式成立。'}],
+    [{q:'马克思主义中国化的第一个重大理论成果是？',o:['邓小平理论','三个代表重要思想','毛泽东思想','习近平新时代中国特色社会主义思想'],a:2,x:'毛泽东思想是马克思主义中国化的第一个重大理论成果。'},{q:'毛泽东思想活的灵魂不包括？',o:['实事求是','群众路线','独立自主','阶级斗争'],a:3,x:'毛泽东思想活的灵魂是实事求是、群众路线、独立自主三个基本方面。'},{q:'中国特色社会主义理论体系包括哪些？',o:['毛泽东思想','邓小平理论、三个代表重要思想、科学发展观','仅邓小平理论','毛泽东思想和中国特色社会主义理论体系'],a:1,x:'中国特色社会主义理论体系不包括毛泽东思想，是新时期以来的理论成果。'},{q:'实事求是作为党的思想路线的核心，源于哪部著作？',o:['反对本本主义','实践论','矛盾论','改造我们的学习'],a:3,x:'1941年，毛泽东在《改造我们的学习》中对实事求是作了经典阐述。'},{q:'习近平新时代中国特色社会主义思想的核心内容是什么？',o:['八个明确、十四个坚持','三个代表','五位一体','四个全面'],a:0,x:'核心内容是八个明确和十四个坚持。'}],
+    [{q:'我国的国家性质是什么？',o:['资产阶级专政','人民民主专政','无产阶级专政','君主立宪制'],a:1,x:'我国是工人阶级领导的、以工农联盟为基础的人民民主专政的社会主义国家。'},{q:'人民代表大会制度是？',o:['中国的基本政治制度','中国的根本政治制度','多党合作制度','民族区域自治制度'],a:1,x:'人民代表大会制度是中国的根本政治制度。'},{q:'中国人民政治协商会议的主要职能是？',o:['立法权','行政权','参政议政、民主监督','司法权'],a:2,x:'人民政协的主要职能是参政议政、民主监督、政治协商。'},{q:'中国实行的是什么样的政党制度？',o:['一党专政','多党轮替','一党领导多党合作','联邦制'],a:2,x:'中国实行中国共产党领导的多党合作和政治协商制度。'},{q:'全过程人民民主概念首次提出是在哪一年？',o:['2018年','2019年','2020年','2021年'],a:1,x:'2019年，习近平在上海考察时首次提出全过程人民民主概念。'}],
+    [{q:'全面依法治国的总目标是？',o:['建设社会主义发达国家','建设社会主义法治国家','建设资本主义法治','废除法律体系'],a:1,x:'全面依法治国的总目标是建设中国特色社会主义法治体系、建设社会主义法治国家。'},{q:'《中华人民共和国民法典》被称为什么？',o:['公民权利宪章','社会生活的百科全书','经济法典','刑法典'],a:1,x:'民法典被称为社会生活的百科全书。'},{q:'全面依法治国是谁领导人民治理国家的基本方略？',o:['资本家','中国共产党','外国政府','知识分子'],a:1,x:'中国共产党领导人民依法治国是基本方略。'},{q:'中国特色社会主义法治体系包括哪五大体系？',o:['立法、执法、司法、守法、普法','法律、执法、司法、守法、护法','立法、执法、司法、守法、监管','立法、执法、司法、普法、党建'],a:0,x:'法治体系包括法律规范、法治实施、法治监督、法治保障、党内法规五大体系。'},{q:'法治兴则国家强，说明了什么道理？',o:['法治无关紧要','法治是国家强盛的重要保障','人治比法治重要','经济发展最重要'],a:1,x:'历史和现实证明，法治是国家强盛的重要保障。'}],
+    [{q:'习近平提出四个自信不包括？',o:['道路自信','理论自信','制度自信','军事自信'],a:3,x:'四个自信包括道路自信、理论自信、制度自信、文化自信。'},{q:'中华优秀传统文化的核心思想理念包括？',o:['个人主义','民惟邦本','金钱至上','弱肉强食'],a:1,x:'民惟邦本、民贵君轻是中华传统民本思想的重要体现。'},{q:'中国特色社会主义文化的三个组成部分是？',o:['传统文化、革命文化、先进文化','中华优秀传统文化、革命文化、社会主义先进文化','古典文化、近代文化、现代文化','汉文化、少数民族文化、宗教文化'],a:1,x:'中国特色社会主义文化由中华优秀传统文化、革命文化、社会主义先进文化三部分构成。'},{q:'习近平指出，文化自信是一个国家、一个民族最基本、最深沉、最持久的力量，源于？',o:['经济发展','军事强大','文化认同','国际地位'],a:2,x:'文化自信源于中华民族五千多年文明历史所孕育的中华优秀传统文化。'},{q:'社会主义核心价值观在国家层面的内容是？',o:['富强民主文明和谐','自由平等公正法治','爱国敬业诚信友善','创新协调绿色开放共享'],a:0,x:'社会主义核心价值观国家层面：富强、民主、文明、和谐。'}],
+  ],
+  university: [
+    [{q:'马克思主义中国化的本质要求是？',o:['照搬照抄马克思主义经典著作','把马克思主义基本原理同中国具体实际相结合、同中华优秀传统文化相结合','完全抛弃马克思主义','将马克思主义神秘化'],a:1,x:'马克思主义中国化的本质是做到两个结合。'},{q:'习近平新时代中国特色社会主义思想是马克思主义中国化的第几次飞跃？',o:['第一次','第二次','第三次','第四次'],a:2,x:'习近平新时代中国特色社会主义思想是马克思主义中国化新的飞跃。'},{q:'两个结合重大论断是哪位领导人提出的？',o:['毛泽东','邓小平','胡锦涛','习近平'],a:3,x:'2021年7月，习近平在庆祝建党100周年大会上提出两个结合重大论断。'},{q:'马克思主义中国化的第一个重大理论成果是？',o:['邓小平理论','三个代表重要思想','毛泽东思想','习近平新时代中国特色社会主义思想'],a:2,x:'毛泽东思想是马克思主义中国化的第一次历史性飞跃。'},{q:'习近平新时代中国特色社会主义思想的核心内容概括为？',o:['五位一体','四个全面','八个明确、十四个坚持','两个一百年'],a:2,x:'核心内容是八个明确和十四个坚持。'}],
+    [{q:'中国式现代化的本质要求不包括？',o:['坚持中国共产党领导','坚持中国特色社会主义','照搬西方现代化模式','实现高质量发展'],a:2,x:'中国式现代化必须坚持中国共产党领导、中国特色社会主义道路，不能照搬西方模式。'},{q:'中国式现代化是人口规模巨大的现代化，其人口约多少？',o:['5亿','8亿','14亿','18亿'],a:2,x:'中国14亿多人口整体迈进现代化社会，规模超过现有发达国家人口总和。'},{q:'中国式现代化不包括以下哪个特征？',o:['人口规模巨大','全体人民共同富裕','物质文明和精神文明相协调','单一物质文明的现代化'],a:3,x:'中国式现代化是物质文明和精神文明相协调的现代化。'},{q:'中国式现代化打破了现代化等于西方化的迷思，说明了？',o:['发展中国家无法实现现代化','现代化只有一条道路','现代化道路具有多样性','所有国家必须复制西方模式'],a:2,x:'中国式现代化证明现代化道路具有多样性。'},{q:'全体人民共同富裕中的共同富裕是指？',o:['少数人富裕','先富带后富、部分人先富','全体人民同时富裕同等富裕','少数地区优先富裕'],a:1,x:'共同富裕是允许一部分人、一部分地区先富起来，先富带后富，最终实现共同富裕。'}],
+    [{q:'全过程人民民主概念首次提出于？',o:['党的十八大','党的十九大','2019年上海考察','2021年七一讲话'],a:2,x:'2019年11月，习近平在上海考察时首次提出全过程人民民主。'},{q:'全过程人民民主的特点是？',o:['仅有选举民主','选举民主与协商民主相结合，覆盖民主全过程','仅有协商民主','形式化的民主'],a:1,x:'全过程人民民主把选举民主与协商民主结合起来，覆盖民主全过程。'},{q:'中国特色社会主义政治发展道路的核心是什么？',o:['多党轮流执政','三权分立','党的领导、人民当家作主、依法治国有机统一','总统制'],a:2,x:'中国特色社会主义政治发展道路的核心是坚持党的领导、人民当家作主、依法治国有机统一。'},{q:'基层民主是全过程人民民主的重要实践形式，包括哪些？',o:['只有村民自治','村民自治、居民自治、职工代表大会','只有居民自治','只有职工代表大会'],a:1,x:'基层民主包括村民自治、居民自治和以职工代表大会为基本形式的企事业单位民主管理制度。'},{q:'人民政协的两大主题是？',o:['民主、科学','团结、民主','和平、发展','改革、创新'],a:1,x:'团结和民主是人民政协的两大主题。'}],
+    [{q:'习近平指出，坚定文化自信的首要任务是？',o:['全盘接收外来文化','发展文化产业','用中华文化发展中国','抛弃传统文化'],a:2,x:'坚定文化自信首先要发展中华文化，用中华文化来熔铸中华民族的精神品格。'},{q:'两个结合中的第二个结合是指？',o:['马克思主义与中国革命实践','马克思主义与中华优秀传统文化','马克思主义与世界文明','马克思主义与西方哲学'],a:1,x:'第二个结合是马克思主义与中华优秀传统文化相结合。'},{q:'中华优秀传统文化强调的仁义礼智信属于什么层面的要求？',o:['政治层面','个人道德修养','法律层面','经济层面'],a:1,x:'仁义礼智信是中华传统美德的核心范畴，是个人道德修养的基本要求。'},{q:'习近平提出，要推动中华优秀传统文化创造性转化、创新性发展，关键在于？',o:['全盘复古','与时代精神相结合','照搬西方','消除差异'],a:1,x:'推动传统文化与时代精神相结合，实现创造性转化和创新性发展。'},{q:'社会主义先进文化的根本特征是？',o:['完全西方化','体现时代精神','复古主义','固步自封'],a:1,x:'社会主义先进文化体现时代精神，是中国特色社会主义的重要组成部分。'}],
+    [{q:'习近平寄语广大青年要争当强国一代，要做到？',o:['两耳不闻窗外事','有理想、有本领、有担当','只关心个人利益','远离政治活动'],a:1,x:'习近平勉励广大青年要做有理想、有本领、有担当的强国一代。'},{q:'习近平指出，青年一代有理想、有本领、有担当，国家就有前途、民族的什么？',o:['经济就会发展','文化就会繁荣','希望就会有、力量就会有','环境就会改善'],a:2,x:'习近平指出，青年一代有理想、有本领、有担当，国家就有前途，民族就有希望，力量就有依托。'},{q:'在实现中华民族伟大复兴的征程中，青年学生的历史责任是？',o:['只管学习不管其他','与国家同呼吸、共命运，勇于担当民族复兴大任','只追求个人发展','逃避社会责任'],a:1,x:'青年学生要将个人理想融入国家民族事业，与国家同呼吸共命运，勇于担当民族复兴大任。'},{q:'习近平在全国教育大会上强调，培养什么人，是教育的首要问题。培养的人应该是？',o:['精致的利己主义者','德智体美劳全面发展的社会主义建设者和接班人','个人主义者','西方价值观的信奉者'],a:1,x:'教育必须把培养社会主义建设者和接班人作为根本任务。'},{q:'浙西南革命精神对于当代青年学生的启示是？',o:['只关注个人发展','不忘初心，坚定理想信念，不怕困难勇于担当','追求物质享受','回避历史责任'],a:1,x:'浙西南革命精神启示当代青年要传承红色基因，坚定理想信念，勇于担当时代使命。'}],
+  ],
+  overseas: [
+    [{q:'春节的起源与哪个传说密切相关？',o:['嫦娥奔月','年兽传说','后羿射日','女娲补天'],a:1,x:'春节源于年兽传说，相传年兽害怕红色和响声，人们以贴红联、放鞭炮驱逐年兽。'},{q:'清明节的主要习俗不包括？',o:['扫墓祭祀','踏青游玩','吃粽子','插柳植树'],a:2,x:'清明节习俗包括扫墓祭祀、踏青游玩、插柳植树等；吃粽子是端午节的习俗。'},{q:'中秋节赏月的文化寓意是？',o:['庆祝丰收','人月两圆的团圆之情','农事祭祀','驱邪避灾'],a:1,x:'中秋节赏月寄托了人们对家庭团圆、生活美满的美好愿望。'},{q:'端午节纪念的是哪位历史人物？',o:['孔子','屈原','岳飞','文天祥'],a:1,x:'端午节源于纪念爱国诗人屈原，已有2000多年历史。'},{q:'以下哪个节日是中国传统节日而非少数民族节日？',o:['泼水节','火把节','春节','古尔邦节'],a:2,x:'泼水节是傣族、火把节是彝族、古尔邦节是回族节日；春节是汉族的全国性节日。'}],
+    [{q:'中国是哪一年开始实施改革开放的？',o:['1976年','1978年','1980年','1982年'],a:1,x:'1978年12月，党的十一届三中全会确定把党和国家工作中心转移到经济建设上来，标志着改革开放的开始。'},{q:'两个一百年奋斗目标中，第一个百年目标是？',o:['建成社会主义现代化强国','全面建成小康社会','实现共同富裕','实现乡村振兴'],a:1,x:'第一个百年目标是全面建成小康社会，已于2021年如期实现。'},{q:'中国已成为世界第几大经济体？',o:['第一','第二','第三','第四'],a:1,x:'中国是世界第二大经济体，第一大工业国、第一大货物贸易国。'},{q:'中国提出的一带一路倡议全称是？',o:['丝绸之路经济带','21世纪海上丝绸之路','丝绸之路经济带和21世纪海上丝绸之路','海上丝绸之路'],a:2,x:'一带一路是丝绸之路经济带和21世纪海上丝绸之路的简称。'},{q:'中国脱贫攻坚战取得全面胜利是在哪一年？',o:['2018年','2019年','2020年','2021年'],a:2,x:'2020年，中国如期完成新时代脱贫攻坚目标任务，现行标准下9899万农村贫困人口全部脱贫。'}],
+    [{q:'中国是世界上华侨华人最多的国家，海外华侨华人约有多少人？',o:['2000多万','4000多万','6000多万','1亿多'],a:1,x:'全球华侨华人约有4000多万人，分布在198个国家和地区。'},{q:'丽水籍华侨华人主要集中在哪个大洲？',o:['北美洲','欧洲','亚洲','大洋洲'],a:1,x:'丽水籍华侨华人主要分布在欧洲，以西班牙、意大利、法国、德国等国为主。'},{q:'华侨文化中最核心的精神是？',o:['个人利益至上','崇祖爱乡','金钱崇拜','远离祖国'],a:1,x:'华侨华人虽身在海外，但始终心系祖国，崇祖爱乡是华侨文化的核心精神。'},{q:'浙西南籍华侨主要来自丽水哪个县？',o:['龙泉','青田','遂昌','缙云'],a:1,x:'青田是著名侨乡，青田籍华侨遍布世界120多个国家和地区。'},{q:'华侨对祖国的贡献不包括？',o:['投资创业','捐资助学','支援抗战','干涉内政'],a:3,x:'华侨华人积极投资创业、捐资助学、支援抗战，从不干涉中国内政。'}],
+    [{q:'汉字的构造有六种方法，合称六书，其中最基本的是？',o:['象形','指事','会意','形声'],a:3,x:'形声字占汉字总数80%以上，是最常用的造字方法。'},{q:'汉字的演变过程大体是？',o:['金文、甲骨文、小篆、隶书、楷书','甲骨文、金文、小篆、隶书、楷书','小篆、甲骨文、金文、隶书、楷书','甲骨文、小篆、金文、隶书、楷书'],a:1,x:'汉字演变过程：甲骨文→金文→小篆→隶书→楷书。'},{q:'以下哪个字体是汉字发展中今文字阶段的开始？',o:['小篆','金文','隶书','楷书'],a:2,x:'隶书是古文字和今文字的分水岭，标志着今文字阶段的开始。'},{q:'汉字书同文政策是哪位帝王开始推行的？',o:['周武王','秦始皇','汉武帝','唐太宗'],a:1,x:'公元前221年，秦始皇统一中国后推行书同文政策，以小篆为标准字体。'},{q:'汉字独特的美学特征不包括？',o:['象形性','表意性','书法艺术','字母化'],a:3,x:'汉字是表意文字，与字母文字完全不同。'}],
+    [{q:'天下兴亡，匹夫有责出自哪位思想家？',o:['顾炎武','顾炎武的学生','王夫之','黄宗羲'],a:0,x:'天下兴亡，匹夫有责最早由明末清初思想家顾炎武提出。'},{q:'中华民族精神的核心是？',o:['个人主义','集体主义','爱国主义','英雄主义'],a:2,x:'中华民族精神的核心是爱国主义。'},{q:'习近平指出，对每一个中国人来说，爱国是？',o:['可有可无的选择','本分','迫于压力的义务','获取利益的方式'],a:1,x:'习近平指出，爱国是本分，是心之所系、情之所归。'},{q:'海外华人春节贴春联的习俗，体现了中华文化的什么特点？',o:['排他性','包容性、认同感','等级观念','神秘主义'],a:1,x:'海外华人保留春节贴春联习俗，体现了对中华文化的认同感与归属感。'},{q:'中国特色社会主义进入了新时代，这个新时代是？',o:['中国GDP超过美国的时代','承前启后、继往开来、在新的历史条件下继续夺取中国特色社会主义伟大胜利的时代','各国学习中国的时代','中国称霸世界的时代'],a:1,x:'习近平在党的十九大报告中指出，中国特色社会主义进入了新时代。'}],
+  ],
+};
+      // 为每门课程设置章节状态（基于progress）
     const courseStates = {};
     courses.forEach(course => {
       const total = course.chapters.length;
@@ -1902,7 +1985,168 @@
     let currentCourseId = null;
     let currentChapterIdx = 0;
 
-    function renderCourses(filter = 'all') {
+    
+    var aiState = { questions: [], answers: {}, results: null, score: 0 };
+
+    function shuffleArray(arr) {
+      for (var i = arr.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var t = arr[i]; arr[i] = arr[j]; arr[j] = t;
+      }
+      return arr;
+    }
+
+    function startAIAssessment() {
+      var bank = assessmentBank[currentCourseId] && assessmentBank[currentCourseId][currentChapterIdx];
+      if (!bank || !bank.length) { alert('暂无本章测评题目'); return; }
+      var allQ = bank.map(function(item, idx) { return { idx: idx, item: item }; });
+      shuffleArray(allQ);
+      aiState.questions = allQ.slice(0, Math.min(5, allQ.length));
+      aiState.answers = {};
+      aiState.results = null;
+      renderAIQuestions();
+    }
+
+    function renderAIQuestions() {
+      var el = document.getElementById('aiQuizArea');
+      if (!el) return;
+      var html = '<div class="ai-progress-bar"><div class="ai-progress-fill" id="aiProgFill" style="width:0%"></div></div>';
+      var total = aiState.questions.length;
+      aiState.questions.forEach(function(q, i) {
+        var item = q.item;
+        html += '<div class="ai-question-card" id="aiQ' + i + '">';
+        html += '<div class="ai-q-num">第 ' + (i+1) + ' / ' + total + ' 题</div>';
+        html += '<div class="ai-q-text">' + item.q + '</div>';
+        html += '<div class="ai-q-opts">';
+        item.o.forEach(function(opt, oi) {
+          html += '<div class="ai-q-opt" data-q="' + i + '" data-o="' + oi + '" onclick="selectAssessmentAnswer(this)">' + opt + '</div>';
+        });
+        html += '</div>';
+        html += '<div class="ai-analysis" id="aiAna' + i + '" style="display:none"></div>';
+        html += '</div>';
+      });
+      html += '<div style="text-align:center"><button class="ai-submit-btn" id="aiSubmitBtn" onclick="submitAIAssessment()">提交答案</button></div>';
+      html += '<div id="aiResultArea" style="display:none"></div>';
+      el.innerHTML = html;
+      document.getElementById('aiStartArea').style.display = 'none';
+      el.style.display = 'block';
+    }
+
+    function selectAssessmentAnswer(el) {
+      var q = el.dataset.q;
+      var o = parseInt(el.dataset.o);
+      var card = document.getElementById('aiQ' + q);
+      card.querySelectorAll('.ai-q-opt').forEach(function(opt) { opt.classList.remove('selected'); });
+      el.classList.add('selected');
+      aiState.answers[q] = o;
+      var answered = Object.keys(aiState.answers).length;
+      var total = aiState.questions.length;
+      var fill = document.getElementById('aiProgFill');
+      if (fill) fill.style.width = (answered / total * 100) + '%';
+    }
+
+    function submitAIAssessment() {
+      var total = aiState.questions.length;
+      if (Object.keys(aiState.answers).length < total) {
+        alert('请完成所有题目！'); return;
+      }
+      var score = 0;
+      aiState.questions.forEach(function(q, i) {
+        var item = q.item;
+        var userAns = aiState.answers[i];
+        var correct = userAns === item.a;
+        if (correct) score++;
+        var card = document.getElementById('aiQ' + i);
+        if (card) {
+          card.querySelectorAll('.ai-q-opt').forEach(function(opt, oi) {
+            opt.classList.add('disabled');
+            if (oi === item.a) opt.classList.add('correct');
+            else if (oi === userAns && !correct) opt.classList.add('wrong');
+          });
+          var anaEl = document.getElementById('aiAna' + i);
+          if (anaEl) {
+            anaEl.innerHTML = '<strong>你的答案：' + item.o[userAns] + ' | 正确答案：' + item.o[item.a] + '</strong><br>' + item.x;
+            anaEl.style.display = 'block';
+          }
+        }
+      });
+      var pct = Math.round(score / total * 100);
+      aiState.score = pct;
+      aiState.results = aiState.questions.map(function(q, i) {
+        return { q: q.item.q, userAns: aiState.answers[i], correct: aiState.answers[i] === q.item.a };
+      });
+      showAIResult(pct, score, total);
+    }
+
+    function showAIResult(pct, score, total) {
+      var el = document.getElementById('aiResultArea');
+      if (!el) return;
+      var label = pct >= 90 ? '优秀！' : pct >= 75 ? '良好！' : pct >= 60 ? '及格' : '继续加油';
+      var color = pct >= 90 ? '#DE2910' : pct >= 75 ? '#FF9900' : '#2e7d32';
+      var html = '<div class="ai-score-area">';
+      html += '<div class="ai-score-circle" id="aiScoreCircle">';
+      html += '<div class="ai-score-inner"><div class="ai-score-num" id="aiScoreNum">0</div><div class="ai-score-label">分</div></div>';
+      html += '</div>';
+      html += '<div class="ai-result-title">' + label + '</div>';
+      html += '<div class="ai-result-detail">正确率 ' + pct + '%（' + score + '/' + total + '题）</div>';
+      html += '<div style="border-top:1px solid rgba(0,0,0,.06);padding-top:16px">';
+      aiState.results.forEach(function(r, i) {
+        html += '<div class="ai-result-item">';
+        html += '<span class="ai-result-q">' + (i+1) + '. ' + r.q + '</span>';
+        html += '<span class="ai-result-a ' + (r.correct ? 'ai-a-correct' : 'ai-a-wrong') + '">' + (r.correct ? '正确' : '错误') + '</span>';
+        html += '</div>';
+      });
+      html += '</div>';
+      html += '<button class="ai-retry-btn" onclick="resetAIAssessment()">再测一次</button>';
+      html += '</div>';
+      el.innerHTML = html;
+      el.style.display = 'block';
+      setTimeout(function() {
+        var circ = document.getElementById('aiScoreCircle');
+        if (circ) circ.style.background = 'conic-gradient(' + color + ' 0%, ' + color + ' ' + pct + '%, rgba(166,44,44,.08) ' + pct + '%)';
+        var numEl = document.getElementById('aiScoreNum');
+        if (numEl) {
+          var start = 0;
+          var step = Math.ceil(pct / 40);
+          var timer = setInterval(function() {
+            start += step;
+            if (start >= pct) { numEl.textContent = pct; clearInterval(timer); }
+            else numEl.textContent = start;
+          }, 20);
+        }
+      }, 100);
+    }
+
+    function resetAIAssessment() {
+      var qa = document.getElementById('aiQuizArea');
+      var ra = document.getElementById('aiResultArea');
+      if (qa) qa.style.display = 'none';
+      if (ra) ra.style.display = 'none';
+      var sa = document.getElementById('aiStartArea');
+      if (sa) sa.style.display = 'block';
+      aiState = { questions: [], answers: {}, results: null, score: 0 };
+    }
+
+    function downloadCourseware() {
+      var course = courses.find(function(c) { return c.id === currentCourseId; });
+      if (!course) return;
+      var details = chapterDetails[currentCourseId] && chapterDetails[currentCourseId][currentChapterIdx];
+      if (!details) return;
+      var chapterName = course.chapters[currentChapterIdx];
+      var storiesHtml = '';
+      for (var i = 0; i < details.stories.length; i++) {
+        var s = details.stories[i];
+        storiesHtml += '<div class="story"><h3>' + s.title + '</h3><p>' + s.text + '</p></div>';
+      }
+      var html = '<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><title>' + course.title + ' - ' + chapterName + '</title><style>body{font-family:Microsoft YaHei,sans-serif;max-width:800px;margin:40px auto;padding:0 20px;background:#faf5ee;color:#3d2b1f;}h1{color:#a62c2c;border-bottom:2px solid #c9a86c;padding-bottom:10px;}h2{color:#8b5e83;margin-top:30px;}.lead{background:rgba(201,168,108,.15);padding:12px 16px;border-left:4px solid #c9a86c;margin:16px 0;border-radius:0 8px 8px 0;}.story{border:1px solid rgba(166,44,44,.15);border-radius:12px;padding:16px;margin:12px 0;background:rgba(255,255,255,.5);}.knowledge{background:rgba(139,94,131,.1);border:1px solid rgba(139,94,131,.2);border-radius:12px;padding:16px;margin:12px 0;}footer{text-align:center;color:#999;margin-top:40px;font-size:13px;border-top:1px solid #ddd;padding-top:20px;}</style></head><body><h1>' + course.title + ' - ' + chapterName + '</h1><p class="lead">' + details.lead + '</p><h2>故事时光</h2>' + storiesHtml + '<h2>知识小卡片</h2><div class="knowledge"><h3>' + details.knowledge.title + '</h3><p>' + details.knowledge.text + '</p></div><footer>万象未来 - 数字思政课程 | 让历史可触摸，让档案会说话</footer></body></html>';
+      var blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = course.title + '_' + chapterName + '.html';
+      a.click();
+    }
+
+function renderCourses(filter = 'all') {
       const grid = document.getElementById('courseGrid');
       grid.innerHTML = '';
       courses.forEach(course => {
@@ -2101,11 +2345,6 @@
           <h4><span class="icon">🎮</span>互动游戏</h4>
           <div class="game-box">
             ${isRich ? `
-            <div class="game-tabs">
-              <button class="game-tab ${details.gameType === 'quiz' ? 'active' : ''}" onclick="switchGame('quiz')">问答</button>
-              <button class="game-tab ${details.gameType === 'match' ? 'active' : ''}" onclick="switchGame('match')">连连看</button>
-              <button class="game-tab ${details.gameType === 'sort' ? 'active' : ''}" onclick="switchGame('sort')">排序</button>
-            </div>
             <div class="game-panels">
               <div class="game-panel ${details.gameType === 'quiz' ? 'active' : ''}" data-panel="quiz">${details.gameType === 'quiz' ? gameHtml : renderGamePanel('quiz')}</div>
               <div class="game-panel ${details.gameType === 'match' ? 'active' : ''}" data-panel="match">${details.gameType === 'match' ? gameHtml : renderGamePanel('match')}</div>
@@ -2115,8 +2354,7 @@
           </div>
         </div>
 
-        ${taskHtml}
-      `;
+              `;
 
       // 重新绑定排序拖拽
       if (details.gameType === 'sort' || !isRich) {
