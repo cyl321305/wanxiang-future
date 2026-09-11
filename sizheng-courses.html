@@ -1496,20 +1496,7 @@
         </div>
         <div class="modal-section">
           <div class="modal-section-title">学习数据</div>
-          <div class="modal-stats">
-            <div class="modal-stat">
-              <div class="value" id="modalRating">0.0</div>
-              <div class="label">课程评分</div>
-            </div>
-            <div class="modal-stat">
-              <div class="value" id="modalProgress">0%</div>
-              <div class="label">已学进度</div>
-            </div>
-            <div class="modal-stat">
-              <div class="value" id="modalLessons">0</div>
-              <div class="label">课程节数</div>
-            </div>
-          </div>
+          
         </div>
       </div>
       <div class="modal-footer">
@@ -2172,17 +2159,13 @@ function renderCourses(filter = 'all') {
             <div class="course-meta">
               <span>⏱️ ${course.hours}课时</span>
               <span>📑 ${course.lessons}节课</span>
-              <span>👥 ${course.students}学习</span>
+              
             </div>
             <div class="course-desc">${course.desc}</div>
             <div class="course-tags">
-              ${course.tags.map(tag => `<span class="course-tag">${tag}</span>`).join('')}
+              ${course.tags.map(tag => ``).join('')}
             </div>
-            <div class="course-progress">
-              <div class="progress-label"><span>学习进度</span><span>${course.progress}%</span></div>
-              <div class="progress-bar"><div class="progress-fill" style="width: ${course.progress}%"></div></div>
-            </div>
-            <button class="course-btn" onclick="event.stopPropagation();startLearning('${course.id}')">进入学习</button>
+                        <button class="course-btn" onclick="event.stopPropagation();openModal('${course.id}')">进入学习</button>
           </div>
         `;
         grid.appendChild(card);
@@ -2197,10 +2180,7 @@ function renderCourses(filter = 'all') {
       document.getElementById('modalSubtitle').textContent = `${course.level} · ${course.hours}课时 · ${course.lessons}节课`;
       document.getElementById('modalDesc').textContent = course.desc;
       document.getElementById('modalTags').innerHTML = course.tags.map(tag => `<span class="course-tag">${tag}</span>`).join('');
-      document.getElementById('modalRating').textContent = course.rating || '4.8';
-      document.getElementById('modalProgress').textContent = course.progress + '%';
-      document.getElementById('modalLessons').textContent = course.lessons;
-      document.getElementById('modalChapters').innerHTML = course.chapters.map((chapter, idx) => `
+                        document.getElementById('modalChapters').innerHTML = course.chapters.map((chapter, idx) => `
         <div class="chapter-item">
           <div class="chapter-name"><span class="num">${idx + 1}</span>${chapter}</div>
           <div class="chapter-time">约 ${15 + idx * 2} 分钟</div>
@@ -2636,7 +2616,7 @@ function renderCourses(filter = 'all') {
         const right = shuffleArray(details.match.right.map((t, i) => ({text: t, idx: i}))).map(item => `<div class="match-item" data-side="right" data-idx="${item.idx}">${item.text}</div>`).join('');
         return `<div class="match-game" id="matchGame"><div class="match-col">${left}</div><div class="match-col">${right}</div></div><div class="quiz-feedback" id="matchFeedback">请依次点击左右两列对应的选项</div>`;
       } else if (type === 'sort' && details.sort) {
-        return `<div class="sort-game" id="sortGame">${shuffleArray(details.sort.items.map((item, i) => ({text: item, idx: i}))).map(item => `<div class="sort-item" draggable="true" data-idx="${item.idx}"><span class="handle">⋮⋮</span>${item.text}</div>`).join('')}</div><button class="btn-primary" style="margin-top:12px" onclick="checkSort()">检查顺序</button><div class="quiz-feedback" id="sortFeedback"></div>`;
+        return `<div class="sort-game" id="sortGame">${shuffleArray(details.sort.items.map((item, i) => ({text: item, idx: i}))).map(item => `<div class="sort-item" draggable="true" data-idx="${item.idx}">${item.text}</div>`).join('')}</div><button class="btn-primary" style="margin-top:12px" onclick="checkSort()">检查顺序</button><div class="quiz-feedback" id="sortFeedback"></div>`;
       }
       return '<div class="quiz-feedback">本章节暂无此类互动游戏</div>';
     }
