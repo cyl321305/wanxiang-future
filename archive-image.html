@@ -171,10 +171,6 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(circle
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           下载原图
         </button>
-        <button class="btn btn-default" onclick="copyLink()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-          复制链接
-        </button>
         <a class="btn btn-default" id="kbBackBtn" href="kb-detail.html">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
           返回知识库
@@ -226,14 +222,6 @@ document.getElementById('kbBackBtn').href = 'kb-detail.html?kb=' + encodeURIComp
 
 function downloadImage() {
   alert('原图下载功能（演示版）：高清图片将推送到您的邮箱。');
-}
-
-function copyLink() {
-  navigator.clipboard.writeText(location.href).then(() => {
-    alert('链接已复制到剪贴板');
-  }).catch(() => {
-    prompt('请手动复制：', location.href);
-  });
 }
 </script>
 

@@ -999,12 +999,20 @@
     /* ===== 左侧「资源类型」切换 ===== */
     const VIEW_MAP = { doc: 'viewDoc', img: 'viewImg', video: 'viewVideo' };
     function switchType(type) {
+      if (!VIEW_MAP[type]) type = 'doc';
       Object.keys(VIEW_MAP).forEach(t => {
         document.getElementById(VIEW_MAP[t]).classList.toggle('active', t === type);
       });
       document.querySelectorAll('.menu-item[data-type]').forEach(el => {
         el.classList.toggle('active', el.getAttribute('data-type') === type);
       });
+      // 同步到地址栏，保证刷新/返回时仍停留在当前类型
+      try {
+        const u = new URL(window.location.href);
+        if (type === 'doc') u.searchParams.delete('view');
+        else u.searchParams.set('view', type);
+        history.replaceState(null, '', u.pathname + (u.search || ''));
+      } catch (e) { /* 忽略 */ }
     }
 
     document.querySelectorAll('.menu-item[data-type]').forEach(item => {
@@ -1019,7 +1027,8 @@
     renderFav();
     renderMedia('img');
     renderMedia('video');
-    switchType('doc');
+    const initView = new URLSearchParams(window.location.search).get('view');
+    switchType(VIEW_MAP[initView] ? initView : 'doc');
   </script>
 </body>
 </html>

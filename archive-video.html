@@ -182,10 +182,6 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(circle
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           下载原片
         </button>
-        <button class="btn btn-default" onclick="shareVideo()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-          分享
-        </button>
         <a class="btn btn-default" id="kbBackBtn" href="kb-detail.html">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
           返回知识库
@@ -278,14 +274,6 @@ player.addEventListener('error', () => { cover.classList.remove('hide'); }, true
 
 function downloadVideo() {
   alert('视频下载功能（演示版）：原片链接将推送到您的邮箱。');
-}
-
-function shareVideo() {
-  if (navigator.share) {
-    navigator.share({ title: data.title, text: data.title, url: location.href });
-  } else {
-    alert('链接已复制：' + location.href);
-  }
 }
 </script>
 

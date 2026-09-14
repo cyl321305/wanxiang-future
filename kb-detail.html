@@ -354,9 +354,9 @@
 
           <div class="sidebar-section">
             <div class="section-name"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"></path><path d="M14 2v6h6"></path><path d="M16 13H8"></path><path d="M16 17H8"></path><path d="M10 9H8"></path></svg>资源类型</div>
-            <div class="menu-item active">📄 文档档案</div>
-            <div class="menu-item">🖼️ 图片档案</div>
-            <div class="menu-item">🎬 声像档案</div>
+            <div class="menu-item active" data-type="doc">📄 文档档案</div>
+            <div class="menu-item" data-type="img">🖼️ 图片档案</div>
+            <div class="menu-item" data-type="video">🎬 声像档案</div>
           </div>
 
           <div class="sidebar-section">
@@ -672,11 +672,15 @@
     const pageInfo = document.getElementById('pageInfo');
     if (pageInfo) pageInfo.textContent = list.length;
 
-    // 菜单交互：资源类型高亮 / 收藏知识库跳转
+    // 菜单交互：资源类型跳转（始终进入对应列表）/ 收藏知识库跳转
     document.querySelectorAll('.menu-item').forEach(item => {
       item.addEventListener('click', function() {
         if (this.hasAttribute('data-kb')) {
           window.location.href = 'kb-detail.html?kb=' + encodeURIComponent(this.getAttribute('data-kb'));
+          return;
+        }
+        if (this.hasAttribute('data-type')) {
+          window.location.href = 'archives.html?view=' + encodeURIComponent(this.getAttribute('data-type'));
           return;
         }
         this.parentElement.querySelectorAll('.menu-item').forEach(i => i.classList.remove('active'));
