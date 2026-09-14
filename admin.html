@@ -347,7 +347,7 @@
     <section id="archives" class="admin-section">
       <div class="page-head">
         <div class="page-title">档案资源管理</div>
-        <div class="page-sub">知识库、档案条目与分类标签的维护 · 与前台「档案资源中心」数据同步</div>
+        <div class="page-sub">知识库维护 · 与前台「档案资源中心」数据同步</div>
       </div>
 
       <div class="kpi-row">
@@ -371,17 +371,6 @@
           <div class="kpi-value">3<span class="unit">件</span></div>
           <div class="kpi-label">待解析待审核</div>
         </div>
-      </div>
-
-      <div class="hint-bar">
-        <span>💡</span>
-        <div>知识库与档案条目直接决定前台「档案资源中心」的展示内容。点击 <b>编辑</b> 进入单个知识库管理页，可维护基本信息、成员权限、知识列表、AI 助手与分享设置；新增条目后需完成 <b>AI 解析</b> 才能被智能问答召回。</div>
-      </div>
-
-      <div class="tabs">
-        <button class="tab active" data-tab="kb">知识库管理</button>
-        <button class="tab" data-tab="items">档案条目</button>
-        <button class="tab" data-tab="taxonomy">分类与标签</button>
       </div>
 
       <!-- 知识库管理 -->
@@ -494,84 +483,6 @@
         </div>
       </div>
 
-      <!-- 档案条目 -->
-      <div class="tab-pane" data-pane="items" hidden>
-        <div class="toolbar">
-          <input type="text" data-filter="#itemTable" placeholder="搜索档案名称 / 所属知识库 / 来源...">
-          <select><option>全部类型</option><option>文档档案</option><option>图片档案</option><option>声像档案</option></select>
-          <select><option>全部状态</option><option>已发布</option><option>待审核</option><option>解析中</option></select>
-          <div class="spacer"></div>
-          <button class="btn ghost" data-act="batch">批量操作</button>
-          <button class="btn" data-act="upload">＋ 上传档案</button>
-        </div>
-        <div class="panel table-wrap">
-          <table class="data-table" id="itemTable">
-            <thead><tr><th>档案名称</th><th>类型</th><th>所属知识库</th><th>年代</th><th>来源</th><th>状态</th><th>操作</th></tr></thead>
-            <tbody>
-              <tr><td class="t-name">刘英致浙西南特委手书信函</td><td><span class="badge blue">文档</span></td><td>刘英·粟裕史料</td><td>1936</td><td>丽水市档案馆</td><td><span class="badge green">已发布</span></td><td><span class="link-btn">查看</span><span class="link-btn">编辑</span><span class="link-btn muted">下架</span></td></tr>
-              <tr><td class="t-name">万山交通总站档案</td><td><span class="badge blue">文档</span></td><td>红色设施</td><td>1936</td><td>遂昌县档案馆</td><td><span class="badge green">已发布</span></td><td><span class="link-btn">查看</span><span class="link-btn">编辑</span><span class="link-btn muted">下架</span></td></tr>
-              <tr><td class="t-name">潘香凤烈士生平登记表</td><td><span class="badge blue">文档</span></td><td>革命英烈群体</td><td>1948</td><td>遂昌县档案馆</td><td><span class="badge green">已发布</span></td><td><span class="link-btn">查看</span><span class="link-btn">编辑</span><span class="link-btn muted">下架</span></td></tr>
-              <tr><td class="t-name">斋郎战斗史料汇编</td><td><span class="badge blue">文档</span></td><td>红色革命事件</td><td>1935</td><td>庆元县档案馆</td><td><span class="badge green">已发布</span></td><td><span class="link-btn">查看</span><span class="link-btn">编辑</span><span class="link-btn muted">下架</span></td></tr>
-              <tr><td class="t-name">中共遂昌支部成立文件</td><td><span class="badge blue">文档</span></td><td>地方党组织史料</td><td>1927</td><td>遂昌县档案馆</td><td><span class="badge green">已发布</span></td><td><span class="link-btn">查看</span><span class="link-btn">编辑</span><span class="link-btn muted">下架</span></td></tr>
-              <tr><td class="t-name">金岭红色秘密交通线史料</td><td><span class="badge blue">文档</span></td><td>各县市区编研书籍</td><td>1937</td><td>松阳县档案馆</td><td><span class="badge gold">待审核</span></td><td><span class="link-btn">审核</span><span class="link-btn">编辑</span><span class="link-btn muted">下架</span></td></tr>
-              <tr><td class="t-name">《救国时报》青田侨胞报道辑录</td><td><span class="badge blue">文档</span></td><td>华侨红色相关史料</td><td>1936</td><td>青田县档案馆</td><td><span class="badge green">已发布</span></td><td><span class="link-btn">查看</span><span class="link-btn">编辑</span><span class="link-btn muted">下架</span></td></tr>
-              <tr><td class="t-name">中共毛窠支部与畲族革命档案</td><td><span class="badge blue">文档</span></td><td>地方党组织史料</td><td>1937</td><td>丽水市档案馆</td><td><span class="badge gold">待审核</span></td><td><span class="link-btn">审核</span><span class="link-btn">编辑</span><span class="link-btn muted">下架</span></td></tr>
-              <tr><td class="t-name">挺进师老战士口述回忆录</td><td><span class="badge blue">文档</span></td><td>红色回忆与研究活动</td><td>1985</td><td>丽水市档案馆</td><td><span class="badge green">已发布</span></td><td><span class="link-btn">查看</span><span class="link-btn">编辑</span><span class="link-btn muted">下架</span></td></tr>
-              <tr><td class="t-name">畲族红色歌谣采集稿</td><td><span class="badge blue">文档</span></td><td>畲族红色文化</td><td>1958</td><td>景宁县档案馆</td><td><span class="badge green">已发布</span></td><td><span class="link-btn">查看</span><span class="link-btn">编辑</span><span class="link-btn muted">下架</span></td></tr>
-              <tr><td class="t-name">王村口红军标语照片</td><td><span class="badge gold">图片</span></td><td>红色文物文献资料</td><td>1935</td><td>遂昌县档案馆</td><td><span class="badge green">已发布</span></td><td><span class="link-btn">查看</span><span class="link-btn">编辑</span><span class="link-btn muted">下架</span></td></tr>
-              <tr><td class="t-name">挺进师师部旧址影像</td><td><span class="badge red">声像</span></td><td>红色设施</td><td>2021</td><td>丽水市档案馆</td><td><span class="badge gray">解析中</span></td><td><span class="link-btn">查看</span><span class="link-btn">编辑</span><span class="link-btn muted">下架</span></td></tr>
-              <tr class="table-empty" style="display:none"><td colspan="7">未找到匹配的档案条目</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- 分类与标签 -->
-      <div class="tab-pane" data-pane="taxonomy" hidden>
-        <div class="panel mb">
-          <div class="panel-title">主题分类 <span class="sub">对应前台「档案资源中心」左侧菜单</span></div>
-          <div class="tag-cloud">
-            <span class="tag-chip">🚩 党史办红立方 <span class="n">12</span></span>
-            <span class="tag-chip">📚 档案馆编研 <span class="n">18</span></span>
-            <span class="tag-chip">📖 各县市区编研书籍 <span class="n">26</span></span>
-            <span class="tag-chip">🏛️ 地方党组织史料 <span class="n">9</span></span>
-            <span class="tag-chip">🎖️ 刘英·粟裕史料 <span class="n">11</span></span>
-            <span class="tag-chip">🕯️ 革命英烈群体 <span class="n">7</span></span>
-            <span class="tag-chip">🔥 红色革命事件 <span class="n">14</span></span>
-            <span class="tag-chip">🏯 红色设施 <span class="n">4</span></span>
-            <span class="tag-chip">📜 红色文物文献资料 <span class="n">8</span></span>
-            <span class="tag-chip">🖋️ 红色回忆与研究活动 <span class="n">6</span></span>
-            <span class="tag-chip">🌾 畲族红色文化 <span class="n">5</span></span>
-            <span class="tag-chip">🌊 华侨红色相关史料 <span class="n">10</span></span>
-          </div>
-        </div>
-        <div class="panel mb">
-          <div class="panel-title">档案类型标签</div>
-          <div class="tag-cloud">
-            <span class="tag-chip">文档档案 <span class="n">95</span></span>
-            <span class="tag-chip">图片档案 <span class="n">22</span></span>
-            <span class="tag-chip">声像档案 <span class="n">15</span></span>
-            <span class="tag-chip">手稿信函 <span class="n">18</span></span>
-            <span class="tag-chip">口述史料 <span class="n">11</span></span>
-            <span class="tag-chip">旧址影像 <span class="n">9</span></span>
-          </div>
-        </div>
-        <div class="panel">
-          <div class="panel-title">主题标签 <span class="sub">用于智能问答召回与关联推荐</span></div>
-          <div class="tag-cloud">
-            <span class="tag-chip">挺进师 <span class="n">31</span></span>
-            <span class="tag-chip">浙西南特委 <span class="n">22</span></span>
-            <span class="tag-chip">地下交通 <span class="n">17</span></span>
-            <span class="tag-chip">畲族革命 <span class="n">12</span></span>
-            <span class="tag-chip">华侨抗战 <span class="n">14</span></span>
-            <span class="tag-chip">烈士英名录 <span class="n">9</span></span>
-            <span class="tag-chip">游击战争 <span class="n">20</span></span>
-            <span class="tag-chip">统一战线 <span class="n">8</span></span>
-            <span class="tag-chip">党组织沿革 <span class="n">16</span></span>
-            <span class="tag-chip">革命旧址 <span class="n">25</span></span>
-          </div>
-        </div>
-      </div>
     </section>
 
     <!-- ===================== 知识图谱管理 ===================== -->
