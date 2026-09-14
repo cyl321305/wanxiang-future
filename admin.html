@@ -31,7 +31,6 @@
     background: linear-gradient(180deg, #faf5ee 0%, #f8ece6 50%, #f3e8db 100%);
     min-height: 100vh;
   }
-  /* 祥云背景 */
   body::before {
     content: '';
     position: fixed; inset: 0;
@@ -63,14 +62,14 @@
   .logo-subtitle { font-size: 11px; color: var(--text-muted); letter-spacing: 1px; }
   .nav-menu { display: flex; align-items: center; gap: 4px; list-style: none; }
   .nav-item {
-    padding: 10px 22px; border-radius: 22px;
+    padding: 10px 20px; border-radius: 22px;
     color: var(--text-secondary); font-size: 15px; text-decoration: none;
     cursor: pointer; position: relative; transition: all 0.3s;
   }
   .nav-item:hover { color: var(--accent-red); background: rgba(166, 44, 44, 0.06); }
   .nav-item.active { color: var(--accent-red); background: rgba(166, 44, 44, 0.1); font-weight: 500; }
   .nav-item.active::after {
-    content: ''; position: absolute; left: 22px; right: 22px; bottom: 2px; height: 3px;
+    content: ''; position: absolute; left: 20px; right: 20px; bottom: 2px; height: 3px;
     background: linear-gradient(90deg, var(--accent-red-light), var(--accent-gold)); border-radius: 2px;
   }
   .nav-right { display: flex; align-items: center; gap: 16px; }
@@ -80,102 +79,102 @@
   /* 布局 */
   .admin-layout { display: flex; align-items: flex-start; position: relative; z-index: 1; }
   .admin-sidebar {
-    width: 232px; flex-shrink: 0; min-height: calc(100vh - 76px);
+    width: 238px; flex-shrink: 0; min-height: calc(100vh - 76px);
     background: var(--glass); border-right: 1px solid var(--glass-border);
-    padding: 22px 14px; position: sticky; top: 76px;
+    padding: 20px 14px 32px; position: sticky; top: 76px;
+    max-height: calc(100vh - 76px); overflow-y: auto;
   }
   .side-title {
     font-family: 'ZCOOL XiaoWei', serif; font-size: 14px; color: var(--text-muted);
     padding: 0 12px 12px; letter-spacing: 2px;
   }
+  .nav-group {
+    font-size: 11px; color: var(--text-muted); letter-spacing: 2px;
+    padding: 16px 12px 6px; font-weight: 500;
+  }
+  .nav-group:first-of-type { padding-top: 4px; }
   .side-item {
     display: flex; align-items: center; gap: 10px;
-    padding: 12px 14px; border-radius: 12px; margin-bottom: 4px;
+    padding: 11px 14px; border-radius: 12px; margin-bottom: 3px;
     color: var(--text-secondary); font-size: 14px; cursor: pointer; transition: all 0.25s;
   }
   .side-item:hover { background: rgba(166, 44, 44, 0.06); color: var(--accent-red); }
   .side-item.active { background: linear-gradient(135deg, rgba(166, 44, 44, 0.14), rgba(201, 168, 108, 0.12)); color: var(--accent-red); font-weight: 600; }
+  .side-item .ico { font-size: 15px; line-height: 1; }
+  .side-item .cnt { margin-left: auto; font-size: 11px; color: var(--text-muted); background: rgba(166,44,44,0.08); border-radius: 8px; padding: 1px 7px; }
+  .side-item.active .cnt { color: var(--accent-red); background: rgba(166,44,44,0.14); }
 
-  .admin-main { flex: 1; padding: 28px 32px; min-width: 0; }
-  .page-head { margin-bottom: 22px; }
+  .admin-main { flex: 1; padding: 26px 32px 48px; min-width: 0; }
+  .page-head { margin-bottom: 20px; }
   .page-title { font-family: 'ZCOOL XiaoWei', serif; font-size: 26px; color: var(--accent-red); }
   .page-sub { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
   .admin-section[hidden] { display: none; }
+  .admin-section { animation: fadeUp 0.35s ease; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 
-  /* 数据汇总 */
-  .data-summary { background: #fff; border-radius: 12px; padding: 20px 24px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
-  .summary-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
-  .summary-title { font-size: 16px; font-weight: 600; color: var(--text-primary); }
-  .summary-time { font-size: 13px; color: var(--text-muted); }
-  .summary-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
-  .summary-card { padding: 16px; background: #fafafa; border-radius: 8px; }
-  .summary-label { font-size: 13px; color: var(--text-secondary); margin-bottom: 12px; display: flex; align-items: center; gap: 4px; }
-  .help-icon { width: 14px; height: 14px; border: 1px solid #ddd; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; color: #999; cursor: help; }
-  .summary-value-row { display: flex; align-items: baseline; justify-content: space-between; }
-  .summary-num { font-size: 32px; font-weight: 600; color: var(--text-primary); }
-  .summary-trend { font-size: 12px; color: var(--text-muted); }
+  /* 提示条 */
+  .hint-bar {
+    display: flex; align-items: flex-start; gap: 10px;
+    background: rgba(166,44,44,0.06); border: 1px solid rgba(166,44,44,0.1);
+    border-radius: 12px; padding: 12px 16px; margin-bottom: 18px;
+    font-size: 13px; color: var(--text-secondary); line-height: 1.7;
+  }
+  .hint-bar b { color: var(--accent-red); font-weight: 600; }
 
-  /* 数据概览 */
-  .data-overview { background: #fff; border-radius: 12px; padding: 20px 24px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
-  .overview-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; }
-  .overview-title-row { display: flex; align-items: center; gap: 12px; }
-  .overview-title { font-size: 16px; font-weight: 600; color: var(--text-primary); }
-  .overview-time { font-size: 13px; color: var(--text-muted); }
-  .overview-controls { display: flex; align-items: center; gap: 12px; }
-  .time-tabs { display: flex; background: #f5f5f5; border-radius: 6px; padding: 2px; }
-  .time-tab { border: none; background: transparent; padding: 6px 16px; font-size: 13px; color: var(--text-secondary); cursor: pointer; border-radius: 4px; }
-  .time-tab.active { background: #fff; color: var(--accent-red); box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-  .date-picker { display: flex; align-items: center; gap: 8px; padding: 6px 12px; border: 1px solid #e8e8e8; border-radius: 6px; font-size: 13px; color: var(--text-secondary); background: #fff; }
-  .calendar-icon { font-size: 14px; }
-  .overview-charts { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-  .chart-panel { border: 1px solid #f0f0f0; border-radius: 8px; padding: 16px; }
-  .chart-panel-title { font-size: 14px; font-weight: 500; color: var(--text-primary); margin-bottom: 16px; }
-  .metric-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
-  .metric-cards.single { grid-template-columns: 1fr; }
-  .metric-card { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: #fafafa; border-radius: 8px; }
-  .metric-icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
-  .metric-icon.blue { background: #e6f4ff; }
-  .metric-icon.orange { background: #fff2e8; }
-  .metric-info { flex: 1; }
-  .metric-label { font-size: 12px; color: var(--text-muted); margin-bottom: 4px; }
-  .metric-value { font-size: 24px; font-weight: 600; color: var(--text-primary); }
-  .chart-area { height: 200px; }
-
-  /* 排行榜 */
-  .ranking-section { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-  .ranking-panel { background: #fff; border-radius: 12px; padding: 16px 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
-  .ranking-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
-  .ranking-title { font-size: 14px; font-weight: 500; color: var(--text-primary); }
-  .ranking-tabs { display: flex; background: #f5f5f5; border-radius: 6px; padding: 2px; }
-  .ranking-tab { border: none; background: transparent; padding: 5px 12px; font-size: 12px; color: var(--text-secondary); cursor: pointer; border-radius: 4px; }
-  .ranking-tab.active { background: #fff; color: var(--accent-red); box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-  .ranking-list { min-height: 120px; }
-  .ranking-empty { text-align: center; color: var(--text-muted); font-size: 13px; padding: 40px 0; }
-
-  /* KPI 卡片 */
-  .kpi-row { display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; margin-bottom: 22px; }
+  /* KPI */
+  .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 22px; }
   .kpi-card {
     background: var(--glass); border: 1px solid var(--glass-border); border-radius: 14px;
-    padding: 16px; box-shadow: 0 8px 24px var(--card-shadow);
-    display: flex; flex-direction: column; gap: 6px;
+    padding: 16px 18px; box-shadow: 0 8px 24px var(--card-shadow);
+    display: flex; flex-direction: column; gap: 4px; position: relative; overflow: hidden;
   }
-  .kpi-icon { font-size: 20px; line-height: 1; }
-  .kpi-value { font-family: 'ZCOOL XiaoWei', serif; font-size: 24px; color: var(--accent-red); line-height: 1.1; }
+  .kpi-card::after { content: ''; position: absolute; right: -20px; top: -20px; width: 70px; height: 70px; border-radius: 50%; background: radial-gradient(circle, rgba(166,44,44,0.08), transparent 70%); }
+  .kpi-top { display: flex; align-items: center; justify-content: space-between; }
+  .kpi-icon { font-size: 18px; line-height: 1; }
+  .kpi-trend { font-size: 11px; color: var(--green); background: rgba(78,138,94,0.12); border-radius: 8px; padding: 2px 7px; }
+  .kpi-trend.down { color: #b04a4a; background: rgba(166,44,44,0.1); }
+  .kpi-value { font-family: 'ZCOOL XiaoWei', serif; font-size: 26px; color: var(--accent-red); line-height: 1.15; }
   .kpi-value .unit { font-size: 12px; color: var(--text-muted); margin-left: 2px; font-family: 'Noto Sans SC', sans-serif; font-weight: 400; }
-  .kpi-label { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
+  .kpi-label { font-size: 12px; color: var(--text-secondary); }
 
-  .grid-2 { display: grid; grid-template-columns: 1.6fr 1fr; gap: 18px; margin-bottom: 22px; }
   .panel {
     background: var(--glass); border: 1px solid var(--glass-border); border-radius: 16px;
     padding: 20px; box-shadow: 0 8px 24px var(--card-shadow);
   }
+  .panel + .panel { margin-top: 18px; }
   .panel-title { font-family: 'ZCOOL XiaoWei', serif; font-size: 17px; color: var(--text-primary); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
   .panel-title::before { content: ''; width: 4px; height: 16px; background: linear-gradient(180deg, var(--accent-red-light), var(--accent-gold)); border-radius: 2px; }
+  .panel-title .sub { font-family: 'Noto Sans SC', sans-serif; font-size: 12px; color: var(--text-muted); font-weight: 400; margin-left: 4px; }
 
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .grid-15 { display: grid; grid-template-columns: 1.5fr 1fr; gap: 18px; }
+  .chart-box { width: 100%; height: 260px; }
+
+  /* 汇总小卡 */
+  .sum-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  .sum-item { padding: 14px 16px; background: rgba(166,44,44,0.05); border-radius: 10px; }
+  .sum-label { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; display: flex; align-items: center; gap: 5px; }
+  .sum-num { font-family: 'ZCOOL XiaoWei', serif; font-size: 26px; color: var(--accent-red); line-height: 1; }
+  .sum-num .unit { font-size: 12px; color: var(--text-muted); font-family: 'Noto Sans SC', sans-serif; margin-left: 2px; }
+  .help-icon { width: 14px; height: 14px; border: 1px solid rgba(166,44,44,0.28); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; color: var(--accent-red); cursor: help; }
+
+  /* 待办 */
   .todo-item { display: flex; align-items: center; justify-content: space-between; padding: 11px 0; border-bottom: 1px solid rgba(166, 44, 44, 0.06); font-size: 14px; }
   .todo-item:last-child { border-bottom: none; }
   .todo-left { display: flex; align-items: center; gap: 10px; color: var(--text-secondary); }
-  .todo-num { background: rgba(166, 44, 44, 0.1); color: var(--accent-red); border-radius: 10px; padding: 2px 9px; font-size: 12px; font-weight: 600; }
+  .todo-num { background: rgba(166, 44, 44, 0.1); color: var(--accent-red); border-radius: 10px; padding: 2px 9px; font-size: 12px; font-weight: 600; min-width: 28px; text-align: center; }
+  .todo-go { font-size: 12px; color: var(--accent-red); cursor: pointer; }
+  .todo-go:hover { text-decoration: underline; }
+
+  /* 排行 */
+  .rank-item { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid rgba(166,44,44,0.06); font-size: 14px; }
+  .rank-item:last-child { border-bottom: none; }
+  .rank-no { width: 22px; height: 22px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; background: rgba(166,44,44,0.08); color: var(--accent-red); flex-shrink: 0; }
+  .rank-no.top1 { background: linear-gradient(135deg, var(--accent-red), var(--accent-red-light)); color: #fff; }
+  .rank-no.top2 { background: rgba(201,168,108,0.4); color: #8a6d34; }
+  .rank-no.top3 { background: rgba(201,168,108,0.22); color: #8a6d34; }
+  .rank-name { flex: 1; color: var(--text-secondary); }
+  .rank-val { font-size: 13px; color: var(--accent-red); font-weight: 600; }
 
   /* 工具栏 */
   .toolbar { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
@@ -183,7 +182,8 @@
     border: 1px solid rgba(166, 44, 44, 0.16); border-radius: 10px; padding: 9px 14px;
     font-size: 13px; background: #fff; color: var(--text-primary); outline: none; font-family: inherit;
   }
-  .toolbar input { flex: 1; min-width: 200px; }
+  .toolbar input { flex: 1; min-width: 200px; max-width: 340px; }
+  .toolbar input:focus, .toolbar select:focus { border-color: rgba(166,44,44,0.4); }
   .btn {
     border: none; border-radius: 10px; padding: 9px 18px; font-size: 13px; cursor: pointer;
     font-family: inherit; transition: all 0.25s; color: #fff;
@@ -193,47 +193,107 @@
   .btn:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(166, 44, 44, 0.35); }
   .btn.ghost { background: rgba(166, 44, 44, 0.08); color: var(--accent-red); box-shadow: none; }
   .btn.ghost:hover { background: rgba(166, 44, 44, 0.14); }
+  .btn.sm { padding: 6px 13px; font-size: 12px; }
   .spacer { flex: 1; }
 
+  /* 标签页 */
+  .tabs { display: flex; gap: 6px; margin-bottom: 18px; flex-wrap: wrap; border-bottom: 1px solid rgba(166,44,44,0.1); padding-bottom: 2px; }
+  .tab {
+    border: none; background: transparent; padding: 9px 18px; font-size: 14px; font-family: inherit;
+    color: var(--text-secondary); cursor: pointer; border-radius: 10px 10px 0 0; position: relative; transition: all 0.25s;
+  }
+  .tab:hover { color: var(--accent-red); background: rgba(166,44,44,0.05); }
+  .tab.active { color: var(--accent-red); font-weight: 600; }
+  .tab.active::after { content: ''; position: absolute; left: 14px; right: 14px; bottom: -2px; height: 3px; border-radius: 2px; background: linear-gradient(90deg, var(--accent-red-light), var(--accent-gold)); }
+  .tab-pane[hidden] { display: none; }
+
   /* 表格 */
+  .table-wrap { padding: 0; overflow-x: auto; }
   .data-table { width: 100%; border-collapse: collapse; font-size: 13px; }
   .data-table th {
-    text-align: left; padding: 12px 14px; color: var(--text-muted); font-weight: 500;
-    border-bottom: 2px solid rgba(166, 44, 44, 0.12); white-space: nowrap;
+    text-align: left; padding: 12px 16px; color: var(--text-muted); font-weight: 500;
+    border-bottom: 2px solid rgba(166, 44, 44, 0.12); white-space: nowrap; background: rgba(255,250,245,0.6);
   }
-  .data-table td { padding: 12px 14px; border-bottom: 1px solid rgba(166, 44, 44, 0.06); color: var(--text-secondary); }
+  .data-table td { padding: 12px 16px; border-bottom: 1px solid rgba(166, 44, 44, 0.06); color: var(--text-secondary); }
   .data-table tbody tr { transition: background 0.2s; }
   .data-table tbody tr:hover { background: rgba(166, 44, 44, 0.04); }
-  .link-btn { color: var(--accent-red); cursor: pointer; margin-right: 10px; }
+  .data-table .t-name { color: var(--text-primary); font-weight: 500; }
+  .data-table .t-num { font-family: 'ZCOOL XiaoWei', serif; font-size: 15px; color: var(--accent-red); }
+  .link-btn { color: var(--accent-red); cursor: pointer; margin-right: 12px; white-space: nowrap; }
+  .link-btn:last-child { margin-right: 0; }
   .link-btn:hover { text-decoration: underline; }
-  .badge { display: inline-block; padding: 3px 10px; border-radius: 10px; font-size: 12px; font-weight: 500; }
+  .link-btn.muted { color: var(--text-muted); }
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 10px; font-size: 12px; font-weight: 500; white-space: nowrap; }
   .badge.green { background: rgba(78, 138, 94, 0.14); color: var(--green); }
   .badge.gold { background: rgba(201, 168, 108, 0.2); color: #9a7b3f; }
   .badge.red { background: rgba(166, 44, 44, 0.12); color: var(--accent-red); }
   .badge.blue { background: rgba(86, 122, 138, 0.16); color: #3f6a7a; }
+  .badge.gray { background: rgba(61,43,31,0.08); color: var(--text-muted); }
+  .table-empty { text-align: center; color: var(--text-muted); padding: 34px 0 !important; }
 
-  /* 知识库卡片 */
-  .kb-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-  .kb-card {
-    background: var(--glass); border: 1px solid var(--glass-border); border-radius: 16px; padding: 20px;
-    box-shadow: 0 8px 24px var(--card-shadow);
+  /* 进度条 */
+  .bar { height: 6px; border-radius: 4px; background: rgba(166,44,44,0.1); overflow: hidden; min-width: 70px; }
+  .bar > i { display: block; height: 100%; border-radius: 4px; background: linear-gradient(90deg, var(--accent-red-light), var(--accent-gold)); }
+
+  /* 标签云 */
+  .tag-cloud { display: flex; flex-wrap: wrap; gap: 9px; }
+  .tag-chip {
+    display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 20px;
+    background: rgba(166,44,44,0.07); border: 1px solid rgba(166,44,44,0.1);
+    font-size: 13px; color: var(--text-secondary); cursor: pointer; transition: all 0.2s;
   }
-  .kb-emoji { font-size: 30px; }
-  .kb-name { font-family: 'ZCOOL XiaoWei', serif; font-size: 18px; margin: 8px 0 4px; color: var(--text-primary); }
-  .kb-meta { font-size: 12px; color: var(--text-muted); line-height: 1.8; }
-  .kb-actions { margin-top: 14px; display: flex; gap: 8px; }
+  .tag-chip:hover { background: rgba(166,44,44,0.14); color: var(--accent-red); transform: translateY(-1px); }
+  .tag-chip .n { font-size: 11px; color: var(--text-muted); }
 
-  /* 设置表单 */
+  /* 表单 */
   .form-row { display: flex; align-items: center; gap: 16px; padding: 14px 0; border-bottom: 1px solid rgba(166, 44, 44, 0.06); }
-  .form-label { width: 140px; font-size: 14px; color: var(--text-secondary); flex-shrink: 0; }
-  .form-row input, .form-row select {
-    flex: 1; max-width: 360px; border: 1px solid rgba(166, 44, 44, 0.16); border-radius: 10px;
-    padding: 9px 14px; font-size: 13px; font-family: inherit; color: var(--text-primary); outline: none;
+  .form-row:last-child { border-bottom: none; }
+  .form-label { width: 150px; font-size: 14px; color: var(--text-secondary); flex-shrink: 0; }
+  .form-label .req { color: var(--accent-red); margin-left: 2px; }
+  .form-row input, .form-row select, .form-row textarea {
+    flex: 1; max-width: 420px; border: 1px solid rgba(166, 44, 44, 0.16); border-radius: 10px;
+    padding: 9px 14px; font-size: 13px; font-family: inherit; color: var(--text-primary); outline: none; background: #fff;
   }
-  .form-row input[type=color] { padding: 4px; height: 38px; }
-  .chart-box { width: 100%; height: 280px; }
+  .form-row textarea { min-height: 74px; resize: vertical; max-width: 560px; }
+  .form-row input:focus, .form-row select:focus, .form-row textarea:focus { border-color: rgba(166,44,44,0.4); }
+  .form-tip { font-size: 12px; color: var(--text-muted); margin-left: 10px; }
+  .switch { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-secondary); }
+  .check-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; max-width: 620px; flex: 1; }
+  .check-grid label { display: flex; align-items: center; gap: 7px; font-size: 13px; color: var(--text-secondary); cursor: pointer; }
+  .check-grid input { max-width: none; flex: none; }
+
   .mt { margin-top: 22px; }
-  .empty-hint { color: var(--text-muted); font-size: 13px; padding: 12px 0; }
+  .mb { margin-bottom: 18px; }
+
+  /* 黑名单行内输入 */
+  .inline-input {
+    border: 1px solid rgba(166,44,44,0.16); border-radius: 10px; padding: 10px 14px;
+    font-size: 14px; font-family: inherit; color: var(--text-primary); outline: none;
+  }
+  .inline-input:focus { border-color: rgba(166,44,44,0.4); }
+
+  /* Toast */
+  .toast {
+    position: fixed; left: 50%; bottom: 46px; transform: translate(-50%, 20px);
+    background: rgba(61, 43, 31, 0.92); color: #fff; font-size: 13px; padding: 11px 22px;
+    border-radius: 12px; opacity: 0; pointer-events: none; transition: all 0.3s; z-index: 999;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.22); max-width: 76vw;
+  }
+  .toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+  @media (max-width: 1280px) {
+    .kpi-row { grid-template-columns: repeat(4, 1fr); }
+    .sum-grid { grid-template-columns: repeat(2, 1fr); }
+    .grid-2, .grid-15 { grid-template-columns: 1fr; }
+    .check-grid { grid-template-columns: repeat(2, 1fr); }
+    .nav-menu .nav-item { padding: 10px 14px; font-size: 14px; }
+  }
+  @media (max-width: 980px) {
+    .admin-sidebar { display: none; }
+    .kpi-row { grid-template-columns: repeat(2, 1fr); }
+    .navbar { padding: 0 18px; }
+    .admin-main { padding: 20px 16px 40px; }
+  }
 </style>
 </head>
 <body>
@@ -261,288 +321,564 @@
 <div class="admin-layout">
   <aside class="admin-sidebar">
     <div class="side-title">管理中心</div>
-    <div class="side-item active" data-target="dashboard">📊 数据概览</div>
-    <div class="side-item" data-target="graph">🕸️ 知识图谱管理</div>
-    <div class="side-item" data-target="courses">🚩 思政课程管理</div>
-    <div class="side-item" data-target="routes">🗺️ 研学路线管理</div>
-    <div class="side-item" data-target="users">👥 用户与权限</div>
-    <div class="side-item" data-target="blacklist">🚫 黑名单管理</div>
+
+    <div class="nav-group">数据中心</div>
+    <div class="side-item active" data-target="dashboard"><span class="ico">📊</span>数据概览</div>
+
+    <div class="nav-group">内容管理</div>
+    <div class="side-item" data-target="archives"><span class="ico">📚</span>档案资源管理<span class="cnt">12</span></div>
+    <div class="side-item" data-target="graph"><span class="ico">🕸️</span>知识图谱管理<span class="cnt">10</span></div>
+    <div class="side-item" data-target="courses"><span class="ico">🚩</span>数字思政管理<span class="cnt">5</span></div>
+    <div class="side-item" data-target="routes"><span class="ico">🗺️</span>研学路线管理<span class="cnt">10</span></div>
+
+    <div class="nav-group">智能服务</div>
+    <div class="side-item" data-target="qa"><span class="ico">🤖</span>智能问答管理</div>
+    <div class="side-item" data-target="blacklist"><span class="ico">🚫</span>黑名单管理</div>
+
+    <div class="nav-group">系统管理</div>
+    <div class="side-item" data-target="users"><span class="ico">👥</span>用户与权限</div>
+    <div class="side-item" data-target="logs"><span class="ico">📝</span>操作日志</div>
+    <div class="side-item" data-target="settings"><span class="ico">⚙️</span>系统设置</div>
   </aside>
 
   <main class="admin-main">
 
-    <!-- 数据概览 -->
+    <!-- ===================== 数据概览 ===================== -->
     <section id="dashboard" class="admin-section">
-      <!-- 数据汇总 -->
-      <div class="data-summary">
-        <div class="summary-header">
-          <span class="summary-title">数据汇总</span>
-          <span class="summary-time">数据统计时间：2026-08-02</span>
+      <div class="page-head">
+        <div class="page-title">数据概览</div>
+        <div class="page-sub">全站档案资源、课程与访问情况总览 · 数据统计时间 2026-09-14</div>
+      </div>
+
+      <div class="kpi-row">
+        <div class="kpi-card">
+          <div class="kpi-top"><span class="kpi-icon">🗂️</span><span class="kpi-trend">+8 本周</span></div>
+          <div class="kpi-value">132<span class="unit">条</span></div>
+          <div class="kpi-label">档案条目总量</div>
         </div>
-        <div class="summary-cards">
-          <div class="summary-card">
-            <div class="summary-label">知识库数量 <span class="help-icon">?</span></div>
-            <div class="summary-value-row">
-              <span class="summary-num">2</span>
-              <span class="summary-trend">环比 -</span>
-            </div>
+        <div class="kpi-card">
+          <div class="kpi-top"><span class="kpi-icon">📚</span><span class="kpi-trend">+1 本周</span></div>
+          <div class="kpi-value">12<span class="unit">个</span></div>
+          <div class="kpi-label">知识库</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-top"><span class="kpi-icon">🕸️</span><span class="kpi-trend">+2 本周</span></div>
+          <div class="kpi-value">10<span class="unit">个</span></div>
+          <div class="kpi-label">知识图谱</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-top"><span class="kpi-icon">🚩</span><span class="kpi-trend">已发布</span></div>
+          <div class="kpi-value">5<span class="unit">门</span></div>
+          <div class="kpi-label">数字思政课程</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-top"><span class="kpi-icon">🗺️</span><span class="kpi-trend">+3 本周</span></div>
+          <div class="kpi-value">10<span class="unit">条</span></div>
+          <div class="kpi-label">研学线路</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-top"><span class="kpi-icon">📍</span><span class="kpi-trend">+12 本周</span></div>
+          <div class="kpi-value">45<span class="unit">个</span></div>
+          <div class="kpi-label">研学点位</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-top"><span class="kpi-icon">👥</span><span class="kpi-trend">+36 本周</span></div>
+          <div class="kpi-value">1,286<span class="unit">人</span></div>
+          <div class="kpi-label">平台注册用户</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-top"><span class="kpi-icon">👁️</span><span class="kpi-trend down">-4.2%</span></div>
+          <div class="kpi-value">3,472<span class="unit">次</span></div>
+          <div class="kpi-label">今日访问量</div>
+        </div>
+      </div>
+
+      <div class="panel mb">
+        <div class="panel-title">数据汇总 <span class="sub">截至 2026-09-14</span></div>
+        <div class="sum-grid">
+          <div class="sum-item">
+            <div class="sum-label">知识库数量 <span class="help-icon" title="已建成的专题知识库总数">?</span></div>
+            <div class="sum-num">12<span class="unit">个</span></div>
           </div>
-          <div class="summary-card">
-            <div class="summary-label">现行有效知识总数 <span class="help-icon">?</span></div>
-            <div class="summary-value-row">
-              <span class="summary-num">2</span>
-              <span class="summary-trend">环比 -</span>
-            </div>
+          <div class="sum-item">
+            <div class="sum-label">现行有效知识总数 <span class="help-icon" title="状态为已发布、可被检索与引用的档案条目">?</span></div>
+            <div class="sum-num">132<span class="unit">条</span></div>
           </div>
-          <div class="summary-card">
-            <div class="summary-label">AI解析知识总数 <span class="help-icon">?</span></div>
-            <div class="summary-value-row">
-              <span class="summary-num">2</span>
-              <span class="summary-trend">环比 -</span>
-            </div>
+          <div class="sum-item">
+            <div class="sum-label">AI 解析知识总数 <span class="help-icon" title="已完成 OCR 与结构化解析、进入向量库的条目">?</span></div>
+            <div class="sum-num">118<span class="unit">条</span></div>
           </div>
-          <div class="summary-card">
-            <div class="summary-label">AI问答引用知识总数 <span class="help-icon">?</span></div>
-            <div class="summary-value-row">
-              <span class="summary-num">0</span>
-              <span class="summary-trend">环比 -</span>
-            </div>
+          <div class="sum-item">
+            <div class="sum-label">AI 问答引用知识总数 <span class="help-icon" title="被智能问答实际召回引用的条目数">?</span></div>
+            <div class="sum-num">96<span class="unit">条</span></div>
           </div>
         </div>
       </div>
 
-      <!-- 数据概览 -->
-      <div class="data-overview">
-        <div class="overview-header">
-          <div class="overview-title-row">
-            <span class="overview-title">数据概览</span>
-            <span class="overview-time">数据统计时间：2026-08-02</span>
-          </div>
-          <div class="overview-controls">
-            <div class="time-tabs">
-              <button class="time-tab active">日</button>
-              <button class="time-tab">周</button>
-              <button class="time-tab">月</button>
-            </div>
-            <div class="date-picker">2026-08-02 <span class="calendar-icon">📅</span></div>
-          </div>
+      <div class="grid-2 mb">
+        <div class="panel">
+          <div class="panel-title">内容增长趋势 <span class="sub">近 14 天入库量</span></div>
+          <div id="growthChart" class="chart-box"></div>
         </div>
-        <div class="overview-charts">
-          <div class="chart-panel">
-            <div class="chart-panel-title">知识库使用数据</div>
-            <div class="metric-cards">
-              <div class="metric-card">
-                <div class="metric-icon blue">✈️</div>
-                <div class="metric-info">
-                  <div class="metric-label">访问次数</div>
-                  <div class="metric-value">0</div>
-                </div>
-              </div>
-              <div class="metric-card">
-                <div class="metric-icon orange">👤</div>
-                <div class="metric-info">
-                  <div class="metric-label">访问人数</div>
-                  <div class="metric-value">0</div>
-                </div>
-              </div>
-            </div>
-            <div id="kbUsageChart" class="chart-area"></div>
-          </div>
-          <div class="chart-panel">
-            <div class="chart-panel-title">知识数据</div>
-            <div class="metric-cards single">
-              <div class="metric-card">
-                <div class="metric-icon blue">📄</div>
-                <div class="metric-info">
-                  <div class="metric-label">新增知识数</div>
-                  <div class="metric-value">0</div>
-                </div>
-              </div>
-            </div>
-            <div id="knowledgeChart" class="chart-area"></div>
-          </div>
+        <div class="panel">
+          <div class="panel-title">访问趋势 <span class="sub">近 14 天</span></div>
+          <div id="visitChart" class="chart-box"></div>
         </div>
       </div>
 
-      <!-- 排行榜 -->
-      <div class="ranking-section">
-        <div class="ranking-panel">
-          <div class="ranking-header">
-            <span class="ranking-title">知识排行榜</span>
-            <div class="ranking-tabs">
-              <button class="ranking-tab active">访问次数</button>
-              <button class="ranking-tab">访问人数</button>
-            </div>
-          </div>
-          <div class="ranking-list" id="kbRankingList">
-            <div class="ranking-empty">暂无数据</div>
+      <div class="grid-2">
+        <div class="panel">
+          <div class="panel-title">热门知识库排行 <span class="sub">按访问次数</span></div>
+          <div id="kbRank">
+            <div class="rank-item"><span class="rank-no top1">1</span><span class="rank-name">各县市区编研书籍</span><span class="rank-val">8,642</span></div>
+            <div class="rank-item"><span class="rank-no top2">2</span><span class="rank-name">档案馆编研</span><span class="rank-val">7,118</span></div>
+            <div class="rank-item"><span class="rank-no top3">3</span><span class="rank-name">红色革命事件</span><span class="rank-val">6,305</span></div>
+            <div class="rank-item"><span class="rank-no">4</span><span class="rank-name">党史办红立方</span><span class="rank-val">5,470</span></div>
+            <div class="rank-item"><span class="rank-no">5</span><span class="rank-name">刘英·粟裕史料</span><span class="rank-val">4,926</span></div>
+            <div class="rank-item"><span class="rank-no">6</span><span class="rank-name">华侨红色相关史料</span><span class="rank-val">4,118</span></div>
           </div>
         </div>
-        <div class="ranking-panel">
-          <div class="ranking-header">
-            <span class="ranking-title">成员排行榜</span>
-            <div class="ranking-tabs">
-              <button class="ranking-tab active">访问次数</button>
-              <button class="ranking-tab">创建知识数</button>
-            </div>
+        <div class="panel">
+          <div class="panel-title">待办事项 <span class="sub">共 26 项</span></div>
+          <div class="todo-item"><span class="todo-left"><span class="todo-num">8</span>档案条目待审核</span><span class="todo-go" data-go="archives">去处理 ›</span></div>
+          <div class="todo-item"><span class="todo-left"><span class="todo-num">1</span>思政课程待发布</span><span class="todo-go" data-go="courses">去处理 ›</span></div>
+          <div class="todo-item"><span class="todo-left"><span class="todo-num">12</span>问答未命中待补语料</span><span class="todo-go" data-go="qa">去处理 ›</span></div>
+          <div class="todo-item"><span class="todo-left"><span class="todo-num">3</span>研学点位信息待完善</span><span class="todo-go" data-go="routes">去处理 ›</span></div>
+          <div class="todo-item"><span class="todo-left"><span class="todo-num">2</span>用户权限申请待审批</span><span class="todo-go" data-go="users">去处理 ›</span></div>
+          <div class="todo-item"><span class="todo-left"><span class="todo-num">1</span>知识图谱「革命英烈群体」训练中</span><span class="todo-go" data-go="graph">去查看 ›</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== 档案资源管理 ===================== -->
+    <section id="archives" class="admin-section" hidden>
+      <div class="page-head">
+        <div class="page-title">档案资源管理</div>
+        <div class="page-sub">知识库、档案条目与分类标签的维护 · 与前台「档案资源中心」数据同步</div>
+      </div>
+
+      <div class="hint-bar">
+        <span>💡</span>
+        <div>知识库与档案条目直接决定前台「档案资源中心」的展示内容。新增条目后需完成 <b>AI 解析</b> 才能被智能问答召回。</div>
+      </div>
+
+      <div class="tabs">
+        <button class="tab active" data-tab="kb">知识库管理</button>
+        <button class="tab" data-tab="items">档案条目</button>
+        <button class="tab" data-tab="taxonomy">分类与标签</button>
+      </div>
+
+      <!-- 知识库管理 -->
+      <div class="tab-pane" data-pane="kb">
+        <div class="toolbar">
+          <input type="text" data-filter="#kbTable" placeholder="搜索知识库名称 / 说明...">
+          <select>
+            <option>全部类型</option><option>自建库</option><option>共享库</option>
+          </select>
+          <div class="spacer"></div>
+          <button class="btn ghost" data-act="export">导出清单</button>
+          <button class="btn" data-act="new-kb">＋ 新建知识库</button>
+        </div>
+        <div class="panel table-wrap">
+          <table class="data-table" id="kbTable">
+            <thead><tr><th>知识库名称</th><th>类型</th><th>馆藏量</th><th>已解析</th><th>更新时间</th><th>状态</th><th>操作</th></tr></thead>
+            <tbody>
+              <tr><td class="t-name">党史办红立方</td><td>自建库</td><td class="t-num">12</td><td>12</td><td>2026-05-20</td><td><span class="badge green">已发布</span></td><td><span class="link-btn">编辑</span><span class="link-btn">条目</span><span class="link-btn muted">下线</span></td></tr>
+              <tr><td class="t-name">档案馆编研</td><td>自建库</td><td class="t-num">18</td><td>16</td><td>2026-05-19</td><td><span class="badge green">已发布</span></td><td><span class="link-btn">编辑</span><span class="link-btn">条目</span><span class="link-btn muted">下线</span></td></tr>
+              <tr><td class="t-name">各县市区编研书籍</td><td>自建库</td><td class="t-num">26</td><td>24</td><td>2026-05-18</td><td><span class="badge green">已发布</span></td><td><span class="link-btn">编辑</span><span class="link-btn">条目</span><span class="link-btn muted">下线</span></td></tr>
+              <tr><td class="t-name">地方党组织史料</td><td>自建库</td><td class="t-num">9</td><td>9</td><td>2026-05-17</td><td><span class="badge green">已发布</span></td><td><span class="link-btn">编辑</span><span class="link-btn">条目</span><span class="link-btn muted">下线</span></td></tr>
+              <tr><td class="t-name">刘英·粟裕史料</td><td>自建库</td><td class="t-num">11</td><td>11</td><td>2026-05-17</td><td><span class="badge green">已发布</span></td><td><span class="link-btn">编辑</span><span class="link-btn">条目</span><span class="link-btn muted">下线</span></td></tr>
+              <tr><td class="t-name">革命英烈群体</td><td>自建库</td><td class="t-num">7</td><td>7</td><td>2026-05-16</td><td><span class="badge green">已发布</span></td><td><span class="link-btn">编辑</span><span class="link-btn">条目</span><span class="link-btn muted">下线</span></td></tr>
+              <tr><td class="t-name">红色革命事件</td><td>自建库</td><td class="t-num">14</td><td>13</td><td>2026-05-16</td><td><span class="badge green">已发布</span></td><td><span class="link-btn">编辑</span><span class="link-btn">条目</span><span class="link-btn muted">下线</span></td></tr>
+              <tr><td class="t-name">红色设施</td><td>自建库</td><td class="t-num">4</td><td>4</td><td>2026-05-15</td><td><span class="badge green">已发布</span></td><td><span class="link-btn">编辑</span><span class="link-btn">条目</span><span class="link-btn muted">下线</span></td></tr>
+              <tr><td class="t-name">红色文物文献资料</td><td>共享库</td><td class="t-num">8</td><td>8</td><td>2026-05-15</td><td><span class="badge green">已发布</span></td><td><span class="link-btn">编辑</span><span class="link-btn">条目</span><span class="link-btn muted">下线</span></td></tr>
+              <tr><td class="t-name">红色回忆与研究活动</td><td>共享库</td><td class="t-num">6</td><td>5</td><td>2026-05-14</td><td><span class="badge green">已发布</span></td><td><span class="link-btn">编辑</span><span class="link-btn">条目</span><span class="link-btn muted">下线</span></td></tr>
+              <tr><td class="t-name">畲族红色文化</td><td>自建库</td><td class="t-num">5</td><td>5</td><td>2026-05-13</td><td><span class="badge green">已发布</span></td><td><span class="link-btn">编辑</span><span class="link-btn">条目</span><span class="link-btn muted">下线</span></td></tr>
+              <tr><td class="t-name">华侨红色相关史料</td><td>自建库</td><td class="t-num">10</td><td>8</td><td>2026-05-12</td><td><span class="badge green">已发布</span></td><td><span class="link-btn">编辑</span><span class="link-btn">条目</span><span class="link-btn muted">下线</span></td></tr>
+              <tr class="table-empty" style="display:none"><td colspan="7">未找到匹配的知识库</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 档案条目 -->
+      <div class="tab-pane" data-pane="items" hidden>
+        <div class="toolbar">
+          <input type="text" data-filter="#itemTable" placeholder="搜索档案名称 / 所属知识库 / 来源...">
+          <select><option>全部类型</option><option>文档档案</option><option>图片档案</option><option>声像档案</option></select>
+          <select><option>全部状态</option><option>已发布</option><option>待审核</option><option>解析中</option></select>
+          <div class="spacer"></div>
+          <button class="btn ghost" data-act="batch">批量操作</button>
+          <button class="btn" data-act="upload">＋ 上传档案</button>
+        </div>
+        <div class="panel table-wrap">
+          <table class="data-table" id="itemTable">
+            <thead><tr><th>档案名称</th><th>类型</th><th>所属知识库</th><th>年代</th><th>来源</th><th>状态</th><th>操作</th></tr></thead>
+            <tbody>
+              <tr><td class="t-name">刘英致浙西南特委手书信函</td><td><span class="badge blue">文档</span></td><td>刘英·粟裕史料</td><td>1936</td><td>丽水市档案馆</td><td><span class="badge green">已发布</span></td><td><span class="link-btn">查看</span><span class="link-btn">编辑</span><span class="link-btn muted">下架</span></td></tr>
+              <tr><td class="t-name">万山交通总站档案</td><td><span class="badge blue">文档</span></td><td>红色设施</td><td>1936</td><td>遂昌县档案馆</td><td><span class="badge green">已发布</span></td><td><span class="link-btn">查看</span><span class="link-btn">编辑</span><span class="link-btn muted">下架</span></td></tr>
+              <tr><td class="t-name">潘香凤烈士生平登记表</td><td><span class="badge blue">文档</span></td><td>革命英烈群体</td><td>1948</td><td>遂昌县档案馆</td><td><span class="badge green">已发布</span></td><td><span class="link-btn">查看</span><span class="link-btn">编辑</span><span class="link-btn muted">下架</span></td></tr>
+              <tr><td class="t-name">斋郎战斗史料汇编</td><td><span class="badge blue">文档</span></td><td>红色革命事件</td><td>1935</td><td>庆元县档案馆</td><td><span class="badge green">已发布</span></td><td><span class="link-btn">查看</span><span class="link-btn">编辑</span><span class="link-btn muted">下架</span></td></tr>
+              <tr><td class="t-name">中共遂昌支部成立文件</td><td><span class="badge blue">文档</span></td><td>地方党组织史料</td><td>1927</td><td>遂昌县档案馆</td><td><span class="badge green">已发布</span></td><td><span class="link-btn">查看</span><span class="link-btn">编辑</span><span class="link-btn muted">下架</span></td></tr>
+              <tr><td class="t-name">金岭红色秘密交通线史料</td><td><span class="badge blue">文档</span></td><td>各县市区编研书籍</td><td>1937</td><td>松阳县档案馆</td><td><span class="badge gold">待审核</span></td><td><span class="link-btn">审核</span><span class="link-btn">编辑</span><span class="link-btn muted">下架</span></td></tr>
+              <tr><td class="t-name">《救国时报》青田侨胞报道辑录</td><td><span class="badge blue">文档</span></td><td>华侨红色相关史料</td><td>1936</td><td>青田县档案馆</td><td><span class="badge green">已发布</span></td><td><span class="link-btn">查看</span><span class="link-btn">编辑</span><span class="link-btn muted">下架</span></td></tr>
+              <tr><td class="t-name">中共毛窠支部与畲族革命档案</td><td><span class="badge blue">文档</span></td><td>地方党组织史料</td><td>1937</td><td>丽水市档案馆</td><td><span class="badge gold">待审核</span></td><td><span class="link-btn">审核</span><span class="link-btn">编辑</span><span class="link-btn muted">下架</span></td></tr>
+              <tr><td class="t-name">挺进师老战士口述回忆录</td><td><span class="badge blue">文档</span></td><td>红色回忆与研究活动</td><td>1985</td><td>丽水市档案馆</td><td><span class="badge green">已发布</span></td><td><span class="link-btn">查看</span><span class="link-btn">编辑</span><span class="link-btn muted">下架</span></td></tr>
+              <tr><td class="t-name">畲族红色歌谣采集稿</td><td><span class="badge blue">文档</span></td><td>畲族红色文化</td><td>1958</td><td>景宁县档案馆</td><td><span class="badge green">已发布</span></td><td><span class="link-btn">查看</span><span class="link-btn">编辑</span><span class="link-btn muted">下架</span></td></tr>
+              <tr><td class="t-name">王村口红军标语照片</td><td><span class="badge gold">图片</span></td><td>红色文物文献资料</td><td>1935</td><td>遂昌县档案馆</td><td><span class="badge green">已发布</span></td><td><span class="link-btn">查看</span><span class="link-btn">编辑</span><span class="link-btn muted">下架</span></td></tr>
+              <tr><td class="t-name">挺进师师部旧址影像</td><td><span class="badge red">声像</span></td><td>红色设施</td><td>2021</td><td>丽水市档案馆</td><td><span class="badge gray">解析中</span></td><td><span class="link-btn">查看</span><span class="link-btn">编辑</span><span class="link-btn muted">下架</span></td></tr>
+              <tr class="table-empty" style="display:none"><td colspan="7">未找到匹配的档案条目</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 分类与标签 -->
+      <div class="tab-pane" data-pane="taxonomy" hidden>
+        <div class="panel mb">
+          <div class="panel-title">主题分类 <span class="sub">对应前台「档案资源中心」左侧菜单</span></div>
+          <div class="tag-cloud">
+            <span class="tag-chip">🚩 党史办红立方 <span class="n">12</span></span>
+            <span class="tag-chip">📚 档案馆编研 <span class="n">18</span></span>
+            <span class="tag-chip">📖 各县市区编研书籍 <span class="n">26</span></span>
+            <span class="tag-chip">🏛️ 地方党组织史料 <span class="n">9</span></span>
+            <span class="tag-chip">🎖️ 刘英·粟裕史料 <span class="n">11</span></span>
+            <span class="tag-chip">🕯️ 革命英烈群体 <span class="n">7</span></span>
+            <span class="tag-chip">🔥 红色革命事件 <span class="n">14</span></span>
+            <span class="tag-chip">🏯 红色设施 <span class="n">4</span></span>
+            <span class="tag-chip">📜 红色文物文献资料 <span class="n">8</span></span>
+            <span class="tag-chip">🖋️ 红色回忆与研究活动 <span class="n">6</span></span>
+            <span class="tag-chip">🌾 畲族红色文化 <span class="n">5</span></span>
+            <span class="tag-chip">🌊 华侨红色相关史料 <span class="n">10</span></span>
           </div>
-          <div class="ranking-list" id="memberRankingList">
-            <div class="ranking-empty">暂无数据</div>
+        </div>
+        <div class="panel mb">
+          <div class="panel-title">档案类型标签</div>
+          <div class="tag-cloud">
+            <span class="tag-chip">文档档案 <span class="n">95</span></span>
+            <span class="tag-chip">图片档案 <span class="n">22</span></span>
+            <span class="tag-chip">声像档案 <span class="n">15</span></span>
+            <span class="tag-chip">手稿信函 <span class="n">18</span></span>
+            <span class="tag-chip">口述史料 <span class="n">11</span></span>
+            <span class="tag-chip">旧址影像 <span class="n">9</span></span>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-title">主题标签 <span class="sub">用于智能问答召回与关联推荐</span></div>
+          <div class="tag-cloud">
+            <span class="tag-chip">挺进师 <span class="n">31</span></span>
+            <span class="tag-chip">浙西南特委 <span class="n">22</span></span>
+            <span class="tag-chip">地下交通 <span class="n">17</span></span>
+            <span class="tag-chip">畲族革命 <span class="n">12</span></span>
+            <span class="tag-chip">华侨抗战 <span class="n">14</span></span>
+            <span class="tag-chip">烈士英名录 <span class="n">9</span></span>
+            <span class="tag-chip">游击战争 <span class="n">20</span></span>
+            <span class="tag-chip">统一战线 <span class="n">8</span></span>
+            <span class="tag-chip">党组织沿革 <span class="n">16</span></span>
+            <span class="tag-chip">革命旧址 <span class="n">25</span></span>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- 知识图谱管理 -->
+    <!-- ===================== 知识图谱管理 ===================== -->
     <section id="graph" class="admin-section" hidden>
       <div class="page-head">
         <div class="page-title">知识图谱管理</div>
-        <div class="page-sub">专题图谱的实体、关系与发布状态管理</div>
+        <div class="page-sub">专题图谱的实体、关系与发布状态管理 · 与前台「知识图谱」页面同步</div>
       </div>
+
+      <div class="kpi-row">
+        <div class="kpi-card"><div class="kpi-top"><span class="kpi-icon">🕸️</span></div><div class="kpi-value">10<span class="unit">个</span></div><div class="kpi-label">图谱总数</div></div>
+        <div class="kpi-card"><div class="kpi-top"><span class="kpi-icon">🔵</span></div><div class="kpi-value">74,662<span class="unit">个</span></div><div class="kpi-label">实体总数</div></div>
+        <div class="kpi-card"><div class="kpi-top"><span class="kpi-icon">🔗</span></div><div class="kpi-value">229,271<span class="unit">条</span></div><div class="kpi-label">关系总数</div></div>
+        <div class="kpi-card"><div class="kpi-top"><span class="kpi-icon">⏳</span></div><div class="kpi-value">1<span class="unit">个</span></div><div class="kpi-label">训练中图谱</div></div>
+      </div>
+
       <div class="toolbar">
-        <input type="text" placeholder="搜索图谱名称...">
+        <input type="text" data-filter="#graphTable" placeholder="搜索图谱名称...">
+        <select><option>全部状态</option><option>已发布</option><option>训练中</option><option>已下线</option></select>
         <div class="spacer"></div>
-        <button class="btn">＋ 新建图谱</button>
+        <button class="btn ghost" data-act="export">导出数据</button>
+        <button class="btn" data-act="new-graph">＋ 新建图谱</button>
       </div>
-      <div class="panel" style="padding:0;overflow:hidden">
-        <table class="data-table">
+      <div class="panel table-wrap">
+        <table class="data-table" id="graphTable">
           <thead><tr><th>图谱名称</th><th>实体数</th><th>关系数</th><th>状态</th><th>更新时间</th><th>操作</th></tr></thead>
           <tbody>
-            <tr><td>浙西南革命历史知识图谱</td><td>12,486</td><td>38,902</td><td><span class="badge green">已发布</span></td><td>2026-05-19</td><td><span class="link-btn">编辑</span><span class="link-btn">下线</span></td></tr>
-            <tr><td>红船精神发展脉络</td><td>8,213</td><td>25,671</td><td><span class="badge green">已发布</span></td><td>2026-05-12</td><td><span class="link-btn">编辑</span><span class="link-btn">下线</span></td></tr>
-            <tr><td>抗战时期浙江党组织</td><td>9,540</td><td>29,330</td><td><span class="badge green">已发布</span></td><td>2026-05-10</td><td><span class="link-btn">编辑</span><span class="link-btn">下线</span></td></tr>
-            <tr><td>丽水名人文化谱系</td><td>6,802</td><td>19,044</td><td><span class="badge green">已发布</span></td><td>2026-04-28</td><td><span class="link-btn">编辑</span><span class="link-btn">下线</span></td></tr>
-            <tr><td>革命遗址分布图谱</td><td>4,317</td><td>12,508</td><td><span class="badge green">已发布</span></td><td>2026-04-21</td><td><span class="link-btn">编辑</span><span class="link-btn">下线</span></td></tr>
-            <tr><td>档案文献传承关系</td><td>7,690</td><td>22,107</td><td><span class="badge green">已发布</span></td><td>2026-04-15</td><td><span class="link-btn">编辑</span><span class="link-btn">下线</span></td></tr>
-            <tr><td>重大历史事件关联</td><td>5,471</td><td>16,233</td><td><span class="badge green">已发布</span></td><td>2026-04-09</td><td><span class="link-btn">编辑</span><span class="link-btn">下线</span></td></tr>
-            <tr><td>浙西南英烈谱系</td><td>3,985</td><td>11,902</td><td><span class="badge gold">训练中</span></td><td>2026-05-21</td><td><span class="link-btn">编辑</span><span class="link-btn">下线</span></td></tr>
-            <tr><td>革命先辈社会关系</td><td>6,120</td><td>18,360</td><td><span class="badge green">已发布</span></td><td>2026-03-30</td><td><span class="link-btn">编辑</span><span class="link-btn">下线</span></td></tr>
-            <tr><td>红色文化资源网络</td><td>5,038</td><td>15,114</td><td><span class="badge green">已发布</span></td><td>2026-03-22</td><td><span class="link-btn">编辑</span><span class="link-btn">下线</span></td></tr>
+            <tr><td class="t-name">地方党组织史料</td><td class="t-num">12,486</td><td>38,902</td><td><span class="badge green">已发布</span></td><td>2026-05-19</td><td><span class="link-btn">编辑</span><span class="link-btn">实体关系</span><span class="link-btn muted">下线</span></td></tr>
+            <tr><td class="t-name">刘英</td><td class="t-num">8,213</td><td>25,671</td><td><span class="badge green">已发布</span></td><td>2026-05-12</td><td><span class="link-btn">编辑</span><span class="link-btn">实体关系</span><span class="link-btn muted">下线</span></td></tr>
+            <tr><td class="t-name">粟裕</td><td class="t-num">9,540</td><td>29,330</td><td><span class="badge green">已发布</span></td><td>2026-05-10</td><td><span class="link-btn">编辑</span><span class="link-btn">实体关系</span><span class="link-btn muted">下线</span></td></tr>
+            <tr><td class="t-name">革命英烈群体</td><td class="t-num">3,985</td><td>11,902</td><td><span class="badge gold">训练中</span></td><td>2026-05-21</td><td><span class="link-btn">查看进度</span><span class="link-btn">编辑</span><span class="link-btn muted">下线</span></td></tr>
+            <tr><td class="t-name">红色革命事件</td><td class="t-num">6,802</td><td>19,044</td><td><span class="badge green">已发布</span></td><td>2026-04-28</td><td><span class="link-btn">编辑</span><span class="link-btn">实体关系</span><span class="link-btn muted">下线</span></td></tr>
+            <tr><td class="t-name">红色设施</td><td class="t-num">4,317</td><td>12,508</td><td><span class="badge green">已发布</span></td><td>2026-04-21</td><td><span class="link-btn">编辑</span><span class="link-btn">实体关系</span><span class="link-btn muted">下线</span></td></tr>
+            <tr><td class="t-name">红色文物文献资料</td><td class="t-num">7,690</td><td>22,107</td><td><span class="badge green">已发布</span></td><td>2026-04-15</td><td><span class="link-btn">编辑</span><span class="link-btn">实体关系</span><span class="link-btn muted">下线</span></td></tr>
+            <tr><td class="t-name">红色回忆与研究活动</td><td class="t-num">5,471</td><td>16,233</td><td><span class="badge green">已发布</span></td><td>2026-04-09</td><td><span class="link-btn">编辑</span><span class="link-btn">实体关系</span><span class="link-btn muted">下线</span></td></tr>
+            <tr><td class="t-name">畲族红色文化</td><td class="t-num">6,120</td><td>18,360</td><td><span class="badge green">已发布</span></td><td>2026-03-30</td><td><span class="link-btn">编辑</span><span class="link-btn">实体关系</span><span class="link-btn muted">下线</span></td></tr>
+            <tr><td class="t-name">华侨红色相关史料</td><td class="t-num">5,038</td><td>15,114</td><td><span class="badge green">已发布</span></td><td>2026-03-22</td><td><span class="link-btn">编辑</span><span class="link-btn">实体关系</span><span class="link-btn muted">下线</span></td></tr>
+            <tr class="table-empty" style="display:none"><td colspan="6">未找到匹配的图谱</td></tr>
           </tbody>
         </table>
       </div>
     </section>
 
-    <!-- 思政课程管理 -->
+    <!-- ===================== 数字思政管理 ===================== -->
     <section id="courses" class="admin-section" hidden>
       <div class="page-head">
-        <div class="page-title">思政课程管理</div>
-        <div class="page-sub">课程上下架、章节与学习数据统计</div>
+        <div class="page-title">数字思政管理</div>
+        <div class="page-sub">课程上下架、章节与档案素材包维护 · 与前台「数字思政」页面同步</div>
       </div>
-      <div class="panel" style="padding:0;overflow:hidden">
-        <table class="data-table">
-          <thead><tr><th>课程名称</th><th>学段</th><th>课时</th><th>学习人数</th><th>完成率</th><th>状态</th><th>操作</th></tr></thead>
+
+      <div class="toolbar">
+        <input type="text" data-filter="#courseTable" placeholder="搜索课程名称...">
+        <select><option>全部学段</option><option>小学</option><option>初中</option><option>高中</option><option>大学</option><option>海外华校</option></select>
+        <div class="spacer"></div>
+        <button class="btn ghost" data-act="export">导出课件包</button>
+        <button class="btn" data-act="new-course">＋ 新建课程</button>
+      </div>
+      <div class="panel table-wrap">
+        <table class="data-table" id="courseTable">
+          <thead><tr><th>课程名称</th><th>学段</th><th>课时</th><th>章节数</th><th>档案素材包</th><th>学习人数</th><th>状态</th><th>操作</th></tr></thead>
           <tbody>
-            <tr><td>红领巾讲红色故事</td><td>小学</td><td>24</td><td>85,000</td><td>68%</td><td><span class="badge green">已发布</span></td><td><span class="link-btn">编辑</span><span class="link-btn">章节</span></td></tr>
-            <tr><td>青春心向党·奋斗新征程</td><td>初中</td><td>32</td><td>123,000</td><td>55%</td><td><span class="badge green">已发布</span></td><td><span class="link-btn">编辑</span><span class="link-btn">章节</span></td></tr>
-            <tr><td>红色根脉·思政铸魂</td><td>高中</td><td>40</td><td>98,000</td><td>42%</td><td><span class="badge gold">待发布</span></td><td><span class="link-btn">编辑</span><span class="link-btn">发布</span></td></tr>
-            <tr><td>中国精神·青年担当</td><td>大学</td><td>48</td><td>46,000</td><td>35%</td><td><span class="badge green">已发布</span></td><td><span class="link-btn">编辑</span><span class="link-btn">章节</span></td></tr>
-            <tr><td>寻根中华·同心筑梦</td><td>海外华校</td><td>28</td><td>12,000</td><td>50%</td><td><span class="badge green">已发布</span></td><td><span class="link-btn">编辑</span><span class="link-btn">章节</span></td></tr>
+            <tr><td class="t-name">英雄伴我行·浙西南革命人物故事</td><td><span class="badge blue">小学</span></td><td class="t-num">18</td><td>6</td><td>12 件</td><td>85,000</td><td><span class="badge green">已发布</span></td><td><span class="link-btn">编辑</span><span class="link-btn">章节</span><span class="link-btn">素材包</span></td></tr>
+            <tr><td class="t-name">挺进师之路·挺进浙西南</td><td><span class="badge blue">初中</span></td><td class="t-num">24</td><td>6</td><td>12 件</td><td>123,000</td><td><span class="badge green">已发布</span></td><td><span class="link-btn">编辑</span><span class="link-btn">章节</span><span class="link-btn">素材包</span></td></tr>
+            <tr><td class="t-name">红旗不倒·浙西南党组织的二十三年</td><td><span class="badge blue">高中</span></td><td class="t-num">32</td><td>6</td><td>12 件</td><td>98,000</td><td><span class="badge green">已发布</span></td><td><span class="link-btn">编辑</span><span class="link-btn">章节</span><span class="link-btn">素材包</span></td></tr>
+            <tr><td class="t-name">看不见的战线·浙西南红色地下交通</td><td><span class="badge blue">大学</span></td><td class="t-num">36</td><td>6</td><td>12 件</td><td>46,000</td><td><span class="badge green">已发布</span></td><td><span class="link-btn">编辑</span><span class="link-btn">章节</span><span class="link-btn">素材包</span></td></tr>
+            <tr><td class="t-name">侨心向党·畲汉同心</td><td><span class="badge blue">海外华校</span></td><td class="t-num">20</td><td>6</td><td>12 件</td><td>12,000</td><td><span class="badge green">已发布</span></td><td><span class="link-btn">编辑</span><span class="link-btn">章节</span><span class="link-btn">素材包</span></td></tr>
+            <tr class="table-empty" style="display:none"><td colspan="8">未找到匹配的课程</td></tr>
           </tbody>
         </table>
       </div>
     </section>
 
-    <!-- 研学路线管理 -->
+    <!-- ===================== 研学路线管理 ===================== -->
     <section id="routes" class="admin-section" hidden>
       <div class="page-head">
         <div class="page-title">研学路线管理</div>
-        <div class="page-sub">研学路线的发布、报名与站点维护</div>
+        <div class="page-sub">研学线路发布、点位维护与报名统计 · 覆盖丽水九县市区 + 市级共 10 条线路</div>
       </div>
-      <div class="panel" style="padding:0;overflow:hidden">
-        <table class="data-table">
-          <thead><tr><th>路线名称</th><th>学段</th><th>时长</th><th>站点数</th><th>报名人数</th><th>状态</th><th>操作</th></tr></thead>
-          <tbody>
-            <tr><td>浙西南革命根据地寻访之旅</td><td>初中/高中</td><td>2天1夜</td><td>6</td><td>1,240</td><td><span class="badge green">报名中</span></td><td><span class="link-btn">查看</span><span class="link-btn">编辑</span></td></tr>
-            <tr><td>红船起航·嘉兴南湖初心之旅</td><td>高中/大学</td><td>1天</td><td>4</td><td>2,310</td><td><span class="badge green">报名中</span></td><td><span class="link-btn">查看</span><span class="link-btn">编辑</span></td></tr>
-            <tr><td>丽水红色足迹研学</td><td>小学/初中</td><td>1天</td><td>5</td><td>3,560</td><td><span class="badge green">报名中</span></td><td><span class="link-btn">查看</span><span class="link-btn">编辑</span></td></tr>
-            <tr><td>青田侨乡文化寻根</td><td>海外华校</td><td>3天2夜</td><td>8</td><td>420</td><td><span class="badge green">报名中</span></td><td><span class="link-btn">查看</span><span class="link-btn">编辑</span></td></tr>
-            <tr><td>龙泉宝剑与革命精神</td><td>初中</td><td>1天</td><td>4</td><td>980</td><td><span class="badge green">报名中</span></td><td><span class="link-btn">查看</span><span class="link-btn">编辑</span></td></tr>
-            <tr><td>松阳古村落里的党史</td><td>小学/初中</td><td>2天1夜</td><td>6</td><td>1,150</td><td><span class="badge green">报名中</span></td><td><span class="link-btn">查看</span><span class="link-btn">编辑</span></td></tr>
-            <tr><td>缙云抗战遗址追忆</td><td>高中</td><td>1天</td><td>5</td><td>760</td><td><span class="badge gold">筹备中</span></td><td><span class="link-btn">查看</span><span class="link-btn">编辑</span></td></tr>
-            <tr><td>遂昌汤显祖文化研学</td><td>小学/初中</td><td>2天1夜</td><td>7</td><td>1,020</td><td><span class="badge green">报名中</span></td><td><span class="link-btn">查看</span><span class="link-btn">编辑</span></td></tr>
-          </tbody>
-        </table>
+
+      <div class="tabs">
+        <button class="tab active" data-tab="route-list">线路管理</button>
+        <button class="tab" data-tab="sites">点位管理</button>
+      </div>
+
+      <div class="tab-pane" data-pane="route-list">
+        <div class="toolbar">
+          <input type="text" data-filter="#routeTable" placeholder="搜索线路名称 / 区域...">
+          <select><option>全部区域</option><option>丽水市本级</option><option>莲都区</option><option>龙泉市</option><option>青田县</option><option>云和县</option><option>庆元县</option><option>缙云县</option><option>遂昌县</option><option>松阳县</option><option>景宁畲族自治县</option></select>
+          <div class="spacer"></div>
+          <button class="btn ghost" data-act="export">导出线路</button>
+          <button class="btn" data-act="new-route">＋ 新建线路</button>
+        </div>
+        <div class="panel table-wrap">
+          <table class="data-table" id="routeTable">
+            <thead><tr><th>线路名称</th><th>区域</th><th>时长</th><th>点位数</th><th>报名人数</th><th>状态</th><th>操作</th></tr></thead>
+            <tbody>
+              <tr><td class="t-name">浙西南革命精神寻根之旅</td><td>丽水市本级</td><td>1天</td><td class="t-num">4</td><td>2,360</td><td><span class="badge green">报名中</span></td><td><span class="link-btn">查看</span><span class="link-btn">编辑</span><span class="link-btn muted">下架</span></td></tr>
+              <tr><td class="t-name">寻访红色印记 · 丹霞研学之旅</td><td>莲都区</td><td>1天</td><td class="t-num">4</td><td>1,840</td><td><span class="badge green">报名中</span></td><td><span class="link-btn">查看</span><span class="link-btn">编辑</span><span class="link-btn muted">下架</span></td></tr>
+              <tr><td class="t-name">品剑风瓷韵 · 寻红色根脉</td><td>龙泉市</td><td>2天1夜</td><td class="t-num">5</td><td>1,520</td><td><span class="badge green">报名中</span></td><td><span class="link-btn">查看</span><span class="link-btn">编辑</span><span class="link-btn muted">下架</span></td></tr>
+              <tr><td class="t-name">初心路立根之旅 · 侨心向党</td><td>青田县</td><td>2天1夜</td><td class="t-num">4</td><td>980</td><td><span class="badge green">报名中</span></td><td><span class="link-btn">查看</span><span class="link-btn">编辑</span><span class="link-btn muted">下架</span></td></tr>
+              <tr><td class="t-name">浙西南第一块革命根据地之旅</td><td>云和县</td><td>2天1夜</td><td class="t-num">5</td><td>1,310</td><td><span class="badge green">报名中</span></td><td><span class="link-btn">查看</span><span class="link-btn">编辑</span><span class="link-btn muted">下架</span></td></tr>
+              <tr><td class="t-name">红色斋郎 · 百山祖国防教育之旅</td><td>庆元县</td><td>2天1夜</td><td class="t-num">4</td><td>760</td><td><span class="badge gold">筹备中</span></td><td><span class="link-btn">查看</span><span class="link-btn">编辑</span><span class="link-btn muted">下架</span></td></tr>
+              <tr><td class="t-name">星火缙云 · 寻访中共处属特委</td><td>缙云县</td><td>2天1夜</td><td class="t-num">4</td><td>1,150</td><td><span class="badge green">报名中</span></td><td><span class="link-btn">查看</span><span class="link-btn">编辑</span><span class="link-btn muted">下架</span></td></tr>
+              <tr><td class="t-name">逛红色古镇 · 探千年金窟</td><td>遂昌县</td><td>2天1夜</td><td class="t-num">5</td><td>2,740</td><td><span class="badge green">报名中</span></td><td><span class="link-btn">查看</span><span class="link-btn">编辑</span><span class="link-btn muted">下架</span></td></tr>
+              <tr><td class="t-name">挺进师之旅 · 寻革命足迹</td><td>松阳县</td><td>3天2夜</td><td class="t-num">6</td><td>1,020</td><td><span class="badge green">报名中</span></td><td><span class="link-btn">查看</span><span class="link-btn">编辑</span><span class="link-btn muted">下架</span></td></tr>
+              <tr><td class="t-name">忠勇畲乡红色研学之旅</td><td>景宁畲族自治县</td><td>2天1夜</td><td class="t-num">4</td><td>640</td><td><span class="badge green">报名中</span></td><td><span class="link-btn">查看</span><span class="link-btn">编辑</span><span class="link-btn muted">下架</span></td></tr>
+              <tr class="table-empty" style="display:none"><td colspan="7">未找到匹配的线路</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="tab-pane" data-pane="sites" hidden>
+        <div class="toolbar">
+          <input type="text" data-filter="#siteTable" placeholder="搜索点位名称 / 所属线路 / 地址...">
+          <select><option>全部类型</option><option>旧址遗址</option><option>纪念场馆</option><option>烈士陵园</option><option>名人故居</option></select>
+          <div class="spacer"></div>
+          <button class="btn ghost" data-act="export">导出点位</button>
+          <button class="btn" data-act="new-site">＋ 新增点位</button>
+        </div>
+        <div class="panel table-wrap">
+          <table class="data-table" id="siteTable">
+            <thead><tr><th>点位名称</th><th>所属线路</th><th>地址</th><th>研学时长</th><th>开放时间</th><th>状态</th><th>操作</th></tr></thead>
+            <tbody>
+              <tr><td class="t-name">大柘泉湖寺（中共遂昌支部旧址）</td><td>逛红色古镇 · 探千年金窟</td><td>遂昌县大柘镇</td><td>60 分钟</td><td>09:00-17:00</td><td><span class="badge green">已上架</span></td><td><span class="link-btn">编辑</span><span class="link-btn muted">下架</span></td></tr>
+              <tr><td class="t-name">王村口红色古镇（挺进师师部旧址）</td><td>逛红色古镇 · 探千年金窟</td><td>遂昌县王村口镇</td><td>120 分钟</td><td>08:30-17:30</td><td><span class="badge green">已上架</span></td><td><span class="link-btn">编辑</span><span class="link-btn muted">下架</span></td></tr>
+              <tr><td class="t-name">斋郎战斗遗址群</td><td>红色斋郎 · 百山祖国防教育之旅</td><td>庆元县百山祖镇斋郎村</td><td>90 分钟</td><td>全天开放</td><td><span class="badge gold">待完善</span></td><td><span class="link-btn">编辑</span><span class="link-btn muted">下架</span></td></tr>
+              <tr><td class="t-name">安岱后（浙西南革命根据地领导机关旧址群）</td><td>挺进师之旅 · 寻革命足迹</td><td>松阳县安民乡安岱后村</td><td>120 分钟</td><td>08:30-17:00</td><td><span class="badge green">已上架</span></td><td><span class="link-btn">编辑</span><span class="link-btn muted">下架</span></td></tr>
+              <tr><td class="t-name">住龙红色小镇（中共浙西南特委驻地）</td><td>品剑风瓷韵 · 寻红色根脉</td><td>龙泉市住龙镇</td><td>90 分钟</td><td>09:00-17:00</td><td><span class="badge green">已上架</span></td><td><span class="link-btn">编辑</span><span class="link-btn muted">下架</span></td></tr>
+              <tr><td class="t-name">大张坑红色畲寨</td><td>忠勇畲乡红色研学之旅</td><td>景宁县大均乡大张坑村</td><td>60 分钟</td><td>09:00-16:30</td><td><span class="badge gold">待完善</span></td><td><span class="link-btn">编辑</span><span class="link-btn muted">下架</span></td></tr>
+              <tr><td class="t-name">吴畲村红军村（中共吴畲区委旧址）</td><td>初心路立根之旅 · 侨心向党</td><td>青田县祯旺乡吴畲村</td><td>75 分钟</td><td>09:00-16:00</td><td><span class="badge green">已上架</span></td><td><span class="link-btn">编辑</span><span class="link-btn muted">下架</span></td></tr>
+              <tr><td class="t-name">小顺爱国主义教育基地</td><td>浙西南第一块革命根据地之旅</td><td>云和县石塘镇小顺村</td><td>90 分钟</td><td>08:30-17:00</td><td><span class="badge green">已上架</span></td><td><span class="link-btn">编辑</span><span class="link-btn muted">下架</span></td></tr>
+              <tr><td class="t-name">壶镇燕翼小学（中共缙云县第一次代表大会旧址）</td><td>星火缙云 · 寻访中共处属特委</td><td>缙云县壶镇镇</td><td>60 分钟</td><td>09:00-16:30</td><td><span class="badge green">已上架</span></td><td><span class="link-btn">编辑</span><span class="link-btn muted">下架</span></td></tr>
+              <tr class="table-empty" style="display:none"><td colspan="7">未找到匹配的点位</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </section>
 
-    <!-- 用户与权限 -->
-    <section id="users" class="admin-section" hidden>
+    <!-- ===================== 智能问答管理 ===================== -->
+    <section id="qa" class="admin-section" hidden>
       <div class="page-head">
-        <div class="page-title">用户与权限</div>
-        <div class="page-sub">账号、角色与部门管理</div>
+        <div class="page-title">智能问答管理</div>
+        <div class="page-sub">问答日志、未命中问题与召回策略配置 · 支撑前台「智能问答」</div>
       </div>
-      <div class="toolbar">
-        <input type="text" placeholder="搜索用户名 / 姓名...">
-        <select><option>全部角色</option><option>超级管理员</option><option>内容编辑</option><option>审核员</option><option>普通访客</option></select>
-        <div class="spacer"></div>
-        <button class="btn">＋ 新增用户</button>
+
+      <div class="kpi-row">
+        <div class="kpi-card"><div class="kpi-top"><span class="kpi-icon">💬</span><span class="kpi-trend">+12.6%</span></div><div class="kpi-value">8,642<span class="unit">次</span></div><div class="kpi-label">累计提问</div></div>
+        <div class="kpi-card"><div class="kpi-top"><span class="kpi-icon">✅</span></div><div class="kpi-value">91.4<span class="unit">%</span></div><div class="kpi-label">回答命中率</div></div>
+        <div class="kpi-card"><div class="kpi-top"><span class="kpi-icon">⚠️</span></div><div class="kpi-value">12<span class="unit">条</span></div><div class="kpi-label">未命中待处理</div></div>
+        <div class="kpi-card"><div class="kpi-top"><span class="kpi-icon">⏱️</span></div><div class="kpi-value">1.8<span class="unit">秒</span></div><div class="kpi-label">平均响应耗时</div></div>
       </div>
-      <div class="panel" style="padding:0;overflow:hidden">
-        <table class="data-table">
-          <thead><tr><th>用户名</th><th>姓名</th><th>角色</th><th>部门</th><th>最后登录</th><th>状态</th><th>操作</th></tr></thead>
-          <tbody>
-            <tr><td>admin</td><td>系统管理员</td><td><span class="badge red">超级管理员</span></td><td>信息中心</td><td>2026-05-23 09:12</td><td><span class="badge green">正常</span></td><td><span class="link-btn">编辑</span></td></tr>
-            <tr><td>editor_li</td><td>李编辑</td><td><span class="badge blue">内容编辑</span></td><td>编研部</td><td>2026-05-22 16:40</td><td><span class="badge green">正常</span></td><td><span class="link-btn">编辑</span></td></tr>
-            <tr><td>reviewer_w</td><td>王审核</td><td><span class="badge gold">审核员</span></td><td>保管部</td><td>2026-05-21 11:05</td><td><span class="badge green">正常</span></td><td><span class="link-btn">编辑</span></td></tr>
-            <tr><td>editor_zhao</td><td>赵编辑</td><td><span class="badge blue">内容编辑</span></td><td>编研部</td><td>2026-05-20 14:22</td><td><span class="badge green">正常</span></td><td><span class="link-btn">编辑</span></td></tr>
-            <tr><td>visitor_01</td><td>访客用户</td><td><span class="badge">普通访客</span></td><td>—</td><td>2026-05-18 20:11</td><td><span class="badge red">已禁用</span></td><td><span class="link-btn">启用</span></td></tr>
-            <tr><td>reviewer_sun</td><td>孙审核</td><td><span class="badge gold">审核员</span></td><td>利用部</td><td>2026-05-22 09:48</td><td><span class="badge green">正常</span></td><td><span class="link-btn">编辑</span></td></tr>
-          </tbody>
-        </table>
+
+      <div class="tabs">
+        <button class="tab active" data-tab="qalog">问答日志</button>
+        <button class="tab" data-tab="qamiss">未命中问题</button>
+        <button class="tab" data-tab="qacfg">召回策略</button>
+      </div>
+
+      <div class="tab-pane" data-pane="qalog">
+        <div class="toolbar">
+          <input type="text" data-filter="#qaTable" placeholder="搜索提问内容 / 用户...">
+          <select><option>全部状态</option><option>已答复</option><option>未命中</option><option>已转人工</option></select>
+          <div class="spacer"></div>
+          <button class="btn ghost" data-act="export">导出日志</button>
+        </div>
+        <div class="panel table-wrap">
+          <table class="data-table" id="qaTable">
+            <thead><tr><th>时间</th><th>用户</th><th>提问内容</th><th>命中知识库</th><th>置信度</th><th>耗时</th><th>状态</th></tr></thead>
+            <tbody>
+              <tr><td>09-14 15:42</td><td>访客 8***21</td><td>挺进师是什么时候进入浙西南的？</td><td>红色革命事件</td><td>96%</td><td>1.4s</td><td><span class="badge green">已答复</span></td></tr>
+              <tr><td>09-14 15:38</td><td>访客 1***07</td><td>潘香凤烈士的生平事迹</td><td>革命英烈群体</td><td>94%</td><td>1.6s</td><td><span class="badge green">已答复</span></td></tr>
+              <tr><td>09-14 15:30</td><td>用户 李老师</td><td>万山交通总站具体负责哪条线路？</td><td>红色设施</td><td>89%</td><td>2.1s</td><td><span class="badge green">已答复</span></td></tr>
+              <tr><td>09-14 15:21</td><td>访客 6***88</td><td>青田华侨在抗战中有哪些贡献</td><td>华侨红色相关史料</td><td>92%</td><td>1.9s</td><td><span class="badge green">已答复</span></td></tr>
+              <tr><td>09-14 15:04</td><td>访客 3***45</td><td>今天的天气怎么样</td><td>—</td><td>12%</td><td>1.2s</td><td><span class="badge red">未命中</span></td></tr>
+              <tr><td>09-14 14:52</td><td>用户 王同学</td><td>中共遂昌支部是哪一年成立的</td><td>地方党组织史料</td><td>98%</td><td>1.3s</td><td><span class="badge green">已答复</span></td></tr>
+              <tr><td>09-14 14:40</td><td>访客 9***03</td><td>畲族红色歌谣有哪些代表作</td><td>畲族红色文化</td><td>87%</td><td>2.3s</td><td><span class="badge green">已答复</span></td></tr>
+              <tr><td>09-14 14:26</td><td>访客 2***19</td><td>帮我写一份研学报告</td><td>—</td><td>18%</td><td>1.5s</td><td><span class="badge gold">已转人工</span></td></tr>
+              <tr class="table-empty" style="display:none"><td colspan="7">未找到匹配的日志</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="tab-pane" data-pane="qamiss" hidden>
+        <div class="hint-bar">
+          <span>💡</span>
+          <div>未命中问题表示知识库中暂无匹配内容。可 <b>加入语料</b>（转为待编研任务）或 <b>转人工</b> 答复；属于站外无关提问的可直接忽略。</div>
+        </div>
+        <div class="panel table-wrap">
+          <table class="data-table">
+            <thead><tr><th>提问内容</th><th>出现频次</th><th>首次出现</th><th>最近出现</th><th>操作</th></tr></thead>
+            <tbody>
+              <tr><td class="t-name">挺进师在丽水打过哪些主要战役</td><td class="t-num">9</td><td>2026-09-02</td><td>2026-09-14</td><td><span class="link-btn">加入语料</span><span class="link-btn">转人工</span><span class="link-btn muted">忽略</span></td></tr>
+              <tr><td class="t-name">刘英在浙西南牺牲的具体地点</td><td class="t-num">7</td><td>2026-09-05</td><td>2026-09-13</td><td><span class="link-btn">加入语料</span><span class="link-btn">转人工</span><span class="link-btn muted">忽略</span></td></tr>
+              <tr><td class="t-name">浙西南革命根据地纪念馆开放时间</td><td class="t-num">6</td><td>2026-09-06</td><td>2026-09-14</td><td><span class="link-btn">加入语料</span><span class="link-btn">转人工</span><span class="link-btn muted">忽略</span></td></tr>
+              <tr><td class="t-name">华侨抗战募捐的具体数额</td><td class="t-num">4</td><td>2026-09-08</td><td>2026-09-12</td><td><span class="link-btn">加入语料</span><span class="link-btn">转人工</span><span class="link-btn muted">忽略</span></td></tr>
+              <tr><td class="t-name">求推荐丽水两天研学路线</td><td class="t-num">3</td><td>2026-09-10</td><td>2026-09-13</td><td><span class="link-btn">加入语料</span><span class="link-btn">转人工</span><span class="link-btn muted">忽略</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="tab-pane" data-pane="qacfg" hidden>
+        <div class="panel">
+          <div class="panel-title">召回策略</div>
+          <div class="form-row">
+            <div class="form-label">默认召回条数</div>
+            <input type="number" value="5" min="1" max="20">
+            <span class="form-tip">每次提问从知识库召回的档案条目数量</span>
+          </div>
+          <div class="form-row">
+            <div class="form-label">相似度阈值</div>
+            <input type="number" value="0.72" step="0.01" min="0" max="1">
+            <span class="form-tip">低于该阈值判定为未命中</span>
+          </div>
+          <div class="form-row">
+            <div class="form-label">回答引用来源</div>
+            <span class="switch"><input type="checkbox" checked style="flex:none"> 在回答中展示所引用的档案名称与来源</span>
+          </div>
+          <div class="form-row">
+            <div class="form-label">启用黑名单过滤</div>
+            <span class="switch"><input type="checkbox" checked style="flex:none"> 召回阶段按黑名单词库过滤（在「黑名单管理」中维护）</span>
+          </div>
+          <div class="form-row" style="align-items:flex-start">
+            <div class="form-label" style="padding-top:9px">参与召回的知识库</div>
+            <div class="check-grid">
+              <label><input type="checkbox" checked> 党史办红立方</label>
+              <label><input type="checkbox" checked> 档案馆编研</label>
+              <label><input type="checkbox" checked> 各县市区编研书籍</label>
+              <label><input type="checkbox" checked> 地方党组织史料</label>
+              <label><input type="checkbox" checked> 刘英·粟裕史料</label>
+              <label><input type="checkbox" checked> 革命英烈群体</label>
+              <label><input type="checkbox" checked> 红色革命事件</label>
+              <label><input type="checkbox" checked> 红色设施</label>
+              <label><input type="checkbox" checked> 红色文物文献资料</label>
+              <label><input type="checkbox" checked> 红色回忆与研究活动</label>
+              <label><input type="checkbox" checked> 畲族红色文化</label>
+              <label><input type="checkbox" checked> 华侨红色相关史料</label>
+            </div>
+          </div>
+          <div style="margin-top:18px"><button class="btn" data-act="save">保存设置</button></div>
+        </div>
       </div>
     </section>
 
-    <!-- 系统设置 -->
+    <!-- ===================== 黑名单管理 ===================== -->
     <section id="blacklist" class="admin-section" hidden>
       <div class="page-head">
         <div class="page-title">黑名单管理</div>
         <div class="page-sub">维护问答召回过滤词库：添加到黑名单的词汇不会在智能问答中召回</div>
       </div>
-      
-      <!-- 添加黑名单 -->
+
       <div class="panel" style="margin-bottom: 18px;">
         <div class="panel-title">添加黑名单词汇</div>
         <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
-          <input type="text" id="blInput" placeholder="输入要屏蔽的词汇或短语（支持中英文，最多 50 字）..." style="flex:1;min-width:240px;border:1px solid rgba(166,44,44,0.16);border-radius:10px;padding:10px 14px;font-size:14px;font-family:inherit;color:var(--text-primary);outline:none">
-          <select id="blLevel" style="border:1px solid rgba(166,44,44,0.16);border-radius:10px;padding:10px 14px;font-size:14px;font-family:inherit;color:var(--text-primary);background:#fff;cursor:pointer">
+          <input type="text" id="blInput" class="inline-input" placeholder="输入要屏蔽的词汇或短语（支持中英文，最多 50 字）..." style="flex:1;min-width:240px">
+          <select id="blLevel" class="inline-input" style="background:#fff;cursor:pointer">
             <option value="high">高 - 严格召回过滤</option>
             <option value="medium" selected>中 - 常规召回过滤</option>
             <option value="low">低 - 仅在明确命中时过滤</option>
           </select>
-          <select id="blScope" style="border:1px solid rgba(166,44,44,0.16);border-radius:10px;padding:10px 14px;font-size:14px;font-family:inherit;color:var(--text-primary);background:#fff;cursor:pointer">
+          <select id="blScope" class="inline-input" style="background:#fff;cursor:pointer">
             <option value="all">全部知识库</option>
-            <option value="red">红色记忆</option>
-            <option value="people">人物传记</option>
-            <option value="event">历史事件</option>
-            <option value="build">地方建设</option>
-            <option value="org">组织机构</option>
-            <option value="culture">文化民俗</option>
-            <option value="topic">专题库</option>
+            <option value="kb1">党史办红立方</option>
+            <option value="kb2">档案馆编研</option>
+            <option value="kb3">各县市区编研书籍</option>
+            <option value="kb4">地方党组织史料</option>
+            <option value="kb5">刘英·粟裕史料</option>
+            <option value="kb6">革命英烈群体</option>
+            <option value="kb7">红色革命事件</option>
+            <option value="kb8">红色设施</option>
+            <option value="kb9">红色文物文献资料</option>
+            <option value="kb10">红色回忆与研究活动</option>
+            <option value="kb11">畲族红色文化</option>
+            <option value="kb12">华侨红色相关史料</option>
           </select>
           <button class="btn" id="blAdd">＋ 添加黑名单</button>
         </div>
         <div style="margin-top:10px;font-size:12px;color:var(--text-muted)">提示：黑名单词汇将在智能问答召回阶段被自动过滤，不影响档案资源浏览与展示。</div>
       </div>
 
-      <!-- 统计与搜索 -->
       <div class="panel" style="margin-bottom: 18px;">
         <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px">
-          <div style="padding:14px;background:rgba(166,44,44,0.06);border-radius:10px">
-            <div style="font-size:12px;color:var(--text-muted);margin-bottom:6px">黑名单总数</div>
-            <div style="font-size:24px;font-weight:600;color:var(--accent-red)" id="blTotal">0</div>
+          <div class="sum-item">
+            <div class="sum-label">黑名单总数</div>
+            <div class="sum-num" id="blTotal">0</div>
           </div>
-          <div style="padding:14px;background:rgba(166,44,44,0.06);border-radius:10px">
-            <div style="font-size:12px;color:var(--text-muted);margin-bottom:6px">高优先级</div>
-            <div style="font-size:24px;font-weight:600;color:var(--accent-red)" id="blHigh">0</div>
+          <div class="sum-item">
+            <div class="sum-label">高优先级</div>
+            <div class="sum-num" id="blHigh">0</div>
           </div>
-          <div style="padding:14px;background:rgba(166,44,44,0.06);border-radius:10px">
-            <div style="font-size:12px;color:var(--text-muted);margin-bottom:6px">中优先级</div>
-            <div style="font-size:24px;font-weight:600;color:var(--accent-red)" id="blMedium">0</div>
+          <div class="sum-item">
+            <div class="sum-label">中优先级</div>
+            <div class="sum-num" id="blMedium">0</div>
           </div>
-          <div style="padding:14px;background:rgba(166,44,44,0.06);border-radius:10px">
-            <div style="font-size:12px;color:var(--text-muted);margin-bottom:6px">本周新增</div>
-            <div style="font-size:24px;font-weight:600;color:var(--accent-red)" id="blWeek">0</div>
+          <div class="sum-item">
+            <div class="sum-label">本周新增</div>
+            <div class="sum-num" id="blWeek">0</div>
           </div>
         </div>
         <div class="toolbar">
@@ -556,21 +892,19 @@
           <select id="blFilterScope">
             <option value="">全部范围</option>
             <option value="all">全部知识库</option>
-            <option value="red">红色记忆</option>
-            <option value="people">人物传记</option>
-            <option value="event">历史事件</option>
-            <option value="build">地方建设</option>
-            <option value="org">组织机构</option>
-            <option value="culture">文化民俗</option>
-            <option value="topic">专题库</option>
+            <option value="kb1">党史办红立方</option>
+            <option value="kb4">地方党组织史料</option>
+            <option value="kb7">红色革命事件</option>
+            <option value="kb9">红色文物文献资料</option>
+            <option value="kb11">畲族红色文化</option>
+            <option value="kb12">华侨红色相关史料</option>
           </select>
           <div class="spacer"></div>
           <button class="btn ghost" id="blExport">导出词表</button>
         </div>
       </div>
 
-      <!-- 黑名单列表 -->
-      <div class="panel" style="padding:0;overflow:hidden">
+      <div class="panel table-wrap">
         <table class="data-table">
           <thead><tr><th style="width:24%">词汇</th><th style="width:10%">等级</th><th style="width:14%">生效范围</th><th style="width:12%">添加人</th><th style="width:14%">添加时间</th><th style="width:10%">命中次数</th><th style="width:16%">操作</th></tr></thead>
           <tbody id="blTableBody"></tbody>
@@ -578,260 +912,449 @@
       </div>
     </section>
 
+    <!-- ===================== 用户与权限 ===================== -->
+    <section id="users" class="admin-section" hidden>
+      <div class="page-head">
+        <div class="page-title">用户与权限</div>
+        <div class="page-sub">账号、角色与部门管理</div>
+      </div>
+
+      <div class="tabs">
+        <button class="tab active" data-tab="user-list">用户列表</button>
+        <button class="tab" data-tab="roles">角色权限</button>
+      </div>
+
+      <div class="tab-pane" data-pane="user-list">
+        <div class="toolbar">
+          <input type="text" data-filter="#userTable" placeholder="搜索用户名 / 姓名 / 部门...">
+          <select><option>全部角色</option><option>超级管理员</option><option>内容编辑</option><option>审核员</option><option>普通访客</option></select>
+          <div class="spacer"></div>
+          <button class="btn ghost" data-act="export">导出用户</button>
+          <button class="btn" data-act="new-user">＋ 新增用户</button>
+        </div>
+        <div class="panel table-wrap">
+          <table class="data-table" id="userTable">
+            <thead><tr><th>用户名</th><th>姓名</th><th>角色</th><th>部门</th><th>最后登录</th><th>状态</th><th>操作</th></tr></thead>
+            <tbody>
+              <tr><td class="t-name">admin</td><td>系统管理员</td><td><span class="badge red">超级管理员</span></td><td>信息中心</td><td>2026-09-14 09:12</td><td><span class="badge green">正常</span></td><td><span class="link-btn">编辑</span><span class="link-btn muted">重置密码</span></td></tr>
+              <tr><td class="t-name">editor_li</td><td>李编辑</td><td><span class="badge blue">内容编辑</span></td><td>编研部</td><td>2026-09-13 16:40</td><td><span class="badge green">正常</span></td><td><span class="link-btn">编辑</span><span class="link-btn muted">重置密码</span></td></tr>
+              <tr><td class="t-name">reviewer_w</td><td>王审核</td><td><span class="badge gold">审核员</span></td><td>保管部</td><td>2026-09-13 11:05</td><td><span class="badge green">正常</span></td><td><span class="link-btn">编辑</span><span class="link-btn muted">重置密码</span></td></tr>
+              <tr><td class="t-name">editor_zhao</td><td>赵编辑</td><td><span class="badge blue">内容编辑</span></td><td>编研部</td><td>2026-09-12 14:22</td><td><span class="badge green">正常</span></td><td><span class="link-btn">编辑</span><span class="link-btn muted">重置密码</span></td></tr>
+              <tr><td class="t-name">reviewer_sun</td><td>孙审核</td><td><span class="badge gold">审核员</span></td><td>利用部</td><td>2026-09-12 09:48</td><td><span class="badge green">正常</span></td><td><span class="link-btn">编辑</span><span class="link-btn muted">重置密码</span></td></tr>
+              <tr><td class="t-name">curator_chen</td><td>陈策展</td><td><span class="badge blue">内容编辑</span></td><td>展陈部</td><td>2026-09-11 15:30</td><td><span class="badge green">正常</span></td><td><span class="link-btn">编辑</span><span class="link-btn muted">重置密码</span></td></tr>
+              <tr><td class="t-name">visitor_01</td><td>访客用户</td><td><span class="badge gray">普通访客</span></td><td>—</td><td>2026-08-18 20:11</td><td><span class="badge red">已禁用</span></td><td><span class="link-btn">启用</span><span class="link-btn muted">重置密码</span></td></tr>
+              <tr class="table-empty" style="display:none"><td colspan="7">未找到匹配的用户</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="tab-pane" data-pane="roles" hidden>
+        <div class="panel table-wrap">
+          <table class="data-table">
+            <thead><tr><th>角色名称</th><th>成员数</th><th>权限范围</th><th>操作</th></tr></thead>
+            <tbody>
+              <tr><td class="t-name">超级管理员</td><td class="t-num">1</td><td>全部模块 · 含用户与系统设置</td><td><span class="link-btn">编辑权限</span></td></tr>
+              <tr><td class="t-name">内容编辑</td><td class="t-num">3</td><td>档案资源 · 知识图谱 · 思政课程 · 研学路线</td><td><span class="link-btn">编辑权限</span></td></tr>
+              <tr><td class="t-name">审核员</td><td class="t-num">2</td><td>档案条目审核 · 课程发布审核</td><td><span class="link-btn">编辑权限</span></td></tr>
+              <tr><td class="t-name">问答运营</td><td class="t-num">1</td><td>智能问答 · 黑名单 · 语料维护</td><td><span class="link-btn">编辑权限</span></td></tr>
+              <tr><td class="t-name">普通访客</td><td class="t-num">1,279</td><td>前台浏览 · 收藏 · 提问</td><td><span class="link-btn">编辑权限</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== 操作日志 ===================== -->
+    <section id="logs" class="admin-section" hidden>
+      <div class="page-head">
+        <div class="page-title">操作日志</div>
+        <div class="page-sub">记录后台的关键操作，便于追溯与审计</div>
+      </div>
+
+      <div class="toolbar">
+        <input type="text" data-filter="#logTable" placeholder="搜索操作人 / 模块 / 操作内容...">
+        <select><option>全部模块</option><option>档案资源</option><option>知识图谱</option><option>数字思政</option><option>研学路线</option><option>智能问答</option><option>用户权限</option></select>
+        <select><option>全部结果</option><option>成功</option><option>失败</option></select>
+        <div class="spacer"></div>
+        <button class="btn ghost" data-act="export">导出日志</button>
+      </div>
+      <div class="panel table-wrap">
+        <table class="data-table" id="logTable">
+          <thead><tr><th>时间</th><th>操作人</th><th>模块</th><th>操作内容</th><th>IP</th><th>结果</th></tr></thead>
+          <tbody>
+            <tr><td>2026-09-14 15:48</td><td>李编辑</td><td>档案资源</td><td>新增档案条目《金岭红色秘密交通线史料》</td><td>10.12.*.36</td><td><span class="badge green">成功</span></td></tr>
+            <tr><td>2026-09-14 15:20</td><td>王审核</td><td>档案资源</td><td>审核通过《斋郎战斗史料汇编》</td><td>10.12.*.41</td><td><span class="badge green">成功</span></td></tr>
+            <tr><td>2026-09-14 14:55</td><td>系统管理员</td><td>智能问答</td><td>修改召回策略：相似度阈值 0.70 → 0.72</td><td>10.12.*.8</td><td><span class="badge green">成功</span></td></tr>
+            <tr><td>2026-09-14 14:20</td><td>陈策展</td><td>数字思政</td><td>更新课程《看不见的战线》档案素材包</td><td>10.12.*.27</td><td><span class="badge green">成功</span></td></tr>
+            <tr><td>2026-09-14 11:36</td><td>赵编辑</td><td>研学路线</td><td>下架点位「大漈乡红军洞遗址」</td><td>10.12.*.33</td><td><span class="badge green">成功</span></td></tr>
+            <tr><td>2026-09-14 10:12</td><td>孙审核</td><td>知识图谱</td><td>触发「革命英烈群体」图谱重新训练</td><td>10.12.*.45</td><td><span class="badge gold">训练中</span></td></tr>
+            <tr><td>2026-09-13 17:02</td><td>系统管理员</td><td>用户权限</td><td>禁用账号 visitor_01</td><td>10.12.*.8</td><td><span class="badge green">成功</span></td></tr>
+            <tr><td>2026-09-13 16:41</td><td>李编辑</td><td>档案资源</td><td>批量导入档案 12 条</td><td>10.12.*.36</td><td><span class="badge green">成功</span></td></tr>
+            <tr><td>2026-09-13 15:28</td><td>赵编辑</td><td>数字思政</td><td>发布课程《侨心向党 · 畲汉同心》</td><td>10.12.*.33</td><td><span class="badge red">失败</span></td></tr>
+            <tr class="table-empty" style="display:none"><td colspan="6">未找到匹配的日志</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ===================== 系统设置 ===================== -->
+    <section id="settings" class="admin-section" hidden>
+      <div class="page-head">
+        <div class="page-title">系统设置</div>
+        <div class="page-sub">站点基础信息、前台导航与数据备份</div>
+      </div>
+
+      <div class="panel mb">
+        <div class="panel-title">站点信息</div>
+        <div class="form-row">
+          <div class="form-label">站点名称<span class="req">*</span></div>
+          <input type="text" value="万象未来">
+        </div>
+        <div class="form-row">
+          <div class="form-label">站点副标题</div>
+          <input type="text" value="AI 档案知识空间">
+        </div>
+        <div class="form-row">
+          <div class="form-label">主办单位</div>
+          <input type="text" value="丽水市档案馆">
+        </div>
+        <div class="form-row">
+          <div class="form-label">页脚版权</div>
+          <input type="text" value="让历史可触摸，让档案会说话">
+        </div>
+        <div class="form-row">
+          <div class="form-label">联系邮箱</div>
+          <input type="text" value="service@lishui-archives.example">
+        </div>
+      </div>
+
+      <div class="panel mb">
+        <div class="panel-title">前台导航</div>
+        <div class="form-row" style="align-items:flex-start">
+          <div class="form-label" style="padding-top:9px">显示栏目</div>
+          <div class="check-grid">
+            <label><input type="checkbox" checked> 首页</label>
+            <label><input type="checkbox" checked> 档案资源</label>
+            <label><input type="checkbox" checked> 知识图谱</label>
+            <label><input type="checkbox" checked> 数字思政</label>
+            <label><input type="checkbox" checked> 研学探索</label>
+            <label><input type="checkbox" checked> 智能问答</label>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-label">首页默认栏目</div>
+          <select><option>档案资源</option><option>知识图谱</option><option>数字思政</option><option>研学探索</option></select>
+        </div>
+      </div>
+
+      <div class="panel mb">
+        <div class="panel-title">数据与备份</div>
+        <div class="form-row">
+          <div class="form-label">最近备份</div>
+          <span class="form-tip" style="margin:0">2026-09-14 02:00 自动备份成功（132 条档案 · 12 个知识库）</span>
+        </div>
+        <div class="form-row">
+          <div class="form-label">备份周期</div>
+          <select><option>每日 02:00 自动备份</option><option>每周一 02:00</option><option>仅手动备份</option></select>
+        </div>
+        <div class="form-row">
+          <div class="form-label">开放注册</div>
+          <span class="switch"><input type="checkbox" checked style="flex:none"> 允许访客自助注册账号</span>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">接口配置</div>
+        <div class="form-row">
+          <div class="form-label">智能问答服务</div>
+          <input type="text" value="https://api.example.com/v1/qa" placeholder="问答服务接口地址">
+        </div>
+        <div class="form-row">
+          <div class="form-label">档案解析服务</div>
+          <input type="text" value="https://api.example.com/v1/ocr" placeholder="档案 OCR / 解析接口地址">
+        </div>
+        <div class="form-row" style="align-items:center">
+          <div class="form-label">调用密钥</div>
+          <input type="text" value="****************" readonly style="background:#f7f2ec">
+          <button class="btn ghost sm" data-act="rotate-key" style="flex:none">重置密钥</button>
+        </div>
+      </div>
+
+      <div style="margin-top:20px;display:flex;gap:12px">
+        <button class="btn" data-act="save">保存设置</button>
+        <button class="btn ghost" data-act="backup">立即备份</button>
+      </div>
+    </section>
+
   </main>
 </div>
 
 <script>
-  // 侧边栏切换
-  document.querySelectorAll('.side-item').forEach(function(item) {
-    item.addEventListener('click', function() {
-      document.querySelectorAll('.side-item').forEach(i => i.classList.remove('active'));
-      this.classList.add('active');
-      var target = this.getAttribute('data-target');
-      document.querySelectorAll('.admin-section').forEach(function(s) {
-        s.hidden = (s.id !== target);
+(function () {
+  'use strict';
+
+  /* ---------- 侧边栏切换 ---------- */
+  var sideItems = document.querySelectorAll('.side-item');
+  function activateSection(target) {
+    sideItems.forEach(function (i) { i.classList.toggle('active', i.getAttribute('data-target') === target); });
+    document.querySelectorAll('.admin-section').forEach(function (s) { s.hidden = (s.id !== target); });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (window.__resizeCharts) window.__resizeCharts();
+  }
+  sideItems.forEach(function (item) {
+    item.addEventListener('click', function () { activateSection(this.getAttribute('data-target')); });
+  });
+
+  /* ---------- 待办跳转 ---------- */
+  document.querySelectorAll('.todo-go[data-go]').forEach(function (el) {
+    el.addEventListener('click', function () { activateSection(this.getAttribute('data-go')); });
+  });
+
+  /* ---------- 分区内标签页 ---------- */
+  document.querySelectorAll('.tabs').forEach(function (box) {
+    box.querySelectorAll('.tab').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var key = this.getAttribute('data-tab');
+        var section = this.closest('.admin-section');
+        box.querySelectorAll('.tab').forEach(function (b) { b.classList.remove('active'); });
+        this.classList.add('active');
+        section.querySelectorAll('.tab-pane').forEach(function (p) {
+          p.hidden = (p.getAttribute('data-pane') !== key);
+        });
+        if (window.__resizeCharts) window.__resizeCharts();
       });
     });
   });
 
-  // 表格操作按钮提示
-  document.querySelectorAll('.link-btn').forEach(function(b) {
-    b.addEventListener('click', function() { alert('操作：' + this.textContent + '（演示环境）'); });
+  /* ---------- 表格搜索 ---------- */
+  document.querySelectorAll('[data-filter]').forEach(function (inp) {
+    inp.addEventListener('input', function () {
+      var host = document.querySelector(this.getAttribute('data-filter'));
+      if (!host) return;
+      var q = this.value.trim().toLowerCase();
+      var rows = host.querySelectorAll('tbody tr');
+      var shown = 0;
+      rows.forEach(function (tr) {
+        if (tr.classList.contains('table-empty')) return;
+        var hit = !q || tr.textContent.toLowerCase().indexOf(q) > -1;
+        tr.style.display = hit ? '' : 'none';
+        if (hit) shown++;
+      });
+      var empty = host.querySelector('.table-empty');
+      if (empty) empty.style.display = shown ? 'none' : '';
+    });
   });
-  document.querySelectorAll('.btn').forEach(function(b) {
-    if (b.textContent.indexOf('保存') > -1 || b.textContent.indexOf('上传') > -1 || b.textContent.indexOf('新建') > -1 || b.textContent.indexOf('新增') > -1 || b.textContent.indexOf('导出') > -1 || b.textContent.indexOf('训练') > -1 || b.textContent.indexOf('管理') > -1) {
-      b.addEventListener('click', function() { alert(this.textContent + '（演示环境）'); });
+
+  /* ---------- Toast ---------- */
+  function toast(msg) {
+    var t = document.getElementById('toast');
+    if (!t) {
+      t = document.createElement('div');
+      t.id = 'toast';
+      t.className = 'toast';
+      document.body.appendChild(t);
     }
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(t.__tm);
+    t.__tm = setTimeout(function () { t.classList.remove('show'); }, 2200);
+  }
+  window.__toast = toast;
+
+  /* ---------- 通用操作按钮 ---------- */
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('.link-btn');
+    if (!b) return;
+    if (b.closest('#blTableBody')) return;
+    var act = b.getAttribute('data-act') || b.textContent.trim();
+    var name = b.getAttribute('data-name') || '';
+    if (act === '删除' || act === '下线' || act === '下架' || act === '禁用') {
+      if (confirm('确定要执行「' + act + '」操作吗？' + (name ? '\n对象：' + name : ''))) toast('已执行：' + act);
+      return;
+    }
+    toast('演示环境：' + act + (name ? ' · ' + name : ''));
   });
 
-  // 数据概览图表
-  if (window.echarts) {
-    // 知识库使用数据 - 访问次数/访问人数
-    var kbUsageChart = echarts.init(document.getElementById('kbUsageChart'));
-    kbUsageChart.setOption({
-      color: ['#1677ff', '#faad14'],
-      tooltip: { trigger: 'axis' },
-      legend: { bottom: 0, data: ['访问次数', '访问人数'], textStyle: { color: '#666' } },
-      grid: { left: 40, right: 20, top: 20, bottom: 40 },
-      xAxis: { 
-        type: 'category', 
-        data: ['07-24','07-25','07-26','07-27','07-28','07-29','07-30','07-31','08-01','08-02'],
-        axisLine: { lineStyle: { color: '#e8e8e8' } },
-        axisLabel: { color: '#999', fontSize: 11 }
-      },
-      yAxis: { 
-        type: 'value', 
-        max: 1,
-        splitLine: { lineStyle: { color: '#f0f0f0' } },
-        axisLabel: { color: '#999' }
-      },
-      series: [
-        { name: '访问次数', type: 'line', smooth: true, data: [0,0,0,0,0,0,0,0,0,0] },
-        { name: '访问人数', type: 'line', smooth: true, data: [0,0,0,0,0,0,0,0,0,0] }
-      ]
+  document.querySelectorAll('.btn[data-act]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var a = this.getAttribute('data-act');
+      if (a === 'backup') { toast('已创建数据备份（演示环境）'); return; }
+      if (a === 'save') { toast('设置已保存（演示环境）'); return; }
+      if (a === 'rotate-key') { toast('密钥已重置（演示环境）'); return; }
+      toast('演示环境：' + this.textContent.trim());
     });
+  });
 
-    // 知识数据 - 新增知识数
-    var knowledgeChart = echarts.init(document.getElementById('knowledgeChart'));
-    knowledgeChart.setOption({
-      color: ['#1677ff'],
-      tooltip: { trigger: 'axis' },
-      legend: { bottom: 0, data: ['新增知识数'], textStyle: { color: '#666' } },
-      grid: { left: 40, right: 20, top: 20, bottom: 40 },
-      xAxis: { 
-        type: 'category', 
-        data: ['07-24','07-25','07-26','07-27','07-28','07-29','07-30','07-31','08-01','08-02'],
-        axisLine: { lineStyle: { color: '#e8e8e8' } },
-        axisLabel: { color: '#999', fontSize: 11 }
-      },
-      yAxis: { 
-        type: 'value', 
-        max: 1,
-        splitLine: { lineStyle: { color: '#f0f0f0' } },
-        axisLabel: { color: '#999' }
-      },
-      series: [
-        { name: '新增知识数', type: 'line', smooth: true, data: [0,0,0,0,0,0,0,0,0,0] }
-      ]
-    });
-
-    window.addEventListener('resize', function() { 
-      kbUsageChart.resize(); 
-      knowledgeChart.resize(); 
-    });
-
-    // 时间切换标签
-    document.querySelectorAll('.time-tab').forEach(function(tab) {
-      tab.addEventListener('click', function() {
-        document.querySelectorAll('.time-tab').forEach(t => t.classList.remove('active'));
-        this.classList.add('active');
+  /* ---------- 图表 ---------- */
+  var charts = [];
+  function initCharts() {
+    if (!window.echarts) return;
+    var days = ['09-01','09-02','09-03','09-04','09-05','09-06','09-07','09-08','09-09','09-10','09-11','09-12','09-13','09-14'];
+    var growthEl = document.getElementById('growthChart');
+    if (growthEl) {
+      var gc = echarts.init(growthEl);
+      gc.setOption({
+        color: ['#a62c2c', '#c9a86c'],
+        tooltip: { trigger: 'axis' },
+        legend: { bottom: 0, data: ['档案入库', '知识解析'], textStyle: { color: '#8a7566' } },
+        grid: { left: 44, right: 18, top: 18, bottom: 42 },
+        xAxis: { type: 'category', data: days, axisLine: { lineStyle: { color: '#e6dcd0' } }, axisLabel: { color: '#a08d7c', fontSize: 11 } },
+        yAxis: { type: 'value', splitLine: { lineStyle: { color: '#f0e9e0' } }, axisLabel: { color: '#a08d7c' } },
+        series: [
+          { name: '档案入库', type: 'bar', barWidth: 12, itemStyle: { borderRadius: [4, 4, 0, 0] }, data: [3, 5, 4, 6, 8, 5, 7, 9, 6, 8, 10, 7, 9, 11] },
+          { name: '知识解析', type: 'line', smooth: true, symbolSize: 6, data: [2, 4, 3, 5, 7, 4, 6, 8, 5, 7, 9, 6, 8, 10] }
+        ]
       });
-    });
-
-    // 排行榜标签切换
-    document.querySelectorAll('.ranking-tab').forEach(function(tab) {
-      tab.addEventListener('click', function() {
-        var parent = this.closest('.ranking-tabs');
-        parent.querySelectorAll('.ranking-tab').forEach(t => t.classList.remove('active'));
-        this.classList.add('active');
+      charts.push(gc);
+    }
+    var visitEl = document.getElementById('visitChart');
+    if (visitEl) {
+      var vc = echarts.init(visitEl);
+      vc.setOption({
+        color: ['#a62c2c', '#c9a86c'],
+        tooltip: { trigger: 'axis' },
+        legend: { bottom: 0, data: ['访问次数', '访问人数'], textStyle: { color: '#8a7566' } },
+        grid: { left: 46, right: 18, top: 18, bottom: 42 },
+        xAxis: { type: 'category', data: days, axisLine: { lineStyle: { color: '#e6dcd0' } }, axisLabel: { color: '#a08d7c', fontSize: 11 } },
+        yAxis: { type: 'value', splitLine: { lineStyle: { color: '#f0e9e0' } }, axisLabel: { color: '#a08d7c' } },
+        series: [
+          { name: '访问次数', type: 'line', smooth: true, symbolSize: 6, areaStyle: { opacity: 0.12 }, data: [2860, 3120, 2980, 3460, 3820, 3240, 3680, 4120, 3540, 3960, 4380, 4020, 3640, 3472] },
+          { name: '访问人数', type: 'line', smooth: true, symbolSize: 6, areaStyle: { opacity: 0.12 }, data: [1240, 1380, 1310, 1520, 1660, 1420, 1610, 1820, 1560, 1720, 1930, 1780, 1620, 1540] }
+        ]
       });
+      charts.push(vc);
+    }
+    window.__resizeCharts = function () { charts.forEach(function (c) { c.resize(); }); };
+  }
+  initCharts();
+  window.addEventListener('resize', function () { if (window.__resizeCharts) window.__resizeCharts(); });
+
+  /* ---------- 黑名单管理 ---------- */
+  var scopeMap = { all: '全部知识库', kb1: '党史办红立方', kb2: '档案馆编研', kb3: '各县市区编研书籍', kb4: '地方党组织史料', kb5: '刘英·粟裕史料', kb6: '革命英烈群体', kb7: '红色革命事件', kb8: '红色设施', kb9: '红色文物文献资料', kb10: '红色回忆与研究活动', kb11: '畲族红色文化', kb12: '华侨红色相关史料' };
+  var levelMap = { high: { label: '高', cls: 'red' }, medium: { label: '中', cls: 'gold' }, low: { label: '低', cls: 'blue' } };
+
+  var blData = [
+    { id: 1, word: '色情', level: 'high', scope: 'all', operator: '系统管理员', date: '2026-09-14 09:12', hits: 0 },
+    { id: 2, word: '暴力', level: 'high', scope: 'all', operator: '系统管理员', date: '2026-09-14 09:14', hits: 0 },
+    { id: 3, word: '赌博', level: 'high', scope: 'all', operator: '系统管理员', date: '2026-09-14 09:15', hits: 0 },
+    { id: 4, word: '毒品', level: 'high', scope: 'all', operator: '系统管理员', date: '2026-09-14 09:16', hits: 0 },
+    { id: 5, word: '邪教组织', level: 'high', scope: 'all', operator: '李编辑', date: '2026-09-13 16:40', hits: 2 },
+    { id: 6, word: '谣言', level: 'medium', scope: 'all', operator: '王审核', date: '2026-09-12 11:05', hits: 1 },
+    { id: 7, word: '政治敏感', level: 'high', scope: 'all', operator: '系统管理员', date: '2026-09-11 14:22', hits: 0 },
+    { id: 8, word: '商业广告', level: 'low', scope: 'kb1', operator: '孙审核', date: '2026-09-10 10:30', hits: 3 },
+    { id: 9, word: '刷单', level: 'medium', scope: 'all', operator: '赵编辑', date: '2026-09-09 15:20', hits: 0 },
+    { id: 10, word: '低俗笑话', level: 'medium', scope: 'kb11', operator: '李编辑', date: '2026-09-08 09:45', hits: 1 },
+    { id: 11, word: '恶意词汇', level: 'high', scope: 'all', operator: '系统管理员', date: '2026-09-07 08:50', hits: 0 },
+    { id: 12, word: '不可描述', level: 'high', scope: 'all', operator: '系统管理员', date: '2026-09-06 11:25', hits: 0 }
+  ];
+
+  function escapeHtml(s) {
+    return String(s).replace(/[<>&"']/g, function (c) {
+      return { '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;', "'": '&#39;' }[c];
     });
   }
 
-  // ===== 黑名单管理 =====
-  (function() {
-    var scopeMap = { all: '全部知识库', red: '红色记忆', people: '人物传记', event: '历史事件', build: '地方建设', org: '组织机构', culture: '文化民俗', topic: '专题库' };
-    var levelMap = { high: { label: '高', cls: 'red' }, medium: { label: '中', cls: 'gold' }, low: { label: '低', cls: 'blue' } };
-
-    var blData = [
-      { id: 1, word: '色情', level: 'high', scope: 'all', operator: '系统管理员', date: '2026-05-23 09:12', hits: 0 },
-      { id: 2, word: '暴力', level: 'high', scope: 'all', operator: '系统管理员', date: '2026-05-23 09:14', hits: 0 },
-      { id: 3, word: '赌博', level: 'high', scope: 'all', operator: '系统管理员', date: '2026-05-23 09:15', hits: 0 },
-      { id: 4, word: '毒品', level: 'high', scope: 'all', operator: '系统管理员', date: '2026-05-23 09:16', hits: 0 },
-      { id: 5, word: '邪教组织', level: 'high', scope: 'all', operator: '李编辑', date: '2026-05-22 16:40', hits: 0 },
-      { id: 6, word: '谣言', level: 'medium', scope: 'all', operator: '王审核', date: '2026-05-21 11:05', hits: 0 },
-      { id: 7, word: '政治敏感', level: 'high', scope: 'all', operator: '系统管理员', date: '2026-05-20 14:22', hits: 0 },
-      { id: 8, word: '商业广告', level: 'low', scope: 'red', operator: '孙审核', date: '2026-05-19 10:30', hits: 0 },
-      { id: 9, word: '刷单', level: 'medium', scope: 'all', operator: '赵编辑', date: '2026-05-18 15:20', hits: 0 },
-      { id: 10, word: '低俗笑话', level: 'medium', scope: 'culture', operator: '李编辑', date: '2026-05-17 09:45', hits: 0 },
-      { id: 11, word: '恶意词汇', level: 'high', scope: 'all', operator: '系统管理员', date: '2026-05-16 08:50', hits: 0 },
-      { id: 12, word: '不可描述', level: 'high', scope: 'all', operator: '系统管理员', date: '2026-05-15 11:25', hits: 0 }
-    ];
-
-    function renderBl() {
-      var search = (document.getElementById('blSearch') || {}).value || '';
-      var lvl = (document.getElementById('blFilterLevel') || {}).value || '';
-      var scp = (document.getElementById('blFilterScope') || {}).value || '';
-      var tbody = document.getElementById('blTableBody');
-      if (!tbody) return;
-      var list = blData.filter(function(x) {
-        if (lvl && x.level !== lvl) return false;
-        if (scp && x.scope !== scp) return false;
-        if (search) {
-          var s = search.toLowerCase();
-          if (x.word.indexOf(search) === -1 && scopeMap[x.scope].indexOf(search) === -1 && x.operator.indexOf(search) === -1) return false;
-        }
-        return true;
-      });
-      tbody.innerHTML = list.map(function(x) {
+  function renderBl() {
+    var tbody = document.getElementById('blTableBody');
+    if (!tbody) return;
+    var search = (document.getElementById('blSearch') || {}).value || '';
+    var lvl = (document.getElementById('blFilterLevel') || {}).value || '';
+    var scp = (document.getElementById('blFilterScope') || {}).value || '';
+    var list = blData.filter(function (x) {
+      if (lvl && x.level !== lvl) return false;
+      if (scp && x.scope !== scp) return false;
+      if (search) {
+        if (x.word.indexOf(search) === -1 && (scopeMap[x.scope] || '').indexOf(search) === -1 && x.operator.indexOf(search) === -1) return false;
+      }
+      return true;
+    });
+    if (!list.length) {
+      tbody.innerHTML = '<tr class="table-empty"><td colspan="7">暂无黑名单词汇</td></tr>';
+    } else {
+      tbody.innerHTML = list.map(function (x) {
         var lv = levelMap[x.level];
         return '<tr>' +
-          '<td><span style="font-weight:500;color:var(--text-primary)">' + escapeHtml(x.word) + '</span></td>' +
+          '<td class="t-name">' + escapeHtml(x.word) + '</td>' +
           '<td><span class="badge ' + lv.cls + '">' + lv.label + '</span></td>' +
-          '<td>' + scopeMap[x.scope] + '</td>' +
+          '<td>' + (scopeMap[x.scope] || x.scope) + '</td>' +
           '<td>' + escapeHtml(x.operator) + '</td>' +
           '<td>' + x.date + '</td>' +
           '<td>' + x.hits + '</td>' +
-          '<td><span class="link-btn" data-act="edit" data-id="' + x.id + '">编辑</span><span class="link-btn" data-act="del" data-id="' + x.id + '">删除</span></td>' +
+          '<td><span class="link-btn" data-act="edit" data-id="' + x.id + '">编辑</span><span class="link-btn muted" data-act="del" data-id="' + x.id + '">删除</span></td>' +
           '</tr>';
       }).join('');
-      if (list.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--text-muted);padding:32px 0">暂无黑名单词汇</td></tr>';
-      }
-
-      // 绑定行内按钮
-      tbody.querySelectorAll('.link-btn').forEach(function(b) {
-        b.addEventListener('click', function() {
-          var id = parseInt(this.getAttribute('data-id'));
-          var act = this.getAttribute('data-act');
-          if (act === 'del') {
-            if (confirm('确定删除该黑名单词汇吗？')) {
-              blData = blData.filter(function(x) { return x.id !== id; });
-              renderBl();
-              updateBlStats();
-            }
-          } else if (act === 'edit') {
-            var item = blData.find(function(x) { return x.id === id; });
-            if (!item) return;
-            var newWord = prompt('编辑词汇：', item.word);
-            if (newWord === null) return;
-            newWord = newWord.trim();
-            if (!newWord) { alert('词汇不能为空'); return; }
-            if (newWord.length > 50) { alert('词汇长度不能超过 50 字'); return; }
-            item.word = newWord;
+    }
+    tbody.querySelectorAll('.link-btn').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var id = parseInt(this.getAttribute('data-id'), 10);
+        var act = this.getAttribute('data-act');
+        if (act === 'del') {
+          if (confirm('确定删除该黑名单词汇吗？')) {
+            blData = blData.filter(function (x) { return x.id !== id; });
             renderBl();
           }
-        });
+        } else {
+          var item = blData.filter(function (x) { return x.id === id; })[0];
+          if (!item) return;
+          var nw = prompt('编辑词汇：', item.word);
+          if (nw === null) return;
+          nw = nw.trim();
+          if (!nw) { alert('词汇不能为空'); return; }
+          if (nw.length > 50) { alert('词汇长度不能超过 50 字'); return; }
+          item.word = nw;
+          renderBl();
+        }
       });
-
-      // 统计
-      updateBlStats();
-    }
-
-    function updateBlStats() {
-      var total = blData.length;
-      var high = blData.filter(function(x) { return x.level === 'high'; }).length;
-      var medium = blData.filter(function(x) { return x.level === 'medium'; }).length;
-      // 本周新增（模拟：根据当前日期 2026-05-23 计算 7 天内）
-      var weekStart = new Date('2026-05-17');
-      var week = blData.filter(function(x) {
-        var d = new Date(x.date);
-        return d >= weekStart;
-      }).length;
-      var t = document.getElementById('blTotal');
-      var h = document.getElementById('blHigh');
-      var m = document.getElementById('blMedium');
-      var w = document.getElementById('blWeek');
-      if (t) t.textContent = total;
-      if (h) h.textContent = high;
-      if (m) m.textContent = medium;
-      if (w) w.textContent = week;
-    }
-
-    function escapeHtml(s) {
-      return String(s).replace(/[<>&"']/g, function(c) {
-        return { '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;', "'": '&#39;' }[c];
-      });
-    }
-
-    // 添加黑名单
-    var addBtn = document.getElementById('blAdd');
-    if (addBtn) {
-      addBtn.addEventListener('click', function() {
-        var input = document.getElementById('blInput');
-        var lv = document.getElementById('blLevel');
-        var sc = document.getElementById('blScope');
-        var word = (input.value || '').trim();
-        if (!word) { alert('请输入要屏蔽的词汇'); input.focus(); return; }
-        if (word.length > 50) { alert('词汇长度不能超过 50 字'); return; }
-        var newId = blData.length ? Math.max.apply(null, blData.map(function(x) { return x.id; })) + 1 : 1;
-        var now = new Date();
-        var dateStr = now.getFullYear() + '-' +
-          String(now.getMonth() + 1).padStart(2, '0') + '-' +
-          String(now.getDate()).padStart(2, '0') + ' ' +
-          String(now.getHours()).padStart(2, '0') + ':' +
-          String(now.getMinutes()).padStart(2, '0');
-        blData.unshift({
-          id: newId, word: word, level: lv.value, scope: sc.value,
-          operator: '系统管理员', date: dateStr, hits: 0
-        });
-        input.value = '';
-        renderBl();
-      });
-    }
-
-    // 搜索/筛选
-    ['blSearch', 'blFilterLevel', 'blFilterScope'].forEach(function(id) {
-      var el = document.getElementById(id);
-      if (el) el.addEventListener('input', renderBl);
     });
+    updateBlStats();
+  }
 
-    // 导出
-    var exp = document.getElementById('blExport');
-    if (exp) {
-      exp.addEventListener('click', function() {
-        var text = '词汇\t等级\t范围\t添加人\t添加时间\t命中次数\n' +
-          blData.map(function(x) {
-            return x.word + '\t' + levelMap[x.level].label + '\t' + scopeMap[x.scope] + '\t' + x.operator + '\t' + x.date + '\t' + x.hits;
-          }).join('\n');
-        alert('黑名单词表内容（演示）：\n\n' + text);
-      });
-    }
+  function updateBlStats() {
+    var el;
+    el = document.getElementById('blTotal'); if (el) el.textContent = blData.length;
+    el = document.getElementById('blHigh'); if (el) el.textContent = blData.filter(function (x) { return x.level === 'high'; }).length;
+    el = document.getElementById('blMedium'); if (el) el.textContent = blData.filter(function (x) { return x.level === 'medium'; }).length;
+    el = document.getElementById('blWeek'); if (el) el.textContent = blData.filter(function (x) { return x.date >= '2026-09-08'; }).length;
+  }
 
-    // 初始渲染
-    renderBl();
-  })();
-</script>
+  var addBtn = document.getElementById('blAdd');
+  if (addBtn) {
+    addBtn.addEventListener('click', function () {
+      var input = document.getElementById('blInput');
+      var lv = document.getElementById('blLevel');
+      var sc = document.getElementById('blScope');
+      var word = (input.value || '').trim();
+      if (!word) { alert('请输入要屏蔽的词汇'); input.focus(); return; }
+      if (word.length > 50) { alert('词汇长度不能超过 50 字'); return; }
+      var newId = blData.length ? Math.max.apply(null, blData.map(function (x) { return x.id; })) + 1 : 1;
+      var n = new Date();
+      var pad = function (v) { return String(v).padStart(2, '0'); };
+      var dateStr = n.getFullYear() + '-' + pad(n.getMonth() + 1) + '-' + pad(n.getDate()) + ' ' + pad(n.getHours()) + ':' + pad(n.getMinutes());
+      blData.unshift({ id: newId, word: word, level: lv.value, scope: sc.value, operator: '系统管理员', date: dateStr, hits: 0 });
+      input.value = '';
+      renderBl();
+      toast('已添加黑名单：' + word);
+    });
+  }
+
+  ['blSearch', 'blFilterLevel', 'blFilterScope'].forEach(function (id) {
+    var el = document.getElementById(id);
+    if (el) el.addEventListener('input', renderBl);
+  });
+
+  var expBtn = document.getElementById('blExport');
+  if (expBtn) {
+    expBtn.addEventListener('click', function () {
+      var text = '词汇\t等级\t范围\t添加人\t添加时间\t命中次数\n' + blData.map(function (x) {
+        return x.word + '\t' + levelMap[x.level].label + '\t' + (scopeMap[x.scope] || x.scope) + '\t' + x.operator + '\t' + x.date + '\t' + x.hits;
+      }).join('\n');
+      alert('黑名单词表内容（演示）：\n\n' + text);
+    });
+  }
+
+  renderBl();
+})();
 </script>
 </body>
 </html>
