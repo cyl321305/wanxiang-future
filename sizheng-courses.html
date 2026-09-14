@@ -671,6 +671,109 @@
       color: var(--text-muted);
     }
 
+    /* ===== 档案素材包（课程引用的档案） ===== */
+    .pack-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .pack-hint {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .archive-pack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .pack-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.5);
+      border: 1px solid rgba(166, 44, 44, 0.08);
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .pack-item:hover {
+      background: rgba(166, 44, 44, 0.05);
+      border-color: rgba(166, 44, 44, 0.2);
+      transform: translateX(2px);
+    }
+
+    .pack-idx {
+      flex-shrink: 0;
+      width: 24px;
+      height: 24px;
+      border-radius: 7px;
+      background: rgba(201, 168, 108, 0.18);
+      color: #8a6a2f;
+      font-size: 11px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .pack-main {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .pack-name {
+      font-size: 13px;
+      color: var(--text-primary);
+      line-height: 1.4;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .pack-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 3px;
+    }
+
+    .pack-meta span {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .pack-meta span.kb {
+      color: var(--accent-red);
+    }
+
+    .pack-type {
+      flex-shrink: 0;
+      font-size: 10px;
+      padding: 2px 7px;
+      border-radius: 6px;
+      background: rgba(166, 44, 44, 0.08);
+      color: var(--accent-red);
+    }
+
+    .pack-go {
+      flex-shrink: 0;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+    }
+
+    .pack-item:hover .pack-go {
+      color: var(--accent-red);
+    }
+
     .modal-stats {
       display: flex;
       gap: 20px;
@@ -1501,6 +1604,13 @@
           <div class="modal-section-title">章节目录</div>
           <div class="chapter-list" id="modalChapters"></div>
         </div>
+        <div class="modal-section">
+          <div class="modal-section-title">档案素材包</div>
+          <div class="pack-head">
+            <span class="pack-hint" id="modalPackHint">本课程引用的档案资源</span>
+          </div>
+          <div class="archive-pack" id="modalArchives"></div>
+        </div>
       </div>
       <div class="modal-footer">
         <button class="btn-secondary" onclick="closeModal()">关闭</button>
@@ -1608,6 +1718,80 @@
         desc: '面向海外华文学校，讲述青田华侨与景宁畲族的革命贡献，帮助华裔青少年读懂侨心向党、畲汉同心的家国情怀。'
       }
     ];
+
+    /* ===== 课程档案素材包（每门课引用档案，均可跳转档案资源中心对应档案详情） ===== */
+    const ARCHIVE_PACKS = {
+      primary: [
+        { n: '刘英致浙西南特委手书信函', kb: '地方党组织史料', t: 'doc', d: '1936-03', s: '丽水市档案馆' },
+        { n: '刘英烈士遗物清册', kb: '红色文物文献资料', t: 'doc', d: '1942-06', s: '丽水市档案馆' },
+        { n: '粟裕将军生平档案', kb: '刘英·粟裕史料', t: 'doc', d: '1984-02', s: '丽水市档案馆' },
+        { n: '粟裕将军历史照片', kb: '刘英·粟裕史料', t: 'img', d: '1950年代', s: '丽水市档案馆', img: 'https://images.unsplash.com/photo-1548013146-72479768b3f5?w=400&h=300&fit=crop' },
+        { n: '潘香凤烈士生平登记表', kb: '革命英烈群体', t: 'doc', d: '1951-09', s: '缙云县档案馆' },
+        { n: '潘香凤护送交通员事迹材料', kb: '革命英烈群体', t: 'doc', d: '1959-07', s: '丽水市档案馆' },
+        { n: '革命烈士英名录', kb: '革命英烈群体', t: 'doc', d: '1953-04', s: '丽水市档案馆' },
+        { n: '革命烈士牺牲登记表', kb: '革命英烈群体', t: 'doc', d: '1951-1962', s: '丽水市档案馆' },
+        { n: '麻植烈士史料辑存', kb: '革命英烈群体', t: 'doc', d: '1962-04', s: '青田县档案馆' },
+        { n: '周定烈士传记与手稿', kb: '革命英烈群体', t: 'doc', d: '1965-11', s: '青田县档案馆' },
+        { n: '郑秾革命活动档案', kb: '华侨红色相关史料', t: 'doc', d: '1961-03', s: '青田县档案馆' },
+        { n: '陈凤生先生工作照', kb: '华侨红色相关史料', t: 'img', d: '1968年', s: '青田县档案馆', img: 'https://images.unsplash.com/photo-1590736969955-71cc94901144?w=400&h=300&fit=crop' }
+      ],
+      middle: [
+        { n: '红军挺进师浙西南作战命令', kb: '红色革命事件', t: 'doc', d: '1935-05', s: '丽水市档案馆' },
+        { n: '挺进师入浙挺进电文汇编', kb: '红色革命事件', t: 'doc', d: '1935-03', s: '丽水市档案馆' },
+        { n: '1935年红军过境大事记', kb: '红色革命事件', t: 'doc', d: '1935-06', s: '丽水市档案馆' },
+        { n: '斋郎战斗史料汇编', kb: '红色革命事件', t: 'doc', d: '1935-04', s: '庆元县档案馆' },
+        { n: '挺进师师部旧址（王村口）普查档案', kb: '红色设施', t: 'doc', d: '2019-06', s: '遂昌县档案馆' },
+        { n: '浙西南革命根据地旧址照片', kb: '红色设施', t: 'img', d: '1965-08', s: '丽水市档案馆', img: 'https://images.unsplash.com/photo-1590736969955-71cc94901144?w=400&h=300&fit=crop' },
+        { n: '红军挺进师印章登记表', kb: '红色文物文献资料', t: 'doc', d: '1935-1938', s: '丽水市档案馆' },
+        { n: '红军标语与布告拓片集', kb: '红色文物文献资料', t: 'doc', d: '1935-1937', s: '丽水市档案馆' },
+        { n: '浙西南革命根据地斗争史稿', kb: '各县市区编研书籍', t: 'doc', d: '1981-07', s: '丽水市档案馆' },
+        { n: '挺进师反清剿作战总结', kb: '红色革命事件', t: 'doc', d: '1935-09', s: '丽水市档案馆' },
+        { n: '红军挺进师浙西南战斗纪录', kb: '红色革命事件', t: 'video', d: '1985-08', s: '丽水市档案馆', img: 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400&h=300&fit=crop' },
+        { n: '挺进师老战士口述回忆录', kb: '红色回忆与研究活动', t: 'doc', d: '1984-10', s: '丽水市档案馆' }
+      ],
+      high: [
+        { n: '中共遂昌支部建立档案', kb: '地方党组织史料', t: 'doc', d: '1927-01', s: '遂昌县档案馆' },
+        { n: '中共浙西南区委文件', kb: '地方党组织史料', t: 'doc', d: '1949-11-23', s: '丽水市档案馆' },
+        { n: '浙西南特委组织系统表', kb: '地方党组织史料', t: 'doc', d: '1942-08', s: '丽水市档案馆' },
+        { n: '中共丽水县委扩大会议记录', kb: '地方党组织史料', t: 'doc', d: '1950-06-15', s: '丽水市档案馆' },
+        { n: '中共缙云县第一次代表大会档案', kb: '地方党组织史料', t: 'doc', d: '1928-09', s: '缙云县档案馆' },
+        { n: '梭溪暴动与红十三军史料', kb: '红色革命事件', t: 'doc', d: '1930-08', s: '缙云县档案馆' },
+        { n: '白色恐怖下地下党活动档案', kb: '地方党组织史料', t: 'doc', d: '1934-1937', s: '丽水市档案馆' },
+        { n: '中共处属特委机关旧址普查档案', kb: '红色设施', t: 'doc', d: '2018-07', s: '丽水市档案馆' },
+        { n: '浙西南组织史资料（1927—1949）', kb: '档案馆编研', t: 'doc', d: '1993-06', s: '丽水市档案馆' },
+        { n: '浙南游击纵队解放丽水档案', kb: '红色革命事件', t: 'doc', d: '1949-05', s: '丽水市档案馆' },
+        { n: '丽水党史宣讲材料汇编', kb: '党史办红立方', t: 'doc', d: '2023-06', s: '丽水市党史办' },
+        { n: '丽水县档案馆沿革资料', kb: '档案馆编研', t: 'doc', d: '1983-05', s: '丽水市档案馆' }
+      ],
+      university: [
+        { n: '万山交通总站档案', kb: '红色设施', t: 'doc', d: '1936-05', s: '遂昌县档案馆' },
+        { n: '万山交通总站旧址普查登记表', kb: '红色设施', t: 'doc', d: '2017-09', s: '遂昌县档案馆' },
+        { n: '金岭红色秘密交通线史料', kb: '红色革命事件', t: 'doc', d: '1935-1938', s: '丽水市档案馆' },
+        { n: '地下交通站分布登记表', kb: '地方党组织史料', t: 'doc', d: '1941-08', s: '丽水市档案馆' },
+        { n: '交通员密写与暗语手册', kb: '红色文物文献资料', t: 'doc', d: '1940-1943', s: '丽水市档案馆' },
+        { n: '交通联络代号与化名表', kb: '地方党组织史料', t: 'doc', d: '1942-11', s: '丽水市档案馆' },
+        { n: '潘香凤交通线护送记录', kb: '革命英烈群体', t: 'doc', d: '1960-05', s: '缙云县档案馆' },
+        { n: '地下交通线口述史料汇编', kb: '红色回忆与研究活动', t: 'doc', d: '1986-12', s: '丽水市档案馆' },
+        { n: '中共处属特委交通网络档案', kb: '地方党组织史料', t: 'doc', d: '1943-04', s: '丽水市档案馆' },
+        { n: '隐蔽战线纪律规定文本', kb: '档案馆编研', t: 'doc', d: '1941-02', s: '丽水市档案馆' },
+        { n: '红色交通线研究文集', kb: '档案馆编研', t: 'doc', d: '2016-10', s: '丽水市档案馆' },
+        { n: '革命文献修复档案', kb: '红色文物文献资料', t: 'doc', d: '2016-05', s: '丽水市档案馆' }
+      ],
+      overseas: [
+        { n: '旅欧青田小组建立档案', kb: '华侨红色相关史料', t: 'doc', d: '1926-06', s: '青田县档案馆' },
+        { n: '《救国时报》青田侨胞报道辑录', kb: '华侨红色相关史料', t: 'doc', d: '1935-1938', s: '青田县档案馆' },
+        { n: '青田华侨支援抗战记录', kb: '华侨红色相关史料', t: 'doc', d: '1940-09', s: '青田县档案馆' },
+        { n: '华侨义勇军参战名录', kb: '华侨红色相关史料', t: 'doc', d: '1938-1941', s: '青田县档案馆' },
+        { n: '侨乡青田家书合集', kb: '华侨红色相关史料', t: 'doc', d: '1930-1990', s: '青田县档案馆' },
+        { n: '海外侨胞数字档案采集稿', kb: '华侨红色相关史料', t: 'doc', d: '2015-08-30', s: '青田县档案馆' },
+        { n: '青田县侨联成立大会合影', kb: '华侨红色相关史料', t: 'img', d: '1986-11', s: '青田县档案馆', img: 'https://images.unsplash.com/photo-1599571234909-29ed5d1321d6?w=400&h=300&fit=crop' },
+        { n: '2021青田召开陈慕华座谈会', kb: '华侨红色相关史料', t: 'video', d: '2021-12-08', s: '青田县档案馆', img: 'https://images.unsplash.com/photo-1485846234645-a62644f84728?w=400&h=300&fit=crop' },
+        { n: '中共毛窠支部与畲族革命档案', kb: '畲族红色文化', t: 'doc', d: '1937-07', s: '景宁县档案馆' },
+        { n: '畲族群众参军参战登记册', kb: '畲族红色文化', t: 'doc', d: '1951-1962', s: '景宁县档案馆' },
+        { n: '畲族红色歌谣采集稿', kb: '畲族红色文化', t: 'doc', d: '1982-04', s: '景宁县档案馆' },
+        { n: '畲族传统服饰图录', kb: '畲族红色文化', t: 'img', d: '2009-03-15', s: '景宁县档案馆', img: 'https://images.unsplash.com/photo-1548013146-72479768b3f5?w=400&h=300&fit=crop' }
+      ]
+    };
 
     const chapterDetails = {
       primary: [
@@ -2291,6 +2475,55 @@ function renderCourses(filter = 'all') {
       });
     }
 
+    /* ===== 档案素材包 → 档案资源中心·档案详情 ===== */
+    function archiveUrl(a) {
+      const p = new URLSearchParams({
+        title: a.n,
+        type: a.t || 'doc',
+        date: a.d || '',
+        size: a.sz || '',
+        source: a.s || '',
+        kb: a.kb || '',
+        desc: a.ds || a.n,
+        tags: (a.tg || []).join(','),
+        img: a.img || ''
+      });
+      if (a.t === 'img') return 'archive-image.html?' + p.toString();
+      if (a.t === 'video') return 'archive-video.html?' + p.toString();
+      return 'archive-preview.html?' + p.toString();
+    }
+
+    function openArchive(a) {
+      if (!a) return;
+      window.location.href = archiveUrl(a);
+    }
+
+    function renderArchivePack(courseId) {
+      const pack = ARCHIVE_PACKS[courseId] || [];
+      const hint = document.getElementById('modalPackHint');
+      if (hint) hint.textContent = '本课程引用档案共 ' + pack.length + ' 件 · 点击可跳转档案资源中心查看档案详情';
+      const box = document.getElementById('modalArchives');
+      if (!box) return;
+      box.innerHTML = pack.map((a, i) => `
+        <div class="pack-item" data-idx="${i}" title="查看档案详情：${a.n}">
+          <span class="pack-idx">${i + 1}</span>
+          <div class="pack-main">
+            <div class="pack-name">${a.n}</div>
+            <div class="pack-meta">
+              <span class="kb">${a.kb}</span>
+              <span>${a.d || ''}</span>
+              <span>${a.s || ''}</span>
+            </div>
+          </div>
+          <span class="pack-type">${a.t === 'img' ? '图片' : (a.t === 'video' ? '声像' : '文档')}</span>
+          <span class="pack-go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="m9 18 6-6-6-6"/></svg></span>
+        </div>
+      `).join('');
+      box.querySelectorAll('.pack-item').forEach(el => {
+        el.addEventListener('click', () => openArchive(pack[parseInt(el.getAttribute('data-idx'), 10)]));
+      });
+    }
+
     function openModal(courseId) {
       const course = courses.find(c => c.id === courseId);
       if (!course) return;
@@ -2305,6 +2538,7 @@ function renderCourses(filter = 'all') {
           <div class="chapter-time">约 ${15 + idx * 2} 分钟</div>
         </div>
       `).join('');
+      renderArchivePack(courseId);
       document.getElementById('modalStartBtn').setAttribute('onclick', `viewCoursewarePPT();closeModal();`);
       document.getElementById('courseModal').classList.add('active');
       document.body.style.overflow = 'hidden';

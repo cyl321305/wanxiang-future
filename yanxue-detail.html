@@ -76,6 +76,28 @@
   .route-actions button{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:4px;padding:8px 0;border-radius:8px;background:rgba(166,44,44,.05);border:1px solid rgba(166,44,44,.16);color:var(--accent-red);font-size:12px;cursor:pointer;transition:all .3s;font-family:inherit}
   .route-actions button:hover{background:var(--accent-red);color:#fff}
 
+  /* ===== 安全预案弹窗 ===== */
+  .safety-overlay{position:fixed;inset:0;z-index:200;display:none;align-items:center;justify-content:center;background:rgba(61,43,31,.45);backdrop-filter:blur(3px);padding:20px}
+  .safety-overlay.show{display:flex}
+  .safety-box{width:100%;max-width:640px;max-height:86vh;display:flex;flex-direction:column;background:var(--bg-cream);border:1px solid rgba(166,44,44,.16);border-radius:16px;box-shadow:0 24px 60px rgba(61,43,31,.32);overflow:hidden;animation:safetyIn .28s ease}
+  @keyframes safetyIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+  .safety-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:16px 20px;border-bottom:1px solid rgba(166,44,44,.12);background:var(--glass)}
+  .safety-title{font-family:'ZCOOL XiaoWei',serif;font-size:18px;color:var(--accent-red);letter-spacing:1px}
+  .safety-sub{font-size:12px;color:var(--text-muted);margin-top:4px}
+  .safety-close{width:28px;height:28px;border-radius:50%;border:1px solid rgba(166,44,44,.18);background:rgba(255,255,255,.7);color:var(--text-secondary);font-size:16px;line-height:1;cursor:pointer;flex-shrink:0}
+  .safety-close:hover{background:var(--accent-red);color:#fff}
+  .safety-body{padding:16px 20px;overflow:auto;display:flex;flex-direction:column;gap:12px}
+  .safety-block{background:rgba(255,255,255,.55);border:1px solid rgba(166,44,44,.08);border-radius:12px;padding:12px 14px}
+  .safety-block h4{font-size:13px;color:var(--accent-red);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+  .safety-block ul{list-style:none;display:flex;flex-direction:column;gap:6px}
+  .safety-block li{font-size:12.5px;color:var(--text-secondary);line-height:1.7;padding-left:14px;position:relative}
+  .safety-block li::before{content:'';position:absolute;left:0;top:8px;width:5px;height:5px;border-radius:50%;background:var(--accent-gold)}
+  .safety-tel{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+  .safety-tel span{padding:4px 10px;border-radius:8px;background:rgba(166,44,44,.08);color:var(--accent-red);font-size:12px}
+  .safety-foot{padding:12px 20px;border-top:1px solid rgba(166,44,44,.12);display:flex;justify-content:flex-end;gap:8px;background:var(--glass)}
+  .safety-ok{padding:8px 22px;border-radius:10px;border:1px solid var(--accent-red);background:var(--accent-red);color:#fff;font-size:13px;cursor:pointer;font-family:inherit}
+  .safety-ok:hover{background:var(--accent-red-light);border-color:var(--accent-red-light)}
+
   /* 站点列表 */
   .site-list{flex:1;overflow-y:auto;padding:12px}
   .site-list-title{font-family:'ZCOOL XiaoWei',serif;font-size:14px;color:var(--text-primary);margin-bottom:10px;display:flex;align-items:center;gap:6px}
@@ -242,9 +264,9 @@
         </div>
         <p class="route-desc" id="routeDesc"></p>
         <div class="route-actions">
-          <button type="button" onclick="alert('已加入我的研学收藏（演示版）')">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
-            收藏路线
+          <button type="button" onclick="showSafetyPlan()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="M9 12l2 2 4-4"/></svg>
+            安全预案
           </button>
           <button type="button" onclick="alert('研学手册（演示版）：含点位任务单、行车指南与安全须知')">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
@@ -915,7 +937,77 @@ function updateMapSelection(){
   chart.setOption({ series: [ {}, { data: data }, {} ] });
 }
 
+/* ===== 安全预案 ===== */
+function showSafetyPlan(){
+  var ov = document.getElementById('safetyOverlay');
+  if(!ov) return;
+  var sub = document.getElementById('safetySub');
+  if(sub) sub.textContent = route.region + ' · ' + route.name + '（' + route.duration + ' · ' + SITES.length + '个点位）';
+  var body = document.getElementById('safetyBody');
+  if(body){
+    var risky = [];
+    SITES.forEach(function(s){
+      var txt = (s.name || '') + (s.tags || []).join('') + (s.desc || '');
+      if(/山|岭|峰|岩|林|古道|革命老区/.test(txt)) risky.push('山区林区点位（' + s.name + '）：穿防滑鞋、结伴而行，不擅自离开参观步道与栈道。');
+      else if(/水|湿地|江|溪|湖|滩/.test(txt)) risky.push('临水点位（' + s.name + '）：不靠近无护栏水域，不下水嬉戏，全程在带队教师视线范围内。');
+      else if(/馆|旧址|陵园|纪念馆|故居/.test(txt)) risky.push('室内场馆（' + s.name + '）：按参观动线行进，不触碰展陈文物，留意安全出口位置。');
+    });
+    var riskyHtml = risky.slice(0, 5).map(function(t){ return '<li>' + t + '</li>'; }).join('')
+      || '<li>按点位现场标识与带队教师指引有序参观。</li>';
+
+    body.innerHTML =
+      '<div class="safety-block"><h4>🧭 一、行前准备</h4><ul>' +
+        '<li>行前完成线路踏勘与点位预约，向属地文旅、教育部门及学校报备行程与人员名单。</li>' +
+        '<li>统一着装与标识（帽子、反光标识），为每位成员购买研学旅行意外保险。</li>' +
+        '<li>携带常用药品与急救包，落实防暑、防蚊虫、防雨与保暖措施。</li>' +
+        '<li>开展一次行前安全教育，明确集合时间、乘车安排与紧急联络方式。</li>' +
+      '</ul></div>' +
+      '<div class="safety-block"><h4>⚠️ 二、点位安全提示（本线路 ' + SITES.length + ' 个点位）</h4><ul>' + riskyHtml + '</ul></div>' +
+      '<div class="safety-block"><h4>🚌 三、途中安全</h4><ul>' +
+        '<li>' + route.region + '多山区道路，乘车全程系好安全带，雨天路滑时减速慢行、不赶时间。</li>' +
+        '<li>严格遵守各点位开放时间（部分场馆周一闭馆、雨雪天关闭），不进入未开放区域与危险地带。</li>' +
+        '<li>按“点位编号”顺序行进，每到一个点位清点人数，离队须两人以上并报告带队教师。</li>' +
+        '<li>徒步路段量力而行，感觉不适立即报告，不逞强、不单独行动。</li>' +
+      '</ul></div>' +
+      '<div class="safety-block"><h4>🆘 四、应急处置流程</h4><ul>' +
+        '<li>发现险情或身体不适：立即停止活动并报告带队教师，就近选择安全区域等待。</li>' +
+        '<li>轻伤就地处置：由随队校医或研学导师使用急救包处理并记录。</li>' +
+        '<li>重伤或突发疾病：第一时间拨打 120，同时报 110，安排最近医疗点转运，并通知家长与学校。</li>' +
+        '<li>走失处置：留在原地不动，拨打带队教师电话；带队教师启动“原地搜寻＋报警”双线处置。</li>' +
+      '</ul></div>' +
+      '<div class="safety-block"><h4>📞 五、紧急联络</h4>' +
+        '<div class="safety-tel"><span>报警 110</span><span>急救 120</span><span>火警 119</span><span>交通事故 122</span><span>属地文旅值班：'+ route.region +'（行前告知）</span><span>带队负责人：行前登记留存</span></div>' +
+        '<ul style="margin-top:10px"><li>建议每 2 小时向学校与家长通报一次行程状态，发生情况立即逐级上报。</li></ul>' +
+      '</div>';
+
+    ov.classList.add('show');
+    document.body.style.overflow = 'hidden';
+  }
+}
+function closeSafetyPlan(){
+  var ov = document.getElementById('safetyOverlay');
+  if(ov) ov.classList.remove('show');
+  document.body.style.overflow = '';
+}
+
 initMap();
 </script>
+
+<!-- 安全预案弹窗 -->
+<div class="safety-overlay" id="safetyOverlay" onclick="if(event.target===this)closeSafetyPlan()">
+  <div class="safety-box">
+    <div class="safety-head">
+      <div>
+        <div class="safety-title">研学安全预案</div>
+        <div class="safety-sub" id="safetySub">线路名称 · 所属区域</div>
+      </div>
+      <button class="safety-close" type="button" onclick="closeSafetyPlan()">×</button>
+    </div>
+    <div class="safety-body" id="safetyBody"></div>
+    <div class="safety-foot">
+      <button class="safety-ok" type="button" onclick="closeSafetyPlan()">我已阅读</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>

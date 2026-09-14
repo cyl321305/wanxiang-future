@@ -222,6 +222,7 @@
       <div class="info-bar-item" id="infoDate"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span></span></div>
       <div class="info-bar-item" id="infoSize"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg><span></span></div>
       <div class="info-bar-item" id="infoKb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg><span></span></div>
+      <div class="info-bar-item" id="infoSource"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18"/><path d="M5 21V7l7-4 7 4v14"/><path d="M9 21v-4h6v4"/></svg><span></span></div>
     </div>
     <div>内容由AI生成仅供参考</div>
   </div>
@@ -236,13 +237,16 @@
   document.getElementById('infoDate').querySelector('span').textContent = d.date || '2024-06-28';
   document.getElementById('infoSize').querySelector('span').textContent = d.size || '2.5 MB';
   document.getElementById('infoKb').querySelector('span').textContent = d.kb || '红色记忆';
-  renderDoc(d.kb || '红色记忆', d.title || '档案文档.pdf');
+  const srcEl = document.getElementById('infoSource');
+  if (srcEl) srcEl.querySelector('span').textContent = d.source || '丽水市档案馆';
+  renderDoc(d.kb || '红色记忆', d.title || '档案文档.pdf', d.desc || '');
 })();
 
 // 渲染文档正文
-function renderDoc(kb, title) {
+function renderDoc(kb, title, desc) {
   const el = document.getElementById('docContainer');
-  if (kb.includes('丽水') || kb.includes('历史') || title.includes('丽水')) {
+  const hasDesc = !!desc && desc !== title;
+  if (!hasDesc && (kb.includes('丽水') || kb.includes('历史') || title.includes('丽水'))) {
     el.innerHTML = `
       <div class="doc-para">与此同时，张新锦积极指导、帮助国民党丽水县临时党部的工作，介绍中共党员温麟、潘涯进入县临时党部开展工作、担任干事，并到青田与戴宝椿一起解决青田县国民党组织内部的派系斗争，帮助改组国民党青田县党部筹备处。</div>
       <div class="doc-para">由此，遂昌、丽水、青田三县国共合作的革命统一战线初步形成。</div>
@@ -259,7 +263,8 @@ function renderDoc(kb, title) {
         <div class="doc-cover-line"></div>
         <div class="doc-cover-sub">${kb}知识库 · 档案文献</div>
       </div>
-      <div class="doc-para">本档案文献资料，系统记录了相关历史事件始末。本档案源自丽水市档案馆，经数字化整理归档，供研究参考使用。档案内容涵盖事件背景、发展过程、重要人物及历史意义等核心要素。</div>
+      <div class="doc-para">${hasDesc ? desc : '本档案文献资料，系统记录了相关历史事件始末。本档案源自丽水市档案馆，经数字化整理归档，供研究参考使用。档案内容涵盖事件背景、发展过程、重要人物及历史意义等核心要素。'}</div>
+      <div class="doc-para" style="color:var(--text-muted);font-size:13px">说明：本档案为“万象未来”数字档案资源建设公开样例，原件藏于对应档案馆，可凭档案号向馆方申请查阅。</div>
       <div class="doc-page-num">1</div>
     `;
   }
