@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>知识库管理 · 万象未来</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=ZCOOL+XiaoWei&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+<style>
+  :root {
+    --bg-cream: #faf5ee;
+    --bg-warm: #f3e8db;
+    --accent-red: #a62c2c;
+    --accent-red-light: #c94d4d;
+    --accent-gold: #c9a86c;
+    --text-primary: #3d2b1f;
+    --text-secondary: rgba(61, 43, 31, 0.72);
+    --text-muted: rgba(61, 43, 31, 0.5);
+    --glass: rgba(255, 250, 245, 0.82);
+    --glass-border: rgba(166, 44, 44, 0.12);
+    --card-shadow: rgba(92, 61, 46, 0.08);
+    --green: #4e8a5e;
+    --gold: #c9a86c;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Noto Sans SC', sans-serif; color: var(--text-primary);
+    background: linear-gradient(180deg, #faf5ee 0%, #f8ece6 50%, #f3e8db 100%);
+    min-height: 100vh;
+  }
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='120' viewBox='0 0 200 120'%3E%3Cg fill='none' stroke='%23a62c2c' stroke-width='1.4' opacity='0.5'%3E%3Cpath d='M30 70c-12 0-12-14 0-14s12 14 0 14zm0 0c0 12 14 12 14 0s-14-12-14 0z'/%3E%3Cpath d='M120 40c-12 0-12-14 0-14s12 14 0 14zm0 0c0 12 14 12 14 0s-14-12-14 0z'/%3E%3Cpath d='M150 90c-10 0-10-12 0-12s10 12 0 12zm0 0c0 10 12 10 12 0s-12-10-12 0z'/%3E%3C/g%3E%3C/svg%3E");
+    opacity: 0.16; animation: cloudDrift 60s linear infinite; pointer-events: none; z-index: 0;
+  }
+  @keyframes cloudDrift { from { background-position: 0 0; } to { background-position: 400px 0; } }
+
+  /* 顶部导航 */
+  .navbar {
+    position: sticky; top: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 76px; padding: 0 36px;
+    background: rgba(255, 250, 245, 0.86); backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(166, 44, 44, 0.08);
+  }
+  .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+  .logo-icon {
+    width: 44px; height: 44px; border-radius: 12px;
+    background: linear-gradient(135deg, var(--accent-red), var(--accent-red-light));
+    color: #fff; display: flex; align-items: center; justify-content: center;
+    font-family: 'Ma Shan Zheng', serif; font-size: 24px;
+    box-shadow: 0 6px 16px rgba(166, 44, 44, 0.3);
+  }
+  .logo-title { font-family: 'ZCOOL XiaoWei', serif; font-size: 20px; color: var(--text-primary); }
+  .logo-subtitle { font-size: 11px; color: var(--text-muted); letter-spacing: 1px; }
+  .nav-menu { display: flex; align-items: center; gap: 4px; list-style: none; }
+  .nav-item {
+    padding: 10px 20px; border-radius: 22px; color: var(--text-secondary);
+    font-size: 15px; text-decoration: none; cursor: pointer; position: relative; transition: all 0.3s;
+  }
+  .nav-item:hover { color: var(--accent-red); background: rgba(166, 44, 44, 0.06); }
+  .nav-item.active { color: var(--accent-red); background: rgba(166, 44, 44, 0.1); font-weight: 500; }
+  .nav-item.active::after { content: ''; position: absolute; left: 20px; right: 20px; bottom: 2px; height: 3px; background: linear-gradient(90deg, var(--accent-red-light), var(--accent-gold)); border-radius: 2px; }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-icon, .user-info { display: flex; align-items: center; gap: 8px; color: var(--text-secondary); cursor: pointer; }
+  .user-info span { font-size: 14px; }
+
+  /* 布局 */
+  .kb-layout { display: flex; align-items: flex-start; position: relative; z-index: 1; }
+  .kb-side {
+    width: 236px; flex-shrink: 0; min-height: calc(100vh - 76px);
+    background: var(--glass); border-right: 1px solid var(--glass-border);
+    padding: 18px 14px 32px; position: sticky; top: 76px;
+    max-height: calc(100vh - 76px); overflow-y: auto;
+  }
+  .kb-back { display: inline-flex; align-items: center; gap: 4px; font-size: 13px; color: var(--text-muted); text-decoration: none; padding: 4px 12px 12px; }
+  .kb-back:hover { color: var(--accent-red); }
+  .kb-brand { display: flex; align-items: center; gap: 9px; padding: 0 12px 14px; font-size: 15px; font-weight: 600; color: var(--accent-red); }
+  .kb-brand-ico { width: 26px; height: 26px; border-radius: 8px; background: rgba(166,44,44,0.1); display: inline-flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+  .kb-nav-group { font-size: 11px; color: var(--text-muted); letter-spacing: 2px; padding: 14px 12px 6px; font-weight: 500; }
+  .kb-nav-group:first-of-type { padding-top: 2px; }
+  .kb-nav-item {
+    display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 11px;
+    margin-bottom: 3px; color: var(--text-secondary); font-size: 14px; cursor: pointer; transition: all 0.25s;
+  }
+  .kb-nav-item:hover { background: rgba(166, 44, 44, 0.06); color: var(--accent-red); }
+  .kb-nav-item.active { background: linear-gradient(135deg, rgba(166,44,44,0.14), rgba(201,168,108,0.12)); color: var(--accent-red); font-weight: 600; }
+  .kb-nav-item .ico { font-size: 14px; line-height: 1; }
+  .kb-nav-divider { height: 1px; background: rgba(166,44,44,0.1); margin: 14px 12px; }
+
+  .kb-main { flex: 1; padding: 26px 34px 56px; min-width: 0; }
+  .kb-head { margin-bottom: 20px; }
+  .kb-head-title { font-family: 'ZCOOL XiaoWei', serif; font-size: 26px; color: var(--accent-red); }
+  .kb-head-sub { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+  .kb-panel[hidden] { display: none; }
+  .kb-panel { animation: fadeUp 0.32s ease; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+  .panel {
+    background: var(--glass); border: 1px solid var(--glass-border); border-radius: 16px;
+    padding: 20px; box-shadow: 0 8px 24px var(--card-shadow);
+  }
+  .panel + .panel { margin-top: 18px; }
+  .panel-title { font-family: 'ZCOOL XiaoWei', serif; font-size: 17px; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+  .panel-title::before { content: ''; width: 4px; height: 16px; background: linear-gradient(180deg, var(--accent-red-light), var(--accent-gold)); border-radius: 2px; }
+  .panel-title .sub { font-family: 'Noto Sans SC', sans-serif; font-size: 12px; color: var(--text-muted); font-weight: 400; margin-left: 4px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .chart-box { width: 100%; height: 250px; }
+
+  /* 表单 */
+  .form-row { display: flex; align-items: center; gap: 16px; padding: 14px 0; border-bottom: 1px solid rgba(166,44,44,0.06); }
+  .form-row:last-child { border-bottom: none; }
+  .form-row.top { align-items: flex-start; }
+  .form-label { width: 150px; font-size: 14px; color: var(--text-secondary); flex-shrink: 0; display: flex; align-items: center; }
+  .form-row.top .form-label { padding-top: 9px; }
+  .form-row input[type=text], .form-row input[type=number], .form-row input[type=date], .form-row select, .form-row textarea {
+    flex: 1; max-width: 560px; border: 1px solid rgba(166,44,44,0.16); border-radius: 10px;
+    padding: 10px 14px; font-size: 13px; font-family: inherit; color: var(--text-primary); outline: none; background: #fff;
+  }
+  .form-row textarea { min-height: 84px; resize: vertical; line-height: 1.7; }
+  .form-row input:focus, .form-row select:focus, .form-row textarea:focus { border-color: rgba(166,44,44,0.4); }
+  .form-tip { font-size: 12px; color: var(--text-muted); margin-left: 10px; }
+  .ai-link { font-size: 12px; color: var(--accent-red); cursor: pointer; border: 1px solid rgba(166,44,44,0.3); border-radius: 8px; padding: 2px 9px; margin-left: 10px; background: rgba(166,44,44,0.05); }
+  .ai-link:hover { background: rgba(166,44,44,0.14); }
+
+  /* 图标上传 */
+  .icon-upload {
+    width: 168px; height: 118px; border: 1px dashed rgba(166,44,44,0.3); border-radius: 12px;
+    display: flex; align-items: center; justify-content: center; font-size: 32px; color: var(--text-muted);
+    cursor: pointer; background: rgba(255,255,255,0.6); transition: all 0.25s; flex-shrink: 0;
+  }
+  .icon-upload:hover { border-color: var(--accent-red); color: var(--accent-red); background: rgba(166,44,44,0.04); }
+  .icon-presets { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+  .icon-preset {
+    width: 74px; height: 52px; border-radius: 10px; border: 1px solid rgba(166,44,44,0.14);
+    background: linear-gradient(135deg, rgba(166,44,44,0.09), rgba(201,168,108,0.12));
+    display: flex; align-items: center; justify-content: center; font-size: 21px; cursor: pointer; transition: all 0.2s;
+  }
+  .icon-preset:hover { transform: translateY(-2px); box-shadow: 0 6px 14px rgba(166,44,44,0.16); }
+  .icon-preset.on { border-color: var(--accent-red); box-shadow: 0 0 0 2px rgba(166,44,44,0.14); }
+
+  /* 按钮 */
+  .btn {
+    border: none; border-radius: 10px; padding: 9px 18px; font-size: 13px; cursor: pointer;
+    font-family: inherit; transition: all 0.25s; color: #fff;
+    background: linear-gradient(135deg, var(--accent-red), var(--accent-red-light));
+    box-shadow: 0 4px 14px rgba(166,44,44,0.25);
+  }
+  .btn:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(166,44,44,0.35); }
+  .btn.ghost { background: rgba(166,44,44,0.08); color: var(--accent-red); box-shadow: none; }
+  .btn.ghost:hover { background: rgba(166,44,44,0.14); }
+  .btn.sm { padding: 6px 13px; font-size: 12px; }
+  .btn.danger { background: rgba(166,44,44,0.08); color: var(--accent-red); box-shadow: none; border: 1px solid rgba(166,44,44,0.25); }
+  .btn.danger:hover { background: var(--accent-red); color: #fff; }
+  .btn-row { margin-top: 18px; display: flex; gap: 12px; }
+  .spacer { flex: 1; }
+
+  /* 工具条 */
+  .toolbar { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+  .toolbar input, .toolbar select {
+    border: 1px solid rgba(166,44,44,0.16); border-radius: 10px; padding: 9px 14px;
+    font-size: 13px; background: #fff; color: var(--text-primary); outline: none; font-family: inherit;
+  }
+  .toolbar input[type=text] { flex: 1; min-width: 180px; max-width: 300px; }
+  .toolbar input:focus, .toolbar select:focus { border-color: rgba(166,44,44,0.4); }
+
+  /* 表格 */
+  .table-wrap { padding: 0; overflow-x: auto; }
+  .data-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .data-table th {
+    text-align: left; padding: 12px 16px; color: var(--text-muted); font-weight: 500;
+    border-bottom: 2px solid rgba(166,44,44,0.12); white-space: nowrap; background: rgba(255,250,245,0.6);
+  }
+  .data-table td { padding: 12px 16px; border-bottom: 1px solid rgba(166,44,44,0.06); color: var(--text-secondary); }
+  .data-table tbody tr { transition: background 0.2s; }
+  .data-table tbody tr:hover { background: rgba(166,44,44,0.04); }
+  .data-table .t-name { color: var(--text-primary); font-weight: 500; }
+  .data-table .t-num { font-family: 'ZCOOL XiaoWei', serif; font-size: 15px; color: var(--accent-red); }
+  .data-table input[type=checkbox] { width: 15px; height: 15px; accent-color: var(--accent-red); cursor: pointer; }
+  .link-btn { color: var(--accent-red); cursor: pointer; margin-right: 11px; white-space: nowrap; }
+  .link-btn:last-child { margin-right: 0; }
+  .link-btn:hover { text-decoration: underline; }
+  .link-btn.muted { color: var(--text-muted); }
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 10px; font-size: 12px; font-weight: 500; white-space: nowrap; }
+  .badge.green { background: rgba(78,138,94,0.14); color: var(--green); }
+  .badge.gold { background: rgba(201,168,108,0.2); color: #9a7b3f; }
+  .badge.red { background: rgba(166,44,44,0.12); color: var(--accent-red); }
+  .badge.blue { background: rgba(86,122,138,0.16); color: #3f6a7a; }
+  .badge.gray { background: rgba(61,43,31,0.08); color: var(--text-muted); }
+  .table-empty { text-align: center; color: var(--text-muted); padding: 44px 0 !important; }
+  .doc-ico { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 6px; font-size: 11px; margin-right: 8px; background: rgba(166,44,44,0.08); }
+  .doc-cell { display: flex; align-items: center; }
+
+  /* 统计小卡 */
+  .stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 18px; }
+  .stat-card { background: var(--glass); border: 1px solid var(--glass-border); border-radius: 14px; padding: 16px 18px; box-shadow: 0 8px 24px var(--card-shadow); display: flex; align-items: center; gap: 14px; }
+  .stat-ico { width: 40px; height: 40px; border-radius: 12px; background: rgba(166,44,44,0.08); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+  .stat-label { font-size: 12px; color: var(--text-muted); }
+  .stat-num { font-family: 'ZCOOL XiaoWei', serif; font-size: 24px; color: var(--accent-red); line-height: 1.2; }
+  .stat-num .unit { font-size: 12px; color: var(--text-muted); font-family: 'Noto Sans SC', sans-serif; margin-left: 2px; }
+  .sum-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .sum-item { padding: 14px 16px; background: rgba(166,44,44,0.05); border-radius: 10px; }
+  .sum-label { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; display: flex; align-items: center; gap: 5px; }
+  .sum-num { font-family: 'ZCOOL XiaoWei', serif; font-size: 26px; color: var(--accent-red); line-height: 1; }
+  .sum-num .unit { font-size: 12px; color: var(--text-muted); font-family: 'Noto Sans SC', sans-serif; margin-left: 2px; }
+  .help-icon { width: 14px; height: 14px; border: 1px solid rgba(166,44,44,0.28); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; color: var(--accent-red); cursor: help; }
+  .seg { display: inline-flex; border: 1px solid rgba(166,44,44,0.16); border-radius: 9px; overflow: hidden; }
+  .seg button { border: none; background: #fff; padding: 6px 14px; font-size: 12px; font-family: inherit; color: var(--text-secondary); cursor: pointer; }
+  .seg button.on { background: rgba(166,44,44,0.1); color: var(--accent-red); font-weight: 600; }
+
+  /* 排行榜 */
+  .rank-item { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid rgba(166,44,44,0.06); font-size: 14px; }
+  .rank-item:last-child { border-bottom: none; }
+  .rank-no { width: 22px; height: 22px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; background: rgba(166,44,44,0.08); color: var(--accent-red); flex-shrink: 0; }
+  .rank-no.top1 { background: linear-gradient(135deg, var(--accent-red), var(--accent-red-light)); color: #fff; }
+  .rank-no.top2 { background: rgba(201,168,108,0.4); color: #8a6d34; }
+  .rank-no.top3 { background: rgba(201,168,108,0.22); color: #8a6d34; }
+  .rank-name { flex: 1; color: var(--text-secondary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .rank-val { font-size: 13px; color: var(--accent-red); font-weight: 600; }
+
+  /* 推荐问题 */
+  .qa-list { max-width: 620px; }
+  .qa-item { display: flex; align-items: center; gap: 10px; background: #fff; border: 1px solid rgba(166,44,44,0.14); border-radius: 10px; padding: 10px 14px; margin-bottom: 10px; font-size: 13px; color: var(--text-secondary); }
+  .qa-item .txt { flex: 1; border: none; outline: none; font-size: 13px; font-family: inherit; color: var(--text-secondary); background: transparent; }
+  .qa-del { cursor: pointer; color: var(--text-muted); font-size: 15px; line-height: 1; }
+  .qa-del:hover { color: var(--accent-red); }
+
+  /* 开关 */
+  .switch { display: inline-flex; align-items: center; gap: 10px; font-size: 13px; color: var(--text-secondary); }
+  .switch input { width: 40px; height: 21px; appearance: none; background: rgba(61,43,31,0.18); border-radius: 12px; position: relative; cursor: pointer; transition: all 0.25s; flex: none; }
+  .switch input::after { content: ''; position: absolute; top: 2px; left: 2px; width: 17px; height: 17px; border-radius: 50%; background: #fff; transition: all 0.25s; }
+  .switch input:checked { background: var(--green); }
+  .switch input:checked::after { transform: translateX(19px); }
+
+  .copy-row { display: flex; align-items: center; gap: 10px; flex: 1; max-width: 680px; }
+  .copy-row input { flex: 1; }
+
+  .toast {
+    position: fixed; left: 50%; bottom: 46px; transform: translate(-50%, 20px);
+    background: rgba(61,43,31,0.92); color: #fff; font-size: 13px; padding: 11px 22px;
+    border-radius: 12px; opacity: 0; pointer-events: none; transition: all 0.3s; z-index: 999;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.22); max-width: 76vw;
+  }
+  .toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+  @media (max-width: 1280px) {
+    .grid-2 { grid-template-columns: 1fr; }
+    .stat-row, .sum-grid { grid-template-columns: repeat(2, 1fr); }
+    .nav-menu .nav-item { padding: 10px 14px; font-size: 14px; }
+  }
+  @media (max-width: 1024px) {
+    .kb-side { display: none; }
+    .navbar { padding: 0 18px; }
+    .kb-main { padding: 20px 16px 40px; }
+    .stat-row, .sum-grid { grid-template-columns: 1fr; }
+    .form-row { flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="wanxiang-future.html" class="logo">
+    <div class="logo-icon">万</div>
+    <div class="logo-text"><div class="logo-title">万象未来</div><div class="logo-subtitle">AI 档案知识空间</div></div>
+  </a>
+  <ul class="nav-menu">
+    <li><a href="wanxiang-future.html" class="nav-item">首页</a></li>
+    <li><a href="archives.html" class="nav-item">档案资源</a></li>
+    <li><a href="knowledge-graph.html" class="nav-item">知识图谱</a></li>
+    <li><a href="sizheng-courses.html" class="nav-item">数字思政</a></li>
+    <li><a href="yanxue.html" class="nav-item">研学探索</a></li>
+    <li><a href="ai-chat.html" class="nav-item">智能问答</a></li>
+    <li><a href="admin.html" class="nav-item active">后台管理</a></li>
+  </ul>
+  <div class="nav-right">
+    <div class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path></svg></div>
+    <div class="user-info"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"/></svg><span>管理员</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="m6 9 6 6 6-6"/></svg></div>
+  </div>
+</nav>
+
+<div class="kb-layout">
+  <aside class="kb-side">
+    <a class="kb-back" href="admin.html">‹ 档案资源管理</a>
+    <div class="kb-brand"><span class="kb-brand-ico" id="kbBrandIco">🚩</span><span id="kbBrandName">党史办红立方</span></div>
+
+    <div class="kb-nav-group">知识库管理</div>
+    <div class="kb-nav-item active" data-panel="basic" data-title="基本信息" data-sub="知识库基础信息与图标设置"><span class="ico">⚙️</span>基本信息</div>
+    <div class="kb-nav-item" data-panel="members" data-title="成员与权限" data-sub="管理知识库成员及其操作权限"><span class="ico">👥</span>成员与权限</div>
+
+    <div class="kb-nav-group">知识管理</div>
+    <div class="kb-nav-item" data-panel="docs" data-title="知识列表" data-sub="本知识库已入库档案与 AI 解析状态"><span class="ico">📄</span>知识列表</div>
+
+    <div class="kb-nav-group">AI 助手</div>
+    <div class="kb-nav-item" data-panel="assistant" data-title="助手设置" data-sub="配置问答助手的欢迎语与推荐问题"><span class="ico">🧠</span>助手设置</div>
+    <div class="kb-nav-item" data-panel="share" data-title="分享设置" data-sub="生成对外分享链接并设置有效期"><span class="ico">🔗</span>分享设置</div>
+
+    <div class="kb-nav-group">数据中心</div>
+    <div class="kb-nav-item" data-panel="stats" data-title="数据总览" data-sub="本知识库的访问与知识增长数据"><span class="ico">📈</span>数据总览</div>
+
+    <div class="kb-nav-divider"></div>
+    <div class="kb-nav-item" data-panel="trash" data-title="回收站" data-sub="页面删除后将在回收站内保留 90 天"><span class="ico">🗑️</span>回收站</div>
+  </aside>
+
+  <main class="kb-main">
+    <div class="kb-head">
+      <div class="kb-head-title" id="panelTitle">基本信息</div>
+      <div class="kb-head-sub" id="panelSub">知识库基础信息与图标设置</div>
+    </div>
+
+    <!-- ============ 基本信息 ============ -->
+    <section class="kb-panel" id="pBasic">
+      <div class="panel">
+        <div class="panel-title">基本信息</div>
+        <div class="form-row">
+          <div class="form-label">知识库名称<span class="req">*</span></div>
+          <input type="text" id="kbName" value="">
+        </div>
+        <div class="form-row top">
+          <div class="form-label">知识库描述<span class="ai-link" id="aiGen">AI 生成</span></div>
+          <textarea id="kbDesc" placeholder="请输入知识库简介"></textarea>
+        </div>
+        <div style="font-size:14px;color:var(--text-secondary);margin:4px 0 10px">知识库图标</div>
+        <div class="icon-upload" id="iconUpload">＋</div>
+        <div class="form-tip" style="margin:12px 0 8px">系统图标</div>
+        <div class="icon-presets" id="iconPresets"></div>
+        <div class="btn-row"><button class="btn" data-save="基本信息">保存</button></div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">删除知识库</div>
+        <div class="form-tip" style="margin:0 0 14px">删除后知识库及其全部档案将移入回收站，保留 90 天；知识库需先解除成员共享关系。</div>
+        <button class="btn danger" id="delKb">🗑 删除</button>
+      </div>
+    </section>
+
+    <!-- ============ 成员与权限 ============ -->
+    <section class="kb-panel" id="pMembers" hidden>
+      <div class="panel table-wrap" style="padding:20px">
+        <div class="toolbar">
+          <button class="btn" id="mAdd">＋ 添加</button>
+          <button class="btn ghost" id="mBatchPerm">批量修改权限</button>
+          <button class="btn ghost" id="mBatchDel">批量删除</button>
+          <div class="spacer"></div>
+          <input type="text" id="mSearch" placeholder="搜索成员">
+        </div>
+        <table class="data-table" id="mTable">
+          <thead><tr><th style="width:44px"><input type="checkbox" id="mAll"></th><th>用户名</th><th>权限</th><th>操作</th></tr></thead>
+          <tbody id="mBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ============ 知识列表 ============ -->
+    <section class="kb-panel" id="pDocs" hidden>
+      <div class="stat-row">
+        <div class="stat-card"><span class="stat-ico">🗂️</span><div><div class="stat-label">总知识数</div><div class="stat-num" id="dTotal">0</div></div></div>
+        <div class="stat-card"><span class="stat-ico">🤖</span><div><div class="stat-label">AI 解析知识数</div><div class="stat-num" id="dParsed">0</div></div></div>
+        <div class="stat-card"><span class="stat-ico">⏳</span><div><div class="stat-label">AI 未解析数</div><div class="stat-num" id="dUnparsed">0</div></div></div>
+      </div>
+      <div class="panel table-wrap" style="padding:20px">
+        <div class="panel-title">知识明细</div>
+        <div class="toolbar">
+          <input type="text" id="dSearch" placeholder="搜索知识">
+          <select id="dStatus">
+            <option value="">解析状态</option>
+            <option value="done">解析完成</option>
+            <option value="wait">未解析</option>
+          </select>
+          <div class="spacer"></div>
+          <span class="form-tip" id="dCount"></span>
+        </div>
+        <table class="data-table" id="dTable">
+          <thead><tr><th>标题</th><th>数据大小</th><th>状态</th><th>最近更新</th><th>操作</th></tr></thead>
+          <tbody id="dBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ============ 助手设置 ============ -->
+    <section class="kb-panel" id="pAssistant" hidden>
+      <div class="panel">
+        <div class="panel-title">助手设置</div>
+        <div class="form-row top">
+          <div class="form-label">欢迎语</div>
+          <textarea id="aWelcome" style="max-width:680px"></textarea>
+        </div>
+        <div class="form-row top">
+          <div class="form-label">推荐问题</div>
+          <div class="qa-list" id="aQuestions"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-label"></div>
+          <button class="btn ghost sm" id="aAddQ">新增问题</button>
+          <span class="form-tip">最多设置 5 个</span>
+        </div>
+        <div class="btn-row"><button class="btn" data-save="助手设置">保存</button></div>
+      </div>
+    </section>
+
+    <!-- ============ 分享设置 ============ -->
+    <section class="kb-panel" id="pShare" hidden>
+      <div class="panel">
+        <div class="panel-title">分享设置</div>
+        <div class="form-row">
+          <div class="form-label">是否启用</div>
+          <span class="switch"><input type="checkbox" id="sEnable" checked></span>
+        </div>
+        <div class="form-row">
+          <div class="form-label">有效期</div>
+          <input type="date" id="sExpire" style="max-width:240px">
+          <span class="form-tip">留空表示长期有效</span>
+        </div>
+        <div class="form-row">
+          <div class="form-label">分享链接</div>
+          <div class="copy-row">
+            <input type="text" id="sLink" readonly style="background:#f7f2ec">
+            <button class="btn sm" id="sCopy">复制</button>
+          </div>
+        </div>
+        <div class="btn-row"><button class="btn" data-save="分享设置">保存</button></div>
+      </div>
+    </section>
+
+    <!-- ============ 数据总览 ============ -->
+    <section class="kb-panel" id="pStats" hidden>
+      <div class="panel" style="margin-bottom:18px">
+        <div class="panel-title">数据汇总 <span class="sub">数据统计时间：2026-09-13</span></div>
+        <div class="sum-grid">
+          <div class="sum-item">
+            <div class="sum-label">知识库数量 <span class="help-icon" title="全馆知识库总数">?</span></div>
+            <div class="sum-num">12<span class="unit">个</span></div>
+          </div>
+          <div class="sum-item">
+            <div class="sum-label">AI 解析知识总数 <span class="help-icon" title="已完成 OCR 与结构化解析的档案条目">?</span></div>
+            <div class="sum-num">92<span class="unit">件</span></div>
+          </div>
+          <div class="sum-item">
+            <div class="sum-label">AI 问答引用知识总数 <span class="help-icon" title="被智能问答实际召回引用的条目数">?</span></div>
+            <div class="sum-num">30<span class="unit">件</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" style="margin-bottom:18px">
+        <div class="panel-title">数据概览 <span class="sub">数据统计时间：2026-09-13</span></div>
+        <div style="display:flex;justify-content:flex-end;gap:10px;margin-bottom:12px">
+          <span class="seg" id="rangeSeg">
+            <button class="on" data-range="day">日</button>
+            <button data-range="week">周</button>
+            <button data-range="month">月</button>
+          </span>
+          <input type="date" id="statDate" value="2026-09-13" style="border:1px solid rgba(166,44,44,0.16);border-radius:9px;padding:5px 10px;font-size:12px;font-family:inherit;outline:none">
+        </div>
+        <div class="grid-2">
+          <div>
+            <div style="font-size:13px;color:var(--text-secondary);margin-bottom:8px">知识库使用数据</div>
+            <div id="useChart" class="chart-box"></div>
+          </div>
+          <div>
+            <div style="font-size:13px;color:var(--text-secondary);margin-bottom:8px">知识数据</div>
+            <div id="kbDataChart" class="chart-box"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="panel">
+          <div class="panel-title">知识排行榜
+            <span class="seg" style="margin-left:auto" id="docRankSeg">
+              <button class="on" data-metric="visit">访问次数</button>
+              <button data-metric="query">提问次数</button>
+            </span>
+          </div>
+          <div id="docRank"></div>
+        </div>
+        <div class="panel">
+          <div class="panel-title">成员排行榜
+            <span class="seg" style="margin-left:auto" id="memRankSeg">
+              <button class="on" data-metric="visit">访问次数</button>
+              <button data-metric="create">创建知识数</button>
+            </span>
+          </div>
+          <div id="memRank"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 回收站 ============ -->
+    <section class="kb-panel" id="pTrash" hidden>
+      <div class="panel table-wrap" style="padding:20px">
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:14px">页面删除后，将在回收站内保存 90 天，过期后将永久删除页面</div>
+        <div class="toolbar">
+          <input type="text" id="tSearch" placeholder="搜索知识">
+          <div class="spacer"></div>
+          <button class="btn ghost" id="tPurge">彻底删除</button>
+        </div>
+        <table class="data-table" id="tTable">
+          <thead><tr><th style="width:44px"><input type="checkbox" id="tAll"></th><th>类型</th><th>标题</th><th>删除时间</th><th>操作人</th><th>剩余时间</th><th>操作</th></tr></thead>
+          <tbody id="tBody">
+            <tr class="table-empty"><td colspan="7">暂无数据</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ================= 数据层（与前台「档案资源中心」一致） ================= */
+  var KB_MAP = [
+    { name: '党史办红立方', icon: '🚩', desc: '党史办“红立方”党建品牌相关档案：党史宣讲、红色教育基地与主题党日活动资料。', update: '2026-05-20', type: '自建库', members: 4, parsed: 3 },
+    { name: '档案馆编研', icon: '📚', desc: '档案馆编研成果：史料汇编、专题研究、大事记与年鉴等正式出版及内部资料。', update: '2026-05-19', type: '自建库', members: 3, parsed: 4 },
+    { name: '各县市区编研书籍', icon: '📖', desc: '丽水九县（市、区）编研书籍与地方史料汇编，涵盖组织史、革命史与建设史。', update: '2026-05-18', type: '自建库', members: 6, parsed: 17 },
+    { name: '地方党组织史料', icon: '🏛️', desc: '从遂昌支部到浙西南特委、省委机关，收录地方党组织建立与沿革的原始档案。', update: '2026-05-17', type: '自建库', members: 5, parsed: 10 },
+    { name: '刘英·粟裕史料', icon: '🎖️', desc: '刘英、粟裕等革命先辈在浙西南的战斗文献、手稿、照片与纪念影像资料。', update: '2026-05-17', type: '自建库', members: 3, parsed: 3 },
+    { name: '革命英烈群体', icon: '🕯️', desc: '革命烈士英名录、牺牲登记表、传记与家属口述史料，按牺牲时期与群体归类。', update: '2026-05-16', type: '自建库', members: 4, parsed: 7 },
+    { name: '红色革命事件', icon: '🔥', desc: '浙西南土地革命、抗日战争到解放战争的关键事件档案：命令、报道与亲历回忆。', update: '2026-05-16', type: '自建库', members: 5, parsed: 12 },
+    { name: '红色设施', icon: '🏯', desc: '革命旧址、纪念场馆、烈士陵园与名人故居的普查档案、照片与影像记录。', update: '2026-05-15', type: '自建库', members: 3, parsed: 7 },
+    { name: '红色文物文献资料', icon: '📜', desc: '纸质文献、实物文物、影像声像与口述史料等珍贵红色档案资源目录。', update: '2026-05-15', type: '共享库', members: 4, parsed: 6 },
+    { name: '红色回忆与研究活动', icon: '🖋️', desc: '革命回忆录征集、史料整理、遗址普查与编研成果发布等历次重要活动记录。', update: '2026-05-14', type: '共享库', members: 4, parsed: 5 },
+    { name: '畲族红色文化', icon: '🌾', desc: '畲族群众参军参战、地下交通与红色歌谣等畲族红色文化档案。', update: '2026-05-13', type: '自建库', members: 3, parsed: 5 },
+    { name: '华侨红色相关史料', icon: '🌊', desc: '青田侨乡、旅外中共支部与抗战募捐网络相关史料，还原华侨参与革命路径。', update: '2026-05-12', type: '自建库', members: 6, parsed: 13 }
+  ];
+
+  /* 本知识库档案数据：由前台「档案资源中心」数据同步生成 */
+  var KB_RES = [{"kb":"地方党组织史料","type":"doc","title":"中共浙西南区委文件","date":"1949-11-23","size":"3.7 MB","source":"丽水市档案馆"},{"kb":"红色革命事件","type":"doc","title":"红军挺进师浙西南作战命令","date":"1935-05","size":"2.1 MB","source":"丽水市档案馆"},{"kb":"各县市区编研书籍","type":"doc","title":"浙西南革命根据地斗争史稿","date":"1981-07","size":"8.4 MB","source":"丽水市档案馆"},{"kb":"革命英烈群体","type":"doc","title":"革命烈士英名录","date":"1953-04","size":"1.8 MB","source":"丽水市档案馆"},{"kb":"红色革命事件","type":"img","title":"解放丽水战役照片集","date":"1949-05","size":"24 MB","source":"丽水市档案馆"},{"kb":"红色设施","type":"img","title":"浙西南革命根据地旧址照片","date":"1965-08","size":"18.3 MB","source":"丽水市档案馆"},{"kb":"刘英·粟裕史料","type":"doc","title":"粟裕将军生平档案","date":"1984-02","size":"5.2 MB","source":"丽水市档案馆"},{"kb":"华侨红色相关史料","type":"doc","title":"青田华侨领袖陈凤生档案","date":"1978-11","size":"3.9 MB","source":"青田县档案馆"},{"kb":"各县市区编研书籍","type":"doc","title":"丽水名人手稿集","date":"1965-09","size":"7.6 MB","source":"丽水市档案馆"},{"kb":"各县市区编研书籍","type":"doc","title":"汤显祖在遂昌治理档案","date":"1595-1601","size":"4.1 MB","source":"遂昌县档案馆"},{"kb":"刘英·粟裕史料","type":"img","title":"粟裕将军历史照片","date":"1950年代","size":"6.8 MB","source":"丽水市档案馆"},{"kb":"华侨红色相关史料","type":"img","title":"陈凤生先生工作照","date":"1968年","size":"4.2 MB","source":"青田县档案馆"},{"kb":"红色回忆与研究活动","type":"doc","title":"丽水日报1951年7月1日","date":"1951-07-01","size":"4.5 MB","source":"丽水市档案馆"},{"kb":"红色革命事件","type":"doc","title":"土地改革工作总结报告","date":"1952-12-30","size":"6.3 MB","source":"丽水市档案馆"},{"kb":"各县市区编研书籍","type":"doc","title":"丽水撤地设市批复文件","date":"2003-05","size":"1.2 MB","source":"丽水市档案馆"},{"kb":"红色革命事件","type":"doc","title":"1935年红军过境大事记","date":"1935-06","size":"2.6 MB","source":"丽水市档案馆"},{"kb":"华侨红色相关史料","type":"doc","title":"青田华侨支援抗战记录","date":"1940-09","size":"5.8 MB","source":"青田县档案馆"},{"kb":"各县市区编研书籍","type":"img","title":"松阳古村落土地契约档案","date":"民国时期","size":"11.2 MB","source":"松阳县档案馆"},{"kb":"各县市区编研书籍","type":"doc","title":"瓯江大桥建设档案","date":"1992-10","size":"9.3 MB","source":"丽水市档案馆"},{"kb":"各县市区编研书籍","type":"doc","title":"城乡道路建设规划图","date":"1985-03","size":"6.8 MB","source":"丽水市档案馆"},{"kb":"各县市区编研书籍","type":"doc","title":"通济堰维修工程报告","date":"1988-06","size":"3.4 MB","source":"莲都区档案馆"},{"kb":"各县市区编研书籍","type":"doc","title":"丽水旧城改造规划图","date":"1999-12","size":"7.9 MB","source":"丽水市档案馆"},{"kb":"各县市区编研书籍","type":"img","title":"1953年丽水城区全景照片","date":"1953-08-12","size":"2.8 MB","source":"丽水市档案馆"},{"kb":"各县市区编研书籍","type":"img","title":"丽水城市变迁航拍图集","date":"2008-2020","size":"86 MB","source":"丽水市档案馆"},{"kb":"地方党组织史料","type":"doc","title":"中共丽水县委扩大会议记录","date":"1950-06-15","size":"3.2 MB","source":"丽水市档案馆"},{"kb":"档案馆编研","type":"doc","title":"丽水县档案馆沿革资料","date":"1983-05","size":"2.9 MB","source":"丽水市档案馆"},{"kb":"地方党组织史料","type":"doc","title":"浙西南特委组织系统表","date":"1942-08","size":"1.5 MB","source":"丽水市档案馆"},{"kb":"各县市区编研书籍","type":"doc","title":"丽水师专建校批复文件","date":"1978-12","size":"1.1 MB","source":"丽水市档案馆"},{"kb":"红色革命事件","type":"img","title":"1950年农民协会成立大会","date":"1950-03-18","size":"19 MB","source":"丽水市档案馆"},{"kb":"华侨红色相关史料","type":"img","title":"青田县侨联成立大会合影","date":"1986-11","size":"8.7 MB","source":"青田县档案馆"},{"kb":"红色设施","type":"img","title":"古堰画乡景区图片","date":"2015-06-21","size":"3.6 MB","source":"丽水市档案馆"},{"kb":"各县市区编研书籍","type":"img","title":"青田石雕艺术图册","date":"2012-04-18","size":"42.3 MB","source":"青田县档案馆"},{"kb":"畲族红色文化","type":"img","title":"畲族传统服饰图录","date":"2009-03-15","size":"28.7 MB","source":"景宁县档案馆"},{"kb":"各县市区编研书籍","type":"img","title":"处州乱弹戏服照片","date":"1986-09","size":"16.5 MB","source":"丽水市档案馆"},{"kb":"各县市区编研书籍","type":"img","title":"丽水老街巷照片集","date":"1998-07-22","size":"9.4 MB","source":"丽水市档案馆"},{"kb":"畲族红色文化","type":"img","title":"丽水传统节庆照片","date":"2005-02-12","size":"11.8 MB","source":"丽水市档案馆"},{"kb":"华侨红色相关史料","type":"doc","title":"侨乡青田家书合集","date":"1930-1990","size":"22.7 MB","source":"青田县档案馆"},{"kb":"华侨红色相关史料","type":"doc","title":"海外侨胞数字档案采集稿","date":"2015-08-30","size":"15.2 MB","source":"青田县档案馆"},{"kb":"红色回忆与研究活动","type":"doc","title":"红色根脉·思政教学资源包","date":"2026-03-15","size":"48.9 MB","source":"丽水市档案馆"},{"kb":"各县市区编研书籍","type":"doc","title":"非遗名录专题资料","date":"2020-06-30","size":"9.8 MB","source":"丽水市档案馆"},{"kb":"红色回忆与研究活动","type":"img","title":"丽水老照片专题展","date":"2019-10-01","size":"132 MB","source":"丽水市档案馆"},{"kb":"华侨红色相关史料","type":"img","title":"侨乡青田影像档案","date":"2008-2020","size":"86.3 MB","source":"青田县档案馆"},{"kb":"华侨红色相关史料","type":"video","title":"2021青田召开陈慕华座谈会","date":"2021-12-08","size":"156 MB","source":"青田县档案馆"},{"kb":"刘英·粟裕史料","type":"video","title":"粟裕将军纪念影像","date":"1984-04-22","size":"320 MB","source":"丽水市档案馆"},{"kb":"红色革命事件","type":"video","title":"红军挺进师浙西南战斗纪录","date":"1985-08","size":"480 MB","source":"丽水市档案馆"},{"kb":"各县市区编研书籍","type":"video","title":"瓯江大桥建成通车典礼","date":"1992-10-28","size":"210 MB","source":"丽水市档案馆"},{"kb":"华侨红色相关史料","type":"video","title":"青田县侨联成立大会纪实","date":"1986-11-15","size":"180 MB","source":"青田县档案馆"},{"kb":"各县市区编研书籍","type":"video","title":"青田石雕非遗技艺记录","date":"2018-05-10","size":"560 MB","source":"青田县档案馆"},{"kb":"华侨红色相关史料","type":"video","title":"侨乡青田海外联谊纪实","date":"2019-09-20","size":"420 MB","source":"青田县档案馆"},{"kb":"党史办红立方","type":"doc","title":"丽水党史宣讲材料汇编","date":"2023-06","size":"12.4 MB","source":"丽水市党史办"},{"kb":"党史办红立方","type":"doc","title":"“红立方”党建品牌创建档案","date":"2021-03","size":"6.8 MB","source":"丽水市党史办"},{"kb":"党史办红立方","type":"doc","title":"主题党日活动纪实手册","date":"2024-09","size":"9.1 MB","source":"丽水市党史办"},{"kb":"红色文物文献资料","type":"doc","title":"红军挺进师印章登记表","date":"1935-1938","size":"2.4 MB","source":"丽水市档案馆"},{"kb":"红色文物文献资料","type":"doc","title":"红色文物普查登记册","date":"1987-10","size":"8.6 MB","source":"丽水市档案馆"},{"kb":"红色文物文献资料","type":"doc","title":"革命文献修复档案","date":"2016-05","size":"5.3 MB","source":"丽水市档案馆"},{"kb":"革命英烈群体","type":"doc","title":"革命烈士牺牲登记表","date":"1951-1962","size":"4.7 MB","source":"丽水市档案馆"},{"kb":"红色设施","type":"doc","title":"革命旧址普查登记表","date":"2020-08","size":"3.9 MB","source":"丽水市档案馆"},{"kb":"档案馆编研","type":"doc","title":"丽水档案馆藏指南","date":"2019-11","size":"10.2 MB","source":"丽水市档案馆"},{"kb":"地方党组织史料","type":"doc","title":"刘英致浙西南特委手书信函","date":"1936-03","size":"1.6 MB","source":"丽水市档案馆"},{"kb":"红色文物文献资料","type":"doc","title":"刘英烈士遗物清册","date":"1942-06","size":"1.4 MB","source":"丽水市档案馆"},{"kb":"革命英烈群体","type":"doc","title":"潘香凤烈士生平登记表","date":"1951-09","size":"1.1 MB","source":"缙云县档案馆"},{"kb":"革命英烈群体","type":"doc","title":"潘香凤护送交通员事迹材料","date":"1959-07","size":"1.9 MB","source":"丽水市档案馆"},{"kb":"革命英烈群体","type":"doc","title":"麻植烈士史料辑存","date":"1962-04","size":"2.3 MB","source":"青田县档案馆"},{"kb":"革命英烈群体","type":"doc","title":"周定烈士传记与手稿","date":"1965-11","size":"2.7 MB","source":"青田县档案馆"},{"kb":"华侨红色相关史料","type":"doc","title":"郑秾革命活动档案","date":"1961-03","size":"3.1 MB","source":"青田县档案馆"},{"kb":"红色革命事件","type":"doc","title":"挺进师入浙挺进电文汇编","date":"1935-03","size":"3.4 MB","source":"丽水市档案馆"},{"kb":"红色革命事件","type":"doc","title":"斋郎战斗史料汇编","date":"1935-04","size":"4.2 MB","source":"庆元县档案馆"},{"kb":"红色设施","type":"doc","title":"挺进师师部旧址（王村口）普查档案","date":"2019-06","size":"5.6 MB","source":"遂昌县档案馆"},{"kb":"红色文物文献资料","type":"doc","title":"红军标语与布告拓片集","date":"1935-1937","size":"6.8 MB","source":"丽水市档案馆"},{"kb":"红色革命事件","type":"doc","title":"挺进师反清剿作战总结","date":"1935-09","size":"2.2 MB","source":"丽水市档案馆"},{"kb":"红色回忆与研究活动","type":"doc","title":"挺进师老战士口述回忆录","date":"1984-10","size":"8.3 MB","source":"丽水市档案馆"},{"kb":"地方党组织史料","type":"doc","title":"中共遂昌支部建立档案","date":"1927-01","size":"1.2 MB","source":"遂昌县档案馆"},{"kb":"红色革命事件","type":"doc","title":"梭溪暴动与红十三军史料","date":"1930-08","size":"3.6 MB","source":"缙云县档案馆"},{"kb":"地方党组织史料","type":"doc","title":"中共缙云县第一次代表大会档案","date":"1928-09","size":"2.1 MB","source":"缙云县档案馆"},{"kb":"红色设施","type":"doc","title":"中共处属特委机关旧址普查档案","date":"2018-07","size":"4.4 MB","source":"丽水市档案馆"},{"kb":"地方党组织史料","type":"doc","title":"白色恐怖下地下党活动档案","date":"1934-1937","size":"3.9 MB","source":"丽水市档案馆"},{"kb":"档案馆编研","type":"doc","title":"浙西南组织史资料（1927—1949）","date":"1993-06","size":"12.6 MB","source":"丽水市档案馆"},{"kb":"红色革命事件","type":"doc","title":"浙南游击纵队解放丽水档案","date":"1949-05","size":"5.1 MB","source":"丽水市档案馆"},{"kb":"红色设施","type":"doc","title":"万山交通总站档案","date":"1936-05","size":"3.3 MB","source":"遂昌县档案馆"},{"kb":"红色设施","type":"doc","title":"万山交通总站旧址普查登记表","date":"2017-09","size":"2.8 MB","source":"遂昌县档案馆"},{"kb":"红色革命事件","type":"doc","title":"金岭红色秘密交通线史料","date":"1935-1938","size":"4.6 MB","source":"丽水市档案馆"},{"kb":"地方党组织史料","type":"doc","title":"地下交通站分布登记表","date":"1941-08","size":"2.4 MB","source":"丽水市档案馆"},{"kb":"红色文物文献资料","type":"doc","title":"交通员密写与暗语手册","date":"1940-1943","size":"1.7 MB","source":"丽水市档案馆"},{"kb":"地方党组织史料","type":"doc","title":"交通联络代号与化名表","date":"1942-11","size":"1.5 MB","source":"丽水市档案馆"},{"kb":"革命英烈群体","type":"doc","title":"潘香凤交通线护送记录","date":"1960-05","size":"2.0 MB","source":"缙云县档案馆"},{"kb":"红色回忆与研究活动","type":"doc","title":"地下交通线口述史料汇编","date":"1986-12","size":"7.2 MB","source":"丽水市档案馆"},{"kb":"地方党组织史料","type":"doc","title":"中共处属特委交通网络档案","date":"1943-04","size":"3.0 MB","source":"丽水市档案馆"},{"kb":"档案馆编研","type":"doc","title":"隐蔽战线纪律规定文本","date":"1941-02","size":"1.3 MB","source":"丽水市档案馆"},{"kb":"档案馆编研","type":"doc","title":"红色交通线研究文集","date":"2016-10","size":"9.5 MB","source":"丽水市档案馆"},{"kb":"华侨红色相关史料","type":"doc","title":"旅欧青田小组建立档案","date":"1926-06","size":"2.6 MB","source":"青田县档案馆"},{"kb":"华侨红色相关史料","type":"doc","title":"《救国时报》青田侨胞报道辑录","date":"1935-1938","size":"4.9 MB","source":"青田县档案馆"},{"kb":"华侨红色相关史料","type":"doc","title":"华侨义勇军参战名录","date":"1938-1941","size":"3.4 MB","source":"青田县档案馆"},{"kb":"畲族红色文化","type":"doc","title":"中共毛窠支部与畲族革命档案","date":"1937-07","size":"2.3 MB","source":"景宁县档案馆"},{"kb":"畲族红色文化","type":"doc","title":"畲族群众参军参战登记册","date":"1951-1962","size":"2.9 MB","source":"景宁县档案馆"},{"kb":"畲族红色文化","type":"doc","title":"畲族红色歌谣采集稿","date":"1982-04","size":"3.2 MB","source":"景宁县档案馆"}];
+
+  /* 欢迎语与推荐问题（按知识库主题） */
+  var QA_TEXT = {
+    '党史办红立方': ['欢迎使用“党史办红立方”知识库助手，我可以基于本库馆藏，为您解答党史宣讲、红色教育基地与主题党日活动的相关问题。',
+      ['党史办“红立方”党建品牌包含哪些内容？', '有哪些主题党日活动档案可以查阅？', '红色教育基地的宣讲资料在哪里查看？']],
+    '档案馆编研': ['欢迎使用“档案馆编研”知识库助手，我可以为您检索史料汇编、专题研究、大事记与年鉴等编研成果。',
+      ['档案馆近年出版过哪些编研成果？', '丽水地方党史大事记有哪些版本？', '专题史料汇编如何检索？']],
+    '各县市区编研书籍': ['欢迎使用“各县市区编研书籍”知识库助手，我可以为您检索丽水九县（市、区）的编研书籍与地方史料。',
+      ['各县市区都出版了哪些革命史书籍？', '组织史资料收录了哪些年份？', '如何按县市区查找编研书籍？']],
+    '地方党组织史料': ['欢迎使用“地方党组织史料”知识库助手，我可以为您解答从遂昌支部到浙西南特委的组织沿革问题。',
+      ['中共遂昌支部是何时成立的？', '浙西南特委的成立与沿革是怎样的？', '省委机关在丽水驻扎过哪些地方？']],
+    '刘英·粟裕史料': ['欢迎使用“刘英·粟裕史料”知识库助手，我可以为您检索刘英、粟裕等革命先辈在浙西南的战斗文献与手稿。',
+      ['刘英在浙西南有哪些革命活动？', '粟裕在浙西南的战斗历程是怎样的？', '刘英手稿与信函有哪些可以查阅？']],
+    '革命英烈群体': ['欢迎使用“革命英烈群体”知识库助手，我可以为您检索烈士英名录、牺牲登记表与口述史料。',
+      ['丽水有哪些著名革命烈士？', '烈士英名录收录了多少位烈士？', '潘香凤烈士的事迹是怎样的？']],
+    '红色革命事件': ['欢迎使用“红色革命事件”知识库助手，我可以为您梳理浙西南重大革命事件的来龙去脉。',
+      ['红军挺进师是何时进入浙西南的？', '斋郎战斗的经过是怎样的？', '浙西南革命根据地是如何建立的？']],
+    '红色设施': ['欢迎使用“红色设施”知识库助手，我可以为您介绍革命旧址、纪念场馆与烈士陵园的普查档案。',
+      ['丽水有哪些革命旧址和纪念场馆？', '浙西南革命根据地旧址在哪里？', '革命设施普查档案包含什么内容？']],
+    '红色文物文献资料': ['欢迎使用“红色文物文献资料”知识库助手，我可以为您检索馆藏珍贵红色文物与文献目录。',
+      ['有哪些珍贵的红色文物可以查看？', '革命文物文献的数字化情况如何？', '馆藏红色文物的来源有哪些？']],
+    '红色回忆与研究活动': ['欢迎使用“红色回忆与研究活动”知识库助手，我可以为您检索回忆录征集、遗址普查等活动记录。',
+      ['革命回忆录征集活动开展过几次？', '有哪些口述史料可以查阅？', '遗址普查的成果在哪里查看？']],
+    '畲族红色文化': ['欢迎使用“畲族红色文化”知识库助手，我可以为您解答畲族群众参军参战与红色歌谣的相关问题。',
+      ['畲族群众在革命中有哪些贡献？', '畲族红色歌谣有哪些代表作品？', '畲族地下交通线是怎样运作的？']],
+    '华侨红色相关史料': ['欢迎使用“华侨红色相关史料”知识库助手，我可以为您检索青田侨乡与旅外中共支部的相关史料。',
+      ['青田华侨在抗战中有哪些贡献？', '旅外中共支部是如何建立的？', '《救国时报》上有哪些青田侨胞报道？']]
+  };
+
+  var ROSTER = ['张编研', '李编辑', '王审核', '孙录入', '赵编研', '周校对', '吴馆员', '郑研究'];
+
+  /* ================= 取参数 ================= */
+  function getParam(k, def) {
+    var v = new URLSearchParams(location.search).get(k);
+    return v === null || v === '' ? def : v;
+  }
+  var curName = getParam('kb', '党史办红立方');
+  var cur = KB_MAP.filter(function (x) { return x.name === curName; })[0] || KB_MAP[0];
+  var curRes = KB_RES.filter(function (r) { return r.kb === cur.name; });
+
+  /* ================= 通用 ================= */
+  function esc(s) {
+    return String(s).replace(/[<>&"']/g, function (c) {
+      return { '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  function toast(msg) {
+    var t = document.getElementById('toast');
+    if (!t) { t = document.createElement('div'); t.id = 'toast'; t.className = 'toast'; document.body.appendChild(t); }
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(t.__tm);
+    t.__tm = setTimeout(function () { t.classList.remove('show'); }, 2200);
+  }
+
+  /* ================= 顶部标识 ================= */
+  document.getElementById('kbBrandIco').textContent = cur.icon;
+  document.getElementById('kbBrandName').textContent = cur.name;
+  document.title = cur.name + ' · 知识库管理 · 万象未来';
+
+  /* ================= 侧栏切换 ================= */
+  var navItems = document.querySelectorAll('.kb-nav-item');
+  var PANEL = { basic: 'pBasic', members: 'pMembers', docs: 'pDocs', assistant: 'pAssistant', share: 'pShare', stats: 'pStats', trash: 'pTrash' };
+  function showPanel(key) {
+    navItems.forEach(function (n) { n.classList.toggle('active', n.getAttribute('data-panel') === key); });
+    Object.keys(PANEL).forEach(function (k) {
+      var el = document.getElementById(PANEL[k]);
+      if (el) el.hidden = (k !== key);
+    });
+    var act = document.querySelector('.kb-nav-item[data-panel="' + key + '"]');
+    if (act) {
+      document.getElementById('panelTitle').textContent = act.getAttribute('data-title');
+      document.getElementById('panelSub').textContent = act.getAttribute('data-sub');
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (key === 'stats') setTimeout(renderCharts, 30);
+  }
+  navItems.forEach(function (n) {
+    n.addEventListener('click', function () { showPanel(this.getAttribute('data-panel')); });
+  });
+
+  /* ================= 基本信息 ================= */
+  document.getElementById('kbName').value = cur.name;
+  document.getElementById('kbDesc').value = cur.desc;
+
+  var ICONS = ['🚩', '📚', '📖', '🏛️', '🎖️'];
+  var presetBox = document.getElementById('iconPresets');
+  presetBox.innerHTML = ICONS.map(function (ic) {
+    return '<div class="icon-preset' + (ic === cur.icon ? ' on' : '') + '" data-ic="' + ic + '">' + ic + '</div>';
+  }).join('');
+  presetBox.addEventListener('click', function (e) {
+    var t = e.target.closest('.icon-preset');
+    if (!t) return;
+    presetBox.querySelectorAll('.icon-preset').forEach(function (p) { p.classList.remove('on'); });
+    t.classList.add('on');
+    document.getElementById('kbBrandIco').textContent = t.getAttribute('data-ic');
+    toast('已选择图标：' + t.getAttribute('data-ic'));
+  });
+  document.getElementById('iconUpload').addEventListener('click', function () {
+    toast('演示环境：图标上传后需小于 2MB（PNG / JPG）');
+  });
+  document.getElementById('aiGen').addEventListener('click', function () {
+    var n = curRes.length;
+    document.getElementById('kbDesc').value = '本知识库围绕“' + cur.name + '”主题建库，现收录 ' + n + ' 件档案，来源涵盖丽水市及各县（市、区）档案馆。' + cur.desc + '支持按年代、来源与主题标签检索，并可被智能问答直接召回引用。';
+    toast('AI 已生成本知识库描述，可直接编辑后保存');
+  });
+  document.getElementById('delKb').addEventListener('click', function () {
+    if (confirm('确定要删除知识库「' + cur.name + '」吗？\n删除后将移入回收站，保留 90 天。')) toast('已移入回收站：' + cur.name);
+  });
+
+  /* ================= 成员与权限 ================= */
+  var PERMS = ['创建者', '管理员', '可编辑', '仅查看'];
+  var members = [];
+  for (var i = 0; i < cur.members; i++) {
+    members.push({ name: ROSTER[i % ROSTER.length], perm: PERMS[Math.min(i, 3)], visit: 120 - i * 23 + (cur.name.length * 3), create: Math.max(0, curRes.length - i * 2) });
+  }
+  function renderMembers() {
+    var q = (document.getElementById('mSearch').value || '').trim().toLowerCase();
+    var list = members.filter(function (m) { return !q || m.name.toLowerCase().indexOf(q) > -1; });
+    var body = document.getElementById('mBody');
+    if (!list.length) {
+      body.innerHTML = '<tr class="table-empty"><td colspan="4">未找到匹配的成员</td></tr>';
+      return;
+    }
+    body.innerHTML = list.map(function (m) {
+      return '<tr>' +
+        '<td><input type="checkbox" class="m-ck" data-name="' + esc(m.name) + '"></td>' +
+        '<td class="t-name">' + esc(m.name) + '</td>' +
+        '<td>' + (m.perm === '创建者' ? '<span class="badge blue">' + m.perm + '</span>' : m.perm) + '</td>' +
+        '<td><span class="link-btn" data-mact="perm" data-name="' + esc(m.name) + '">修改权限</span><span class="link-btn muted" data-mact="del" data-name="' + esc(m.name) + '">移除</span></td>' +
+        '</tr>';
+    }).join('');
+  }
+  renderMembers();
+  document.getElementById('mSearch').addEventListener('input', renderMembers);
+  document.getElementById('mBody').addEventListener('click', function (e) {
+    var b = e.target.closest('.link-btn');
+    if (!b) return;
+    var name = b.getAttribute('data-name');
+    var act = b.getAttribute('data-mact');
+    if (act === 'del') {
+      if (members.filter(function (m) { return m.name === name; })[0].perm === '创建者') { alert('创建者不可移除'); return; }
+      if (confirm('确定移除成员「' + name + '」吗？')) {
+        members = members.filter(function (m) { return m.name !== name; });
+        renderMembers();
+        toast('已移除成员：' + name);
+      }
+    } else {
+      var m = members.filter(function (x) { return x.name === name; })[0];
+      var np = prompt('设置「' + name + '」的权限（创建者 / 管理员 / 可编辑 / 仅查看）：', m.perm);
+      if (np === null) return;
+      np = np.trim();
+      if (PERMS.indexOf(np) === -1) { alert('请输入以下之一：' + PERMS.join(' / ')); return; }
+      m.perm = np;
+      renderMembers();
+      toast('已更新权限：' + name + ' → ' + np);
+    }
+  });
+  document.getElementById('mAll').addEventListener('change', function () {
+    var on = this.checked;
+    document.querySelectorAll('.m-ck').forEach(function (c) { c.checked = on; });
+  });
+  document.getElementById('mAdd').addEventListener('click', function () {
+    var nm = prompt('请输入要添加的成员用户名：', '');
+    if (nm === null) return;
+    nm = nm.trim();
+    if (!nm) { alert('用户名不能为空'); return; }
+    if (members.filter(function (m) { return m.name === nm; }).length) { alert('该成员已在列表中'); return; }
+    members.push({ name: nm, perm: '仅查看', visit: 0, create: 0 });
+    renderMembers();
+    toast('已添加成员：' + nm);
+  });
+  document.getElementById('mBatchPerm').addEventListener('click', function () {
+    var picked = document.querySelectorAll('.m-ck:checked');
+    if (!picked.length) { alert('请先勾选成员'); return; }
+    var np = prompt('将所选 ' + picked.length + ' 位成员权限批量修改为（管理员 / 可编辑 / 仅查看）：', '可编辑');
+    if (np === null) return;
+    np = np.trim();
+    if (PERMS.indexOf(np) === -1) { alert('请输入以下之一：' + PERMS.join(' / ')); return; }
+    picked.forEach(function (c) {
+      var nm = c.getAttribute('data-name');
+      var m = members.filter(function (x) { return x.name === nm; })[0];
+      if (m && m.perm !== '创建者') m.perm = np;
+    });
+    renderMembers();
+    toast('已批量修改 ' + picked.length + ' 位成员的权限');
+  });
+  document.getElementById('mBatchDel').addEventListener('click', function () {
+    var picked = document.querySelectorAll('.m-ck:checked');
+    if (!picked.length) { alert('请先勾选成员'); return; }
+    var names = [];
+    picked.forEach(function (c) {
+      var nm = c.getAttribute('data-name');
+      var m = members.filter(function (x) { return x.name === nm; })[0];
+      if (m && m.perm === '创建者') return;
+      names.push(nm);
+    });
+    if (!names.length) { alert('创建者不可移除'); return; }
+    if (!confirm('确定批量移除 ' + names.length + ' 位成员吗？')) return;
+    members = members.filter(function (m) { return names.indexOf(m.name) === -1; });
+    renderMembers();
+    toast('已批量移除 ' + names.length + ' 位成员');
+  });
+
+  /* ================= 知识列表 ================= */
+  var TYPE_ICO = { doc: '📄', img: '🖼️', video: '🎬' };
+  var TYPE_LABEL = { doc: '文档', img: '图片', video: '声像' };
+  function updateDocStats() {
+    document.getElementById('dTotal').textContent = curRes.length;
+    var p = Math.min(curRes.length, cur.parsed);
+    document.getElementById('dParsed').textContent = p;
+    document.getElementById('dUnparsed').textContent = curRes.length - p;
+  }
+  function renderDocs() {
+    var q = (document.getElementById('dSearch').value || '').trim().toLowerCase();
+    var st = document.getElementById('dStatus').value;
+    var parsedN = Math.min(curRes.length, cur.parsed);
+    var list = curRes.map(function (r, i) { return { r: r, done: i < parsedN, idx: i }; });
+    list = list.filter(function (x) {
+      if (st === 'done' && !x.done) return false;
+      if (st === 'wait' && x.done) return false;
+      if (q && x.r.title.toLowerCase().indexOf(q) === -1 && (x.r.source || '').toLowerCase().indexOf(q) === -1) return false;
+      return true;
+    });
+    var body = document.getElementById('dBody');
+    if (!list.length) {
+      body.innerHTML = '<tr class="table-empty"><td colspan="5">未找到匹配的知识</td></tr>';
+    } else {
+      body.innerHTML = list.map(function (x) {
+        return '<tr>' +
+          '<td class="t-name"><span class="doc-cell"><span class="doc-ico">' + (TYPE_ICO[x.r.type] || '📄') + '</span>' + esc(x.r.title) + '</span></td>' +
+          '<td>' + esc(x.r.size || '—') + '</td>' +
+          '<td>' + (x.done ? '<span class="badge green">✓ 解析完成</span>' : '<span class="badge gray">未解析</span>') + '</td>' +
+          '<td>' + esc(cur.update) + ' 10:' + String(12 + (x.idx % 40)).padStart(2, '0') + ':33</td>' +
+          '<td><span class="link-btn" data-dact="meta">Meta 信息</span><span class="link-btn" data-dact="slice">查看切片</span><span class="link-btn" data-dact="content">解析内容</span><span class="link-btn" data-dact="reparse">重新解析</span><span class="link-btn muted" data-dact="del">删除</span></td>' +
+          '</tr>';
+      }).join('');
+    }
+    document.getElementById('dCount').textContent = '共 ' + list.length + ' 条 · 类型 ' + TYPE_LABEL.doc + '/' + TYPE_LABEL.img + '/' + TYPE_LABEL.video;
+  }
+  updateDocStats();
+  renderDocs();
+  document.getElementById('dSearch').addEventListener('input', renderDocs);
+  document.getElementById('dStatus').addEventListener('change', renderDocs);
+  document.getElementById('dBody').addEventListener('click', function (e) {
+    var b = e.target.closest('.link-btn');
+    if (!b) return;
+    var act = b.getAttribute('data-dact');
+    var title = b.closest('tr').querySelector('.t-name').textContent.trim();
+    if (act === 'del') {
+      if (confirm('确定要删除《' + title + '》吗？\n删除后将移入回收站，保留 90 天。')) toast('已移入回收站：' + title);
+      return;
+    }
+    if (act === 'slice') { toast('演示环境：文档切片视图（' + title + '）'); return; }
+    if (act === 'content') { toast('演示环境：AI 解析内容（' + title + '）'); return; }
+    if (act === 'reparse') { toast('已提交重新解析：' + title); return; }
+    toast('演示环境：Meta 信息（' + title + '）');
+  });
+
+  /* ================= 助手设置 ================= */
+  var qa = QA_TEXT[cur.name] || ['欢迎使用「' + cur.name + '」知识库助手。', ['本知识库收录了哪些档案？', '如何按主题检索档案？', '有哪些代表性档案可以查阅？']];
+  document.getElementById('aWelcome').value = qa[0];
+  var questions = qa[1].slice();
+  function renderQuestions() {
+    document.getElementById('aQuestions').innerHTML = questions.map(function (q, i) {
+      return '<div class="qa-item"><input class="txt" value="' + esc(q) + '" data-i="' + i + '"><span class="qa-del" data-i="' + i + '" title="删除">🗑</span></div>';
+    }).join('');
+    document.getElementById('aAddQ').disabled = questions.length >= 5;
+    document.getElementById('aAddQ').style.opacity = questions.length >= 5 ? 0.5 : 1;
+  }
+  renderQuestions();
+  document.getElementById('aQuestions').addEventListener('input', function (e) {
+    if (e.target.classList.contains('txt')) questions[parseInt(e.target.getAttribute('data-i'), 10)] = e.target.value;
+  });
+  document.getElementById('aQuestions').addEventListener('click', function (e) {
+    var d = e.target.closest('.qa-del');
+    if (!d) return;
+    questions.splice(parseInt(d.getAttribute('data-i'), 10), 1);
+    renderQuestions();
+  });
+  document.getElementById('aAddQ').addEventListener('click', function () {
+    if (questions.length >= 5) { alert('最多设置 5 个推荐问题'); return; }
+    questions.push('新的推荐问题');
+    renderQuestions();
+    var inputs = document.querySelectorAll('#aQuestions .txt');
+    if (inputs.length) inputs[inputs.length - 1].focus();
+  });
+
+  /* ================= 分享设置 ================= */
+  function hashOf(s) {
+    var h = 0;
+    for (var i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) % 100000000;
+    return String(h).padStart(8, '0');
+  }
+  var shareLink = 'https://cyl321305.github.io/wanxiang-future/ai-chat.html?kb=' + encodeURIComponent(cur.name) + '&share=' + hashOf(cur.name);
+  document.getElementById('sLink').value = shareLink;
+  document.getElementById('sCopy').addEventListener('click', function () {
+    var inp = document.getElementById('sLink');
+    inp.select();
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(inp.value).then(function () { toast('分享链接已复制'); }, function () { toast('请手动复制链接'); });
+    } else {
+      try { document.execCommand('copy'); toast('分享链接已复制'); } catch (err) { toast('请手动复制链接'); }
+    }
+  });
+  document.getElementById('sEnable').addEventListener('change', function () {
+    toast(this.checked ? '已启用分享' : '已关闭分享，对外链接将失效');
+  });
+
+  /* ================= 数据总览 ================= */
+  var charts = {};
+  var RANGE = {
+    day: { x: ['09-04', '09-05', '09-06', '09-07', '09-08', '09-09', '09-10', '09-11', '09-12', '09-13'], v: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], u: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], n: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0] },
+    week: { x: ['第 29 周', '第 30 周', '第 31 周', '第 32 周', '第 33 周', '第 34 周', '第 35 周', '第 36 周'], v: [0, 0, 0, 0, 0, 0, 0, 0], u: [0, 0, 0, 0, 0, 0, 0, 0], n: [0, 0, 0, 0, 0, 0, 0, 0] },
+    month: { x: ['3 月', '4 月', '5 月', '6 月', '7 月', '8 月', '9 月'], v: [0, 0, 0, 0, 0, 0, 0], u: [0, 0, 0, 0, 0, 0, 0], n: [0, 0, 0, 0, 0, 0, 0] }
+  };
+  var curRange = 'day';
+  /* 本知识库访问/新增数据（按馆藏量派生，保证与知识库规模一致） */
+  (function buildSeries() {
+    var base = Math.max(1, curRes.length);
+    ['day', 'week', 'month'].forEach(function (k) {
+      var r = RANGE[k];
+      r.v = r.x.map(function (_, i) { return Math.round(base * 1.6) + ((i * 7 + cur.name.length) % 5) * 2; });
+      r.u = r.v.map(function (x) { return Math.max(0, Math.round(x * 0.62)); });
+      r.n = r.x.map(function (_, i) { return (i + cur.name.length) % 3; });
+    });
+    var last = RANGE.day.x.length - 1;
+    RANGE.day.v[last] = Math.round(curRes.length * 2.1);
+    RANGE.day.u[last] = RANGE.day.v[last];
+  })();
+
+  function ensureChart(key, id) {
+    if (!window.echarts) return null;
+    var el = document.getElementById(id);
+    if (!el) return null;
+    if (!charts[key] && el.offsetWidth) charts[key] = echarts.init(el);
+    return charts[key] || null;
+  }
+  function renderCharts() {
+    var r = RANGE[curRange];
+    ensureChart('use', 'useChart');
+    if (charts.use) {
+      charts.use.resize();
+      charts.use.setOption({
+        color: ['#a62c2c', '#c9a86c'],
+        tooltip: { trigger: 'axis' },
+        legend: { bottom: 0, data: ['访问次数', '访问人数'], textStyle: { color: '#8a7566' } },
+        grid: { left: 46, right: 18, top: 18, bottom: 42 },
+        xAxis: { type: 'category', data: r.x, axisLine: { lineStyle: { color: '#e6dcd0' } }, axisLabel: { color: '#a08d7c', fontSize: 11 } },
+        yAxis: { type: 'value', splitLine: { lineStyle: { color: '#f0e9e0' } }, axisLabel: { color: '#a08d7c' } },
+        series: [
+          { name: '访问次数', type: 'line', smooth: true, symbolSize: 6, areaStyle: { opacity: 0.1 }, data: r.v },
+          { name: '访问人数', type: 'line', smooth: true, symbolSize: 6, areaStyle: { opacity: 0.1 }, data: r.u }
+        ]
+      });
+    }
+    ensureChart('kd', 'kbDataChart');
+    if (charts.kd) {
+      charts.kd.resize();
+      charts.kd.setOption({
+        color: ['#a62c2c'],
+        tooltip: { trigger: 'axis' },
+        legend: { bottom: 0, data: ['新增知识数'], textStyle: { color: '#8a7566' } },
+        grid: { left: 46, right: 18, top: 18, bottom: 42 },
+        xAxis: { type: 'category', data: r.x, axisLine: { lineStyle: { color: '#e6dcd0' } }, axisLabel: { color: '#a08d7c', fontSize: 11 } },
+        yAxis: { type: 'value', minInterval: 1, splitLine: { lineStyle: { color: '#f0e9e0' } }, axisLabel: { color: '#a08d7c' } },
+        series: [{ name: '新增知识数', type: 'bar', barWidth: 14, itemStyle: { borderRadius: [4, 4, 0, 0] }, data: r.n }]
+      });
+    }
+    renderRanks();
+  }
+
+  document.getElementById('rangeSeg').addEventListener('click', function (e) {
+    var b = e.target.closest('button');
+    if (!b) return;
+    this.querySelectorAll('button').forEach(function (x) { x.classList.remove('on'); });
+    b.classList.add('on');
+    curRange = b.getAttribute('data-range');
+    renderCharts();
+  });
+
+  /* 排行榜 */
+  var docMetric = 'visit', memMetric = 'visit';
+  function docRankData() {
+    return curRes.map(function (x, i) {
+      return { name: x.title, visit: 260 - i * 17 + x.title.length * 3, query: 90 - i * 5 + x.title.length };
+    }).map(function (x) { return { name: x.name, val: x[docMetric] }; })
+      .sort(function (a, b) { return b.val - a.val; }).slice(0, 6);
+  }
+  function memRankData() {
+    return members.map(function (m) { return { name: m.name, val: m[memMetric] }; })
+      .sort(function (a, b) { return b.val - a.val; }).slice(0, 6);
+  }
+  function renderRanks() {
+    function draw(host, list, unit) {
+      if (!list.length) { host.innerHTML = '<div style="text-align:center;color:var(--text-muted);padding:36px 0;font-size:13px">暂无数据</div>'; return; }
+      host.innerHTML = list.map(function (x, i) {
+        return '<div class="rank-item"><span class="rank-no' + (i < 3 ? ' top' + (i + 1) : '') + '">' + (i + 1) + '</span>' +
+          '<span class="rank-name" title="' + esc(x.name) + '">' + esc(x.name) + '</span>' +
+          '<span class="rank-val">' + x.val + (unit || '') + '</span></div>';
+      }).join('');
+    }
+    draw(document.getElementById('docRank'), docRankData());
+    draw(document.getElementById('memRank'), memRankData());
+  }
+  document.getElementById('docRankSeg').addEventListener('click', function (e) {
+    var b = e.target.closest('button');
+    if (!b) return;
+    this.querySelectorAll('button').forEach(function (x) { x.classList.remove('on'); });
+    b.classList.add('on');
+    docMetric = b.getAttribute('data-metric');
+    renderRanks();
+  });
+  document.getElementById('memRankSeg').addEventListener('click', function (e) {
+    var b = e.target.closest('button');
+    if (!b) return;
+    this.querySelectorAll('button').forEach(function (x) { x.classList.remove('on'); });
+    b.classList.add('on');
+    memMetric = b.getAttribute('data-metric');
+    renderRanks();
+  });
+  window.addEventListener('resize', function () {
+    Object.keys(charts).forEach(function (k) { if (charts[k]) charts[k].resize(); });
+  });
+  renderRanks();
+
+  /* ================= 回收站 ================= */
+  document.getElementById('tAll').addEventListener('change', function () {
+    var on = this.checked;
+    document.querySelectorAll('.t-ck').forEach(function (c) { c.checked = on; });
+  });
+  document.getElementById('tSearch').addEventListener('input', function () {
+    var q = this.value.trim();
+    var body = document.getElementById('tBody');
+    if (!body.querySelector('tr:not(.table-empty)')) return;
+    body.querySelectorAll('tr').forEach(function (tr) {
+      if (tr.classList.contains('table-empty')) return;
+      tr.style.display = !q || tr.textContent.indexOf(q) > -1 ? '' : 'none';
+    });
+  });
+  document.getElementById('tPurge').addEventListener('click', function () {
+    var picked = document.querySelectorAll('.t-ck:checked');
+    if (!picked.length) { alert('回收站暂无内容可彻底删除'); return; }
+    if (confirm('确定彻底删除所选 ' + picked.length + ' 项吗？该操作不可恢复。')) toast('已彻底删除 ' + picked.length + ' 项');
+  });
+
+  /* ================= 保存按钮 ================= */
+  document.querySelectorAll('.btn[data-save]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      toast(this.getAttribute('data-save') + '已保存（演示环境）');
+    });
+  });
+})();
+</script>
+</body>
+</html>

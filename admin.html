@@ -6,7 +6,6 @@
 <title>后台管理 · 万象未来</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=ZCOOL+XiaoWei&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
 <style>
   :root {
     --bg-cream: #faf5ee;
@@ -223,6 +222,12 @@
   .link-btn:last-child { margin-right: 0; }
   .link-btn:hover { text-decoration: underline; }
   .link-btn.muted { color: var(--text-muted); }
+  a.link-btn { text-decoration: none; }
+  .kb-cell { display: flex; align-items: flex-start; gap: 10px; }
+  .kb-ico { width: 30px; height: 30px; border-radius: 9px; background: rgba(166,44,44,0.08); display: inline-flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
+  .kb-desc { font-size: 12px; color: var(--text-muted); margin-top: 3px; max-width: 340px; line-height: 1.5; }
+  .parse-cell { display: flex; flex-direction: column; gap: 5px; min-width: 86px; }
+  .parse-cell .bar { min-width: 86px; }
   .badge { display: inline-block; padding: 3px 10px; border-radius: 10px; font-size: 12px; font-weight: 500; white-space: nowrap; }
   .badge.green { background: rgba(78, 138, 94, 0.14); color: var(--green); }
   .badge.gold { background: rgba(201, 168, 108, 0.2); color: #9a7b3f; }
@@ -322,144 +327,55 @@
   <aside class="admin-sidebar">
     <div class="side-title">管理中心</div>
 
-    <div class="nav-group">数据中心</div>
-    <div class="side-item active" data-target="dashboard"><span class="ico">📊</span>数据概览</div>
-
     <div class="nav-group">内容管理</div>
-    <div class="side-item" data-target="archives"><span class="ico">📚</span>档案资源管理<span class="cnt">12</span></div>
+    <div class="side-item active" data-target="archives"><span class="ico">📚</span>档案资源管理<span class="cnt">12</span></div>
     <div class="side-item" data-target="graph"><span class="ico">🕸️</span>知识图谱管理<span class="cnt">10</span></div>
     <div class="side-item" data-target="courses"><span class="ico">🚩</span>数字思政管理<span class="cnt">5</span></div>
     <div class="side-item" data-target="routes"><span class="ico">🗺️</span>研学路线管理<span class="cnt">10</span></div>
 
     <div class="nav-group">智能服务</div>
-    <div class="side-item" data-target="qa"><span class="ico">🤖</span>智能问答管理</div>
     <div class="side-item" data-target="blacklist"><span class="ico">🚫</span>黑名单管理</div>
 
     <div class="nav-group">系统管理</div>
     <div class="side-item" data-target="users"><span class="ico">👥</span>用户与权限</div>
     <div class="side-item" data-target="logs"><span class="ico">📝</span>操作日志</div>
-    <div class="side-item" data-target="settings"><span class="ico">⚙️</span>系统设置</div>
   </aside>
 
   <main class="admin-main">
 
-    <!-- ===================== 数据概览 ===================== -->
-    <section id="dashboard" class="admin-section">
-      <div class="page-head">
-        <div class="page-title">数据概览</div>
-        <div class="page-sub">全站档案资源、课程与访问情况总览 · 数据统计时间 2026-09-14</div>
-      </div>
-
-      <div class="kpi-row">
-        <div class="kpi-card">
-          <div class="kpi-top"><span class="kpi-icon">🗂️</span><span class="kpi-trend">+8 本周</span></div>
-          <div class="kpi-value">132<span class="unit">条</span></div>
-          <div class="kpi-label">档案条目总量</div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-top"><span class="kpi-icon">📚</span><span class="kpi-trend">+1 本周</span></div>
-          <div class="kpi-value">12<span class="unit">个</span></div>
-          <div class="kpi-label">知识库</div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-top"><span class="kpi-icon">🕸️</span><span class="kpi-trend">+2 本周</span></div>
-          <div class="kpi-value">10<span class="unit">个</span></div>
-          <div class="kpi-label">知识图谱</div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-top"><span class="kpi-icon">🚩</span><span class="kpi-trend">已发布</span></div>
-          <div class="kpi-value">5<span class="unit">门</span></div>
-          <div class="kpi-label">数字思政课程</div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-top"><span class="kpi-icon">🗺️</span><span class="kpi-trend">+3 本周</span></div>
-          <div class="kpi-value">10<span class="unit">条</span></div>
-          <div class="kpi-label">研学线路</div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-top"><span class="kpi-icon">📍</span><span class="kpi-trend">+12 本周</span></div>
-          <div class="kpi-value">45<span class="unit">个</span></div>
-          <div class="kpi-label">研学点位</div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-top"><span class="kpi-icon">👥</span><span class="kpi-trend">+36 本周</span></div>
-          <div class="kpi-value">1,286<span class="unit">人</span></div>
-          <div class="kpi-label">平台注册用户</div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-top"><span class="kpi-icon">👁️</span><span class="kpi-trend down">-4.2%</span></div>
-          <div class="kpi-value">3,472<span class="unit">次</span></div>
-          <div class="kpi-label">今日访问量</div>
-        </div>
-      </div>
-
-      <div class="panel mb">
-        <div class="panel-title">数据汇总 <span class="sub">截至 2026-09-14</span></div>
-        <div class="sum-grid">
-          <div class="sum-item">
-            <div class="sum-label">知识库数量 <span class="help-icon" title="已建成的专题知识库总数">?</span></div>
-            <div class="sum-num">12<span class="unit">个</span></div>
-          </div>
-          <div class="sum-item">
-            <div class="sum-label">现行有效知识总数 <span class="help-icon" title="状态为已发布、可被检索与引用的档案条目">?</span></div>
-            <div class="sum-num">132<span class="unit">条</span></div>
-          </div>
-          <div class="sum-item">
-            <div class="sum-label">AI 解析知识总数 <span class="help-icon" title="已完成 OCR 与结构化解析、进入向量库的条目">?</span></div>
-            <div class="sum-num">118<span class="unit">条</span></div>
-          </div>
-          <div class="sum-item">
-            <div class="sum-label">AI 问答引用知识总数 <span class="help-icon" title="被智能问答实际召回引用的条目数">?</span></div>
-            <div class="sum-num">96<span class="unit">条</span></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="grid-2 mb">
-        <div class="panel">
-          <div class="panel-title">内容增长趋势 <span class="sub">近 14 天入库量</span></div>
-          <div id="growthChart" class="chart-box"></div>
-        </div>
-        <div class="panel">
-          <div class="panel-title">访问趋势 <span class="sub">近 14 天</span></div>
-          <div id="visitChart" class="chart-box"></div>
-        </div>
-      </div>
-
-      <div class="grid-2">
-        <div class="panel">
-          <div class="panel-title">热门知识库排行 <span class="sub">按访问次数</span></div>
-          <div id="kbRank">
-            <div class="rank-item"><span class="rank-no top1">1</span><span class="rank-name">各县市区编研书籍</span><span class="rank-val">8,642</span></div>
-            <div class="rank-item"><span class="rank-no top2">2</span><span class="rank-name">档案馆编研</span><span class="rank-val">7,118</span></div>
-            <div class="rank-item"><span class="rank-no top3">3</span><span class="rank-name">红色革命事件</span><span class="rank-val">6,305</span></div>
-            <div class="rank-item"><span class="rank-no">4</span><span class="rank-name">党史办红立方</span><span class="rank-val">5,470</span></div>
-            <div class="rank-item"><span class="rank-no">5</span><span class="rank-name">刘英·粟裕史料</span><span class="rank-val">4,926</span></div>
-            <div class="rank-item"><span class="rank-no">6</span><span class="rank-name">华侨红色相关史料</span><span class="rank-val">4,118</span></div>
-          </div>
-        </div>
-        <div class="panel">
-          <div class="panel-title">待办事项 <span class="sub">共 26 项</span></div>
-          <div class="todo-item"><span class="todo-left"><span class="todo-num">8</span>档案条目待审核</span><span class="todo-go" data-go="archives">去处理 ›</span></div>
-          <div class="todo-item"><span class="todo-left"><span class="todo-num">1</span>思政课程待发布</span><span class="todo-go" data-go="courses">去处理 ›</span></div>
-          <div class="todo-item"><span class="todo-left"><span class="todo-num">12</span>问答未命中待补语料</span><span class="todo-go" data-go="qa">去处理 ›</span></div>
-          <div class="todo-item"><span class="todo-left"><span class="todo-num">3</span>研学点位信息待完善</span><span class="todo-go" data-go="routes">去处理 ›</span></div>
-          <div class="todo-item"><span class="todo-left"><span class="todo-num">2</span>用户权限申请待审批</span><span class="todo-go" data-go="users">去处理 ›</span></div>
-          <div class="todo-item"><span class="todo-left"><span class="todo-num">1</span>知识图谱「革命英烈群体」训练中</span><span class="todo-go" data-go="graph">去查看 ›</span></div>
-        </div>
-      </div>
-    </section>
-
     <!-- ===================== 档案资源管理 ===================== -->
-    <section id="archives" class="admin-section" hidden>
+    <section id="archives" class="admin-section">
       <div class="page-head">
         <div class="page-title">档案资源管理</div>
         <div class="page-sub">知识库、档案条目与分类标签的维护 · 与前台「档案资源中心」数据同步</div>
       </div>
 
+      <div class="kpi-row">
+        <div class="kpi-card">
+          <div class="kpi-top"><span class="kpi-icon">📚</span><span class="kpi-trend">全部已发布</span></div>
+          <div class="kpi-value">12<span class="unit">个</span></div>
+          <div class="kpi-label">知识库总数</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-top"><span class="kpi-icon">🗂️</span><span class="kpi-trend">+8 本周</span></div>
+          <div class="kpi-value">95<span class="unit">件</span></div>
+          <div class="kpi-label">馆藏档案总量</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-top"><span class="kpi-icon">🤖</span><span class="kpi-trend">96.8%</span></div>
+          <div class="kpi-value">92<span class="unit">件</span></div>
+          <div class="kpi-label">已完成 AI 解析</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-top"><span class="kpi-icon">⚠️</span><span class="kpi-trend down">待处理</span></div>
+          <div class="kpi-value">3<span class="unit">件</span></div>
+          <div class="kpi-label">待解析待审核</div>
+        </div>
+      </div>
+
       <div class="hint-bar">
         <span>💡</span>
-        <div>知识库与档案条目直接决定前台「档案资源中心」的展示内容。新增条目后需完成 <b>AI 解析</b> 才能被智能问答召回。</div>
+        <div>知识库与档案条目直接决定前台「档案资源中心」的展示内容。点击 <b>编辑</b> 进入单个知识库管理页，可维护基本信息、成员权限、知识列表、AI 助手与分享设置；新增条目后需完成 <b>AI 解析</b> 才能被智能问答召回。</div>
       </div>
 
       <div class="tabs">
@@ -472,30 +388,107 @@
       <div class="tab-pane" data-pane="kb">
         <div class="toolbar">
           <input type="text" data-filter="#kbTable" placeholder="搜索知识库名称 / 说明...">
-          <select>
-            <option>全部类型</option><option>自建库</option><option>共享库</option>
+          <select id="kbTypeFilter">
+            <option value="">全部类型</option>
+            <option value="自建库">自建库</option>
+            <option value="共享库">共享库</option>
           </select>
+          <span class="form-tip" id="kbCount">共 12 个知识库 · 95 件馆藏档案</span>
           <div class="spacer"></div>
           <button class="btn ghost" data-act="export">导出清单</button>
           <button class="btn" data-act="new-kb">＋ 新建知识库</button>
         </div>
         <div class="panel table-wrap">
           <table class="data-table" id="kbTable">
-            <thead><tr><th>知识库名称</th><th>类型</th><th>馆藏量</th><th>已解析</th><th>更新时间</th><th>状态</th><th>操作</th></tr></thead>
+            <thead>
+              <tr><th>知识库</th><th>类型</th><th>馆藏量</th><th>AI 解析</th><th>成员</th><th>最近更新</th><th>状态</th><th>操作</th></tr>
+            </thead>
             <tbody>
-              <tr><td class="t-name">党史办红立方</td><td>自建库</td><td class="t-num">12</td><td>12</td><td>2026-05-20</td><td><span class="badge green">已发布</span></td><td><span class="link-btn">编辑</span><span class="link-btn">条目</span><span class="link-btn muted">下线</span></td></tr>
-              <tr><td class="t-name">档案馆编研</td><td>自建库</td><td class="t-num">18</td><td>16</td><td>2026-05-19</td><td><span class="badge green">已发布</span></td><td><span class="link-btn">编辑</span><span class="link-btn">条目</span><span class="link-btn muted">下线</span></td></tr>
-              <tr><td class="t-name">各县市区编研书籍</td><td>自建库</td><td class="t-num">26</td><td>24</td><td>2026-05-18</td><td><span class="badge green">已发布</span></td><td><span class="link-btn">编辑</span><span class="link-btn">条目</span><span class="link-btn muted">下线</span></td></tr>
-              <tr><td class="t-name">地方党组织史料</td><td>自建库</td><td class="t-num">9</td><td>9</td><td>2026-05-17</td><td><span class="badge green">已发布</span></td><td><span class="link-btn">编辑</span><span class="link-btn">条目</span><span class="link-btn muted">下线</span></td></tr>
-              <tr><td class="t-name">刘英·粟裕史料</td><td>自建库</td><td class="t-num">11</td><td>11</td><td>2026-05-17</td><td><span class="badge green">已发布</span></td><td><span class="link-btn">编辑</span><span class="link-btn">条目</span><span class="link-btn muted">下线</span></td></tr>
-              <tr><td class="t-name">革命英烈群体</td><td>自建库</td><td class="t-num">7</td><td>7</td><td>2026-05-16</td><td><span class="badge green">已发布</span></td><td><span class="link-btn">编辑</span><span class="link-btn">条目</span><span class="link-btn muted">下线</span></td></tr>
-              <tr><td class="t-name">红色革命事件</td><td>自建库</td><td class="t-num">14</td><td>13</td><td>2026-05-16</td><td><span class="badge green">已发布</span></td><td><span class="link-btn">编辑</span><span class="link-btn">条目</span><span class="link-btn muted">下线</span></td></tr>
-              <tr><td class="t-name">红色设施</td><td>自建库</td><td class="t-num">4</td><td>4</td><td>2026-05-15</td><td><span class="badge green">已发布</span></td><td><span class="link-btn">编辑</span><span class="link-btn">条目</span><span class="link-btn muted">下线</span></td></tr>
-              <tr><td class="t-name">红色文物文献资料</td><td>共享库</td><td class="t-num">8</td><td>8</td><td>2026-05-15</td><td><span class="badge green">已发布</span></td><td><span class="link-btn">编辑</span><span class="link-btn">条目</span><span class="link-btn muted">下线</span></td></tr>
-              <tr><td class="t-name">红色回忆与研究活动</td><td>共享库</td><td class="t-num">6</td><td>5</td><td>2026-05-14</td><td><span class="badge green">已发布</span></td><td><span class="link-btn">编辑</span><span class="link-btn">条目</span><span class="link-btn muted">下线</span></td></tr>
-              <tr><td class="t-name">畲族红色文化</td><td>自建库</td><td class="t-num">5</td><td>5</td><td>2026-05-13</td><td><span class="badge green">已发布</span></td><td><span class="link-btn">编辑</span><span class="link-btn">条目</span><span class="link-btn muted">下线</span></td></tr>
-              <tr><td class="t-name">华侨红色相关史料</td><td>自建库</td><td class="t-num">10</td><td>8</td><td>2026-05-12</td><td><span class="badge green">已发布</span></td><td><span class="link-btn">编辑</span><span class="link-btn">条目</span><span class="link-btn muted">下线</span></td></tr>
-              <tr class="table-empty" style="display:none"><td colspan="7">未找到匹配的知识库</td></tr>
+              <tr>
+                <td><div class="kb-cell"><span class="kb-ico">🚩</span><div><div class="t-name">党史办红立方</div><div class="kb-desc">党史办“红立方”党建品牌相关档案：党史宣讲、红色教育基地与主题党日活动资料。</div></div></div></td>
+                <td>自建库</td><td class="t-num">3</td>
+                <td><div class="parse-cell"><span>3 / 3</span><span class="bar"><i style="width:100%"></i></span></div></td>
+                <td>4</td><td>2026-05-20</td><td><span class="badge green">已发布</span></td>
+                <td><a class="link-btn" href="admin-kb.html?kb=%E5%85%9A%E5%8F%B2%E5%8A%9E%E7%BA%A2%E7%AB%8B%E6%96%B9">编辑</a></td>
+              </tr>
+              <tr>
+                <td><div class="kb-cell"><span class="kb-ico">📚</span><div><div class="t-name">档案馆编研</div><div class="kb-desc">档案馆编研成果：史料汇编、专题研究、大事记与年鉴等正式出版及内部资料。</div></div></div></td>
+                <td>自建库</td><td class="t-num">5</td>
+                <td><div class="parse-cell"><span>4 / 5</span><span class="bar"><i style="width:80%"></i></span></div></td>
+                <td>3</td><td>2026-05-19</td><td><span class="badge green">已发布</span></td>
+                <td><a class="link-btn" href="admin-kb.html?kb=%E6%A1%A3%E6%A1%88%E9%A6%86%E7%BC%96%E7%A0%94">编辑</a></td>
+              </tr>
+              <tr>
+                <td><div class="kb-cell"><span class="kb-ico">📖</span><div><div class="t-name">各县市区编研书籍</div><div class="kb-desc">丽水九县（市、区）编研书籍与地方史料汇编，涵盖组织史、革命史与建设史。</div></div></div></td>
+                <td>自建库</td><td class="t-num">18</td>
+                <td><div class="parse-cell"><span>17 / 18</span><span class="bar"><i style="width:94%"></i></span></div></td>
+                <td>6</td><td>2026-05-18</td><td><span class="badge green">已发布</span></td>
+                <td><a class="link-btn" href="admin-kb.html?kb=%E5%90%84%E5%8E%BF%E5%B8%82%E5%8C%BA%E7%BC%96%E7%A0%94%E4%B9%A6%E7%B1%8D">编辑</a></td>
+              </tr>
+              <tr>
+                <td><div class="kb-cell"><span class="kb-ico">🏛️</span><div><div class="t-name">地方党组织史料</div><div class="kb-desc">从遂昌支部到浙西南特委、省委机关，收录地方党组织建立与沿革的原始档案。</div></div></div></td>
+                <td>自建库</td><td class="t-num">10</td>
+                <td><div class="parse-cell"><span>10 / 10</span><span class="bar"><i style="width:100%"></i></span></div></td>
+                <td>5</td><td>2026-05-17</td><td><span class="badge green">已发布</span></td>
+                <td><a class="link-btn" href="admin-kb.html?kb=%E5%9C%B0%E6%96%B9%E5%85%9A%E7%BB%84%E7%BB%87%E5%8F%B2%E6%96%99">编辑</a></td>
+              </tr>
+              <tr>
+                <td><div class="kb-cell"><span class="kb-ico">🎖️</span><div><div class="t-name">刘英·粟裕史料</div><div class="kb-desc">刘英、粟裕等革命先辈在浙西南的战斗文献、手稿、照片与纪念影像资料。</div></div></div></td>
+                <td>自建库</td><td class="t-num">3</td>
+                <td><div class="parse-cell"><span>3 / 3</span><span class="bar"><i style="width:100%"></i></span></div></td>
+                <td>3</td><td>2026-05-17</td><td><span class="badge green">已发布</span></td>
+                <td><a class="link-btn" href="admin-kb.html?kb=%E5%88%98%E8%8B%B1%C2%B7%E7%B2%9F%E8%A3%95%E5%8F%B2%E6%96%99">编辑</a></td>
+              </tr>
+              <tr>
+                <td><div class="kb-cell"><span class="kb-ico">🕯️</span><div><div class="t-name">革命英烈群体</div><div class="kb-desc">革命烈士英名录、牺牲登记表、传记与家属口述史料，按牺牲时期与群体归类。</div></div></div></td>
+                <td>自建库</td><td class="t-num">7</td>
+                <td><div class="parse-cell"><span>7 / 7</span><span class="bar"><i style="width:100%"></i></span></div></td>
+                <td>4</td><td>2026-05-16</td><td><span class="badge green">已发布</span></td>
+                <td><a class="link-btn" href="admin-kb.html?kb=%E9%9D%A9%E5%91%BD%E8%8B%B1%E7%83%88%E7%BE%A4%E4%BD%93">编辑</a></td>
+              </tr>
+              <tr>
+                <td><div class="kb-cell"><span class="kb-ico">🔥</span><div><div class="t-name">红色革命事件</div><div class="kb-desc">浙西南土地革命、抗日战争到解放战争的关键事件档案：命令、报道与亲历回忆。</div></div></div></td>
+                <td>自建库</td><td class="t-num">12</td>
+                <td><div class="parse-cell"><span>12 / 12</span><span class="bar"><i style="width:100%"></i></span></div></td>
+                <td>5</td><td>2026-05-16</td><td><span class="badge green">已发布</span></td>
+                <td><a class="link-btn" href="admin-kb.html?kb=%E7%BA%A2%E8%89%B2%E9%9D%A9%E5%91%BD%E4%BA%8B%E4%BB%B6">编辑</a></td>
+              </tr>
+              <tr>
+                <td><div class="kb-cell"><span class="kb-ico">🏯</span><div><div class="t-name">红色设施</div><div class="kb-desc">革命旧址、纪念场馆、烈士陵园与名人故居的普查档案、照片与影像记录。</div></div></div></td>
+                <td>自建库</td><td class="t-num">7</td>
+                <td><div class="parse-cell"><span>7 / 7</span><span class="bar"><i style="width:100%"></i></span></div></td>
+                <td>3</td><td>2026-05-15</td><td><span class="badge green">已发布</span></td>
+                <td><a class="link-btn" href="admin-kb.html?kb=%E7%BA%A2%E8%89%B2%E8%AE%BE%E6%96%BD">编辑</a></td>
+              </tr>
+              <tr>
+                <td><div class="kb-cell"><span class="kb-ico">📜</span><div><div class="t-name">红色文物文献资料</div><div class="kb-desc">纸质文献、实物文物、影像声像与口述史料等珍贵红色档案资源目录。</div></div></div></td>
+                <td>共享库</td><td class="t-num">6</td>
+                <td><div class="parse-cell"><span>6 / 6</span><span class="bar"><i style="width:100%"></i></span></div></td>
+                <td>4</td><td>2026-05-15</td><td><span class="badge green">已发布</span></td>
+                <td><a class="link-btn" href="admin-kb.html?kb=%E7%BA%A2%E8%89%B2%E6%96%87%E7%89%A9%E6%96%87%E7%8C%AE%E8%B5%84%E6%96%99">编辑</a></td>
+              </tr>
+              <tr>
+                <td><div class="kb-cell"><span class="kb-ico">🖋️</span><div><div class="t-name">红色回忆与研究活动</div><div class="kb-desc">革命回忆录征集、史料整理、遗址普查与编研成果发布等历次重要活动记录。</div></div></div></td>
+                <td>共享库</td><td class="t-num">5</td>
+                <td><div class="parse-cell"><span>5 / 5</span><span class="bar"><i style="width:100%"></i></span></div></td>
+                <td>4</td><td>2026-05-14</td><td><span class="badge green">已发布</span></td>
+                <td><a class="link-btn" href="admin-kb.html?kb=%E7%BA%A2%E8%89%B2%E5%9B%9E%E5%BF%86%E4%B8%8E%E7%A0%94%E7%A9%B6%E6%B4%BB%E5%8A%A8">编辑</a></td>
+              </tr>
+              <tr>
+                <td><div class="kb-cell"><span class="kb-ico">🌾</span><div><div class="t-name">畲族红色文化</div><div class="kb-desc">畲族群众参军参战、地下交通与红色歌谣等畲族红色文化档案。</div></div></div></td>
+                <td>自建库</td><td class="t-num">5</td>
+                <td><div class="parse-cell"><span>5 / 5</span><span class="bar"><i style="width:100%"></i></span></div></td>
+                <td>3</td><td>2026-05-13</td><td><span class="badge green">已发布</span></td>
+                <td><a class="link-btn" href="admin-kb.html?kb=%E7%95%B2%E6%97%8F%E7%BA%A2%E8%89%B2%E6%96%87%E5%8C%96">编辑</a></td>
+              </tr>
+              <tr>
+                <td><div class="kb-cell"><span class="kb-ico">🌊</span><div><div class="t-name">华侨红色相关史料</div><div class="kb-desc">青田侨乡、旅外中共支部与抗战募捐网络相关史料，还原华侨参与革命路径。</div></div></div></td>
+                <td>自建库</td><td class="t-num">14</td>
+                <td><div class="parse-cell"><span>13 / 14</span><span class="bar"><i style="width:93%"></i></span></div></td>
+                <td>6</td><td>2026-05-12</td><td><span class="badge gold">解析中</span></td>
+                <td><a class="link-btn" href="admin-kb.html?kb=%E5%8D%8E%E4%BE%A8%E7%BA%A2%E8%89%B2%E7%9B%B8%E5%85%B3%E5%8F%B2%E6%96%99">编辑</a></td>
+              </tr>
+              <tr class="table-empty" style="display:none"><td colspan="8">未找到匹配的知识库</td></tr>
             </tbody>
           </table>
         </div>
@@ -719,113 +712,6 @@
       </div>
     </section>
 
-    <!-- ===================== 智能问答管理 ===================== -->
-    <section id="qa" class="admin-section" hidden>
-      <div class="page-head">
-        <div class="page-title">智能问答管理</div>
-        <div class="page-sub">问答日志、未命中问题与召回策略配置 · 支撑前台「智能问答」</div>
-      </div>
-
-      <div class="kpi-row">
-        <div class="kpi-card"><div class="kpi-top"><span class="kpi-icon">💬</span><span class="kpi-trend">+12.6%</span></div><div class="kpi-value">8,642<span class="unit">次</span></div><div class="kpi-label">累计提问</div></div>
-        <div class="kpi-card"><div class="kpi-top"><span class="kpi-icon">✅</span></div><div class="kpi-value">91.4<span class="unit">%</span></div><div class="kpi-label">回答命中率</div></div>
-        <div class="kpi-card"><div class="kpi-top"><span class="kpi-icon">⚠️</span></div><div class="kpi-value">12<span class="unit">条</span></div><div class="kpi-label">未命中待处理</div></div>
-        <div class="kpi-card"><div class="kpi-top"><span class="kpi-icon">⏱️</span></div><div class="kpi-value">1.8<span class="unit">秒</span></div><div class="kpi-label">平均响应耗时</div></div>
-      </div>
-
-      <div class="tabs">
-        <button class="tab active" data-tab="qalog">问答日志</button>
-        <button class="tab" data-tab="qamiss">未命中问题</button>
-        <button class="tab" data-tab="qacfg">召回策略</button>
-      </div>
-
-      <div class="tab-pane" data-pane="qalog">
-        <div class="toolbar">
-          <input type="text" data-filter="#qaTable" placeholder="搜索提问内容 / 用户...">
-          <select><option>全部状态</option><option>已答复</option><option>未命中</option><option>已转人工</option></select>
-          <div class="spacer"></div>
-          <button class="btn ghost" data-act="export">导出日志</button>
-        </div>
-        <div class="panel table-wrap">
-          <table class="data-table" id="qaTable">
-            <thead><tr><th>时间</th><th>用户</th><th>提问内容</th><th>命中知识库</th><th>置信度</th><th>耗时</th><th>状态</th></tr></thead>
-            <tbody>
-              <tr><td>09-14 15:42</td><td>访客 8***21</td><td>挺进师是什么时候进入浙西南的？</td><td>红色革命事件</td><td>96%</td><td>1.4s</td><td><span class="badge green">已答复</span></td></tr>
-              <tr><td>09-14 15:38</td><td>访客 1***07</td><td>潘香凤烈士的生平事迹</td><td>革命英烈群体</td><td>94%</td><td>1.6s</td><td><span class="badge green">已答复</span></td></tr>
-              <tr><td>09-14 15:30</td><td>用户 李老师</td><td>万山交通总站具体负责哪条线路？</td><td>红色设施</td><td>89%</td><td>2.1s</td><td><span class="badge green">已答复</span></td></tr>
-              <tr><td>09-14 15:21</td><td>访客 6***88</td><td>青田华侨在抗战中有哪些贡献</td><td>华侨红色相关史料</td><td>92%</td><td>1.9s</td><td><span class="badge green">已答复</span></td></tr>
-              <tr><td>09-14 15:04</td><td>访客 3***45</td><td>今天的天气怎么样</td><td>—</td><td>12%</td><td>1.2s</td><td><span class="badge red">未命中</span></td></tr>
-              <tr><td>09-14 14:52</td><td>用户 王同学</td><td>中共遂昌支部是哪一年成立的</td><td>地方党组织史料</td><td>98%</td><td>1.3s</td><td><span class="badge green">已答复</span></td></tr>
-              <tr><td>09-14 14:40</td><td>访客 9***03</td><td>畲族红色歌谣有哪些代表作</td><td>畲族红色文化</td><td>87%</td><td>2.3s</td><td><span class="badge green">已答复</span></td></tr>
-              <tr><td>09-14 14:26</td><td>访客 2***19</td><td>帮我写一份研学报告</td><td>—</td><td>18%</td><td>1.5s</td><td><span class="badge gold">已转人工</span></td></tr>
-              <tr class="table-empty" style="display:none"><td colspan="7">未找到匹配的日志</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <div class="tab-pane" data-pane="qamiss" hidden>
-        <div class="hint-bar">
-          <span>💡</span>
-          <div>未命中问题表示知识库中暂无匹配内容。可 <b>加入语料</b>（转为待编研任务）或 <b>转人工</b> 答复；属于站外无关提问的可直接忽略。</div>
-        </div>
-        <div class="panel table-wrap">
-          <table class="data-table">
-            <thead><tr><th>提问内容</th><th>出现频次</th><th>首次出现</th><th>最近出现</th><th>操作</th></tr></thead>
-            <tbody>
-              <tr><td class="t-name">挺进师在丽水打过哪些主要战役</td><td class="t-num">9</td><td>2026-09-02</td><td>2026-09-14</td><td><span class="link-btn">加入语料</span><span class="link-btn">转人工</span><span class="link-btn muted">忽略</span></td></tr>
-              <tr><td class="t-name">刘英在浙西南牺牲的具体地点</td><td class="t-num">7</td><td>2026-09-05</td><td>2026-09-13</td><td><span class="link-btn">加入语料</span><span class="link-btn">转人工</span><span class="link-btn muted">忽略</span></td></tr>
-              <tr><td class="t-name">浙西南革命根据地纪念馆开放时间</td><td class="t-num">6</td><td>2026-09-06</td><td>2026-09-14</td><td><span class="link-btn">加入语料</span><span class="link-btn">转人工</span><span class="link-btn muted">忽略</span></td></tr>
-              <tr><td class="t-name">华侨抗战募捐的具体数额</td><td class="t-num">4</td><td>2026-09-08</td><td>2026-09-12</td><td><span class="link-btn">加入语料</span><span class="link-btn">转人工</span><span class="link-btn muted">忽略</span></td></tr>
-              <tr><td class="t-name">求推荐丽水两天研学路线</td><td class="t-num">3</td><td>2026-09-10</td><td>2026-09-13</td><td><span class="link-btn">加入语料</span><span class="link-btn">转人工</span><span class="link-btn muted">忽略</span></td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <div class="tab-pane" data-pane="qacfg" hidden>
-        <div class="panel">
-          <div class="panel-title">召回策略</div>
-          <div class="form-row">
-            <div class="form-label">默认召回条数</div>
-            <input type="number" value="5" min="1" max="20">
-            <span class="form-tip">每次提问从知识库召回的档案条目数量</span>
-          </div>
-          <div class="form-row">
-            <div class="form-label">相似度阈值</div>
-            <input type="number" value="0.72" step="0.01" min="0" max="1">
-            <span class="form-tip">低于该阈值判定为未命中</span>
-          </div>
-          <div class="form-row">
-            <div class="form-label">回答引用来源</div>
-            <span class="switch"><input type="checkbox" checked style="flex:none"> 在回答中展示所引用的档案名称与来源</span>
-          </div>
-          <div class="form-row">
-            <div class="form-label">启用黑名单过滤</div>
-            <span class="switch"><input type="checkbox" checked style="flex:none"> 召回阶段按黑名单词库过滤（在「黑名单管理」中维护）</span>
-          </div>
-          <div class="form-row" style="align-items:flex-start">
-            <div class="form-label" style="padding-top:9px">参与召回的知识库</div>
-            <div class="check-grid">
-              <label><input type="checkbox" checked> 党史办红立方</label>
-              <label><input type="checkbox" checked> 档案馆编研</label>
-              <label><input type="checkbox" checked> 各县市区编研书籍</label>
-              <label><input type="checkbox" checked> 地方党组织史料</label>
-              <label><input type="checkbox" checked> 刘英·粟裕史料</label>
-              <label><input type="checkbox" checked> 革命英烈群体</label>
-              <label><input type="checkbox" checked> 红色革命事件</label>
-              <label><input type="checkbox" checked> 红色设施</label>
-              <label><input type="checkbox" checked> 红色文物文献资料</label>
-              <label><input type="checkbox" checked> 红色回忆与研究活动</label>
-              <label><input type="checkbox" checked> 畲族红色文化</label>
-              <label><input type="checkbox" checked> 华侨红色相关史料</label>
-            </div>
-          </div>
-          <div style="margin-top:18px"><button class="btn" data-act="save">保存设置</button></div>
-        </div>
-      </div>
-    </section>
-
     <!-- ===================== 黑名单管理 ===================== -->
     <section id="blacklist" class="admin-section" hidden>
       <div class="page-head">
@@ -998,95 +884,6 @@
       </div>
     </section>
 
-    <!-- ===================== 系统设置 ===================== -->
-    <section id="settings" class="admin-section" hidden>
-      <div class="page-head">
-        <div class="page-title">系统设置</div>
-        <div class="page-sub">站点基础信息、前台导航与数据备份</div>
-      </div>
-
-      <div class="panel mb">
-        <div class="panel-title">站点信息</div>
-        <div class="form-row">
-          <div class="form-label">站点名称<span class="req">*</span></div>
-          <input type="text" value="万象未来">
-        </div>
-        <div class="form-row">
-          <div class="form-label">站点副标题</div>
-          <input type="text" value="AI 档案知识空间">
-        </div>
-        <div class="form-row">
-          <div class="form-label">主办单位</div>
-          <input type="text" value="丽水市档案馆">
-        </div>
-        <div class="form-row">
-          <div class="form-label">页脚版权</div>
-          <input type="text" value="让历史可触摸，让档案会说话">
-        </div>
-        <div class="form-row">
-          <div class="form-label">联系邮箱</div>
-          <input type="text" value="service@lishui-archives.example">
-        </div>
-      </div>
-
-      <div class="panel mb">
-        <div class="panel-title">前台导航</div>
-        <div class="form-row" style="align-items:flex-start">
-          <div class="form-label" style="padding-top:9px">显示栏目</div>
-          <div class="check-grid">
-            <label><input type="checkbox" checked> 首页</label>
-            <label><input type="checkbox" checked> 档案资源</label>
-            <label><input type="checkbox" checked> 知识图谱</label>
-            <label><input type="checkbox" checked> 数字思政</label>
-            <label><input type="checkbox" checked> 研学探索</label>
-            <label><input type="checkbox" checked> 智能问答</label>
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="form-label">首页默认栏目</div>
-          <select><option>档案资源</option><option>知识图谱</option><option>数字思政</option><option>研学探索</option></select>
-        </div>
-      </div>
-
-      <div class="panel mb">
-        <div class="panel-title">数据与备份</div>
-        <div class="form-row">
-          <div class="form-label">最近备份</div>
-          <span class="form-tip" style="margin:0">2026-09-14 02:00 自动备份成功（132 条档案 · 12 个知识库）</span>
-        </div>
-        <div class="form-row">
-          <div class="form-label">备份周期</div>
-          <select><option>每日 02:00 自动备份</option><option>每周一 02:00</option><option>仅手动备份</option></select>
-        </div>
-        <div class="form-row">
-          <div class="form-label">开放注册</div>
-          <span class="switch"><input type="checkbox" checked style="flex:none"> 允许访客自助注册账号</span>
-        </div>
-      </div>
-
-      <div class="panel">
-        <div class="panel-title">接口配置</div>
-        <div class="form-row">
-          <div class="form-label">智能问答服务</div>
-          <input type="text" value="https://api.example.com/v1/qa" placeholder="问答服务接口地址">
-        </div>
-        <div class="form-row">
-          <div class="form-label">档案解析服务</div>
-          <input type="text" value="https://api.example.com/v1/ocr" placeholder="档案 OCR / 解析接口地址">
-        </div>
-        <div class="form-row" style="align-items:center">
-          <div class="form-label">调用密钥</div>
-          <input type="text" value="****************" readonly style="background:#f7f2ec">
-          <button class="btn ghost sm" data-act="rotate-key" style="flex:none">重置密钥</button>
-        </div>
-      </div>
-
-      <div style="margin-top:20px;display:flex;gap:12px">
-        <button class="btn" data-act="save">保存设置</button>
-        <button class="btn ghost" data-act="backup">立即备份</button>
-      </div>
-    </section>
-
   </main>
 </div>
 
@@ -1104,11 +901,6 @@
   }
   sideItems.forEach(function (item) {
     item.addEventListener('click', function () { activateSection(this.getAttribute('data-target')); });
-  });
-
-  /* ---------- 待办跳转 ---------- */
-  document.querySelectorAll('.todo-go[data-go]').forEach(function (el) {
-    el.addEventListener('click', function () { activateSection(this.getAttribute('data-go')); });
   });
 
   /* ---------- 分区内标签页 ---------- */
@@ -1146,6 +938,32 @@
     });
   });
 
+  /* ---------- 知识库类型筛选 ---------- */
+  var kbTypeFilter = document.getElementById('kbTypeFilter');
+  if (kbTypeFilter) {
+    kbTypeFilter.addEventListener('change', function () {
+      var host = document.getElementById('kbTable');
+      if (!host) return;
+      var type = this.value;
+      var box = document.querySelector('[data-filter="#kbTable"]');
+      var q = box ? box.value.trim().toLowerCase() : '';
+      var rows = host.querySelectorAll('tbody tr');
+      var shown = 0;
+      rows.forEach(function (tr) {
+        if (tr.classList.contains('table-empty')) return;
+        var okType = !type || tr.children[1].textContent.trim() === type;
+        var okText = !q || tr.textContent.toLowerCase().indexOf(q) > -1;
+        var hit = okType && okText;
+        tr.style.display = hit ? '' : 'none';
+        if (hit) shown++;
+      });
+      var empty = host.querySelector('.table-empty');
+      if (empty) empty.style.display = shown ? 'none' : '';
+      var cnt = document.getElementById('kbCount');
+      if (cnt) cnt.textContent = '共 ' + shown + ' 个知识库 · 95 件馆藏档案';
+    });
+  }
+
   /* ---------- Toast ---------- */
   function toast(msg) {
     var t = document.getElementById('toast');
@@ -1178,57 +996,9 @@
 
   document.querySelectorAll('.btn[data-act]').forEach(function (b) {
     b.addEventListener('click', function () {
-      var a = this.getAttribute('data-act');
-      if (a === 'backup') { toast('已创建数据备份（演示环境）'); return; }
-      if (a === 'save') { toast('设置已保存（演示环境）'); return; }
-      if (a === 'rotate-key') { toast('密钥已重置（演示环境）'); return; }
       toast('演示环境：' + this.textContent.trim());
     });
   });
-
-  /* ---------- 图表 ---------- */
-  var charts = [];
-  function initCharts() {
-    if (!window.echarts) return;
-    var days = ['09-01','09-02','09-03','09-04','09-05','09-06','09-07','09-08','09-09','09-10','09-11','09-12','09-13','09-14'];
-    var growthEl = document.getElementById('growthChart');
-    if (growthEl) {
-      var gc = echarts.init(growthEl);
-      gc.setOption({
-        color: ['#a62c2c', '#c9a86c'],
-        tooltip: { trigger: 'axis' },
-        legend: { bottom: 0, data: ['档案入库', '知识解析'], textStyle: { color: '#8a7566' } },
-        grid: { left: 44, right: 18, top: 18, bottom: 42 },
-        xAxis: { type: 'category', data: days, axisLine: { lineStyle: { color: '#e6dcd0' } }, axisLabel: { color: '#a08d7c', fontSize: 11 } },
-        yAxis: { type: 'value', splitLine: { lineStyle: { color: '#f0e9e0' } }, axisLabel: { color: '#a08d7c' } },
-        series: [
-          { name: '档案入库', type: 'bar', barWidth: 12, itemStyle: { borderRadius: [4, 4, 0, 0] }, data: [3, 5, 4, 6, 8, 5, 7, 9, 6, 8, 10, 7, 9, 11] },
-          { name: '知识解析', type: 'line', smooth: true, symbolSize: 6, data: [2, 4, 3, 5, 7, 4, 6, 8, 5, 7, 9, 6, 8, 10] }
-        ]
-      });
-      charts.push(gc);
-    }
-    var visitEl = document.getElementById('visitChart');
-    if (visitEl) {
-      var vc = echarts.init(visitEl);
-      vc.setOption({
-        color: ['#a62c2c', '#c9a86c'],
-        tooltip: { trigger: 'axis' },
-        legend: { bottom: 0, data: ['访问次数', '访问人数'], textStyle: { color: '#8a7566' } },
-        grid: { left: 46, right: 18, top: 18, bottom: 42 },
-        xAxis: { type: 'category', data: days, axisLine: { lineStyle: { color: '#e6dcd0' } }, axisLabel: { color: '#a08d7c', fontSize: 11 } },
-        yAxis: { type: 'value', splitLine: { lineStyle: { color: '#f0e9e0' } }, axisLabel: { color: '#a08d7c' } },
-        series: [
-          { name: '访问次数', type: 'line', smooth: true, symbolSize: 6, areaStyle: { opacity: 0.12 }, data: [2860, 3120, 2980, 3460, 3820, 3240, 3680, 4120, 3540, 3960, 4380, 4020, 3640, 3472] },
-          { name: '访问人数', type: 'line', smooth: true, symbolSize: 6, areaStyle: { opacity: 0.12 }, data: [1240, 1380, 1310, 1520, 1660, 1420, 1610, 1820, 1560, 1720, 1930, 1780, 1620, 1540] }
-        ]
-      });
-      charts.push(vc);
-    }
-    window.__resizeCharts = function () { charts.forEach(function (c) { c.resize(); }); };
-  }
-  initCharts();
-  window.addEventListener('resize', function () { if (window.__resizeCharts) window.__resizeCharts(); });
 
   /* ---------- 黑名单管理 ---------- */
   var scopeMap = { all: '全部知识库', kb1: '党史办红立方', kb2: '档案馆编研', kb3: '各县市区编研书籍', kb4: '地方党组织史料', kb5: '刘英·粟裕史料', kb6: '革命英烈群体', kb7: '红色革命事件', kb8: '红色设施', kb9: '红色文物文献资料', kb10: '红色回忆与研究活动', kb11: '畲族红色文化', kb12: '华侨红色相关史料' };
