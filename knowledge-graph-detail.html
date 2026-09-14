@@ -116,7 +116,7 @@
     .user-info:hover { background: rgba(166, 44, 44, 0.06); color: var(--accent-red); }
 
     /* ===== 主体 ===== */
-    .wrap { flex: 1; width: 100%; max-width: 1560px; margin: 0 auto; padding: 22px 40px 40px; }
+    .wrap { flex: 1; width: 100%; max-width: 1560px; margin: 0 auto; padding: 24px 40px 52px; }
 
     .crumbs { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-muted); margin-bottom: 16px; flex-wrap: wrap; }
     .crumbs a { color: var(--text-secondary); text-decoration: none; transition: color .2s; }
@@ -175,7 +175,7 @@
     }
     .viz-controls button:hover { background: rgba(166, 44, 44, 0.08); color: var(--accent-red); border-color: rgba(166, 44, 44, 0.3); }
 
-    .kg-chart { width: 100%; height: calc(100vh - 330px); min-height: 540px; }
+    .kg-chart { width: 100%; height: calc(100vh - 296px); min-height: 580px; }
 
     /* ===== 时间轴视图 ===== */
     .tl-legend {
@@ -186,7 +186,7 @@
     .tl-legend .lg-item { display: flex; align-items: center; gap: 7px; font-size: 12.5px; color: var(--text-secondary); }
     .tl-legend .lg-dot { width: 12px; height: 12px; border-radius: 4px; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.45); }
 
-    .tl-scroll { overflow: auto; padding: 24px 22px 18px; max-height: calc(100vh - 348px); }
+    .tl-scroll { overflow: auto; padding: 24px 22px 18px; max-height: calc(100vh - 314px); }
     .tl-canvas {
       position: relative; display: flex; align-items: stretch; gap: 20px;
       min-width: max-content; padding-top: 4px; padding-bottom: 4px;
@@ -312,10 +312,6 @@
     .kg-nav a:hover { color: var(--accent-red); border-color: rgba(166,44,44,.3); background: #fff; }
     .kg-nav a.cur { background: var(--accent-red); color: #fff; border-color: var(--accent-red); }
 
-    .site-footer { margin-top: 34px; padding: 24px 20px; text-align: center; font-size: 13px; color: var(--text-muted); background: rgba(250,245,238,.5); border-top: 1px solid rgba(166,44,44,.08); }
-    .site-footer strong { color: var(--accent-red); font-weight: 500; }
-    .site-footer .sep { margin: 0 8px; color: rgba(166,44,44,.3); }
-
     @media (max-width: 1180px) {
       .kg-main { grid-template-columns: minmax(0,1fr); }
       .detail-panel { position: static; max-height: none; }
@@ -434,10 +430,6 @@
       </div>
 
       <div class="kg-nav" id="kgNav"></div>
-
-      <footer class="site-footer">
-        <strong>万象未来</strong> · AI 档案知识空间<span class="sep">|</span>知识图谱详情<span class="sep">|</span>丽水市档案馆 数字资源建设
-      </footer>
     </main>
   </div>
 

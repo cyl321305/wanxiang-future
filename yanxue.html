@@ -56,7 +56,7 @@
   .user-info span{color:var(--accent-red)}
 
   /* 容器 */
-  .container{max-width:100%;margin:0 auto;padding:16px 16px 40px;flex:1}
+  .container{max-width:100%;margin:0 auto;padding:16px 16px 44px;flex:1}
 
   /* 头部紧凑排布 */
   .head-row{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:12px;gap:20px}
@@ -95,7 +95,7 @@
   .search-btn:hover{transform:translateY(-1px);box-shadow:0 6px 14px rgba(166,44,44,.28)}
 
   /* 主体两栏 */
-  .main-row{display:grid;grid-template-columns:160px 1fr;gap:12px}
+  .main-row{display:grid;grid-template-columns:176px 1fr;gap:12px}
 
   /* 左：可折叠筛选栏 */
   .sidebar{background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--radius);
@@ -106,8 +106,8 @@
   .side-title::before{content:'';width:3px;height:12px;background:linear-gradient(180deg,var(--accent-red-light),var(--accent-gold));border-radius:2px}
   .side-toggle{width:20px;height:20px;display:flex;align-items:center;justify-content:center;color:var(--text-muted);transition:transform .25s}
   .side-block.collapsed .side-toggle{transform:rotate(-90deg)}
-  .side-body{max-height:400px;overflow:hidden;transition:max-height .3s ease}
-  .side-block.collapsed .side-body{max-height:0}
+  .side-body{max-height:460px;overflow:auto;transition:max-height .3s ease}
+  .side-block.collapsed .side-body{max-height:0;overflow:hidden}
   .side-row{display:flex;align-items:center;justify-content:space-between;padding:6px 6px;border-radius:6px;
     font-size:12px;color:var(--text-secondary);cursor:pointer;transition:all .25s}
   .side-row:hover{background:rgba(166,44,44,.06);color:var(--accent-red)}
@@ -120,7 +120,7 @@
 
   /* 右：卡片网格统一间距 */
   .card-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-  @media(max-width:1400px){.card-grid{grid-template-columns:repeat(3,1fr)}}
+  @media(max-width:1500px){.card-grid{grid-template-columns:repeat(3,1fr)}}
   @media(max-width:1100px){.card-grid{grid-template-columns:repeat(2,1fr)}}
   @media(max-width:768px){.card-grid{grid-template-columns:1fr}}
 
@@ -128,14 +128,14 @@
     overflow:hidden;cursor:pointer;transition:all .3s ease;
     box-shadow:0 10px 22px var(--card-shadow);display:flex;flex-direction:column}
   .rc-card:hover{transform:translateY(-3px);box-shadow:0 16px 32px rgba(166,44,44,.16)}
-  .rc-cover{position:relative;height:130px;background:linear-gradient(135deg,#c9a884,#8a6c4a);overflow:hidden}
+  .rc-cover{position:relative;height:132px;background:linear-gradient(135deg,#c9a884,#8a6c4a);overflow:hidden}
   .rc-cover::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 70% 30%,rgba(255,255,255,.2),transparent 60%)}
-  .rc-cover::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(0,0,0,.2) 100%)}
+  .rc-cover::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(0,0,0,.24) 100%)}
   .rc-emoji{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:52px;filter:drop-shadow(0 4px 12px rgba(0,0,0,.3))}
-  .rc-tag{position:absolute;left:8px;top:8px;padding:2px 8px;border-radius:8px;font-size:10px;font-weight:600;
+  .rc-tags{position:absolute;left:8px;top:8px;display:flex;gap:6px;flex-wrap:wrap;max-width:calc(100% - 60px)}
+  .rc-tag{padding:2px 8px;border-radius:8px;font-size:10px;font-weight:600;
     background:rgba(255,255,255,.92);color:var(--accent-red)}
   .rc-tag.hot{background:linear-gradient(135deg,var(--accent-red),var(--accent-red-light));color:#fff}
-  /* 收藏按钮加大点击区 */
   .rc-fav{position:absolute;right:6px;top:6px;width:36px;height:36px;border-radius:50%;
     background:rgba(255,255,255,.9);display:flex;align-items:center;justify-content:center;color:var(--text-muted);
     transition:all .25s;cursor:pointer}
@@ -157,14 +157,14 @@
     background:rgba(166,44,44,.08);color:var(--accent-red);font-size:11px;font-weight:500;transition:all .25s}
   .rc-card:hover .rc-detail{background:var(--accent-red);color:#fff}
 
+  .empty-tip{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--text-muted);font-size:13px}
+
   /* 右下悬浮按钮组 */
   .float-tools{position:fixed;right:20px;bottom:20px;display:flex;flex-direction:column;gap:8px;z-index:80}
   .float-btn{width:44px;height:44px;border-radius:12px;background:var(--glass);border:1px solid var(--glass-border);
     box-shadow:0 8px 20px rgba(0,0,0,.1);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--accent-red)}
   .float-btn:hover{background:var(--accent-red);color:#fff}
   .float-btn svg{width:20px;height:20px}
-
-  .footer{padding:20px;text-align:center;color:var(--text-muted);font-size:11px;letter-spacing:2px}
 </style>
 </head>
 <body>
@@ -201,7 +201,7 @@
     <div class="head-row">
       <div class="head-left">
         <h1 class="page-title">研学路线探索</h1>
-        <p class="page-subtitle">行走的课堂 · 沉浸式红色文化之旅</p>
+        <p class="page-subtitle">行走的课堂 · 丽水九县市区红色研学线路</p>
       </div>
       <div class="stats-row">
         <div class="stat-mini">
@@ -210,13 +210,12 @@
         </div>
         <div class="stat-mini">
           <div class="icon red">🚩</div>
-          <div class="txt"><span class="num">12,568<small style="font-size:10px;color:var(--text-muted)">条</small></span><span class="lbl">关联档案资源</span></div>
+          <div class="txt"><span class="num" id="statSites">45<small style="font-size:10px;color:var(--text-muted)">个</small></span><span class="lbl">研学点位总数</span></div>
         </div>
         <div class="stat-mini">
-          <div class="icon green">⭐</div>
-          <div class="txt"><span class="num">86<small style="font-size:10px;color:var(--text-muted)">个</small></span><span class="lbl">研学点总数</span></div>
+          <div class="icon green">🗺️</div>
+          <div class="txt"><span class="num">9<small style="font-size:10px;color:var(--text-muted)">个</small></span><span class="lbl">覆盖县(市、区)</span></div>
         </div>
-
       </div>
     </div>
 
@@ -225,30 +224,19 @@
 
       <!-- 左：可折叠筛选栏 -->
       <aside class="sidebar">
-        <div class="side-block" id="sb-theme">
-          <div class="side-header" onclick="toggleBlock('sb-theme')">
-            <div class="side-title">主题分类</div>
+        <div class="side-block" id="sb-region">
+          <div class="side-header" onclick="toggleBlock('sb-region')">
+            <div class="side-title">区域分类</div>
             <div class="side-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="m6 9 6 6 6-6"/></svg></div>
           </div>
-          <div class="side-body">
-            <div class="side-row active" data-cat="全部">全部<span class="side-num">8</span></div>
-            <div class="side-row" data-cat="革命历史">革命历史<span class="side-num">4</span></div>
-            <div class="side-row" data-cat="红色教育">红色教育<span class="side-num">6</span></div>
-            <div class="side-row" data-cat="文化遗产">文化遗产<span class="side-num">2</span></div>
-            <div class="side-row" data-cat="生态文明">生态文明<span class="side-num">1</span></div>
-          </div>
+          <div class="side-body" id="regionBody"></div>
         </div>
         <div class="side-block" id="sb-dur">
           <div class="side-header" onclick="toggleBlock('sb-dur')">
-            <div class="side-title">路段时间</div>
+            <div class="side-title">研学时长</div>
             <div class="side-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="m6 9 6 6 6-6"/></svg></div>
           </div>
-          <div class="side-body">
-            <div class="side-row" data-dur="1">1日游<span class="side-num">2</span></div>
-            <div class="side-row" data-dur="2">2日游<span class="side-num">3</span></div>
-            <div class="side-row" data-dur="3">3日及以上<span class="side-num">2</span></div>
-            <div class="side-row" data-dur="多">多日研学<span class="side-num">1</span></div>
-          </div>
+          <div class="side-body" id="durBody"></div>
         </div>
         <button class="reset-btn" onclick="resetFilters()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><path d="M3 12a9 9 0 1 0 9-9"/><path d="M3 4v5h5"/></svg>重置筛选
@@ -259,66 +247,141 @@
       <div class="card-grid" id="routesGrid"></div>
     </div>
 
-    <footer class="footer">万象未来 · AI 档案知识空间 © 2026 | 让历史可触摸，让档案会说话</footer>
   </div>
-
-
 </div>
 
 <script>
-  const routes=[
-    {id:1,title:'浙西南革命根据地红色之旅',level:'初中',duration:'1天',location:'丽水·莲都',emoji:'🏯',
-      desc:'探访浙西南革命根据地，追寻红色足迹，感受革命先辈艰苦奋斗、矢志不渝的革命精神。',
-      tags:['红色记忆','红色教育'],theme:'革命历史',hot:true,fav:false},
-    {id:2,title:'红船起航·嘉兴南湖初心之旅',level:'初中',duration:'1天',location:'浙江·嘉兴',emoji:'⛵',
-      desc:'登上南湖红船，感悟开天辟地、敢为人先的首创精神。',
-      tags:['党史教育','初心使命'],theme:'革命历史',hot:false,fav:true},
-    {id:3,title:'丽水红色足迹研学',level:'大学',duration:'3天2夜',location:'丽水·莲都',emoji:'🏛️',
-      desc:'系统梳理丽水地区红色档案，开展田野调查与口述史采集实践。',
-      tags:['档案研学','口述史'],theme:'红色教育',hot:false,fav:false},
-    {id:4,title:'青田侨乡文化寻根',level:'海外华校',duration:'5天4夜',location:'丽水·青田',emoji:'🌏',
-      desc:'面向海外华裔青少年，探访侨乡档案，连接血脉中的中华记忆。',
-      tags:['侨乡文化','寻根之旅'],theme:'文化遗产',hot:true,fav:false},
-    {id:5,title:'龙泉宝剑与革命精神',level:'小学',duration:'1天',location:'丽水·龙泉',emoji:'⚔️',
-      desc:'在铸剑名城感受工匠精神，在游戏中了解革命年代的少年英雄故事。',
-      tags:['非遗体验','少年英雄'],theme:'文化遗产',hot:false,fav:false},
-    {id:6,title:'松阳古村落里的党史',level:'初中',duration:'2天1夜',location:'丽水·松阳',emoji:'🏘️',
-      desc:'漫步明清古村落，在宗祠、老宅与档案中读懂党领导下的乡村变迁。',
-      tags:['古村落','乡土党史'],theme:'红色教育',hot:false,fav:false},
-    {id:7,title:'缙云抗战遗址追忆',level:'高中',duration:'2天1夜',location:'丽水·缙云',emoji:'🗿',
-      desc:'寻访缙云抗战遗址，在真实历史场景中理解全民族抗战的伟大意义。',
-      tags:['抗战记忆','遗址考察'],theme:'革命历史',hot:false,fav:false},
-    {id:8,title:'遂昌汤显祖文化研学',level:'大学',duration:'1天',location:'丽水·遂昌',emoji:'🎭',
-      desc:'以汤显祖在遂昌的施政与戏曲档案为线索，探索传统文化与地方治理。',
-      tags:['戏曲文化','名人档案'],theme:'文化遗产',hot:false,fav:false}
+  /* 丽水九县市区 + 市级，共 10 条红色研学线路（依据丽水市文广旅体局发布的十条红色旅游精品线路整理） */
+  const routes = [
+    {id:1,scope:'市级',region:'丽水市本级',title:'浙西南革命精神寻根之旅',emoji:'🏛️',days:'1天',durKey:'1',
+      theme:'革命历史',hot:true,sites:4,cover:'#c9a884,#8a6c4a',
+      desc:'串联浙西南革命根据地纪念馆、中共浙江省委机关旧址与万象山革命烈士陵园，一天内理清浙西南革命根据地创建、发展与壮大的主线。'},
+    {id:2,scope:'区',region:'莲都区',title:'寻访红色印记 · 丹霞研学之旅',emoji:'⛰️',days:'1天',durKey:'1',
+      theme:'红色教育',hot:false,sites:4,cover:'#bfa07a,#7d6244',
+      desc:'走进大港头浙江铁工厂旧址、南乡革命纪念馆与东西岩革命老区，在丹霞地貌与古堰画乡之间寻找抗战记忆。'},
+    {id:3,scope:'市',region:'龙泉市',title:'品剑风瓷韵 · 寻红色根脉',emoji:'⚔️',days:'2天1夜',durKey:'2',
+      theme:'革命历史',hot:false,sites:5,cover:'#a98f6b,#6f5638',
+      desc:'从浙大龙泉分校旧址到披云山、住龙红色小镇，在剑瓷名城与浙西南革命中心区域之间完成一次跨越时空的研学。'},
+    {id:4,scope:'县',region:'青田县',title:'初心路立根之旅 · 侨心向党',emoji:'🌏',days:'2天1夜',durKey:'2',
+      theme:'红色教育',hot:false,sites:4,cover:'#c0a682,#7a603f',
+      desc:'以青田县革命烈士陵园、石门洞与祯旺乡吴畲村为主线，读懂侨乡儿女在革命年代的家国情怀。'},
+    {id:5,scope:'县',region:'云和县',title:'浙西南第一块革命根据地之旅',emoji:'🚩',days:'2天1夜',durKey:'2',
+      theme:'革命历史',hot:false,sites:5,cover:'#b89a76,#75593c',
+      desc:'沿“一面党旗、一个支部、一次会议”三条线索，走访小顺、梅湾与云和会议旧址，触摸云和的红色“三个一”。'},
+    {id:6,scope:'县',region:'庆元县',title:'红色斋郎 · 百山祖国防教育之旅',emoji:'🏔️',days:'2天1夜',durKey:'2',
+      theme:'革命历史',hot:false,sites:4,cover:'#a58c68,#6b5334',
+      desc:'重走斋郎战斗遗址，看会龙桥、牧牛场与斋郎战斗纪念碑，理解挺进师入浙“关键性一仗”的历史分量。'},
+    {id:7,scope:'县',region:'缙云县',title:'星火缙云 · 寻访中共处属特委',emoji:'🔥',days:'2天1夜',durKey:'2',
+      theme:'革命历史',hot:false,sites:4,cover:'#c2a481,#7c6141',
+      desc:'从壶镇燕翼小学的中共缙云县第一次代表大会旧址，走到大源镇江西山后中共处属特委机关旧址纪念馆。'},
+    {id:8,scope:'县',region:'遂昌县',title:'逛红色古镇 · 探千年金窟',emoji:'🏘️',days:'2天1夜',durKey:'2',
+      theme:'红色教育',hot:true,sites:5,cover:'#b3946f,#705438',
+      desc:'在浙西南第一个党组织诞生地泉湖寺重温初心，再赴王村口红色古镇寻访挺进师师部旧址群与红军古道。'},
+    {id:9,scope:'县',region:'松阳县',title:'挺进师之旅 · 寻革命足迹',emoji:'🌲',days:'3天2夜',durKey:'3',
+      theme:'革命历史',hot:false,sites:6,cover:'#9e8865,#65502f',
+      desc:'沿横樟、小吉、高亭、斗潭一路深入，最终抵达“红色古寨”安岱后浙西南革命根据地领导机关旧址群。'},
+    {id:10,scope:'县',region:'景宁畲族自治县',title:'忠勇畲乡红色研学之旅',emoji:'🎋',days:'2天1夜',durKey:'2',
+      theme:'红色教育',hot:false,sites:4,cover:'#b9a07c,#6f5837',
+      desc:'走访毛垟闽东红军景宁馆与大张坑红色畲寨，听畲族群众与红军并肩战斗的故事，感受忠勇畲乡。'}
   ];
-  const grid=document.getElementById('routesGrid');
+
+  const DUR_LABEL = {'1':'1日研学','2':'2日研学','3':'3日及以上'};
+
+  let curRegion = '全部';
+  let curDur = '全部';
+
+  const grid = document.getElementById('routesGrid');
+
+  function countByRegion(name){
+    return name === '全部' ? routes.length : routes.filter(r=>r.region===name || (name==='市级' && r.scope==='市级')).length;
+  }
+
+  /* 侧栏：区域分类 */
+  const regionList = [{key:'全部',label:'全部'},{key:'市级',label:'市级线路'}]
+    .concat(routes.filter(r=>r.scope!=='市级').map(r=>({key:r.region,label:r.region})));
+
+  function hashStr(s){let h=0;for(let i=0;i<s.length;i++){h=(h*31+s.charCodeAt(i))>>>0;}return h;}
+
+  document.getElementById('regionBody').innerHTML = regionList.map((it,i)=>
+    '<div class="side-row'+(i===0?' active':'')+'" data-region="'+it.key+'">'+it.label+
+    '<span class="side-num">'+countByRegion(it.key)+'</span></div>'
+  ).join('');
+
+  /* 侧栏：研学时长 */
+  const durList = ['1','2','3'].map(k=>({
+    key:k,label:DUR_LABEL[k],
+    n:routes.filter(r=>r.durKey===k).length
+  }));
+  document.getElementById('durBody').innerHTML = durList.map(it=>
+    '<div class="side-row" data-dur="'+it.key+'">'+it.label+'<span class="side-num">'+it.n+'</span></div>'
+  ).join('');
+
+  document.getElementById('statSites').innerHTML = routes.reduce((s,r)=>s+r.sites,0)+'<small style="font-size:10px;color:var(--text-muted)">个</small>';
+
   function render(){
-    grid.innerHTML=routes.map(r=>`
-      <div class="rc-card" data-id="${r.id}" onclick="goDetail(${r.id})">
-        <div class="rc-cover" style="background:linear-gradient(135deg,#c9a884 0%,#8a6c4a 100%)">
+    const list = routes.filter(r=>{
+      const okRegion = curRegion==='全部' || r.region===curRegion || (curRegion==='市级' && r.scope==='市级');
+      const okDur = curDur==='全部' || r.durKey===curDur;
+      return okRegion && okDur;
+    });
+    if(!list.length){ grid.innerHTML = '<div class="empty-tip">没有符合条件的研学线路</div>'; return; }
+    grid.innerHTML = list.map(r=>`
+      <div class="rc-card" onclick="goDetail(${r.id})">
+        <div class="rc-cover" style="background:linear-gradient(135deg,${r.cover})">
           <div class="rc-emoji">${r.emoji}</div>
-          <div class="rc-tag ${r.hot?'hot':''}">${r.hot?'精选推荐':'研学路线'}</div>
+          <div class="rc-tags">
+            <span class="rc-tag">${r.region}</span>
+            ${r.hot?'<span class="rc-tag hot">精选推荐</span>':''}
+          </div>
         </div>
         <div class="rc-meta-strip">
-          <div class="left"><span class="rc-tag-pill">8个站点</span><span class="rc-tag-pill soft">${r.duration}路线</span></div>
+          <div class="left"><span class="rc-tag-pill">${r.sites}个点位</span><span class="rc-tag-pill soft">${r.days}</span></div>
         </div>
         <div class="rc-body">
           <div class="rc-title">${r.title}</div>
           <p class="rc-desc">${r.desc}</p>
         </div>
         <div class="rc-foot">
-          <span class="rc-level"><span class="dot"></span>${r.tags.slice(0,2).join(' · ')}</span>
+          <span class="rc-level"><span class="dot"></span>${r.theme}</span>
           <span class="rc-detail">查看详情<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><path d="m9 18 6-6-6-6"/></svg></span>
         </div>
       </div>
     `).join('');
   }
+
   render();
+
   function goDetail(id){window.location.href='yanxue-detail.html?id='+id;}
-  function resetFilters(){document.querySelectorAll('.side-row').forEach(x=>x.classList.remove('active'));document.querySelector('.side-row[data-cat="全部"]').classList.add('active');render();}
   function toggleBlock(id){document.getElementById(id).classList.toggle('collapsed');}
-  document.querySelectorAll('.sidebar .side-row').forEach(function(r){r.addEventListener('click',function(){const g=r.closest('.side-body');g.querySelectorAll('.side-row').forEach(x=>x.classList.remove('active'));r.classList.add('active');});});
+
+  function resetFilters(){
+    curRegion='全部'; curDur='全部';
+    document.querySelectorAll('.side-row').forEach(x=>x.classList.remove('active'));
+    document.querySelector('.side-row[data-region="全部"]').classList.add('active');
+    render();
+  }
+
+  document.querySelectorAll('#regionBody .side-row').forEach(function(r){
+    r.addEventListener('click',function(){
+      curRegion = r.getAttribute('data-region');
+      document.querySelectorAll('#regionBody .side-row').forEach(x=>x.classList.remove('active'));
+      r.classList.add('active');
+      render();
+    });
+  });
+
+  document.querySelectorAll('#durBody .side-row').forEach(function(r){
+    r.addEventListener('click',function(){
+      const v = r.getAttribute('data-dur');
+      if(curDur===v){ curDur='全部'; r.classList.remove('active'); }
+      else{
+        curDur = v;
+        document.querySelectorAll('#durBody .side-row').forEach(x=>x.classList.remove('active'));
+        r.classList.add('active');
+      }
+      render();
+    });
+  });
 </script>
 </body>
 </html>
