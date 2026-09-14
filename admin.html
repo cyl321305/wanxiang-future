@@ -984,6 +984,7 @@
   document.addEventListener('click', function (e) {
     var b = e.target.closest('.link-btn');
     if (!b) return;
+    if (b.tagName === 'A') return;
     if (b.closest('#blTableBody')) return;
     var act = b.getAttribute('data-act') || b.textContent.trim();
     var name = b.getAttribute('data-name') || '';
