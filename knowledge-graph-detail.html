@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>知识图谱详情 · 万象未来 · AI 档案知识空间</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=ZCOOL+XiaoWei&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+  <style>
+    :root {
+      --bg-cream: #faf5ee;
+      --bg-warm: #f3e8db;
+      --bg-pink: #f8ece6;
+      --accent-red: #a62c2c;
+      --accent-red-light: #c94d4d;
+      --accent-gold: #c9a86c;
+      --text-primary: #3d2b1f;
+      --text-secondary: rgba(61, 43, 31, 0.72);
+      --text-muted: rgba(61, 43, 31, 0.5);
+      --glass: rgba(255, 250, 245, 0.78);
+      --glass-border: rgba(166, 44, 44, 0.12);
+      --card-shadow: rgba(92, 61, 46, 0.08);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Noto Sans SC', 'Microsoft YaHei', sans-serif;
+      background: var(--bg-cream);
+      color: var(--text-primary);
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    .landscape-bg {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      z-index: 1; pointer-events: none;
+      background:
+        radial-gradient(ellipse at 50% 10%, rgba(201, 168, 108, 0.14) 0%, transparent 55%),
+        radial-gradient(ellipse at 88% 78%, rgba(166, 44, 44, 0.06) 0%, transparent 45%),
+        linear-gradient(180deg, #faf5ee 0%, #f8ece6 50%, #f3e8db 100%);
+    }
+
+    .clouds {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      z-index: 2; pointer-events: none; opacity: 0.2;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 400'%3E%3Cpath fill='%23c9a86c' fill-opacity='0.35' d='M100,200 Q130,160 170,180 T250,170 T320,190 T400,160 T480,180 T560,150 T640,170 T720,140'/%3E%3Cpath fill='%23a62c2c' fill-opacity='0.18' d='M50,120 Q80,90 120,110 T200,100 T280,120 T360,90 T440,110 T520,80 T600,100 T680,70'/%3E%3C/svg%3E") repeat-x;
+      background-size: 800px 400px;
+      animation: cloudMove 80s linear infinite;
+    }
+
+    @keyframes cloudMove {
+      from { background-position: 0 0; }
+      to { background-position: -800px 0; }
+    }
+
+    .ribbon-left, .ribbon-right {
+      position: fixed;
+      bottom: 0; height: 180px; width: 280px;
+      pointer-events: none; z-index: 3; opacity: 0.5;
+    }
+
+    .ribbon-left {
+      left: -40px;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 100' preserveAspectRatio='none'%3E%3Cpath fill='%23a62c2c' fill-opacity='0.55' d='M0,100 C40,80 60,40 100,50 C140,60 160,90 200,70 L200,100 Z'/%3E%3C/svg%3E") no-repeat bottom;
+      background-size: 100% 100%; filter: blur(1px);
+    }
+
+    .ribbon-right {
+      right: -40px;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 100' preserveAspectRatio='none'%3E%3Cpath fill='%23a62c2c' fill-opacity='0.55' d='M0,70 C40,90 60,50 100,55 C140,60 160,80 200,100 L200,100 L0,100 Z'/%3E%3C/svg%3E") no-repeat bottom;
+      background-size: 100% 100%; filter: blur(1px);
+    }
+
+    .app { position: relative; z-index: 10; min-height: 100vh; display: flex; flex-direction: column; }
+
+    .navbar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 40px; height: 76px;
+      background: rgba(250, 245, 238, 0.82);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(166, 44, 44, 0.08);
+      position: sticky; top: 0; z-index: 100;
+    }
+
+    .logo { display: flex; align-items: center; gap: 14px; }
+    .logo-icon {
+      width: 48px; height: 48px; border-radius: 50%;
+      background: linear-gradient(135deg, #8b2c2c 0%, #a62c2c 100%);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Ma Shan Zheng', cursive; font-size: 24px; color: #fff;
+      border: 2px solid rgba(201, 168, 108, 0.5);
+      box-shadow: 0 0 20px rgba(166, 44, 44, 0.25);
+      position: relative; overflow: hidden;
+    }
+    .logo-icon::after { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.3) 0%, transparent 60%); }
+    .logo-text { display: flex; flex-direction: column; }
+    .logo-title { font-family: 'Ma Shan Zheng', cursive; font-size: 28px; line-height: 1; color: var(--accent-red); letter-spacing: 2px; }
+    .logo-subtitle { font-size: 12px; color: var(--text-muted); letter-spacing: 3px; margin-top: 4px; }
+
+    .nav-menu { display: flex; align-items: center; gap: 6px; list-style: none; }
+    .nav-item { padding: 10px 22px; border-radius: 8px; font-size: 15px; font-weight: 500; color: var(--text-secondary); text-decoration: none; transition: all 0.2s ease; position: relative; }
+    .nav-item:hover { color: var(--accent-red); background: rgba(166, 44, 44, 0.06); }
+    .nav-item.active { color: var(--accent-red); background: rgba(166, 44, 44, 0.08); }
+    .nav-item.active::after { content: ''; position: absolute; bottom: 4px; left: 22px; right: 22px; height: 3px; border-radius: 2px; background: linear-gradient(90deg, transparent, var(--accent-red), transparent); }
+
+    .nav-right { display: flex; align-items: center; gap: 18px; }
+    .nav-icon { width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(166, 44, 44, 0.06); color: var(--text-secondary); cursor: pointer; transition: all 0.2s ease; }
+    .nav-icon:hover { background: rgba(166, 44, 44, 0.12); color: var(--accent-red); }
+    .user-info { display: flex; align-items: center; gap: 8px; color: var(--text-secondary); font-size: 14px; cursor: pointer; padding: 6px 10px; border-radius: 8px; transition: all 0.2s ease; }
+    .user-info:hover { background: rgba(166, 44, 44, 0.06); color: var(--accent-red); }
+
+    /* ===== 主体 ===== */
+    .wrap { flex: 1; width: 100%; max-width: 1560px; margin: 0 auto; padding: 22px 40px 40px; }
+
+    .crumbs { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-muted); margin-bottom: 16px; flex-wrap: wrap; }
+    .crumbs a { color: var(--text-secondary); text-decoration: none; transition: color .2s; }
+    .crumbs a:hover { color: var(--accent-red); }
+    .crumbs .cur { color: var(--accent-red); font-weight: 500; }
+    .crumbs .sp { color: rgba(166,44,44,.3); }
+
+    .kg-head {
+      display: flex; align-items: flex-end; justify-content: space-between;
+      gap: 24px; flex-wrap: wrap;
+      padding: 18px 22px;
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      box-shadow: 0 6px 26px var(--card-shadow);
+      backdrop-filter: blur(10px);
+      margin-bottom: 18px;
+    }
+
+    .kg-head-left { min-width: 0; }
+    .kg-title-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .kg-title { font-family: 'ZCOOL XiaoWei', serif; font-size: 32px; color: var(--accent-red); letter-spacing: 1px; line-height: 1.15; }
+    .kg-badge { font-size: 12px; padding: 4px 12px; border-radius: 12px; font-weight: 500; color: var(--accent-red); background: rgba(166, 44, 44, 0.09); border: 1px solid rgba(166, 44, 44, 0.2); }
+    .kg-sub { font-size: 13.5px; color: var(--text-secondary); line-height: 1.75; margin-top: 10px; max-width: 900px; }
+
+    .kg-meta { display: flex; gap: 24px; flex-shrink: 0; }
+    .kg-meta .m { text-align: right; }
+    .kg-meta .m .v { font-family: 'ZCOOL XiaoWei', serif; font-size: 24px; color: var(--accent-red); line-height: 1; }
+    .kg-meta .m .l { font-size: 11.5px; color: var(--text-muted); margin-top: 6px; letter-spacing: 1px; }
+
+    .kg-main { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 18px; align-items: start; }
+
+    .glass-card {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      box-shadow: 0 6px 24px var(--card-shadow);
+      backdrop-filter: blur(8px);
+      overflow: hidden;
+    }
+
+    .viz-toolbar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 20px; border-bottom: 1px solid var(--glass-border); gap: 12px;
+    }
+    .viz-title { font-family: 'ZCOOL XiaoWei', serif; font-size: 18px; color: var(--accent-red); display: flex; align-items: center; gap: 9px; }
+    .viz-title svg { color: var(--accent-gold); }
+    .viz-hint { font-size: 12px; color: var(--text-muted); }
+    .viz-controls { display: flex; align-items: center; gap: 8px; }
+    .viz-controls button {
+      width: 32px; height: 32px; border-radius: 8px;
+      border: 1px solid rgba(166, 44, 44, 0.18);
+      background: rgba(255, 250, 245, 0.7);
+      color: var(--text-secondary); cursor: pointer;
+      display: flex; align-items: center; justify-content: center; transition: all .2s;
+    }
+    .viz-controls button:hover { background: rgba(166, 44, 44, 0.08); color: var(--accent-red); border-color: rgba(166, 44, 44, 0.3); }
+
+    .kg-chart { width: 100%; height: calc(100vh - 330px); min-height: 540px; }
+
+    /* ===== 时间轴视图 ===== */
+    .tl-legend {
+      display: flex; flex-wrap: wrap; gap: 9px 22px;
+      padding: 13px 22px; border-bottom: 1px solid var(--glass-border);
+      background: rgba(255, 252, 248, 0.45);
+    }
+    .tl-legend .lg-item { display: flex; align-items: center; gap: 7px; font-size: 12.5px; color: var(--text-secondary); }
+    .tl-legend .lg-dot { width: 12px; height: 12px; border-radius: 4px; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.45); }
+
+    .tl-scroll { overflow: auto; padding: 24px 22px 18px; max-height: calc(100vh - 348px); }
+    .tl-canvas {
+      position: relative; display: flex; align-items: stretch; gap: 20px;
+      min-width: max-content; padding-top: 4px; padding-bottom: 4px;
+    }
+    .tl-canvas::after {
+      content: ''; position: absolute; left: 0; right: 0; bottom: 57px; height: 2px; border-radius: 2px;
+      background: linear-gradient(90deg, rgba(166,44,44,.04), rgba(166,44,44,.32) 7%, rgba(166,44,44,.32) 93%, rgba(166,44,44,.04));
+    }
+
+    .tl-col { position: relative; flex: 0 0 246px; width: 246px; display: flex; flex-direction: column; }
+    .tl-col::before {
+      content: ''; position: absolute; left: 8.5px; top: 25px; bottom: 58px;
+      border-left: 1.5px dashed rgba(166, 44, 44, 0.34);
+    }
+    .tl-cards { display: flex; flex-direction: column; gap: 14px; }
+
+    .tl-card {
+      position: relative; margin-left: 20px;
+      background: rgba(255, 252, 248, 0.94);
+      border: 1px solid rgba(166, 44, 44, 0.13);
+      border-left: 3px solid var(--c, var(--accent-red));
+      border-radius: 12px;
+      padding: 11px 13px 12px;
+      cursor: pointer;
+      transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+      box-shadow: 0 4px 14px rgba(92, 61, 46, 0.06);
+      animation: tlIn .45s cubic-bezier(.22,.61,.36,1) backwards;
+    }
+    .tl-card::before {
+      content: ''; position: absolute; right: calc(100% + 3px); top: 25px; width: 11px;
+      border-top: 1.5px dashed rgba(166, 44, 44, 0.34);
+    }
+    .tl-card:hover { transform: translateY(-3px); box-shadow: 0 14px 28px rgba(92, 61, 46, 0.15); border-color: rgba(166, 44, 44, 0.32); }
+    .tl-card.active { border-color: var(--c, var(--accent-red)); box-shadow: 0 0 0 2px rgba(166, 44, 44, 0.13), 0 14px 28px rgba(92, 61, 46, 0.15); }
+
+    @keyframes tlIn {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: none; }
+    }
+
+    .tl-card-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 7px; }
+    .tl-card-cat { font-size: 10.5px; font-weight: 500; padding: 1.5px 8px; border-radius: 8px; white-space: nowrap; }
+    .tl-card-year { font-size: 10.5px; color: var(--text-muted); letter-spacing: .4px; white-space: nowrap; }
+    .tl-card-name { font-family: 'ZCOOL XiaoWei', serif; font-size: 16px; color: var(--text-primary); line-height: 1.35; }
+    .tl-card-desc {
+      font-size: 11.5px; color: var(--text-muted); line-height: 1.62; margin-top: 5px;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .tl-card-rels { margin-top: 8px; padding-top: 7px; border-top: 1px dashed rgba(166, 44, 44, 0.15); display: flex; flex-direction: column; gap: 4px; }
+    .tl-rel { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--text-secondary); line-height: 1.5; }
+    .tl-rel-t { flex-shrink: 0; font-size: 10px; color: #8a6620; background: rgba(201, 168, 108, 0.16); border-radius: 7px; padding: 1px 6px; }
+    .tl-rel-a { flex-shrink: 0; color: rgba(166, 44, 44, 0.5); font-size: 11px; }
+    .tl-rel-n { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .tl-rel.clickable { cursor: pointer; }
+    .tl-rel.clickable:hover .tl-rel-n { text-decoration: underline; }
+    .tl-rel-more { font-size: 10.5px; color: var(--text-muted); }
+
+    .tl-node { position: relative; height: 20px; margin-top: auto; }
+    .tl-node span {
+      position: absolute; left: 2px; top: 50%; transform: translateY(-50%);
+      width: 14px; height: 14px; border-radius: 50%;
+      background: #fff; border: 3px solid var(--accent-red);
+      box-shadow: 0 0 0 4px rgba(166, 44, 44, 0.09);
+    }
+    .tl-year { height: 48px; padding-top: 4px; }
+    .tl-year .y { font-family: 'ZCOOL XiaoWei', serif; font-size: 16px; color: var(--accent-red); letter-spacing: 1px; line-height: 1.1; }
+    .tl-year .n { font-size: 10px; color: var(--text-muted); margin-top: 3px; line-height: 1.25; }
+
+    /* --- 右侧详情 --- */
+    .detail-panel { display: flex; flex-direction: column; max-height: calc(100vh - 140px); position: sticky; top: 96px; }
+    .panel-header { padding: 16px 20px 14px; border-bottom: 1px solid var(--glass-border); }
+    .panel-title { font-family: 'ZCOOL XiaoWei', serif; font-size: 18px; color: var(--accent-red); display: flex; align-items: center; gap: 10px; }
+    .panel-title svg { color: var(--accent-gold); }
+    .panel-body { padding: 18px 20px; flex: 1; overflow-y: auto; }
+
+    .detail-placeholder { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 12px; padding: 40px 0; color: var(--text-muted); }
+    .detail-placeholder svg { color: var(--accent-gold); opacity: .65; }
+    .detail-empty-title { font-family: 'ZCOOL XiaoWei', serif; font-size: 17px; color: var(--text-secondary); }
+
+    .detail-content { display: none; }
+    .detail-name { font-family: 'ZCOOL XiaoWei', serif; font-size: 23px; color: var(--accent-red); margin-bottom: 10px; line-height: 1.3; }
+    .detail-badges { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+    .detail-badge { display: inline-block; padding: 3px 11px; border-radius: 20px; font-size: 11.5px; font-weight: 500; }
+    .detail-badge.person { background: rgba(184, 58, 58, 0.1); color: #b83a3a; }
+    .detail-badge.place { background: rgba(90, 138, 116, 0.1); color: #5a8a74; }
+    .detail-badge.event { background: rgba(196, 138, 94, 0.12); color: #b3763f; }
+    .detail-badge.org { background: rgba(138, 86, 125, 0.1); color: #8a567d; }
+    .detail-badge.archive { background: rgba(86, 122, 138, 0.1); color: #567a8a; }
+    .detail-badge.group { background: rgba(201, 168, 108, 0.16); color: #8a6620; }
+    .detail-badge.culture { background: rgba(154, 106, 58, 0.12); color: #9a6a3a; }
+    .detail-badge.facility { background: rgba(138, 86, 125, 0.1); color: #8a567d; }
+    .detail-badge.year { background: rgba(255, 255, 255, 0.72); color: var(--text-secondary); border: 1px solid rgba(166, 44, 44, 0.14); }
+
+    .detail-section { margin-bottom: 18px; }
+    .detail-section-title { font-size: 13.5px; font-weight: 600; color: var(--text-primary); margin-bottom: 9px; display: flex; align-items: center; gap: 8px; }
+    .detail-section-title::before { content: ''; width: 4px; height: 13px; border-radius: 2px; background: var(--accent-gold); }
+    .detail-text { font-size: 13.5px; color: var(--text-secondary); line-height: 1.85; }
+
+    .relation-list { list-style: none; }
+    .relation-list li { display: flex; align-items: center; gap: 8px; padding: 8px 0; border-bottom: 1px solid rgba(166,44,44,.06); font-size: 13px; color: var(--text-secondary); }
+    .relation-list li:last-child { border-bottom: none; }
+    .relation-list li.clickable { cursor: pointer; transition: color .2s; }
+    .relation-list li.clickable:hover { color: var(--accent-red); }
+    .relation-list li.clickable:hover .rel-target { text-decoration: underline; }
+    .relation-type { font-size: 11px; color: #8a6620; background: rgba(201,168,108,.14); padding: 2px 8px; border-radius: 10px; flex-shrink: 0; }
+    .rel-dir { color: rgba(166,44,44,.55); font-size: 12px; flex-shrink: 0; }
+    .rel-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+    .rel-target { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+    .archive-link { display: block; padding: 10px 12px; border-radius: 10px; background: rgba(255,250,245,.62); border: 1px solid rgba(166,44,44,.08); margin-bottom: 8px; text-decoration: none; color: var(--text-primary); font-size: 13.5px; transition: all .2s; }
+    .archive-link:last-child { margin-bottom: 0; }
+    .archive-link:hover { background: rgba(166,44,44,.06); border-color: rgba(166,44,44,.18); color: var(--accent-red); }
+    .archive-link small { display: block; margin-top: 4px; font-size: 11.5px; color: var(--text-muted); }
+
+    /* 图谱切换导航 */
+    .kg-nav { margin-top: 22px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .kg-nav .nav-label { font-size: 12.5px; color: var(--text-muted); margin-right: 4px; }
+    .kg-nav a {
+      font-size: 12.5px; padding: 6px 13px; border-radius: 14px; text-decoration: none;
+      color: var(--text-secondary); background: rgba(255,255,255,.6);
+      border: 1px solid rgba(166,44,44,.12); transition: all .25s;
+    }
+    .kg-nav a:hover { color: var(--accent-red); border-color: rgba(166,44,44,.3); background: #fff; }
+    .kg-nav a.cur { background: var(--accent-red); color: #fff; border-color: var(--accent-red); }
+
+    .site-footer { margin-top: 34px; padding: 24px 20px; text-align: center; font-size: 13px; color: var(--text-muted); background: rgba(250,245,238,.5); border-top: 1px solid rgba(166,44,44,.08); }
+    .site-footer strong { color: var(--accent-red); font-weight: 500; }
+    .site-footer .sep { margin: 0 8px; color: rgba(166,44,44,.3); }
+
+    @media (max-width: 1180px) {
+      .kg-main { grid-template-columns: minmax(0,1fr); }
+      .detail-panel { position: static; max-height: none; }
+    }
+    @media (max-width: 900px) {
+      .navbar { flex-wrap: wrap; height: auto; padding: 12px 20px; }
+      .nav-menu { order: 3; width: 100%; justify-content: center; margin-top: 10px; flex-wrap: wrap; }
+      .wrap { padding: 18px 18px 32px; }
+      .kg-title { font-size: 26px; }
+      .kg-meta { gap: 16px; }
+      .kg-chart { height: 500px; }
+      .tl-scroll { max-height: none; padding: 18px 14px; }
+      .tl-col { flex: 0 0 226px; width: 226px; }
+      .viz-hint { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="landscape-bg"></div>
+  <div class="clouds"></div>
+  <div class="ribbon-left"></div>
+  <div class="ribbon-right"></div>
+
+  <div class="app">
+    <nav class="navbar">
+      <a href="wanxiang-future.html" class="logo" style="text-decoration:none">
+        <div class="logo-icon">万</div>
+        <div class="logo-text"><div class="logo-title">万象未来</div><div class="logo-subtitle">AI 档案知识空间</div></div>
+      </a>
+      <ul class="nav-menu">
+        <li><a href="wanxiang-future.html" class="nav-item">首页</a></li>
+        <li><a href="archives.html" class="nav-item">档案资源</a></li>
+        <li><a href="knowledge-graph.html" class="nav-item active">知识图谱</a></li>
+        <li><a href="sizheng-courses.html" class="nav-item">数字思政</a></li>
+        <li><a href="yanxue.html" class="nav-item">研学探索</a></li>
+        <li><a href="ai-chat.html" class="nav-item">智能问答</a></li>
+        <li><a href="admin.html" class="nav-item">后台管理</a></li>
+      </ul>
+      <div class="nav-right">
+        <div class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path></svg></div>
+        <div class="user-info"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"/></svg><span>欢迎您：管理员</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="m6 9 6 6 6-6"/></svg></div>
+      </div>
+    </nav>
+
+    <main class="wrap">
+      <div class="crumbs">
+        <a href="wanxiang-future.html">首页</a><span class="sp">/</span>
+        <a href="knowledge-graph.html">知识图谱</a><span class="sp">/</span>
+        <span class="cur" id="crumbName">—</span>
+      </div>
+
+      <section class="kg-head">
+        <div class="kg-head-left">
+          <div class="kg-title-row">
+            <h1 class="kg-title" id="kgTitle">—</h1>
+            <span class="kg-badge" id="kgBadge">图谱视图</span>
+          </div>
+          <p class="kg-sub" id="kgSub">—</p>
+        </div>
+        <div class="kg-meta">
+          <div class="m"><div class="v" id="mEntities">—</div><div class="l">实体节点</div></div>
+          <div class="m"><div class="v" id="mRelations">—</div><div class="l">关系边</div></div>
+          <div class="m"><div class="v" id="mSpan">—</div><div class="l">时间跨度</div></div>
+        </div>
+      </section>
+
+      <div class="kg-main">
+        <section class="glass-card">
+          <div class="viz-toolbar">
+            <div class="viz-title">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="19" height="19"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="4"></circle><path d="M4.93 4.93 9.17 9.17"></path><path d="M14.83 14.83 19.07 19.07"></path><path d="M14.83 9.17 19.07 4.93"></path><path d="M4.93 19.07 9.17 14.83"></path></svg>
+              <span id="vizTitleText">图谱视图</span>
+            </div>
+            <div class="viz-hint" id="vizHint">力导向关系网络 · 可拖拽、滚轮缩放，点击节点查看详情与关联关系</div>
+            <div class="viz-controls" id="vizControls">
+              <button id="zoomInBtn" title="放大"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="17" height="17"><circle cx="11" cy="11" r="8"></circle><path d="M21 21l-4.3-4.3"></path><path d="M11 8v6"></path><path d="M8 11h6"></path></svg></button>
+              <button id="zoomOutBtn" title="缩小"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="17" height="17"><circle cx="11" cy="11" r="8"></circle><path d="M21 21l-4.3-4.3"></path><path d="M8 11h6"></path></svg></button>
+              <button id="resetBtn" title="重置视图"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="17" height="17"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 12"></path><path d="M3 3v9h9"></path></svg></button>
+            </div>
+          </div>
+          <div id="tlWrap" class="tl-wrap" style="display:none"></div>
+          <div id="kgChart" class="kg-chart"></div>
+        </section>
+
+        <aside class="glass-card detail-panel">
+          <div class="panel-header">
+            <div class="panel-title">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+              节点详情
+            </div>
+          </div>
+          <div class="panel-body">
+            <div class="detail-placeholder" id="detailPlaceholder">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="58" height="58"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="4"></circle><path d="M4.93 4.93 9.17 9.17"></path><path d="M14.83 14.83 19.07 19.07"></path><path d="M14.83 9.17 19.07 4.93"></path><path d="M4.93 19.07 9.17 14.83"></path></svg>
+              <div class="detail-empty-title" id="phTitle">点击节点查看详情</div>
+              <p style="font-size:12.5px;line-height:1.8" id="phDesc">在关系网络中点击任意节点<br>即可查看简介与关联关系</p>
+            </div>
+            <div class="detail-content" id="detailContent">
+              <div class="detail-name" id="detailName"></div>
+              <div class="detail-badges" id="detailBadges"></div>
+              <div class="detail-section">
+                <div class="detail-section-title">简介</div>
+                <div class="detail-text" id="detailDesc"></div>
+              </div>
+              <div class="detail-section">
+                <div class="detail-section-title">关联关系</div>
+                <ul class="relation-list" id="detailRelations"></ul>
+              </div>
+              <div class="detail-section">
+                <div class="detail-section-title">关联档案</div>
+                <div id="detailArchives"></div>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <div class="kg-nav" id="kgNav"></div>
+
+      <footer class="site-footer">
+        <strong>万象未来</strong> · AI 档案知识空间<span class="sep">|</span>知识图谱详情<span class="sep">|</span>丽水市档案馆 数字资源建设
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    /* ================= 类别样式 ================= */
+    var CAT_STYLE = {
+      '人物': { color: '#b83a3a', cls: 'person' },
+      '地点': { color: '#5a8a74', cls: 'place' },
+      '事件': { color: '#c48a5e', cls: 'event' },
+      '组织机构': { color: '#8a567d', cls: 'org' },
+      '档案资源': { color: '#567a8a', cls: 'archive' },
+      '群体': { color: '#c9a86c', cls: 'group' },
+      '文化': { color: '#9a6a3a', cls: 'culture' },
+      '设施': { color: '#8a567d', cls: 'facility' }
+    };
+
+    var ARCHIVE_MOCKS = {
+      '人物': [
+        { title: '人物传记手稿', code: 'DA-2024-0001', desc: '原始生平记录与采访整理' },
+        { title: '革命活动影像集', code: 'DA-2024-0023', desc: '历史照片与口述视频资料' }
+      ],
+      '地点': [
+        { title: '遗址测绘档案', code: 'DA-2024-0045', desc: '旧址平面图与保护记录' },
+        { title: '地方志摘录', code: 'DA-2024-0067', desc: '民国至建国初期地方文献' }
+      ],
+      '事件': [
+        { title: '战役战斗记录', code: 'DA-2024-0089', desc: '战报、电报与回忆文章' },
+        { title: '会议决议原件', code: 'DA-2024-0102', desc: '重要历史会议原始文件' }
+      ],
+      '组织机构': [
+        { title: '组织名册', code: 'DA-2024-0123', desc: '成员名单与机构沿革' },
+        { title: '工作报告汇编', code: 'DA-2024-0145', desc: '年度工作总结与计划' }
+      ],
+      '档案资源': [
+        { title: '文献数字化副本', code: 'DA-2024-0167', desc: '高清扫描件与OCR文本' },
+        { title: '专题研究资料', code: 'DA-2024-0189', desc: '学者研究论文与索引' }
+      ],
+      '群体': [
+        { title: '英烈名录档案', code: 'DA-2024-0204', desc: '烈士登记表与事迹材料' },
+        { title: '优抚与纪念资料', code: 'DA-2024-0221', desc: '褒扬纪念活动记录' }
+      ],
+      '文化': [
+        { title: '少数民族红色文化档案', code: 'DA-2024-0240', desc: '歌谣、民俗与口述采集记录' },
+        { title: '专题研究资料', code: 'DA-2024-0258', desc: '畲族革命历史研究论文' }
+      ],
+      '设施': [
+        { title: '红色设施登记档案', code: 'DA-2024-0275', desc: '旧址与场馆普查登记表' },
+        { title: '保护修缮资料', code: 'DA-2024-0292', desc: '修缮方案与验收记录' }
+      ]
+    };
+
+    /* 实体构造：E(类别, 年份, 简介, 关联关系) */
+    function E(cat, year, desc, rels) { return { cat: cat, year: year || '', desc: desc, rels: rels || [] }; }
+    function R(t, n) { return { t: t, n: n }; }
+
+    /* 十六进制转 rgba */
+    function hexA(hex, a) {
+      var h = String(hex).replace('#', '');
+      if (h.length === 3) h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2];
+      var n = parseInt(h, 16);
+      return 'rgba(' + ((n >> 16) & 255) + ',' + ((n >> 8) & 255) + ',' + (n & 255) + ',' + a + ')';
+    }
+    function clip(s, n) { s = s || ''; return s.length > n ? s.slice(0, n) + '…' : s; }
+
+    /* ================= 十大知识图谱（全部按关系网络设计） ================= */
+    var GRAPHS = {
+      /* ---------- 1. 地方党组织史料 ---------- */
+      dangzuzhi: {
+        name: '地方党组织史料',
+        title: '地方党组织史料知识图谱',
+        span: '1927—1949',
+        layout: 'timeline',
+        sub: '以时间轴为主线的地方党组织沿革：1927 年遂昌支部点燃火种，1928 年农民武装斗争兴起，1935 年红军挺进师入浙、重建浙西南特委并创建根据地，1937 年门阵和谈形成统一战线，1938 年省委机关移驻丽水领导抗日救亡，直至 1949 年丽水解放、党组织转入执政建设。每张卡片同时列出该节点的关联关系，可点击继续追索。',
+        timeline: [
+          { label: '1927', note: '建党萌芽', items: ['中共遂昌支部', '遂昌'] },
+          { label: '1928', note: '武装斗争', items: ['浙西南农民武装斗争'] },
+          { label: '1935', note: '挺进师入浙 · 根据地创建', items: ['红军挺进师', '中共浙西南特委', '浙西南革命根据地'] },
+          { label: '1935', note: '中心区域 · 三年游击', items: ['遂昌王村口', '三年游击战争'] },
+          { label: '1937', note: '统一战线', items: ['门阵和谈'] },
+          { label: '1938', note: '省委驻丽水', items: ['中共浙江省委', '丽水中共浙江省委机关旧址', '抗日救亡运动'] },
+          { label: '1939', note: '省党代会召开', items: ['中共浙江省第一次代表大会'] },
+          { label: '1949', note: '丽水解放 · 转入执政', items: ['丽水解放'] },
+          { label: '史料', note: '编研成果', items: ['《浙西南革命史稿》'] }
+        ],
+        entities: {
+          '中共遂昌支部': E('组织机构', '1927', '浙西南地区最早建立的中共地方组织之一，隶属中共浙江省委，标志着浙西南红色火种的点燃。', [R('隶属', '中共浙江省委'), R('活动于', '遂昌')]),
+          '遂昌': E('地点', '', '浙西南革命重要区域，1927 年建立中共支部，1935 年后成为红军挺进师活动与党组织重建的核心地区之一。', [R('包含', '遂昌王村口'), R('掀起', '浙西南农民武装斗争')]),
+          '浙西南农民武装斗争': E('事件', '1928', '各县农民在党组织领导下开展武装斗争，为后来根据地建设奠定基础。', [R('奠定基础', '浙西南革命根据地')]),
+          '遂昌王村口': E('地点', '', '红军挺进师师部旧址所在地，浙西南革命中心区域之一，也是地方党组织重建的重要据点。', [R('驻地', '红军挺进师'), R('属于', '浙西南革命根据地')]),
+          '中共浙西南特委': E('组织机构', '1935', '红军挺进师入浙后恢复建立的地方党组织领导机构，统一领导浙西南各县党的工作。', [R('隶属', '中共浙江省委'), R('领导', '浙西南革命根据地')]),
+          '红军挺进师': E('组织机构', '1935', '中国工农红军挺进师，1935 年进入浙西南，是南方三年游击战争的重要武装力量，同时承担恢复重建地方党组织的任务。', [R('重建', '中共浙西南特委'), R('进驻', '浙西南革命根据地'), R('参与', '三年游击战争'), R('促成', '门阵和谈')]),
+          '中共浙江省委': E('组织机构', '', '土地革命战争至抗日战争时期浙江地区党的领导机构，1938 年机关秘密迁驻丽水，领导全省抗日救亡运动。', [R('驻地', '丽水中共浙江省委机关旧址'), R('领导', '抗日救亡运动'), R('指导', '中共浙江省第一次代表大会')]),
+          '丽水中共浙江省委机关旧址': E('地点', '1938', '抗日战争时期浙江党组织秘密活动据点，是省级党组织在丽水坚持斗争的重要历史见证。', [R('见证', '抗日救亡运动')]),
+          '浙西南革命根据地': E('地点', '1935', '土地革命战争时期浙西南红色政权的核心区域，为党组织发展与隐蔽斗争提供了依托。', [R('依托', '三年游击战争')]),
+          '门阵和谈': E('事件', '1937', '红军挺进师与国民党地方当局在门阵达成和平谈判，标志浙西南抗日民族统一战线形成，党组织由此转向公开活动。', [R('开启', '抗日救亡运动')]),
+          '三年游击战争': E('事件', '1935', '红军主力长征后，浙西南游击队坚持武装斗争的光辉历程，党组织在斗争中不断恢复发展。', []),
+          '抗日救亡运动': E('事件', '1938', '抗战时期浙江民众广泛开展的爱国救亡活动，各级党组织是运动的组织核心。', []),
+          '中共浙江省第一次代表大会': E('事件', '1939', '总结全省党的工作并部署抗日救亡任务，是浙江党组织发展史上的重要节点。', [R('总结', '抗日救亡运动')]),
+          '丽水解放': E('事件', '1949', '浙西南各县相继解放，地方党组织由地下斗争转入执政建设阶段。', [R('转为执政', '中共浙江省委')]),
+          '《浙西南革命史稿》': E('档案资源', '', '系统记录浙西南革命斗争历史的珍贵文献，是研究地方党组织沿革的核心史料。', [R('记载', '中共浙西南特委'), R('记载', '三年游击战争')])
+        }
+      },
+
+      /* ---------- 2. 刘英 ---------- */
+      liuying: {
+        name: '刘英',
+        title: '刘英知识图谱',
+        span: '1905—1942',
+        sub: '以刘英为核心节点的关系网络：串联其红军挺进师政治委员、中共浙江省委书记等多重身份，呈现他与粟裕、浙西南根据地、狱中手稿之间的完整人物关系。',
+        entities: {
+          '刘英': E('人物', '1905—1942', '浙江早期党组织领导人之一，红军挺进师政治委员，浙西南革命根据地创建者，1942 年英勇牺牲。', [R('任政治委员', '红军挺进师'), R('任书记', '中共浙江省委'), R('曾任书记', '闽浙边临时省委'), R('并肩战斗', '粟裕'), R('关押于', '浙江陆军监狱'), R('活动于', '遂昌王村口'), R('参与', '三年游击战争'), R('参与', '门阵和谈'), R('创建', '浙西南革命根据地'), R('留有手稿', '刘英狱中手稿')]),
+          '粟裕': E('人物', '1907—1984', '中国人民解放军高级将领，红军挺进师师长，浙西南三年游击战争的重要领导人。', [R('任师长', '红军挺进师'), R('参与', '三年游击战争'), R('参与', '门阵和谈')]),
+          '红军挺进师': E('组织机构', '1935', '中国工农红军挺进师，1935 年进入浙西南开展游击战争，刘英任政治委员。', [R('参与', '三年游击战争'), R('进驻', '遂昌王村口')]),
+          '中共浙江省委': E('组织机构', '', '浙江地区党的领导机构，1938 年机关秘密迁驻丽水，刘英曾任书记。', [R('驻地', '丽水中共浙江省委机关旧址')]),
+          '闽浙边临时省委': E('组织机构', '1935', '闽浙边地区党的领导机构，统一领导闽浙边革命斗争，刘英曾任书记。', [R('领导', '红军挺进师')]),
+          '浙江陆军监狱': E('地点', '', '关押过众多浙江革命志士的历史场所，刘英曾在此被关押并坚持狱中斗争。', []),
+          '遂昌王村口': E('地点', '', '红军挺进师师部旧址所在地，刘英在此长期开展革命活动。', []),
+          '丽水中共浙江省委机关旧址': E('地点', '1938', '抗日战争时期浙江党组织秘密活动据点，省级党组织在丽水的斗争见证。', []),
+          '浙西南革命根据地': E('地点', '1935', '土地革命战争时期浙西南红色政权的核心区域，由刘英等创建并坚持。', []),
+          '门阵和谈': E('事件', '1937', '红军挺进师与国民党地方当局在门阵达成的和平谈判，刘英是重要推动者之一。', []),
+          '三年游击战争': E('事件', '1935', '红军主力长征后，浙西南游击队坚持武装斗争的光辉历程，刘英为主要领导人之一。', []),
+          '刘英狱中手稿': E('档案资源', '', '刘英在狱中写下的文稿与书信，是研究其革命思想与斗争经历的重要文献。', [R('关联', '浙江陆军监狱')]),
+          '《浙西南革命史稿》': E('档案资源', '', '系统记录浙西南革命斗争历史的珍贵文献，其中详载刘英的革命活动。', [R('记载', '刘英')])
+        }
+      },
+
+      /* ---------- 3. 粟裕 ---------- */
+      suyu: {
+        name: '粟裕',
+        title: '粟裕知识图谱',
+        span: '1935—1938',
+        sub: '围绕粟裕在浙西南三年游击战争中的军事活动构建关系网络，勾连红军挺进师、浙西南根据地、门阵和谈与回忆录文献等节点。',
+        entities: {
+          '粟裕': E('人物', '1907—1984', '中国人民解放军高级将领，红军挺进师师长，浙西南三年游击战争的重要领导人，后率部改编北上抗日。', [R('任师长', '红军挺进师'), R('并肩战斗', '刘英'), R('参与', '三年游击战争'), R('参与', '门阵和谈'), R('活动于', '遂昌王村口'), R('活动于', '松阳安岱后'), R('创建', '浙西南革命根据地'), R('留有回忆录', '《粟裕战争回忆录》')]),
+          '刘英': E('人物', '1905—1942', '红军挺进师政治委员，与粟裕共同领导浙西南三年游击战争。', [R('任政治委员', '红军挺进师')]),
+          '红军挺进师': E('组织机构', '1935', '中国工农红军挺进师，粟裕任师长，1935 年挺进浙西南开辟根据地，后改编为新四军北上抗日。', [R('参与', '三年游击战争'), R('改编为', '新四军')]),
+          '闽浙边临时省委': E('组织机构', '1935', '闽浙边地区党的领导机构，统一领导闽浙边革命斗争，与挺进师协同作战。', [R('领导', '红军挺进师')]),
+          '中共浙江省委': E('组织机构', '', '浙江地区党的领导机构，与红军挺进师协同开展浙西南工作。', [R('协同', '红军挺进师')]),
+          '浙西南革命根据地': E('地点', '1935', '土地革命战争时期浙西南红色政权的核心区域，是挺进师的重要立足点。', []),
+          '遂昌王村口': E('地点', '', '红军挺进师师部旧址所在地，粟裕在此指挥开展游击斗争。', []),
+          '松阳安岱后': E('地点', '', '浙西南革命根据地的重要组成部分，红军常驻地区之一。', []),
+          '三年游击战争': E('事件', '1935', '红军主力长征后，浙西南游击队坚持武装斗争的光辉历程。', []),
+          '门阵和谈': E('事件', '1937', '红军挺进师与国民党地方当局达成的和平谈判，粟裕为主要谈判推动者。', []),
+          '新四军': E('组织机构', '1938', '抗日战争爆发后，南方红军游击队改编为新四军，挺进师主力随之北上抗日。', []),
+          '《粟裕战争回忆录》': E('档案资源', '', '粟裕亲笔回忆录，详述挺进浙西南与三年游击战争的决策过程。', [R('记载', '三年游击战争')])
+        }
+      },
+
+      /* ---------- 4. 革命英烈群体 ---------- */
+      yinglie: {
+        name: '革命英烈群体',
+        title: '革命英烈群体知识图谱',
+        span: '1927—1949',
+        sub: '以「群体归类 + 时代归属」为骨架的关系网络：各类英烈群体先归入所属类别节点，再通过参与事件、隶属组织等关系边接入浙西南革命整体脉络。',
+        entities: {
+          '谢文锦': E('人物', '', '浙西南早期革命活动家，为地方党组织的创建与发展作出重要贡献。', [R('参与', '早期革命活动家群体')]),
+          '陈凤生': E('人物', '', '龙泉籍革命英雄，长期在浙西南山区坚持革命斗争，事迹在地方广为传颂。', [R('参与', '早期革命活动家群体')]),
+          '各县早期党支部创建人群体': E('群体', '1927—1930', '浙西南各县创建中共支部的早期骨干群体，多数在斗争中牺牲。', [R('属于', '早期革命活动家群体')]),
+          '早期革命活动家群体': E('群体', '', '浙西南早期党组织的创建者与革命思想传播者群体。', [R('活动于', '浙西南革命根据地')]),
+          '安岱后战斗牺牲烈士': E('群体', '', '在松阳安岱后一带战斗中牺牲的红军挺进师指战员。', [R('属于', '红军挺进师英烈群体')]),
+          '王村口战斗牺牲烈士': E('群体', '', '在遂昌王村口及周边战斗中牺牲的红军将士。', [R('属于', '红军挺进师英烈群体')]),
+          '三年游击战争牺牲将士': E('群体', '1935—1937', '南方三年游击战争期间在浙西南山区牺牲的红军游击队员。', [R('属于', '红军挺进师英烈群体'), R('参与', '三年游击战争')]),
+          '红军挺进师英烈群体': E('群体', '', '随红军挺进师进入浙西南并在此牺牲的红军指战员群体。', [R('隶属', '红军挺进师'), R('牺牲于', '三年游击战争')]),
+          '省委机关遭破坏牺牲同志': E('群体', '1942', '抗战时期省委机关遭破坏过程中牺牲的地下党员与工作人员。', [R('属于', '抗日救亡牺牲志士群体')]),
+          '抗日救亡运动中殉难志士': E('群体', '1937—1945', '在抗日救亡宣传、募捐与支前活动中殉难的地方志士。', [R('属于', '抗日救亡牺牲志士群体'), R('参与', '抗日救亡运动')]),
+          '抗日救亡牺牲志士群体': E('群体', '', '抗战时期在浙江坚持救亡工作而牺牲的党员与爱国人士群体。', [R('牺牲于', '抗日救亡运动')]),
+          '浙西南游击根据地牺牲烈士': E('群体', '', '解放战争时期在浙西南游击根据地坚持斗争而牺牲的烈士。', [R('属于', '解放战争时期烈士群体')]),
+          '各县解放斗争牺牲人员': E('群体', '1949', '各县解放斗争中牺牲的党员、民兵与群众。', [R('属于', '解放战争时期烈士群体'), R('参与', '丽水解放')]),
+          '解放战争时期烈士群体': E('群体', '', '解放战争时期在浙西南牺牲的烈士群体。', [R('牺牲于', '丽水解放')]),
+          '畲族参军参战牺牲群众': E('群体', '', '畲族群众踊跃参军参战，在浙西南斗争中牺牲的畲族儿女群体。', [R('属于', '畲族红色英烈群体')]),
+          '畲族地下交通员': E('群体', '', '畲族村寨中承担情报传递与物资转运的地下交通员群体。', [R('属于', '畲族红色英烈群体')]),
+          '畲族红色英烈群体': E('群体', '', '畲族群众中为革命牺牲的英烈群体。', [R('关联', '畲族红色文化')]),
+          '地下交通战线女同志': E('群体', '', '长期从事地下交通、情报与掩护工作的女革命者群体。', [R('属于', '女英烈群体')]),
+          '妇救会牺牲骨干': E('群体', '', '妇女救国会中组织支前、救护与宣传而牺牲的骨干成员。', [R('属于', '女英烈群体')]),
+          '女英烈群体': E('群体', '', '浙西南革命中牺牲的女性英烈群体。', [R('支援', '红军挺进师')]),
+          '红军挺进师': E('组织机构', '1935', '中国工农红军挺进师，浙西南三年游击战争的主要武装力量。', []),
+          '三年游击战争': E('事件', '1935', '红军主力长征后，浙西南游击队坚持武装斗争的光辉历程。', []),
+          '抗日救亡运动': E('事件', '1938', '抗战时期浙江民众广泛开展的爱国救亡活动。', []),
+          '丽水解放': E('事件', '1949', '浙西南各县相继解放。', []),
+          '浙西南革命根据地': E('地点', '1935', '土地革命战争时期浙西南红色政权的核心区域。', []),
+          '畲族红色文化': E('文化', '', '畲族群众与红军共同斗争形成的红色文化形态。', []),
+          '英烈名录档案': E('档案资源', '', '系统登记革命烈士姓名、籍贯与事迹的档案名录。', [R('记载', '谢文锦'), R('记载', '陈凤生')])
+        }
+      },
+
+      /* ---------- 5. 红色革命事件 ---------- */
+      shijian: {
+        name: '红色革命事件',
+        title: '红色革命事件知识图谱',
+        span: '1927—1949',
+        sub: '以「起因—发展—结果」链条组织的关系网络：事件节点带年份，通过掀起、开辟、促成、开启等关系边串起浙西南从土地革命、抗日救亡到解放的完整时序。',
+        entities: {
+          '中共遂昌支部建立': E('事件', '1927', '浙西南地区有了最早的中共地方组织，红色火种点燃。', [R('掀起', '浙西南农民武装斗争')]),
+          '浙西南农民武装斗争': E('事件', '1928', '各县农民在党组织领导下开展武装斗争。', [R('奠定基础', '浙西南革命根据地建立')]),
+          '红军挺进师入浙': E('事件', '1935', '红军挺进师奉命挺进浙西南，开辟新的革命根据地。', [R('开辟', '浙西南革命根据地建立'), R('促成', '三年游击战争')]),
+          '浙西南革命根据地建立': E('事件', '1935', '浙西南革命根据地形成，成为南方游击战争的重要战略支点。', [R('支撑', '三年游击战争')]),
+          '三年游击战争': E('事件', '1935—1937', '红军主力长征后，浙西南游击队坚持武装斗争的光辉历程。', [R('收束于', '门阵和谈')]),
+          '门阵和谈': E('事件', '1937', '红军挺进师与国民党地方当局达成和平谈判，抗日民族统一战线形成。', [R('开启', '抗日救亡运动')]),
+          '抗日救亡运动': E('事件', '1937—1945', '抗战时期浙江民众广泛开展的爱国救亡活动。', [R('催生', '中共浙江省第一次代表大会')]),
+          '省委机关迁驻丽水': E('事件', '1938', '中共浙江省委机关秘密迁驻丽水，领导全省抗日救亡运动。', [R('保障', '抗日救亡运动'), R('导致', '省委机关遭破坏')]),
+          '中共浙江省第一次代表大会': E('事件', '1939', '总结全省党的工作并部署抗日救亡任务。', [R('部署', '抗日救亡运动')]),
+          '省委机关遭破坏': E('事件', '1942', '省委机关遭破坏，各地党组织转入隐蔽坚持。', [R('转入坚持', '浙西南革命根据地')]),
+          '丽水解放': E('事件', '1949', '浙西南各县相继解放，革命斗争取得最终胜利。', [R('促成', '各县人民政府成立')]),
+          '各县人民政府成立': E('事件', '1949', '各县人民政权相继建立，浙西南进入建设时期。', []),
+          '浙西南革命根据地': E('地点', '1935', '土地革命战争时期浙西南红色政权的核心区域。', [])
+        }
+      },
+
+      /* ---------- 6. 红色设施 ---------- */
+      sheshi: {
+        name: '红色设施',
+        title: '红色设施知识图谱',
+        span: '1927 年至今',
+        sub: '以「设施类别」为枢纽的关系网络：旧址、场馆、陵园、故居四类枢纽节点各自汇聚所属设施，并通过主题关联边建立跨类联系。',
+        entities: {
+          '丽水中共浙江省委机关旧址': E('设施', '', '抗日战争时期浙江党组织秘密活动据点，省级党组织在丽水坚持斗争的重要见证。', [R('类型', '重要旧址')]),
+          '遂昌王村口红军挺进师师部旧址': E('设施', '', '红军挺进师师部所在地，浙西南革命中心区域的核心遗址。', [R('类型', '重要旧址'), R('位于', '浙西南革命根据地')]),
+          '松阳安岱后革命旧址': E('设施', '', '浙西南革命根据地的重要组成部分，红军常驻地区。', [R('类型', '重要旧址')]),
+          '龙泉住龙革命活动旧址': E('设施', '', '龙泉西部山区革命活动的重要据点，留存多处革命遗迹。', [R('类型', '重要旧址')]),
+          '浙西南革命根据地纪念馆': E('设施', '', '集中展示浙西南革命斗争历史的专题纪念场馆。', [R('类型', '纪念场馆'), R('主题关联', '丽水中共浙江省委机关旧址')]),
+          '刘英事迹陈列室': E('设施', '', '展示刘英生平与浙西南革命事迹的专题陈列空间。', [R('类型', '纪念场馆'), R('人物主题关联', '丽水中共浙江省委机关旧址')]),
+          '丽水市党史教育基地': E('设施', '', '面向党员干部与青少年开展党史学习教育的基地。', [R('类型', '纪念场馆'), R('依托', '浙西南革命根据地纪念馆')]),
+          '丽水市革命烈士陵园': E('设施', '', '安葬与纪念丽水革命烈士的市级烈士纪念设施。', [R('类型', '烈士陵园')]),
+          '遂昌县革命烈士陵园': E('设施', '', '纪念遂昌籍及在遂昌牺牲革命烈士的纪念设施。', [R('类型', '烈士陵园')]),
+          '龙泉市革命烈士陵园': E('设施', '', '纪念龙泉籍及在龙泉牺牲革命烈士的纪念设施。', [R('类型', '烈士陵园')]),
+          '陈凤生故居': E('设施', '', '龙泉籍革命英雄陈凤生的故居，现为地方红色教育点。', [R('类型', '名人故居')]),
+          '谢文锦故居': E('设施', '', '浙西南早期革命活动家谢文锦故居，留存相关史迹。', [R('类型', '名人故居')]),
+          '重要旧址': E('群体', '', '革命领导机关、部队驻地与重要活动场所类遗址。', []),
+          '纪念场馆': E('群体', '', '专题纪念馆、陈列室与教育基地类设施。', []),
+          '烈士陵园': E('群体', '', '烈士墓园与纪念设施类场所。', []),
+          '名人故居': E('群体', '', '革命人物故居类纪念设施。', []),
+          '浙西南革命根据地': E('地点', '1935', '土地革命战争时期浙西南红色政权的核心区域。', [])
+        }
+      },
+
+      /* ---------- 7. 红色文物文献资料 ---------- */
+      wenwu: {
+        name: '红色文物文献资料',
+        title: '红色文物文献资料知识图谱',
+        span: '1927—1949',
+        sub: '以「载体类别」为枢纽的关系网络：纸质文献、实物文物、影像声像、口述史料四类枢纽汇聚具体资料，并通过引用、形成等关系边体现资料之间的来源与传承。',
+        entities: {
+          '《浙西南革命史稿》手稿': E('档案资源', '', '系统记录浙西南革命斗争历史的珍贵文稿，是编研工作的基础史料。', [R('类型', '纸质文献'), R('引用', '老同志回忆访谈录')]),
+          '革命书信与日记': E('档案资源', '', '革命者在斗争间隙留下的书信、日记原件，具有极高的史料价值。', [R('类型', '纸质文献')]),
+          '会议决议原件': E('档案资源', '', '党组织重要会议形成的决议、通知等原始文件。', [R('类型', '纸质文献')]),
+          '革命报刊': E('档案资源', '', '抗战时期浙江各地党组织与救亡团体编印的报刊。', [R('类型', '纸质文献'), R('关联', '历史照片档案')]),
+          '红军标语与布告': E('档案资源', '', '红军挺进师书写、张贴的标语与布告遗存。', [R('类型', '实物文物')]),
+          '红军印章与旗帜': E('档案资源', '', '部队与地方组织使用的印章、旗帜等实物文物。', [R('类型', '实物文物')]),
+          '军号与油灯': E('档案资源', '', '红军游击生活中使用的军号、油灯等生活与装备实物。', [R('类型', '实物文物')]),
+          '草鞋与挎包': E('档案资源', '', '反映艰苦斗争环境的行军装备实物。', [R('类型', '实物文物')]),
+          '历史照片档案': E('档案资源', '', '记录革命活动、人物与遗址的历史照片。', [R('类型', '影像声像'), R('关联', '纪实影片素材')]),
+          '口述录音资料': E('档案资源', '', '对亲历者进行采录形成的口述录音与视频资料。', [R('类型', '影像声像')]),
+          '纪实影片素材': E('档案资源', '', '围绕浙西南革命历史拍摄的纪实影像素材。', [R('类型', '影像声像')]),
+          '老同志回忆访谈录': E('档案资源', '', '对老同志进行访谈整理的回忆文本资料。', [R('类型', '口述史料'), R('形成', '亲历者口述录音')]),
+          '亲历者口述录音': E('档案资源', '', '亲历者口述历史的原始录音与整理稿。', [R('类型', '口述史料')]),
+          '纸质文献': E('群体', '', '以纸张为载体的手稿、文件、报刊等文献类型。', []),
+          '实物文物': E('群体', '', '标语、印章、装备等有形历史实物类型。', []),
+          '影像声像': E('群体', '', '照片、录音、影片等声像载体类型。', []),
+          '口述史料': E('群体', '', '通过访谈采录形成的口述历史资料类型。', [])
+        }
+      },
+
+      /* ---------- 8. 红色回忆与研究活动 ---------- */
+      huiyi: {
+        name: '红色回忆与研究活动',
+        title: '红色回忆与研究活动知识图谱',
+        span: '1959—2024',
+        sub: '以「活动 → 成果」为主线的知识网络：从回忆录征集、史料整理、口述采集到遗址普查、编研出版与数字化建设，活动节点与史料成果节点互为关联，呈现红色记忆的积累路径。',
+        entities: {
+          '革命回忆录征集': E('事件', '1959', '面向老同志征集革命回忆录，抢救性保存口述记忆。', [R('形成', '老同志回忆访谈录'), R('推动', '《浙西南革命史稿》编研出版')]),
+          '老同志回忆访谈录': E('档案资源', '', '由回忆录征集整理形成的访谈文本资料。', [R('收录于', '《浙西南革命史稿》手稿')]),
+          '浙西南革命史料整理': E('事件', '1981', '系统整理革命时期文献与档案，建立基础史料体系。', [R('整理', '《浙西南革命史稿》手稿'), R('推动', '《浙西南革命史稿》编研出版')]),
+          '老区口述采集': E('事件', '1995', '组织专门队伍走访革命老区，采录亲历者口述史料。', [R('形成', '亲历者口述录音')]),
+          '亲历者口述录音': E('档案资源', '', '老区采集形成的口述录音与整理稿。', [R('补充', '《浙西南革命史稿》手稿')]),
+          '《浙西南革命史稿》编研出版': E('事件', '2006', '完成浙西南革命史料汇编与史稿出版，形成权威编研成果。', [R('成果', '《浙西南革命史稿》手稿')]),
+          '《浙西南革命史稿》手稿': E('档案资源', '', '系统记录浙西南革命斗争历史的珍贵文稿。', []),
+          '革命遗址普查': E('事件', '2011', '开展革命遗址全面普查，摸清红色资源家底。', [R('形成', '红色设施名录')]),
+          '红色设施名录': E('档案资源', '', '普查形成的红色设施登记名录与档案。', [R('支撑', '红色档案数字化建设')]),
+          '浙西南革命精神研讨': E('事件', '2019', '举办专题学术研讨，深化浙西南革命精神研究。', [R('依托', '《浙西南革命史稿》手稿')]),
+          '建党百年红色档案专题展': E('事件', '2021', '举办红色档案专题展览，推动档案资源社会利用。', [R('依托', '红色设施名录')]),
+          '红色档案数字化建设': E('事件', '2024', '推进红色档案数字化与知识图谱构建，实现资源智能关联。', [R('形成', '地方党组织史料知识图谱')]),
+          '地方党组织史料知识图谱': E('档案资源', '', '以关系网络形式呈现地方党组织沿革的专题知识图谱。', []),
+          '丽水市档案馆': E('组织机构', '', '承担浙西南红色档案收集、整理、编研与数字化工作的主体单位。', [R('组织', '革命遗址普查'), R('主办', '建党百年红色档案专题展'), R('主导', '红色档案数字化建设')])
+        }
+      },
+
+      /* ---------- 9. 畲族红色文化 ---------- */
+      shezu: {
+        name: '畲族红色文化',
+        title: '畲族红色文化知识图谱',
+        span: '1935—1949',
+        sub: '呈现畲族群众、畲族村寨与红军之间支援、参军、联络、传唱的多重关系，勾勒畲汉团结共同斗争的关系网络。',
+        entities: {
+          '畲族群众': E('群体', '', '浙西南畲族群众积极支援红军，为部队提供粮食、情报与宿营掩护。', [R('支援', '红军挺进师'), R('聚居', '畲族村寨'), R('传唱', '畲族红色歌谣'), R('参与', '畲汉团结抗日')]),
+          '红军挺进师': E('组织机构', '1935', '中国工农红军挺进师，长期在畲族聚居山区开展游击战争。', [R('驻扎', '畲族村寨')]),
+          '畲族村寨': E('地点', '', '景宁、云和、遂昌等地的畲族聚居村寨，是红军重要的活动与隐蔽区域。', [R('留存', '畲族红色遗址')]),
+          '畲族参军青年': E('群体', '', '畲族青年踊跃参加红军与地方武装，成为部队重要兵源。', [R('隶属', '红军挺进师')]),
+          '畲族地下交通员': E('群体', '', '畲族群众中的地下交通员，承担情报传递与物资转运任务。', [R('活动于', '畲族村寨'), R('支援', '红军挺进师')]),
+          '畲族红色歌谣': E('文化', '', '畲族群众以歌谣形式传唱红军故事，是独特的红色文化形态。', [R('记录', '《畲族革命歌谣集》')]),
+          '畲族红色遗址': E('设施', '', '畲族村寨中留存的红军活动旧址与纪念设施。', []),
+          '畲汉团结抗日': E('事件', '1937—1945', '抗战时期畲汉群众团结开展抗日救亡活动。', [R('参与', '抗日救亡运动')]),
+          '粟裕': E('人物', '1907—1984', '红军挺进师师长，率部在畲族山区坚持游击战争。', [R('任师长', '红军挺进师')]),
+          '刘英': E('人物', '1905—1942', '红军挺进师政治委员，在畲族山区开展革命工作。', [R('任政治委员', '红军挺进师')]),
+          '抗日救亡运动': E('事件', '1938', '抗战时期浙江民众广泛开展的爱国救亡活动。', []),
+          '《畲族革命歌谣集》': E('档案资源', '', '整理收录畲族革命歌谣的专题文献，是研究畲族红色文化的重要资料。', [R('记载', '畲族红色歌谣')])
+        }
+      },
+
+      /* ---------- 10. 华侨红色相关史料 ---------- */
+      huaqiao: {
+        name: '华侨红色相关史料',
+        title: '华侨红色相关史料知识图谱',
+        span: '1927—1945',
+        sub: '连接青田侨乡、旅外中共支部、华侨抗日救国团体与抗战募捐网络，还原华侨通过组织、募捐、回国参战与交通联络参与革命的关系路径。',
+        entities: {
+          '青田华侨': E('群体', '', '青田旅外华侨众多，旅居欧洲等地，是浙西南华侨革命力量的主要来源。', [R('建立', '旅欧中共支部'), R('组织', '华侨抗日救国团体'), R('支援', '抗战募捐与侨汇'), R('联系', '侨乡地下交通线'), R('留守', '青田侨乡革命遗址')]),
+          '旅欧中共支部': E('组织机构', '1927—1937', '青田籍华侨在欧洲建立的中共支部组织，开展革命宣传与联络工作。', [R('关联', '中共浙江省委')]),
+          '华侨抗日救国团体': E('组织机构', '1937—1945', '海外华侨成立的抗日救国组织，广泛动员侨胞支援祖国抗战。', [R('组织', '抗战募捐与侨汇'), R('动员', '回国参战华侨青年')]),
+          '抗战募捐与侨汇': E('事件', '', '华侨通过募捐、侨汇与物资捐赠方式支援抗战与家乡建设。', [R('支援', '抗日救亡运动')]),
+          '回国参战华侨青年': E('群体', '', '放弃海外生活回国投身抗战的华侨青年群体。', [R('参与', '抗日救亡运动')]),
+          '侨乡地下交通线': E('设施', '', '依托侨乡人脉与侨汇渠道建立的地下交通与物资转运线路。', [R('关联', '中共浙江省委')]),
+          '青田侨乡革命遗址': E('设施', '', '青田侨乡留存的革命活动旧址与纪念设施。', [R('依托', '侨乡地下交通线')]),
+          '中共浙江省委': E('组织机构', '', '浙江地区党的领导机构，负责联络与指导华侨抗日救国工作。', []),
+          '抗日救亡运动': E('事件', '1938', '抗战时期浙江民众广泛开展的爱国救亡活动。', []),
+          '《华侨与浙西南革命史料汇编》': E('档案资源', '', '收录华侨参与浙西南革命与抗日救亡的档案文献汇编。', [R('记载', '青田华侨')])
+        }
+      }
+    };
+
+    var ORDER = ['dangzuzhi', 'liuying', 'suyu', 'yinglie', 'shijian', 'sheshi', 'wenwu', 'huiyi', 'shezu', 'huaqiao'];
+
+    /* ================= 页面逻辑 ================= */
+    var params = new URLSearchParams(window.location.search);
+    var gid = params.get('g');
+    if (!GRAPHS[gid]) gid = ORDER[0];
+    var G = GRAPHS[gid];
+    var chart = null;
+
+    function catOf(name) {
+      var e = G.entities[name];
+      return (e && e.cat) || '档案资源';
+    }
+    function styleOf(cat) { return CAT_STYLE[cat] || CAT_STYLE['档案资源']; }
+
+    /* ---------- 头部 ---------- */
+    document.title = G.title + ' · 万象未来 · AI 档案知识空间';
+    document.getElementById('crumbName').textContent = G.name;
+    document.getElementById('kgTitle').textContent = G.title;
+    document.getElementById('kgSub').textContent = G.sub;
+
+    var NAMES = Object.keys(G.entities);
+    var REL_TOTAL = 0;
+    NAMES.forEach(function (n) { REL_TOTAL += (G.entities[n].rels || []).length; });
+    document.getElementById('mEntities').textContent = NAMES.length;
+    document.getElementById('mRelations').textContent = REL_TOTAL;
+    document.getElementById('mSpan').textContent = G.span || '—';
+
+    /* ---------- 图谱切换导航 ---------- */
+    document.getElementById('kgNav').innerHTML =
+      '<span class="nav-label">切换图谱：</span>' +
+      ORDER.map(function (k) {
+        return '<a href="knowledge-graph-detail.html?g=' + k + '"' + (k === gid ? ' class="cur"' : '') + '>' + GRAPHS[k].name + '</a>';
+      }).join('');
+
+    /* ---------- 邻接关系：出边 + 入边 ---------- */
+    function inRels(name) {
+      var out = [];
+      NAMES.forEach(function (s) {
+        (G.entities[s].rels || []).forEach(function (r) {
+          if (r.n === name) out.push({ t: r.t, n: s });
+        });
+      });
+      return out;
+    }
+
+    /* ---------- 详情面板 ---------- */
+    function showEntity(name) {
+      var e = G.entities[name];
+      if (!e) return;
+      document.getElementById('detailPlaceholder').style.display = 'none';
+      document.getElementById('detailContent').style.display = 'block';
+      document.getElementById('detailName').textContent = name;
+
+      var badges = '<span class="detail-badge ' + styleOf(e.cat).cls + '">' + e.cat + '</span>';
+      if (e.year) badges += '<span class="detail-badge year">' + e.year + '</span>';
+      document.getElementById('detailBadges').innerHTML = badges;
+      document.getElementById('detailDesc').textContent = e.desc || '暂无简介';
+
+      var list = document.getElementById('detailRelations');
+      list.innerHTML = '';
+      var rows = [];
+      (e.rels || []).forEach(function (r) { rows.push({ dir: 'out', t: r.t, n: r.n }); });
+      inRels(name).forEach(function (r) { rows.push({ dir: 'in', t: r.t, n: r.n }); });
+
+      if (!rows.length) {
+        list.innerHTML = '<li style="color:var(--text-muted)">暂无直接关联</li>';
+      } else {
+        rows.forEach(function (r) {
+          var exists = !!G.entities[r.n];
+          var li = document.createElement('li');
+          li.innerHTML =
+            '<span class="relation-type">' + r.t + '</span>' +
+            '<span class="rel-dir">' + (r.dir === 'out' ? '→' : '←') + '</span>' +
+            '<span class="rel-dot" style="background:' + (exists ? styleOf(catOf(r.n)).color : '#c9a86c') + '"></span>' +
+            '<span class="rel-target">' + r.n + '</span>';
+          if (exists) {
+            li.className = 'clickable';
+            li.addEventListener('click', function () { showEntity(r.n); });
+          }
+          list.appendChild(li);
+        });
+      }
+
+      var box = document.getElementById('detailArchives');
+      box.innerHTML = '';
+      var mocks = ARCHIVE_MOCKS[e.cat] || ARCHIVE_MOCKS['事件'];
+      mocks.forEach(function (a) {
+        var el = document.createElement('a');
+        el.className = 'archive-link';
+        el.href = 'archives.html';
+        el.innerHTML = a.title + '<small>' + a.code + ' · ' + a.desc + '</small>';
+        box.appendChild(el);
+      });
+
+      /* 时间轴视图：高亮当前卡片并滚动到可视区 */
+      var wrap = document.getElementById('tlWrap');
+      if (wrap && wrap.style.display !== 'none') {
+        var prev = wrap.querySelector('.tl-card.active');
+        if (prev) prev.classList.remove('active');
+        var cur = wrap.querySelector('.tl-card[data-entity="' + name + '"]');
+        if (cur) {
+          cur.classList.add('active');
+          var scroller = wrap.querySelector('.tl-scroll');
+          if (scroller) {
+            var cr = cur.getBoundingClientRect(), sr = scroller.getBoundingClientRect();
+            if (cr.left < sr.left + 24 || cr.right > sr.right - 24) {
+              scroller.scrollLeft += (cr.left - sr.left) - (sr.width - cr.width) / 2;
+            }
+          }
+        }
+      }
+    }
+
+    /* ---------- 关系网络渲染 ---------- */
+    function renderNetwork() {
+      var cats = [], catIndex = {};
+      NAMES.forEach(function (n) {
+        var c = catOf(n);
+        if (catIndex[c] === undefined) { catIndex[c] = cats.length; cats.push(c); }
+      });
+      var categories = cats.map(function (c) { return { name: c, itemStyle: { color: styleOf(c).color } }; });
+
+      /* 关系边去重 */
+      var seen = {}, links = [];
+      NAMES.forEach(function (n) {
+        (G.entities[n].rels || []).forEach(function (r) {
+          var key = [n, r.n].sort().join('|');
+          if (seen[key]) return;
+          seen[key] = 1;
+          links.push({ source: n, target: r.n, name: r.t, value: r.t });
+        });
+      });
+
+      /* 度的中心性决定节点大小 */
+      var degree = {};
+      NAMES.forEach(function (n) { degree[n] = 0; });
+      links.forEach(function (l) {
+        degree[l.source] = (degree[l.source] || 0) + 1;
+        degree[l.target] = (degree[l.target] || 0) + 1;
+      });
+      var maxDeg = 1;
+      NAMES.forEach(function (n) { if (degree[n] > maxDeg) maxDeg = degree[n]; });
+
+      var nodes = NAMES.map(function (n) {
+        var d = degree[n] || 0;
+        return {
+          id: n, name: n, category: catIndex[catOf(n)],
+          value: d,
+          symbolSize: Math.min(58, 20 + (d / maxDeg) * 40),
+          label: { fontSize: d >= Math.max(3, maxDeg * 0.5) ? 14 : 12, fontWeight: d >= maxDeg * 0.7 ? 600 : 400 }
+        };
+      });
+
+      chart = echarts.init(document.getElementById('kgChart'), null, { renderer: 'canvas' });
+      chart.setOption({
+        backgroundColor: 'transparent',
+        tooltip: {
+          trigger: 'item',
+          formatter: function (p) {
+            if (p.dataType === 'edge') return p.data.source + ' —' + p.data.name + '→ ' + p.data.target;
+            var e = G.entities[p.name] || {};
+            return p.name + ' · ' + catOf(p.name) + (e.year ? ' · ' + e.year : '');
+          }
+        },
+        legend: [{ data: cats, bottom: 0, itemWidth: 10, itemHeight: 10, textStyle: { color: '#3d2b1f', fontSize: 12 } }],
+        animationDuration: 1200,
+        animationEasingUpdate: 'quinticInOut',
+        series: [{
+          id: 'kg', name: G.name, type: 'graph', layout: 'force',
+          data: nodes, links: links, categories: categories,
+          roam: true, draggable: true,
+          label: { show: true, position: 'right', color: '#3d2b1f', fontFamily: 'Noto Sans SC' },
+          lineStyle: { color: 'source', curveness: 0.18, width: 1.6, opacity: 0.6 },
+          edgeLabel: {
+            show: links.length <= 16,
+            fontSize: 10,
+            color: 'rgba(61,43,31,0.58)',
+            formatter: function (p) { return p.data.name; }
+          },
+          emphasis: { focus: 'adjacency', lineStyle: { width: 3, opacity: 1 }, label: { fontSize: 14, fontWeight: 600 } },
+          force: { repulsion: 560, edgeLength: [110, 200], gravity: 0.1, layoutAnimation: true },
+          zoom: 1
+        }]
+      });
+
+      chart.on('click', function (p) {
+        if (p.dataType === 'node') showEntity(p.name);
+      });
+    }
+
+    /* ---------- 时间轴渲染 ---------- */
+    function tlCardHtml(name, delay) {
+      var e = G.entities[name] || { cat: '档案资源', year: '', desc: '', rels: [] };
+      var cat = e.cat || '档案资源';
+      var st = styleOf(cat);
+      var outRels = e.rels || [];
+      var inRows = inRels(name);
+
+      /* 先列出出边，不足 3 条时用入边补齐，保证每张卡片都能看到关联内容 */
+      var rows = [];
+      outRels.forEach(function (r) { rows.push({ dir: 'out', t: r.t, n: r.n }); });
+      if (rows.length < 3) {
+        inRows.forEach(function (r) {
+          if (rows.length >= 3) return;
+          var dup = rows.some(function (x) { return x.dir === 'out' && x.n === r.n && x.t === r.t; });
+          if (!dup) rows.push({ dir: 'in', t: r.t, n: r.n });
+        });
+      }
+      var totalRels = outRels.length + inRows.length;
+      var shown = rows.slice(0, 3);
+
+      var relHtml = shown.map(function (r) {
+        var tgt = G.entities[r.n];
+        var tcol = tgt ? styleOf(tgt.cat).color : 'rgba(61,43,31,.5)';
+        return '<div class="tl-rel' + (tgt ? ' clickable' : '') + '"' + (tgt ? ' data-entity="' + r.n + '"' : '') + '>' +
+            '<span class="tl-rel-t">' + r.t + '</span>' +
+            '<span class="tl-rel-a">' + (r.dir === 'out' ? '→' : '←') + '</span>' +
+            '<span class="tl-rel-n" style="color:' + tcol + '">' + r.n + '</span>' +
+          '</div>';
+      }).join('');
+      if (!totalRels) {
+        relHtml = '<div class="tl-rel-more">暂无直接关联</div>';
+      } else if (totalRels > shown.length) {
+        relHtml += '<div class="tl-rel-more">另有 ' + (totalRels - shown.length) + ' 项关联</div>';
+      }
+
+      return '<div class="tl-card" data-entity="' + name + '" style="--c:' + st.color + ';animation-delay:' + delay + 'ms">' +
+          '<div class="tl-card-top">' +
+            '<span class="tl-card-cat" style="color:' + st.color + ';background:' + hexA(st.color, 0.13) + '">' + cat + '</span>' +
+            (e.year ? '<span class="tl-card-year">' + e.year + '</span>' : '') +
+          '</div>' +
+          '<div class="tl-card-name">' + name + '</div>' +
+          (e.desc ? '<div class="tl-card-desc">' + clip(e.desc, 68) + '</div>' : '') +
+          '<div class="tl-card-rels">' + relHtml + '</div>' +
+        '</div>';
+    }
+
+    function renderTimeline() {
+      var cols = G.timeline || [];
+
+      /* 图例：按时间轴中实际出现的类别生成 */
+      var cats = [];
+      cols.forEach(function (c) {
+        c.items.forEach(function (n) {
+          var cat = catOf(n);
+          if (cats.indexOf(cat) < 0) cats.push(cat);
+        });
+      });
+      var legend = '<div class="tl-legend">' + cats.map(function (c) {
+        return '<span class="lg-item"><span class="lg-dot" style="background:' + styleOf(c).color + '"></span>' + c + '</span>';
+      }).join('') + '</div>';
+
+      /* 时间轴列：每列 = 一个时间节点，卡片自上而下堆叠，虚线汇入轴上节点 */
+      var body = cols.map(function (c, ci) {
+        var cards = c.items.map(function (n, ni) { return tlCardHtml(n, ci * 70 + ni * 45); }).join('');
+        return '<div class="tl-col">' +
+            '<div class="tl-cards">' + cards + '</div>' +
+            '<div class="tl-node"><span></span></div>' +
+            '<div class="tl-year"><div class="y">' + c.label + '</div>' + (c.note ? '<div class="n">' + c.note + '</div>' : '') + '</div>' +
+          '</div>';
+      }).join('');
+
+      var wrap = document.getElementById('tlWrap');
+      wrap.innerHTML = legend + '<div class="tl-scroll"><div class="tl-canvas">' + body + '</div></div>';
+
+      /* 卡片 / 关系行点击 → 右侧详情 */
+      wrap.querySelectorAll('.tl-card').forEach(function (el) {
+        el.addEventListener('click', function (ev) {
+          var rel = ev.target.closest ? ev.target.closest('.tl-rel.clickable') : null;
+          if (rel) { showEntity(rel.getAttribute('data-entity')); return; }
+          showEntity(el.getAttribute('data-entity'));
+        });
+      });
+    }
+
+    /* ---------- 视图分发：时间轴 / 关系网络 ---------- */
+    var isTimeline = (G.layout === 'timeline');
+
+    if (isTimeline) {
+      document.getElementById('kgChart').style.display = 'none';
+      document.getElementById('tlWrap').style.display = 'block';
+      document.getElementById('vizTitleText').textContent = '组织沿革时间轴';
+      document.getElementById('vizHint').textContent = '组织沿革时间轴 · 点击卡片查看节点详情，点击卡片内的关系行可跳转到关联节点';
+      document.getElementById('vizControls').style.display = 'none';
+      document.getElementById('kgBadge').textContent = '时间轴视图';
+      document.getElementById('phTitle').textContent = '点击卡片查看详情';
+      document.getElementById('phDesc').innerHTML = '在时间轴中点击任意卡片<br>即可查看该节点的简介与完整关联关系';
+      renderTimeline();
+    } else {
+      document.getElementById('vizTitleText').textContent = '关系网络';
+      document.getElementById('vizHint').textContent = '力导向关系网络 · 可拖拽、滚轮缩放，点击节点查看详情与关联关系';
+      document.getElementById('kgBadge').textContent = '关系网络视图';
+      renderNetwork();
+
+      document.getElementById('zoomInBtn').addEventListener('click', function () { chart.setOption({ series: [{ id: 'kg', zoom: 1.3 }] }); });
+      document.getElementById('zoomOutBtn').addEventListener('click', function () { chart.setOption({ series: [{ id: 'kg', zoom: 0.7 }] }); });
+      document.getElementById('resetBtn').addEventListener('click', function () {
+        chart.dispatchAction({ type: 'restore' });
+        chart.setOption({ series: [{ id: 'kg', zoom: 1, center: null }] }, false);
+      });
+    }
+
+    window.addEventListener('resize', function () { if (chart) chart.resize(); });
+  </script>
+</body>
+</html>
