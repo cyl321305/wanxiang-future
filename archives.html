@@ -342,7 +342,7 @@
     .kb-cover { height: 96px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
     .kb-cover::before { content: ''; position: absolute; inset: 0; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 200'%3E%3Cpath fill='%23ffffff' fill-opacity='0.12' d='M50,180 C80,120 120,80 180,60 C240,40 320,50 380,20 L400,200 Z'/%3E%3C/svg%3E") no-repeat right bottom; background-size: cover; }
     .kb-cover .kb-emoji { font-size: 40px; filter: drop-shadow(0 4px 8px rgba(0,0,0,.2)); position: relative; z-index: 1; }
-    .kb-count-badge { position: absolute; right: 10px; top: 10px; background: rgba(255,255,255,.9); color: var(--accent-red); font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,.12); z-index: 1; }
+    .kb-count-badge { position: absolute; right: 10px; bottom: 10px; background: rgba(255,255,255,.9); color: var(--accent-red); font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,.12); z-index: 1; }
     .kb-cover.red { background: linear-gradient(135deg, #a62c2c, #c94d4d); }
     .kb-cover.gold { background: linear-gradient(135deg, #b8860b, #d4a373); }
     .kb-cover.brown { background: linear-gradient(135deg, #7a5c3e, #a9855f); }
@@ -359,6 +359,76 @@
     .kb-foot .kb-update { display: flex; align-items: center; gap: 4px; }
     .kb-foot .kb-enter { color: var(--accent-red); display: flex; align-items: center; gap: 2px; font-weight: 500; }
   
+    /* ===== 视图面板 ===== */
+    .view-panel { display: none; flex-direction: column; gap: 20px; }
+    .view-panel.active { display: flex; }
+
+    .view-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+    .view-head-title { font-family: 'ZCOOL XiaoWei', serif; font-size: 20px; color: var(--text-primary); display: flex; align-items: center; gap: 9px; }
+    .view-head-title .dot { width: 9px; height: 9px; border-radius: 50%; }
+    .view-head-tip { font-size: 12.5px; color: var(--text-muted); }
+    .view-head-tip strong { color: var(--accent-red); font-weight: 600; }
+
+    /* ===== 媒体卡片（图片 / 声像） ===== */
+    .media-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    .media-card {
+      background: var(--glass); border: 1px solid var(--glass-border); border-radius: 14px; overflow: hidden;
+      cursor: pointer; transition: all .35s ease; box-shadow: 0 8px 24px var(--card-shadow);
+      backdrop-filter: blur(10px); display: flex; flex-direction: column;
+    }
+    .media-card:hover { transform: translateY(-5px); box-shadow: 0 16px 40px rgba(92, 61, 46, .14); border-color: rgba(166, 44, 44, .2); }
+    .media-thumb { position: relative; aspect-ratio: 4 / 3; overflow: hidden; background: linear-gradient(135deg, #e8d4c0, #d4bfa6); }
+    .media-thumb img { position: relative; z-index: 1; width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .5s ease; }
+    .media-card:hover .media-thumb img { transform: scale(1.06); }
+    .media-thumb .ph { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 36px; opacity: .45; }
+    .media-badge { position: absolute; top: 10px; left: 10px; z-index: 3; padding: 3px 9px; border-radius: 9px; font-size: 11px; color: #fff; font-weight: 500; }
+    .media-badge.img { background: var(--img-color); }
+    .media-badge.video { background: var(--video-color); }
+    .media-duration { position: absolute; right: 10px; bottom: 10px; z-index: 3; padding: 2px 8px; border-radius: 8px; font-size: 11px; color: #fff; background: rgba(0, 0, 0, .62); }
+    .media-play { position: absolute; inset: 0; z-index: 2; display: flex; align-items: center; justify-content: center; background: rgba(0, 0, 0, .16); transition: background .3s; }
+    .media-card:hover .media-play { background: rgba(0, 0, 0, .32); }
+    .media-play span { width: 46px; height: 46px; border-radius: 50%; background: rgba(255, 255, 255, .92); display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 18px rgba(0, 0, 0, .28); transition: transform .3s; }
+    .media-card:hover .media-play span { transform: scale(1.12); }
+    .media-play svg { width: 19px; height: 19px; fill: var(--accent-red); margin-left: 3px; }
+    .media-body { padding: 13px 14px 14px; display: flex; flex-direction: column; flex: 1; }
+    .media-name { font-size: 14px; font-weight: 600; color: var(--text-primary); line-height: 1.45; margin-bottom: 9px; min-height: 40px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .media-meta { display: flex; flex-wrap: wrap; gap: 5px 12px; font-size: 11.5px; color: var(--text-muted); margin-bottom: 10px; }
+    .media-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+    .media-tag { font-size: 11px; padding: 2px 8px; border-radius: 9px; background: rgba(166, 44, 44, .06); color: var(--text-secondary); border: 1px solid rgba(166, 44, 44, .07); }
+    .media-kb { margin-top: 11px; padding-top: 9px; border-top: 1px dashed rgba(166, 44, 44, .13); font-size: 11.5px; color: var(--accent-red); display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .media-kb .go { color: var(--text-muted); display: flex; align-items: center; gap: 3px; }
+    .media-card:hover .media-kb .go { color: var(--accent-red); }
+
+    /* ===== 知识库卡片收藏按钮 ===== */
+    .kb-fav {
+      position: absolute; right: 10px; top: 10px; z-index: 3;
+      width: 30px; height: 30px; border-radius: 50%; border: none;
+      background: rgba(255, 255, 255, .9); box-shadow: 0 2px 8px rgba(0, 0, 0, .12);
+      display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all .25s;
+    }
+    .kb-fav svg { width: 15px; height: 15px; fill: none; stroke: rgba(61, 43, 31, .45); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .kb-fav:hover { transform: scale(1.12); background: #fff; }
+    .kb-fav.on { background: #fff6ee; }
+    .kb-fav.on svg { fill: var(--accent-red); stroke: var(--accent-red); }
+
+    /* ===== 收藏知识库列表 ===== */
+    .fav-empty { font-size: 12.5px; color: var(--text-muted); padding: 14px 8px; text-align: center; line-height: 1.8; }
+    .fav-item { display: flex; align-items: center; gap: 8px; padding: 9px 10px; border-radius: 8px; cursor: pointer; transition: all .25s; font-size: 13px; color: var(--text-secondary); }
+    .fav-item:hover { background: rgba(166, 44, 44, .05); color: var(--accent-red); }
+    .fav-item .fi-ico { flex-shrink: 0; }
+    .fav-item .fi-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .fav-item .fi-del { width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; line-height: 1; color: var(--text-muted); opacity: 0; transition: all .2s; flex-shrink: 0; }
+    .fav-item:hover .fi-del { opacity: 1; }
+    .fav-item .fi-del:hover { background: rgba(166, 44, 44, .12); color: var(--accent-red); }
+
+    /* ===== 空状态 ===== */
+    .empty-state { padding: 52px 20px; text-align: center; color: var(--text-muted); font-size: 13.5px; line-height: 1.9; }
+    .empty-state .es-icon { font-size: 44px; opacity: .4; margin-bottom: 12px; }
+
+    @media (max-width: 1400px) { .media-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 1024px) { .media-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 768px)  { .media-grid { grid-template-columns: 1fr; } }
+
     /* 底部版权 */
     .site-footer{margin-top:40px;padding:24px 20px;text-align:center;font-size:13px;color:var(--text-muted);background:rgba(250,245,238,.5);border-top:1px solid rgba(166,44,44,.08)}
     .site-footer strong{color:var(--accent-red);font-weight:500}
@@ -408,20 +478,14 @@
 
           <div class="sidebar-section">
             <div class="section-name"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"></path><path d="M14 2v6h6"></path><path d="M16 13H8"></path><path d="M16 17H8"></path><path d="M10 9H8"></path></svg>资源类型</div>
-            <div class="menu-item active">📄 文档档案</div>
-            <div class="menu-item">🖼️ 图片档案</div>
-            <div class="menu-item">🎬 声像档案</div>
+            <div class="menu-item active" data-type="doc">📄 文档档案</div>
+            <div class="menu-item" data-type="img">🖼️ 图片档案</div>
+            <div class="menu-item" data-type="video">🎬 声像档案</div>
           </div>
 
           <div class="sidebar-section">
             <div class="section-name"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>收藏知识库</div>
-            <div class="menu-item" data-kb="红色记忆">🚩 红色记忆</div>
-            <div class="menu-item" data-kb="人物传记">⭐ 人物传记</div>
-            <div class="menu-item" data-kb="历史事件">📜 历史事件</div>
-            <div class="menu-item" data-kb="地方建设">🏗️ 地方建设</div>
-            <div class="menu-item" data-kb="组织机构">🏛️ 组织机构</div>
-            <div class="menu-item" data-kb="文化民俗">🎭 文化民俗</div>
-            <div class="menu-item" data-kb="专题库">📚 专题库</div>
+            <div id="favList"></div>
           </div>
         </aside>
 
@@ -466,6 +530,8 @@
             </div>
           </div>
 
+         <!-- 文档档案视图：知识库列表 -->
+         <div class="view-panel active" id="viewDoc">
          <!-- 知识库筛选 -->
          <div class="search-filter-box">
            <div class="filter-row">
@@ -498,6 +564,25 @@
 
           <!-- 知识库卡片 -->
           <div class="resource-grid" id="kbGrid"></div>
+         </div>
+
+          <!-- 图片档案视图 -->
+          <div class="view-panel" id="viewImg">
+            <div class="view-head">
+              <div class="view-head-title"><span class="dot" style="background:var(--img-color)"></span>图片档案</div>
+              <div class="view-head-tip">共 <strong id="imgCount">0</strong> 张 · 点击卡片查看图片详情</div>
+            </div>
+            <div class="media-grid" id="imgGrid"></div>
+          </div>
+
+          <!-- 声像档案视图 -->
+          <div class="view-panel" id="viewVideo">
+            <div class="view-head">
+              <div class="view-head-title"><span class="dot" style="background:var(--video-color)"></span>声像档案</div>
+              <div class="view-head-tip">共 <strong id="videoCount">0</strong> 个 · 点击卡片查看视频详情并播放</div>
+            </div>
+            <div class="media-grid" id="videoGrid"></div>
+          </div>
 
         </div>
 
@@ -598,18 +683,71 @@
   </div>
 
   <script>
-    // ===== 知识库数据 =====
+    // ===== 知识库数据（文档档案） =====
     const kbList = [
-      { name: '红色记忆', icon: '🚩', color: 'red', desc: '收录浙西南革命斗争的重要档案文献，传承红色基因、赓续精神血脉。', count: { doc: 4, img: 1, video: 0, obj: 1 }, update: '2026-05-17', createdAt: '2024-01-15', source: 'create' },
-      { name: '人物传记', icon: '⭐', color: 'gold', desc: '汇集革命先辈、历史名人与行业翘楚的生平档案与口述资料。', count: { doc: 4, img: 0, video: 2, obj: 0 }, update: '2026-05-19', createdAt: '2024-02-20', source: 'create' },
-      { name: '历史事件', icon: '📜', color: 'brown', desc: '系统整理重大历史事件的原始记录、报刊报道与亲历者回忆。', count: { doc: 5, img: 1, video: 0, obj: 0 }, update: '2026-05-16', createdAt: '2024-03-10', source: 'create' },
-      { name: '地方建设', icon: '🏗️', color: 'green', desc: '记录丽水城乡发展变迁的建设档案、工程图纸与影像资料。', count: { doc: 2, img: 3, video: 1, obj: 0 }, update: '2026-05-14', createdAt: '2024-04-05', source: 'share' },
-      { name: '组织机构', icon: '🏛️', color: 'blue', desc: '涵盖各级党政机关、社会团体的沿革文件与成立档案。', count: { doc: 4, img: 2, video: 0, obj: 0 }, update: '2026-05-12', createdAt: '2024-05-18', source: 'create' },
-      { name: '文化民俗', icon: '🎭', color: 'purple', desc: '保存方言、民歌、非遗与民俗活动的珍贵声像与图文资料。', count: { doc: 0, img: 2, video: 4, obj: 0 }, update: '2026-05-18', createdAt: '2024-06-22', source: 'share' },
-      { name: '专题库', icon: '📚', color: 'dark', desc: '围绕侨乡青田、口述历史、红色根脉等主题打造的专题资源包。', count: { doc: 4, img: 1, video: 1, obj: 0 }, update: '2026-05-20', createdAt: '2024-07-30', source: 'create' }
+      { name: '党史办红立方',      icon: '🚩', color: 'red',    doc: 12, desc: '党史办“红立方”党建品牌相关档案：党史宣讲、红色教育基地与主题党日活动资料。', update: '2026-05-20', createdAt: '2024-01-15', source: 'create' },
+      { name: '档案馆编研',        icon: '📚', color: 'gold',   doc: 18, desc: '档案馆编研成果：史料汇编、专题研究、大事记与年鉴等正式出版及内部资料。', update: '2026-05-19', createdAt: '2024-02-06', source: 'create' },
+      { name: '各县市区编研书籍',  icon: '📖', color: 'brown',  doc: 26, desc: '丽水九县（市、区）编研书籍与地方史料汇编，涵盖组织史、革命史与建设史。', update: '2026-05-18', createdAt: '2024-02-28', source: 'create' },
+      { name: '地方党组织史料',    icon: '🏛️', color: 'blue',   doc: 9,  desc: '从遂昌支部到浙西南特委、省委机关，收录地方党组织建立与沿革的原始档案。', update: '2026-05-17', createdAt: '2024-03-10', source: 'create' },
+      { name: '刘英·粟裕史料',     icon: '🎖️', color: 'gold',   doc: 11, desc: '刘英、粟裕等革命先辈在浙西南的战斗文献、手稿、照片与纪念影像资料。', update: '2026-05-17', createdAt: '2024-03-22', source: 'create' },
+      { name: '革命英烈群体',      icon: '🕯️', color: 'purple', doc: 7,  desc: '革命烈士英名录、牺牲登记表、传记与家属口述史料，按牺牲时期与群体归类。', update: '2026-05-16', createdAt: '2024-04-05', source: 'create' },
+      { name: '红色革命事件',      icon: '🔥', color: 'dark',   doc: 14, desc: '浙西南土地革命、抗日战争到解放战争的关键事件档案：命令、报道与亲历回忆。', update: '2026-05-16', createdAt: '2024-04-20', source: 'create' },
+      { name: '红色设施',          icon: '🏯', color: 'green',  doc: 4,  desc: '革命旧址、纪念场馆、烈士陵园与名人故居的普查档案、照片与影像记录。', update: '2026-05-15', createdAt: '2024-05-08', source: 'create' },
+      { name: '红色文物文献资料',  icon: '📜', color: 'brown',  doc: 8,  desc: '纸质文献、实物文物、影像声像与口述史料等珍贵红色档案资源目录。', update: '2026-05-15', createdAt: '2024-05-26', source: 'share' },
+      { name: '红色回忆与研究活动',icon: '🖋️', color: 'purple', doc: 6,  desc: '革命回忆录征集、史料整理、遗址普查与编研成果发布等历次重要活动记录。', update: '2026-05-14', createdAt: '2024-06-12', source: 'share' },
+      { name: '畲族红色文化',      icon: '🌾', color: 'green',  doc: 5,  desc: '畲族群众参军参战、地下交通与红色歌谣等畲族红色文化档案。', update: '2026-05-13', createdAt: '2024-07-02', source: 'create' },
+      { name: '华侨红色相关史料',  icon: '🌊', color: 'blue',   doc: 10, desc: '青田侨乡、旅外中共支部与抗战募捐网络相关史料，还原华侨参与革命路径。', update: '2026-05-12', createdAt: '2024-07-24', source: 'create' }
     ];
 
-    const totalOf = k => k.count.doc + k.count.img + k.count.video + k.count.obj;
+    // ===== 图片档案数据 =====
+    const IMG_LIST = [
+      { kb: '红色革命事件',       title: '解放丽水战役照片集',        date: '1949-05',    size: '24 MB',   source: '丽水市档案馆', tags: ['解放战争', '照片'],       img: 'https://images.unsplash.com/photo-1548013146-72479768b3f5?w=600&h=450&fit=crop', desc: '记录 1949 年解放丽水战役过程的历史照片集，含部队入城、群众欢迎等场景。' },
+      { kb: '红色设施',           title: '浙西南革命根据地旧址照片',  date: '1965-08',    size: '18.3 MB', source: '丽水市档案馆', tags: ['革命旧址', '照片'],       img: 'https://images.unsplash.com/photo-1590736969955-71cc94901144?w=600&h=450&fit=crop', desc: '浙西南革命根据地主要旧址的普查照片，含王村口、门阵等地建筑原貌。' },
+      { kb: '刘英·粟裕史料',      title: '粟裕将军历史照片',          date: '1950年代',   size: '6.8 MB',  source: '丽水市档案馆', tags: ['将军', '照片'],           img: 'https://images.unsplash.com/photo-1548013146-72479768b3f5?w=600&h=450&fit=crop', desc: '粟裕将军在浙西南时期及建国后的历史照片。' },
+      { kb: '华侨红色相关史料',   title: '陈凤生先生工作照',          date: '1968年',     size: '4.2 MB',  source: '青田县档案馆', tags: ['人物', '照片'],           img: 'https://images.unsplash.com/photo-1590736969955-71cc94901144?w=600&h=450&fit=crop', desc: '青田华侨领袖陈凤生先生的工作与生活照片。' },
+      { kb: '各县市区编研书籍',   title: '松阳古村落土地契约档案',    date: '民国时期',   size: '11.2 MB', source: '松阳县档案馆', tags: ['契约', '古村落'],         img: 'https://images.unsplash.com/photo-1590736969955-71cc94901144?w=600&h=450&fit=crop', desc: '松阳古村落保存的民国时期土地契约扫描件。' },
+      { kb: '各县市区编研书籍',   title: '1953年丽水城区全景照片',    date: '1953-08-12', size: '2.8 MB',  source: '丽水市档案馆', tags: ['城市建设', '地理沿革'],   img: 'https://images.unsplash.com/photo-1599571234909-29ed5d1321d6?w=600&h=450&fit=crop', desc: '1953 年拍摄的丽水城区全景，是研究城市变迁的重要影像。' },
+      { kb: '各县市区编研书籍',   title: '丽水城市变迁航拍图集',      date: '2008-2020',  size: '86 MB',   source: '丽水市档案馆', tags: ['航拍', '城市变迁'],       img: 'https://images.unsplash.com/photo-1512813195386-6cf811ad3542?w=600&h=450&fit=crop', desc: '2008—2020 年丽水城区航拍影像合集。' },
+      { kb: '红色革命事件',       title: '1950年农民协会成立大会',    date: '1950-03-18', size: '19 MB',   source: '丽水市档案馆', tags: ['组织机构', '社会生活'],   img: 'https://images.unsplash.com/photo-1548013146-72479768b3f5?w=600&h=450&fit=crop', desc: '1950 年丽水农民协会成立大会现场照片。' },
+      { kb: '华侨红色相关史料',   title: '青田县侨联成立大会合影',    date: '1986-11',    size: '8.7 MB',  source: '青田县档案馆', tags: ['侨联', '合影'],           img: 'https://images.unsplash.com/photo-1599571234909-29ed5d1321d6?w=600&h=450&fit=crop', desc: '1986 年青田县侨联成立大会全体代表合影。' },
+      { kb: '红色设施',           title: '古堰画乡景区图片',          date: '2015-06-21', size: '3.6 MB',  source: '丽水市档案馆', tags: ['文化旅游', '景点'],       img: 'https://images.unsplash.com/photo-1512813195386-6cf811ad3542?w=600&h=450&fit=crop', desc: '通济堰与古堰画乡景区风光照片。' },
+      { kb: '各县市区编研书籍',   title: '青田石雕艺术图册',          date: '2012-04-18', size: '42.3 MB', source: '青田县档案馆', tags: ['石雕', '非遗'],           img: 'https://images.unsplash.com/photo-1590736969955-71cc94901144?w=600&h=450&fit=crop', desc: '青田石雕代表性作品图册。' },
+      { kb: '畲族红色文化',       title: '畲族传统服饰图录',          date: '2009-03-15', size: '28.7 MB', source: '景宁县档案馆', tags: ['畲族', '服饰'],           img: 'https://images.unsplash.com/photo-1548013146-72479768b3f5?w=600&h=450&fit=crop', desc: '景宁畲族传统服饰纹样与款式图录。' },
+      { kb: '各县市区编研书籍',   title: '处州乱弹戏服照片',          date: '1986-09',    size: '16.5 MB', source: '丽水市档案馆', tags: ['戏曲', '非遗'],           img: 'https://images.unsplash.com/photo-1599571234909-29ed5d1321d6?w=600&h=450&fit=crop', desc: '处州乱弹传统戏服与道具照片。' },
+      { kb: '各县市区编研书籍',   title: '丽水老街巷照片集',          date: '1998-07-22', size: '9.4 MB',  source: '丽水市档案馆', tags: ['老街', '民俗'],           img: 'https://images.unsplash.com/photo-1512813195386-6cf811ad3542?w=600&h=450&fit=crop', desc: '1998 年拍摄的丽水老街巷影像，保留大量已消失的街景。' },
+      { kb: '畲族红色文化',       title: '丽水传统节庆照片',          date: '2005-02-12', size: '11.8 MB', source: '丽水市档案馆', tags: ['节庆', '民俗'],           img: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=600&h=450&fit=crop', desc: '丽水各地传统节庆民俗活动照片。' },
+      { kb: '红色回忆与研究活动', title: '丽水老照片专题展',          date: '2019-10-01', size: '132 MB',  source: '丽水市档案馆', tags: ['老照片', '专题展'],       img: 'https://images.unsplash.com/photo-1599571234909-29ed5d1321d6?w=600&h=450&fit=crop', desc: '2019 年“丽水老照片”专题展展陈影像全集。' },
+      { kb: '华侨红色相关史料',   title: '侨乡青田影像档案',          date: '2008-2020',  size: '86.3 MB', source: '青田县档案馆', tags: ['侨乡', '影像'],           img: 'https://images.unsplash.com/photo-1548013146-72479768b3f5?w=600&h=450&fit=crop', desc: '侨乡青田城乡面貌与侨眷生活的影像档案。' },
+      { kb: '地方党组织史料',     title: '中共遂昌支部旧址照片',      date: '1963-07',    size: '7.4 MB',  source: '遂昌县档案馆', tags: ['旧址', '党组织'],         img: 'https://images.unsplash.com/photo-1590736969955-71cc94901144?w=600&h=450&fit=crop', desc: '1927 年中共遂昌支部成立旧址照片。' },
+      { kb: '地方党组织史料',     title: '门阵和谈旧址照片',          date: '1978-05',    size: '5.9 MB',  source: '遂昌县档案馆', tags: ['和谈', '旧址'],           img: 'https://images.unsplash.com/photo-1512813195386-6cf811ad3542?w=600&h=450&fit=crop', desc: '1937 年国共门阵和谈旧址照片。' },
+      { kb: '革命英烈群体',       title: '革命烈士纪念碑照片',        date: '1985-04',    size: '6.2 MB',  source: '丽水市档案馆', tags: ['烈士', '纪念碑'],         img: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=600&h=450&fit=crop', desc: '丽水各地革命烈士纪念碑与陵园照片。' },
+      { kb: '红色文物文献资料',   title: '红色文物实物照（红军印章）', date: '1935年',    size: '3.1 MB',  source: '丽水市档案馆', tags: ['文物', '印章'],           img: 'https://images.unsplash.com/photo-1532012197267-da84d127e765?w=600&h=450&fit=crop', desc: '红军挺进师使用过的印章等实物文物照片。' },
+      { kb: '畲族红色文化',       title: '红色歌谣手抄本影像',        date: '1938年',     size: '4.6 MB',  source: '景宁县档案馆', tags: ['歌谣', '手抄本'],         img: 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=600&h=450&fit=crop', desc: '畲族群众传抄的红色歌谣手抄本影像。' }
+    ];
+
+    // ===== 声像档案数据 =====
+    const VIDEO_SRC = ['https://media.w3.org/2010/05/sintel/trailer.mp4', 'https://www.w3schools.com/html/mov_bbb.mp4'];
+    const VIDEO_LIST = [
+      { kb: '华侨红色相关史料',   title: '2021青田召开陈慕华座谈会',    date: '2021-12-08', size: '156 MB', duration: '02:16', source: '青田县档案馆', tags: ['陈慕华', '诞辰100周年', '座谈会'], img: 'https://images.unsplash.com/photo-1485846234645-a62644f84728?w=600&h=450&fit=crop', desc: '记录了 2021 年在青田县召开的纪念陈慕华同志诞辰 100 周年座谈会，以新闻报道形式呈现会议现场。' },
+      { kb: '刘英·粟裕史料',      title: '粟裕将军纪念影像',            date: '1984-04-22', size: '320 MB', duration: '15:48', source: '丽水市档案馆', tags: ['粟裕', '将军', '纪念'], img: 'https://images.unsplash.com/photo-1499346030926-9a72daac6c63?w=600&h=450&fit=crop', desc: '粟裕将军诞辰纪念活动影像资料，含历史照片、讲话录像及家属访谈。' },
+      { kb: '红色革命事件',       title: '红军挺进师浙西南战斗纪录',    date: '1985-08',    size: '480 MB', duration: '28:30', source: '丽水市档案馆', tags: ['红军', '战斗纪录', '浙西南'], img: 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=600&h=450&fit=crop', desc: '1985 年制作的浙西南革命斗争纪录片，含老红军采访、战场遗址实拍与历史照片再现。' },
+      { kb: '各县市区编研书籍',   title: '瓯江大桥建成通车典礼',        date: '1992-10-28', size: '210 MB', duration: '08:42', source: '丽水市档案馆', tags: ['瓯江大桥', '通车典礼', '基建'], img: 'https://images.unsplash.com/photo-1517089596392-fb9a9033e05b?w=600&h=450&fit=crop', desc: '1992 年瓯江大桥建成通车仪式实录，含领导讲话、车队通过与航拍全景。' },
+      { kb: '华侨红色相关史料',   title: '青田县侨联成立大会纪实',      date: '1986-11-15', size: '180 MB', duration: '12:15', source: '青田县档案馆', tags: ['侨联', '成立大会', '纪实'], img: 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=600&h=450&fit=crop', desc: '1986 年青田县侨联成立大会现场录像，含揭牌仪式与各界代表发言。' },
+      { kb: '各县市区编研书籍',   title: '青田石雕非遗技艺记录',        date: '2018-05-10', size: '560 MB', duration: '45:20', source: '青田县档案馆', tags: ['石雕', '非遗', '技艺'], img: 'https://images.unsplash.com/photo-1561214115-f2f134cc4912?w=600&h=450&fit=crop', desc: '青田石雕国家级非遗代表性传承人技艺实录，含选料、雕刻、打磨全过程。' },
+      { kb: '华侨红色相关史料',   title: '侨乡青田海外联谊纪实',        date: '2019-09-20', size: '420 MB', duration: '32:18', source: '青田县档案馆', tags: ['侨乡', '海外联谊', '纪实'], img: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600&h=450&fit=crop', desc: '2019 年侨乡青田海外联谊活动现场记录，含侨胞访谈、文化展示与文艺演出。' },
+      { kb: '刘英·粟裕史料',      title: '刘英烈士事迹专题片',          date: '1991-05-18', size: '268 MB', duration: '22:40', source: '丽水市档案馆', tags: ['刘英', '烈士', '专题片'], img: 'https://images.unsplash.com/photo-1485846234645-a62644f84728?w=600&h=450&fit=crop', desc: '刘英烈士生平事迹专题片，含狱中手稿、战友回忆与旧址实拍。' },
+      { kb: '红色设施',           title: '遂昌王村口红色旧址巡礼',      date: '2020-07-01', size: '196 MB', duration: '14:05', source: '遂昌县档案馆', tags: ['王村口', '旧址', '巡礼'], img: 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=600&h=450&fit=crop', desc: '遂昌王村口红色旧址群巡礼影像，逐处介绍旧址历史与保护现状。' },
+      { kb: '红色文物文献资料',   title: '浙西南革命纪念馆展陈实录',    date: '2021-09-30', size: '342 MB', duration: '24:12', source: '丽水市档案馆', tags: ['纪念馆', '展陈', '实录'], img: 'https://images.unsplash.com/photo-1499346030926-9a72daac6c63?w=600&h=450&fit=crop', desc: '浙西南革命纪念馆展陈内容实录，逐件介绍重点文物与文献。' },
+      { kb: '畲族红色文化',       title: '畲族红色歌谣演唱实录',        date: '2017-04-03', size: '128 MB', duration: '09:36', source: '景宁县档案馆', tags: ['畲族', '歌谣', '演唱'], img: 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=600&h=450&fit=crop', desc: '畲族群众演唱红色歌谣的现场实录，含畲语原声与汉译对照。' },
+      { kb: '红色回忆与研究活动', title: '革命回忆录征集访谈（老战士口述）', date: '2016-10-12', size: '388 MB', duration: '27:48', source: '丽水市档案馆', tags: ['口述史', '老战士', '访谈'], img: 'https://images.unsplash.com/photo-1561214115-f2f134cc4912?w=600&h=450&fit=crop', desc: '革命回忆录征集过程中对老战士的口述访谈实录。' },
+      { kb: '党史办红立方',       title: '党史办“红立方”主题活动纪实', date: '2023-06-28', size: '224 MB', duration: '16:20', source: '丽水市党史办', tags: ['红立方', '主题活动', '纪实'], img: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600&h=450&fit=crop', desc: '党史办“红立方”党建品牌主题活动现场纪实。' },
+      { kb: '党史办红立方',       title: '丽水党史专题片·浙西南烽火',  date: '2019-04-15', size: '512 MB', duration: '38:55', source: '丽水市党史办', tags: ['党史', '专题片', '浙西南'], img: 'https://images.unsplash.com/photo-1485846234645-a62644f84728?w=600&h=450&fit=crop', desc: '丽水党史专题片，系统梳理浙西南革命斗争历程。' },
+      { kb: '档案馆编研',         title: '档案馆编研成果发布会',        date: '2024-11-08', size: '146 MB', duration: '11:02', source: '丽水市档案馆', tags: ['编研', '成果发布'], img: 'https://images.unsplash.com/photo-1499346030926-9a72daac6c63?w=600&h=450&fit=crop', desc: '丽水市档案馆年度编研成果发布会实录。' }
+    ];
+
+    // 每个知识库的图片 / 声像数量（按实际数据统计）
+    const countOf = (kbName, type) => (type === 'img' ? IMG_LIST : VIDEO_LIST).filter(r => r.kb === kbName).length;
+    const totalOf = k => k.doc + countOf(k.name, 'img') + countOf(k.name, 'video');
 
     // ===== 筛选状态 =====
     const filterState = { sort: 'desc', source: 'all', name: '' };
@@ -631,20 +769,25 @@
       });
       document.getElementById('kbCount').textContent = list.length;
       list.forEach(k => {
+        const nImg = countOf(k.name, 'img');
+        const nVideo = countOf(k.name, 'video');
         const card = document.createElement('div');
         card.className = 'kb-card';
         card.innerHTML = `
           <div class="kb-cover ${k.color}">
             <div class="kb-emoji">${k.icon}</div>
+            <button class="kb-fav${isFav(k.name) ? ' on' : ''}" title="${isFav(k.name) ? '取消收藏' : '收藏知识库'}">
+              <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+            </button>
             <div class="kb-count-badge">${totalOf(k)} 条档案</div>
           </div>
           <div class="kb-body">
             <div class="kb-name">${k.name}</div>
             <div class="kb-desc">${k.desc}</div>
             <div class="kb-meta-row">
-              ${k.count.doc ? `<span class="kb-type-tag">📄 文档 ${k.count.doc}</span>` : ''}
-              ${k.count.img ? `<span class="kb-type-tag">🖼️ 图片 ${k.count.img}</span>` : ''}
-              ${k.count.video ? `<span class="kb-type-tag">🎬 声像 ${k.count.video}</span>` : ''}
+              <span class="kb-type-tag">📄 文档 ${k.doc}</span>
+              ${nImg ? `<span class="kb-type-tag">🖼️ 图片 ${nImg}</span>` : ''}
+              ${nVideo ? `<span class="kb-type-tag">🎬 声像 ${nVideo}</span>` : ''}
             </div>
             <div class="kb-foot">
               <span class="kb-update">🕐 更新于 ${k.update}</span>
@@ -655,10 +798,14 @@
         card.addEventListener('click', () => {
           window.location.href = 'kb-detail.html?kb=' + encodeURIComponent(k.name);
         });
+        card.querySelector('.kb-fav').addEventListener('click', (e) => {
+          e.stopPropagation();
+          e.preventDefault();
+          toggleFav(k.name);
+        });
         grid.appendChild(card);
       });
     }
-    renderKb();
 
     // ===== 下拉筛选交互 =====
     document.querySelectorAll('.filter-dropdown').forEach(dd => {
@@ -749,7 +896,7 @@
         const icon = kbIconUpload.textContent.trim() === '＋' ? '📚' : kbIconUpload.textContent.trim();
         const desc = kbDesc.value.trim();
         const now = new Date().toISOString().slice(0, 10);
-        kbList.unshift({ name, icon, color: 'red', desc: desc || '用户新建的知识库', count: { doc: 0, img: 0, video: 0, obj: 0 }, update: now, createdAt: now, source: 'create' });
+        kbList.unshift({ name, icon, color: 'red', doc: 0, desc: desc || '用户新建的知识库', update: now, createdAt: now, source: 'create' });
         renderKb();
         // 重置
         document.getElementById('kbFieldName').value = '';
@@ -762,17 +909,117 @@
     });
     kbBtnPrev.addEventListener('click', () => { if (curStep === 2) goStep(1); });
 
-    // 菜单交互：资源类型高亮 / 收藏知识库跳转
-    document.querySelectorAll('.menu-item').forEach(item => {
-      item.addEventListener('click', function() {
-        if (this.hasAttribute('data-kb')) {
-          window.location.href = 'kb-detail.html?kb=' + encodeURIComponent(this.getAttribute('data-kb'));
-          return;
-        }
-        this.parentElement.querySelectorAll('.menu-item').forEach(i => i.classList.remove('active'));
-        this.classList.add('active');
+    /* ===== 收藏知识库（左侧栏动态列表） ===== */
+    const FAV_KEY = 'wf_fav_kbs';
+    let favSet = new Set();
+    try {
+      const saved = JSON.parse(localStorage.getItem(FAV_KEY) || '[]');
+      if (Array.isArray(saved)) favSet = new Set(saved);
+    } catch (e) { /* localStorage 不可用时退化为内存态 */ }
+
+    function isFav(name) { return favSet.has(name); }
+    function saveFav() { try { localStorage.setItem(FAV_KEY, JSON.stringify(Array.from(favSet))); } catch (e) {} }
+
+    function toggleFav(name) {
+      if (favSet.has(name)) favSet.delete(name); else favSet.add(name);
+      saveFav();
+      renderFav();
+      renderKb();
+    }
+
+    function renderFav() {
+      const box = document.getElementById('favList');
+      const names = kbList.filter(k => favSet.has(k.name)).map(k => k.name)
+        .concat(Array.from(favSet).filter(n => !kbList.some(k => k.name === n)));
+      if (!names.length) {
+        box.innerHTML = '<div class="fav-empty">暂无收藏<br>在知识库卡片上点击 ★ 收藏</div>';
+        return;
+      }
+      box.innerHTML = '';
+      names.forEach(n => {
+        const meta = kbList.find(k => k.name === n);
+        const item = document.createElement('div');
+        item.className = 'fav-item';
+        item.innerHTML = '<span class="fi-ico">' + (meta ? meta.icon : '📚') + '</span>' +
+                         '<span class="fi-name">' + n + '</span>' +
+                         '<span class="fi-del" title="取消收藏">✕</span>';
+        item.addEventListener('click', () => {
+          window.location.href = 'kb-detail.html?kb=' + encodeURIComponent(n);
+        });
+        item.querySelector('.fi-del').addEventListener('click', (e) => {
+          e.stopPropagation();
+          favSet.delete(n); saveFav(); renderFav(); renderKb();
+        });
+        box.appendChild(item);
+      });
+    }
+
+    /* ===== 图片 / 声像卡片渲染 ===== */
+    function mediaQuery(item) {
+      const p = new URLSearchParams({
+        title: item.title, date: item.date, size: item.size, source: item.source,
+        kb: item.kb, desc: item.desc, img: item.img, tags: (item.tags || []).join(',')
+      });
+      if (item.duration) p.set('duration', item.duration);
+      if (item.video) p.set('video', item.video);
+      return p.toString();
+    }
+
+    function renderMedia(type) {
+      const isImg = type === 'img';
+      const data = isImg ? IMG_LIST : VIDEO_LIST;
+      const grid = document.getElementById(isImg ? 'imgGrid' : 'videoGrid');
+      document.getElementById(isImg ? 'imgCount' : 'videoCount').textContent = data.length;
+      grid.innerHTML = '';
+      data.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'media-card';
+        card.innerHTML = `
+          <div class="media-thumb">
+            <div class="ph">${isImg ? '🖼️' : '🎬'}</div>
+            <img src="${item.img}" alt="${item.title}" loading="lazy" onerror="this.remove()">
+            <span class="media-badge ${type}">${isImg ? '图片档案' : '声像档案'}</span>
+            ${isImg ? '' : '<div class="media-play"><span><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span></div>'}
+            ${isImg ? '' : `<span class="media-duration">${item.duration}</span>`}
+          </div>
+          <div class="media-body">
+            <div class="media-name">${item.title}</div>
+            <div class="media-meta"><span>📅 ${item.date}</span><span>💾 ${item.size}</span></div>
+            <div class="media-tags">${(item.tags || []).map(t => `<span class="media-tag">${t}</span>`).join('')}</div>
+            <div class="media-kb"><span>📚 ${item.kb}</span><span class="go">${isImg ? '查看详情' : '播放视频'} ›</span></div>
+          </div>
+        `;
+        card.addEventListener('click', () => {
+          window.location.href = (isImg ? 'archive-image.html?' : 'archive-video.html?') + mediaQuery(item);
+        });
+        grid.appendChild(card);
+      });
+    }
+
+    /* ===== 左侧「资源类型」切换 ===== */
+    const VIEW_MAP = { doc: 'viewDoc', img: 'viewImg', video: 'viewVideo' };
+    function switchType(type) {
+      Object.keys(VIEW_MAP).forEach(t => {
+        document.getElementById(VIEW_MAP[t]).classList.toggle('active', t === type);
+      });
+      document.querySelectorAll('.menu-item[data-type]').forEach(el => {
+        el.classList.toggle('active', el.getAttribute('data-type') === type);
+      });
+    }
+
+    document.querySelectorAll('.menu-item[data-type]').forEach(item => {
+      item.addEventListener('click', function () {
+        switchType(this.getAttribute('data-type'));
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       });
     });
+
+    /* ===== 初始化 ===== */
+    renderKb();
+    renderFav();
+    renderMedia('img');
+    renderMedia('video');
+    switchType('doc');
   </script>
 </body>
 </html>

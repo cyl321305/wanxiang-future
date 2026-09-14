@@ -361,13 +361,7 @@
 
           <div class="sidebar-section">
             <div class="section-name"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>收藏知识库</div>
-            <div class="menu-item" data-kb="红色记忆">🚩 红色记忆</div>
-            <div class="menu-item" data-kb="人物传记">⭐ 人物传记</div>
-            <div class="menu-item" data-kb="历史事件">📜 历史事件</div>
-            <div class="menu-item" data-kb="地方建设">🏗️ 地方建设</div>
-            <div class="menu-item" data-kb="组织机构">🏛️ 组织机构</div>
-            <div class="menu-item" data-kb="文化民俗">🎭 文化民俗</div>
-            <div class="menu-item" data-kb="专题库">📚 专题库</div>
+            <div id="favList"></div>
           </div>
         </aside>
 
@@ -376,11 +370,11 @@
           <!-- 知识库头部 -->
           <div class="hero-banner kb-hero">
             <div class="hero-content">
-              <div class="kb-breadcrumb">档案资源中心 / <span id="kbCrumb">红色记忆</span></div>
+              <div class="kb-breadcrumb">档案资源中心 / <span id="kbCrumb">党史办红立方</span></div>
               <div class="kb-hero-row">
                 <div class="kb-hero-icon" id="kbIcon">🚩</div>
                 <div>
-                  <div class="hero-title" id="kbTitle">红色记忆</div>
+                  <div class="hero-title" id="kbTitle">党史办红立方</div>
                   <div class="hero-slogan" id="kbDesc">革命历史档案专题知识库</div>
                   <div class="hero-sub" id="kbUpdate">最近更新：2026-05-17</div>
                 </div>
@@ -475,74 +469,88 @@
   <script>
     // ===== 知识库数据 =====
     const kbMap = [
-      { name: '红色记忆', icon: '🚩', desc: '收录浙西南革命斗争的重要档案文献，传承红色基因、赓续精神血脉。', update: '2026-05-17' },
-      { name: '人物传记', icon: '⭐', desc: '汇集革命先辈、历史名人与行业翘楚的生平档案与口述资料。', update: '2026-05-19' },
-      { name: '历史事件', icon: '📜', desc: '系统整理重大历史事件的原始记录、报刊报道与亲历者回忆。', update: '2026-05-16' },
-      { name: '地方建设', icon: '🏗️', desc: '记录丽水城乡发展变迁的建设档案、工程图纸与影像资料。', update: '2026-05-14' },
-      { name: '组织机构', icon: '🏛️', desc: '涵盖各级党政机关、社会团体的沿革文件与成立档案。', update: '2026-05-12' },
-      { name: '文化民俗', icon: '🎭', desc: '保存方言、民歌、非遗与民俗活动的珍贵声像与图文资料。', update: '2026-05-18' },
-      { name: '专题库', icon: '📚', desc: '围绕侨乡青田、口述历史、红色根脉等主题打造的专题资源包。', update: '2026-05-20' }
+      { name: '党史办红立方', icon: '🚩', desc: '党史办“红立方”党建品牌相关档案：党史宣讲、红色教育基地与主题党日活动资料。', update: '2026-05-20' },
+      { name: '档案馆编研', icon: '📚', desc: '档案馆编研成果：史料汇编、专题研究、大事记与年鉴等正式出版及内部资料。', update: '2026-05-19' },
+      { name: '各县市区编研书籍', icon: '📖', desc: '丽水九县（市、区）编研书籍与地方史料汇编，涵盖组织史、革命史与建设史。', update: '2026-05-18' },
+      { name: '地方党组织史料', icon: '🏛️', desc: '从遂昌支部到浙西南特委、省委机关，收录地方党组织建立与沿革的原始档案。', update: '2026-05-17' },
+      { name: '刘英·粟裕史料', icon: '🎖️', desc: '刘英、粟裕等革命先辈在浙西南的战斗文献、手稿、照片与纪念影像资料。', update: '2026-05-17' },
+      { name: '革命英烈群体', icon: '🕯️', desc: '革命烈士英名录、牺牲登记表、传记与家属口述史料，按牺牲时期与群体归类。', update: '2026-05-16' },
+      { name: '红色革命事件', icon: '🔥', desc: '浙西南土地革命、抗日战争到解放战争的关键事件档案：命令、报道与亲历回忆。', update: '2026-05-16' },
+      { name: '红色设施', icon: '🏯', desc: '革命旧址、纪念场馆、烈士陵园与名人故居的普查档案、照片与影像记录。', update: '2026-05-15' },
+      { name: '红色文物文献资料', icon: '📜', desc: '纸质文献、实物文物、影像声像与口述史料等珍贵红色档案资源目录。', update: '2026-05-15' },
+      { name: '红色回忆与研究活动', icon: '🖋️', desc: '革命回忆录征集、史料整理、遗址普查与编研成果发布等历次重要活动记录。', update: '2026-05-14' },
+      { name: '畲族红色文化', icon: '🌾', desc: '畲族群众参军参战、地下交通与红色歌谣等畲族红色文化档案。', update: '2026-05-13' },
+      { name: '华侨红色相关史料', icon: '🌊', desc: '青田侨乡、旅外中共支部与抗战募捐网络相关史料，还原华侨参与革命路径。', update: '2026-05-12' },
     ];
 
     // ===== 档案资源数据（仅文档+图片）=====
     const resources = [
       // 红色记忆
-      { kb: '红色记忆', type: 'doc', title: '中共浙西南区委文件', date: '1949-11-23', size: '3.7 MB', tags: ['组织机构', '历史事件'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1532012197267-da84d127e765?w=400&h=300&fit=crop' },
-      { kb: '红色记忆', type: 'doc', title: '红军挺进师浙西南作战命令', date: '1935-05', size: '2.1 MB', tags: ['作战档案', '红军'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=400&h=300&fit=crop' },
-      { kb: '红色记忆', type: 'doc', title: '浙西南革命根据地斗争史稿', date: '1981-07', size: '8.4 MB', tags: ['革命历史', '史稿'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400&h=300&fit=crop' },
-      { kb: '红色记忆', type: 'doc', title: '革命烈士英名录', date: '1953-04', size: '1.8 MB', tags: ['烈士', '名录'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1506784365847-bbad939e8fd5?w=400&h=300&fit=crop' },
-      { kb: '红色记忆', type: 'img', title: '解放丽水战役照片集', date: '1949-05', size: '24 MB', tags: ['解放战争', '照片'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1548013146-72479768b3f5?w=400&h=300&fit=crop' },
-      { kb: '红色记忆', type: 'img', title: '浙西南革命根据地旧址照片', date: '1965-08', size: '18.3 MB', tags: ['革命旧址', '照片'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1590736969955-71cc94901144?w=400&h=300&fit=crop' },
+      { kb: '地方党组织史料', type: 'doc', title: '中共浙西南区委文件', date: '1949-11-23', size: '3.7 MB', tags: ['组织机构', '历史事件'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1532012197267-da84d127e765?w=400&h=300&fit=crop' },
+      { kb: '红色革命事件', type: 'doc', title: '红军挺进师浙西南作战命令', date: '1935-05', size: '2.1 MB', tags: ['作战档案', '红军'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=400&h=300&fit=crop' },
+      { kb: '各县市区编研书籍', type: 'doc', title: '浙西南革命根据地斗争史稿', date: '1981-07', size: '8.4 MB', tags: ['革命历史', '史稿'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400&h=300&fit=crop' },
+      { kb: '革命英烈群体', type: 'doc', title: '革命烈士英名录', date: '1953-04', size: '1.8 MB', tags: ['烈士', '名录'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1506784365847-bbad939e8fd5?w=400&h=300&fit=crop' },
+      { kb: '红色革命事件', type: 'img', title: '解放丽水战役照片集', date: '1949-05', size: '24 MB', tags: ['解放战争', '照片'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1548013146-72479768b3f5?w=400&h=300&fit=crop' },
+      { kb: '红色设施', type: 'img', title: '浙西南革命根据地旧址照片', date: '1965-08', size: '18.3 MB', tags: ['革命旧址', '照片'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1590736969955-71cc94901144?w=400&h=300&fit=crop' },
       // 人物传记
-      { kb: '人物传记', type: 'doc', title: '粟裕将军生平档案', date: '1984-02', size: '5.2 MB', tags: ['人物传记', '将军'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1532012197267-da84d127e765?w=400&h=300&fit=crop' },
-      { kb: '人物传记', type: 'doc', title: '青田华侨领袖陈凤生档案', date: '1978-11', size: '3.9 MB', tags: ['侨界人物', '人物档案'], source: '青田县档案馆', image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400&h=300&fit=crop' },
-      { kb: '人物传记', type: 'doc', title: '丽水名人手稿集', date: '1965-09', size: '7.6 MB', tags: ['手稿', '名人'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=400&h=300&fit=crop' },
-      { kb: '人物传记', type: 'doc', title: '汤显祖在遂昌治理档案', date: '1595-1601', size: '4.1 MB', tags: ['人物传记', '地方治理'], source: '遂昌县档案馆', image: 'https://images.unsplash.com/photo-1512813195386-6cf811ad3542?w=400&h=300&fit=crop' },
-      { kb: '人物传记', type: 'img', title: '粟裕将军历史照片', date: '1950年代', size: '6.8 MB', tags: ['将军', '照片'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1548013146-72479768b3f5?w=400&h=300&fit=crop' },
-      { kb: '人物传记', type: 'img', title: '陈凤生先生工作照', date: '1968年', size: '4.2 MB', tags: ['人物', '照片'], source: '青田县档案馆', image: 'https://images.unsplash.com/photo-1590736969955-71cc94901144?w=400&h=300&fit=crop' },
+      { kb: '刘英·粟裕史料', type: 'doc', title: '粟裕将军生平档案', date: '1984-02', size: '5.2 MB', tags: ['人物传记', '将军'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1532012197267-da84d127e765?w=400&h=300&fit=crop' },
+      { kb: '华侨红色相关史料', type: 'doc', title: '青田华侨领袖陈凤生档案', date: '1978-11', size: '3.9 MB', tags: ['侨界人物', '人物档案'], source: '青田县档案馆', image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400&h=300&fit=crop' },
+      { kb: '各县市区编研书籍', type: 'doc', title: '丽水名人手稿集', date: '1965-09', size: '7.6 MB', tags: ['手稿', '名人'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=400&h=300&fit=crop' },
+      { kb: '各县市区编研书籍', type: 'doc', title: '汤显祖在遂昌治理档案', date: '1595-1601', size: '4.1 MB', tags: ['人物传记', '地方治理'], source: '遂昌县档案馆', image: 'https://images.unsplash.com/photo-1512813195386-6cf811ad3542?w=400&h=300&fit=crop' },
+      { kb: '刘英·粟裕史料', type: 'img', title: '粟裕将军历史照片', date: '1950年代', size: '6.8 MB', tags: ['将军', '照片'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1548013146-72479768b3f5?w=400&h=300&fit=crop' },
+      { kb: '华侨红色相关史料', type: 'img', title: '陈凤生先生工作照', date: '1968年', size: '4.2 MB', tags: ['人物', '照片'], source: '青田县档案馆', image: 'https://images.unsplash.com/photo-1590736969955-71cc94901144?w=400&h=300&fit=crop' },
       // 历史事件
-      { kb: '历史事件', type: 'doc', title: '丽水日报1951年7月1日', date: '1951-07-01', size: '4.5 MB', tags: ['报纸', '历史事件'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400&h=300&fit=crop' },
-      { kb: '历史事件', type: 'doc', title: '土地改革工作总结报告', date: '1952-12-30', size: '6.3 MB', tags: ['土地改革', '历史事件'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1506784365847-bbad939e8fd5?w=400&h=300&fit=crop' },
-      { kb: '历史事件', type: 'doc', title: '丽水撤地设市批复文件', date: '2003-05', size: '1.2 MB', tags: ['行政区划', '批复文件'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1532012197267-da84d127e765?w=400&h=300&fit=crop' },
-      { kb: '历史事件', type: 'doc', title: '1935年红军过境大事记', date: '1935-06', size: '2.6 MB', tags: ['大事记', '红军过境'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=400&h=300&fit=crop' },
-      { kb: '历史事件', type: 'doc', title: '青田华侨支援抗战记录', date: '1940-09', size: '5.8 MB', tags: ['侨乡', '抗战'], source: '青田县档案馆', image: 'https://images.unsplash.com/photo-1599571234909-29ed5d1321d6?w=400&h=300&fit=crop' },
-      { kb: '历史事件', type: 'img', title: '松阳古村落土地契约档案', date: '民国时期', size: '11.2 MB', tags: ['契约', '古村落'], source: '松阳县档案馆', image: 'https://images.unsplash.com/photo-1590736969955-71cc94901144?w=400&h=300&fit=crop' },
+      { kb: '红色回忆与研究活动', type: 'doc', title: '丽水日报1951年7月1日', date: '1951-07-01', size: '4.5 MB', tags: ['报纸', '历史事件'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400&h=300&fit=crop' },
+      { kb: '红色革命事件', type: 'doc', title: '土地改革工作总结报告', date: '1952-12-30', size: '6.3 MB', tags: ['土地改革', '历史事件'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1506784365847-bbad939e8fd5?w=400&h=300&fit=crop' },
+      { kb: '各县市区编研书籍', type: 'doc', title: '丽水撤地设市批复文件', date: '2003-05', size: '1.2 MB', tags: ['行政区划', '批复文件'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1532012197267-da84d127e765?w=400&h=300&fit=crop' },
+      { kb: '红色革命事件', type: 'doc', title: '1935年红军过境大事记', date: '1935-06', size: '2.6 MB', tags: ['大事记', '红军过境'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=400&h=300&fit=crop' },
+      { kb: '华侨红色相关史料', type: 'doc', title: '青田华侨支援抗战记录', date: '1940-09', size: '5.8 MB', tags: ['侨乡', '抗战'], source: '青田县档案馆', image: 'https://images.unsplash.com/photo-1599571234909-29ed5d1321d6?w=400&h=300&fit=crop' },
+      { kb: '各县市区编研书籍', type: 'img', title: '松阳古村落土地契约档案', date: '民国时期', size: '11.2 MB', tags: ['契约', '古村落'], source: '松阳县档案馆', image: 'https://images.unsplash.com/photo-1590736969955-71cc94901144?w=400&h=300&fit=crop' },
       // 地方建设
-      { kb: '地方建设', type: 'doc', title: '瓯江大桥建设档案', date: '1992-10', size: '9.3 MB', tags: ['桥梁', '基建档案'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1548013146-72479768b3f5?w=400&h=300&fit=crop' },
-      { kb: '地方建设', type: 'doc', title: '城乡道路建设规划图', date: '1985-03', size: '6.8 MB', tags: ['道路规划', '城乡'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1506784365847-bbad939e8fd5?w=400&h=300&fit=crop' },
-      { kb: '地方建设', type: 'doc', title: '通济堰维修工程报告', date: '1988-06', size: '3.4 MB', tags: ['水利', '维修'], source: '莲都区档案馆', image: 'https://images.unsplash.com/photo-1532012197267-da84d127e765?w=400&h=300&fit=crop' },
-      { kb: '地方建设', type: 'doc', title: '丽水旧城改造规划图', date: '1999-12', size: '7.9 MB', tags: ['城市规划', '改造'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=400&h=300&fit=crop' },
-      { kb: '地方建设', type: 'img', title: '1953年丽水城区全景照片', date: '1953-08-12', size: '2.8 MB', tags: ['城市建设', '地理沿革'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1599571234909-29ed5d1321d6?w=400&h=300&fit=crop' },
-      { kb: '地方建设', type: 'img', title: '丽水城市变迁航拍图集', date: '2008-2020', size: '86 MB', tags: ['航拍', '城市变迁'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1512813195386-6cf811ad3542?w=400&h=300&fit=crop' },
+      { kb: '各县市区编研书籍', type: 'doc', title: '瓯江大桥建设档案', date: '1992-10', size: '9.3 MB', tags: ['桥梁', '基建档案'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1548013146-72479768b3f5?w=400&h=300&fit=crop' },
+      { kb: '各县市区编研书籍', type: 'doc', title: '城乡道路建设规划图', date: '1985-03', size: '6.8 MB', tags: ['道路规划', '城乡'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1506784365847-bbad939e8fd5?w=400&h=300&fit=crop' },
+      { kb: '各县市区编研书籍', type: 'doc', title: '通济堰维修工程报告', date: '1988-06', size: '3.4 MB', tags: ['水利', '维修'], source: '莲都区档案馆', image: 'https://images.unsplash.com/photo-1532012197267-da84d127e765?w=400&h=300&fit=crop' },
+      { kb: '各县市区编研书籍', type: 'doc', title: '丽水旧城改造规划图', date: '1999-12', size: '7.9 MB', tags: ['城市规划', '改造'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=400&h=300&fit=crop' },
+      { kb: '各县市区编研书籍', type: 'img', title: '1953年丽水城区全景照片', date: '1953-08-12', size: '2.8 MB', tags: ['城市建设', '地理沿革'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1599571234909-29ed5d1321d6?w=400&h=300&fit=crop' },
+      { kb: '各县市区编研书籍', type: 'img', title: '丽水城市变迁航拍图集', date: '2008-2020', size: '86 MB', tags: ['航拍', '城市变迁'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1512813195386-6cf811ad3542?w=400&h=300&fit=crop' },
       // 组织机构
-      { kb: '组织机构', type: 'doc', title: '中共丽水县委扩大会议记录', date: '1950-06-15', size: '3.2 MB', tags: ['会议', '组织机构'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=400&h=300&fit=crop' },
-      { kb: '组织机构', type: 'doc', title: '丽水县档案馆沿革资料', date: '1983-05', size: '2.9 MB', tags: ['档案馆', '沿革'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1532012197267-da84d127e765?w=400&h=300&fit=crop' },
-      { kb: '组织机构', type: 'doc', title: '浙西南特委组织系统表', date: '1942-08', size: '1.5 MB', tags: ['党组织', '系统表'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400&h=300&fit=crop' },
-      { kb: '组织机构', type: 'doc', title: '丽水师专建校批复文件', date: '1978-12', size: '1.1 MB', tags: ['教育', '建校'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1506784365847-bbad939e8fd5?w=400&h=300&fit=crop' },
-      { kb: '组织机构', type: 'img', title: '1950年农民协会成立大会', date: '1950-03-18', size: '19 MB', tags: ['组织机构', '社会生活'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1548013146-72479768b3f5?w=400&h=300&fit=crop' },
-      { kb: '组织机构', type: 'img', title: '青田县侨联成立大会合影', date: '1986-11', size: '8.7 MB', tags: ['侨联', '合影'], source: '青田县档案馆', image: 'https://images.unsplash.com/photo-1599571234909-29ed5d1321d6?w=400&h=300&fit=crop' },
+      { kb: '地方党组织史料', type: 'doc', title: '中共丽水县委扩大会议记录', date: '1950-06-15', size: '3.2 MB', tags: ['会议', '组织机构'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=400&h=300&fit=crop' },
+      { kb: '档案馆编研', type: 'doc', title: '丽水县档案馆沿革资料', date: '1983-05', size: '2.9 MB', tags: ['档案馆', '沿革'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1532012197267-da84d127e765?w=400&h=300&fit=crop' },
+      { kb: '地方党组织史料', type: 'doc', title: '浙西南特委组织系统表', date: '1942-08', size: '1.5 MB', tags: ['党组织', '系统表'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400&h=300&fit=crop' },
+      { kb: '各县市区编研书籍', type: 'doc', title: '丽水师专建校批复文件', date: '1978-12', size: '1.1 MB', tags: ['教育', '建校'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1506784365847-bbad939e8fd5?w=400&h=300&fit=crop' },
+      { kb: '红色革命事件', type: 'img', title: '1950年农民协会成立大会', date: '1950-03-18', size: '19 MB', tags: ['组织机构', '社会生活'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1548013146-72479768b3f5?w=400&h=300&fit=crop' },
+      { kb: '华侨红色相关史料', type: 'img', title: '青田县侨联成立大会合影', date: '1986-11', size: '8.7 MB', tags: ['侨联', '合影'], source: '青田县档案馆', image: 'https://images.unsplash.com/photo-1599571234909-29ed5d1321d6?w=400&h=300&fit=crop' },
       // 文化民俗
-      { kb: '文化民俗', type: 'img', title: '古堰画乡景区图片', date: '2015-06-21', size: '3.6 MB', tags: ['文化旅游', '景点'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1512813195386-6cf811ad3542?w=400&h=300&fit=crop' },
-      { kb: '文化民俗', type: 'img', title: '青田石雕艺术图册', date: '2012-04-18', size: '42.3 MB', tags: ['石雕', '非遗'], source: '青田县档案馆', image: 'https://images.unsplash.com/photo-1590736969955-71cc94901144?w=400&h=300&fit=crop' },
-      { kb: '文化民俗', type: 'img', title: '畲族传统服饰图录', date: '2009-03-15', size: '28.7 MB', tags: ['畲族', '服饰'], source: '景宁县档案馆', image: 'https://images.unsplash.com/photo-1548013146-72479768b3f5?w=400&h=300&fit=crop' },
-      { kb: '文化民俗', type: 'img', title: '处州乱弹戏服照片', date: '1986-09', size: '16.5 MB', tags: ['戏曲', '非遗'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1599571234909-29ed5d1321d6?w=400&h=300&fit=crop' },
-      { kb: '文化民俗', type: 'img', title: '丽水老街巷照片集', date: '1998-07-22', size: '9.4 MB', tags: ['老街', '民俗'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1512813195386-6cf811ad3542?w=400&h=300&fit=crop' },
-      { kb: '文化民俗', type: 'img', title: '丽水传统节庆照片', date: '2005-02-12', size: '11.8 MB', tags: ['节庆', '民俗'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400&h=300&fit=crop' },
+      { kb: '红色设施', type: 'img', title: '古堰画乡景区图片', date: '2015-06-21', size: '3.6 MB', tags: ['文化旅游', '景点'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1512813195386-6cf811ad3542?w=400&h=300&fit=crop' },
+      { kb: '各县市区编研书籍', type: 'img', title: '青田石雕艺术图册', date: '2012-04-18', size: '42.3 MB', tags: ['石雕', '非遗'], source: '青田县档案馆', image: 'https://images.unsplash.com/photo-1590736969955-71cc94901144?w=400&h=300&fit=crop' },
+      { kb: '畲族红色文化', type: 'img', title: '畲族传统服饰图录', date: '2009-03-15', size: '28.7 MB', tags: ['畲族', '服饰'], source: '景宁县档案馆', image: 'https://images.unsplash.com/photo-1548013146-72479768b3f5?w=400&h=300&fit=crop' },
+      { kb: '各县市区编研书籍', type: 'img', title: '处州乱弹戏服照片', date: '1986-09', size: '16.5 MB', tags: ['戏曲', '非遗'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1599571234909-29ed5d1321d6?w=400&h=300&fit=crop' },
+      { kb: '各县市区编研书籍', type: 'img', title: '丽水老街巷照片集', date: '1998-07-22', size: '9.4 MB', tags: ['老街', '民俗'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1512813195386-6cf811ad3542?w=400&h=300&fit=crop' },
+      { kb: '畲族红色文化', type: 'img', title: '丽水传统节庆照片', date: '2005-02-12', size: '11.8 MB', tags: ['节庆', '民俗'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400&h=300&fit=crop' },
       // 专题库
-      { kb: '专题库', type: 'doc', title: '侨乡青田家书合集', date: '1930-1990', size: '22.7 MB', tags: ['侨乡', '家书'], source: '青田县档案馆', image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400&h=300&fit=crop' },
-      { kb: '专题库', type: 'doc', title: '海外侨胞数字档案采集稿', date: '2015-08-30', size: '15.2 MB', tags: ['侨胞', '数字档案'], source: '青田县档案馆', image: 'https://images.unsplash.com/photo-1532012197267-da84d127e765?w=400&h=300&fit=crop' },
-      { kb: '专题库', type: 'doc', title: '红色根脉·思政教学资源包', date: '2026-03-15', size: '48.9 MB', tags: ['思政', '教学资源'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=400&h=300&fit=crop' },
-      { kb: '专题库', type: 'doc', title: '非遗名录专题资料', date: '2020-06-30', size: '9.8 MB', tags: ['非遗', '名录'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1512813195386-6cf811ad3542?w=400&h=300&fit=crop' },
-      { kb: '专题库', type: 'img', title: '丽水老照片专题展', date: '2019-10-01', size: '132 MB', tags: ['老照片', '专题展'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1599571234909-29ed5d1321d6?w=400&h=300&fit=crop' },
-      { kb: '专题库', type: 'img', title: '侨乡青田影像档案', date: '2008-2020', size: '86.3 MB', tags: ['侨乡', '影像'], source: '青田县档案馆', image: 'https://images.unsplash.com/photo-1548013146-72479768b3f5?w=400&h=300&fit=crop' },
+      { kb: '华侨红色相关史料', type: 'doc', title: '侨乡青田家书合集', date: '1930-1990', size: '22.7 MB', tags: ['侨乡', '家书'], source: '青田县档案馆', image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400&h=300&fit=crop' },
+      { kb: '华侨红色相关史料', type: 'doc', title: '海外侨胞数字档案采集稿', date: '2015-08-30', size: '15.2 MB', tags: ['侨胞', '数字档案'], source: '青田县档案馆', image: 'https://images.unsplash.com/photo-1532012197267-da84d127e765?w=400&h=300&fit=crop' },
+      { kb: '红色回忆与研究活动', type: 'doc', title: '红色根脉·思政教学资源包', date: '2026-03-15', size: '48.9 MB', tags: ['思政', '教学资源'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=400&h=300&fit=crop' },
+      { kb: '各县市区编研书籍', type: 'doc', title: '非遗名录专题资料', date: '2020-06-30', size: '9.8 MB', tags: ['非遗', '名录'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1512813195386-6cf811ad3542?w=400&h=300&fit=crop' },
+      { kb: '红色回忆与研究活动', type: 'img', title: '丽水老照片专题展', date: '2019-10-01', size: '132 MB', tags: ['老照片', '专题展'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1599571234909-29ed5d1321d6?w=400&h=300&fit=crop' },
+      { kb: '华侨红色相关史料', type: 'img', title: '侨乡青田影像档案', date: '2008-2020', size: '86.3 MB', tags: ['侨乡', '影像'], source: '青田县档案馆', image: 'https://images.unsplash.com/photo-1548013146-72479768b3f5?w=400&h=300&fit=crop' },
       // 声像档案样本
-      { kb: '红色记忆', type: 'video', title: '2021青田召开陈慕华座谈会', date: '2021-12-08', size: '156 MB', duration: '02:16', tags: ['陈慕华', '诞辰100周年', '座谈会'], source: '青田县档案馆', image: 'https://images.unsplash.com/photo-1485846234645-a62644f84728?w=400&h=300&fit=crop', desc: '该视频时长约2分16秒，记录了2021年在青田县召开的纪念陈慕华同志诞辰100周年座谈会。视频以新闻报道形式呈现，展示了会议现场的场景。' },
-      { kb: '人物传记', type: 'video', title: '粟裕将军纪念影像', date: '1984-04-22', size: '320 MB', duration: '15:48', tags: ['粟裕', '将军', '纪念'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1499346030926-9a72daac6c63?w=400&h=300&fit=crop', desc: '粟裕将军百年诞辰纪念活动影像资料。含历史照片、讲话录像及家属访谈，时长约15分钟。' },
-      { kb: '历史事件', type: 'video', title: '红军挺进师浙西南战斗纪录', date: '1985-08', size: '480 MB', duration: '28:30', tags: ['红军', '战斗纪录', '浙西南'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400&h=300&fit=crop', desc: '1985年制作的浙西南革命斗争纪录片，含老红军采访、战场遗址实拍、历史照片再现。' },
-      { kb: '地方建设', type: 'video', title: '瓯江大桥建成通车典礼', date: '1992-10-28', size: '210 MB', duration: '08:42', tags: ['瓯江大桥', '通车典礼', '基建'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1517089596392-fb9a9033e05b?w=400&h=300&fit=crop', desc: '1992年瓯江大桥建成通车仪式实录，含领导讲话、车队通过、航拍全景。' },
-      { kb: '组织机构', type: 'video', title: '青田县侨联成立大会纪实', date: '1986-11-15', size: '180 MB', duration: '12:15', tags: ['侨联', '成立大会', '纪实'], source: '青田县档案馆', image: 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=400&h=300&fit=crop', desc: '1986年青田县侨联成立大会现场录像，含揭牌仪式、各界代表发言。' },
-      { kb: '文化民俗', type: 'video', title: '青田石雕非遗技艺记录', date: '2018-05-10', size: '560 MB', duration: '45:20', tags: ['石雕', '非遗', '技艺'], source: '青田县档案馆', image: 'https://images.unsplash.com/photo-1561214115-f2f134cc4912?w=400&h=300&fit=crop', desc: '青田石雕国家级非遗代表性传承人技艺实录，含选料、雕刻、打磨全过程。' },
-      { kb: '专题库', type: 'video', title: '侨乡青田海外联谊纪实', date: '2019-09-20', size: '420 MB', duration: '32:18', tags: ['侨乡', '海外联谊', '纪实'], source: '青田县档案馆', image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400&h=300&fit=crop', desc: '2019年侨乡青田海外联谊活动现场记录，含侨胞访谈、文化展示、文艺演出。' }
+      { kb: '华侨红色相关史料', type: 'video', title: '2021青田召开陈慕华座谈会', date: '2021-12-08', size: '156 MB', duration: '02:16', tags: ['陈慕华', '诞辰100周年', '座谈会'], source: '青田县档案馆', image: 'https://images.unsplash.com/photo-1485846234645-a62644f84728?w=400&h=300&fit=crop', desc: '该视频时长约2分16秒，记录了2021年在青田县召开的纪念陈慕华同志诞辰100周年座谈会。视频以新闻报道形式呈现，展示了会议现场的场景。' },
+      { kb: '刘英·粟裕史料', type: 'video', title: '粟裕将军纪念影像', date: '1984-04-22', size: '320 MB', duration: '15:48', tags: ['粟裕', '将军', '纪念'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1499346030926-9a72daac6c63?w=400&h=300&fit=crop', desc: '粟裕将军百年诞辰纪念活动影像资料。含历史照片、讲话录像及家属访谈，时长约15分钟。' },
+      { kb: '红色革命事件', type: 'video', title: '红军挺进师浙西南战斗纪录', date: '1985-08', size: '480 MB', duration: '28:30', tags: ['红军', '战斗纪录', '浙西南'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400&h=300&fit=crop', desc: '1985年制作的浙西南革命斗争纪录片，含老红军采访、战场遗址实拍、历史照片再现。' },
+      { kb: '各县市区编研书籍', type: 'video', title: '瓯江大桥建成通车典礼', date: '1992-10-28', size: '210 MB', duration: '08:42', tags: ['瓯江大桥', '通车典礼', '基建'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1517089596392-fb9a9033e05b?w=400&h=300&fit=crop', desc: '1992年瓯江大桥建成通车仪式实录，含领导讲话、车队通过、航拍全景。' },
+      { kb: '华侨红色相关史料', type: 'video', title: '青田县侨联成立大会纪实', date: '1986-11-15', size: '180 MB', duration: '12:15', tags: ['侨联', '成立大会', '纪实'], source: '青田县档案馆', image: 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=400&h=300&fit=crop', desc: '1986年青田县侨联成立大会现场录像，含揭牌仪式、各界代表发言。' },
+      { kb: '各县市区编研书籍', type: 'video', title: '青田石雕非遗技艺记录', date: '2018-05-10', size: '560 MB', duration: '45:20', tags: ['石雕', '非遗', '技艺'], source: '青田县档案馆', image: 'https://images.unsplash.com/photo-1561214115-f2f134cc4912?w=400&h=300&fit=crop', desc: '青田石雕国家级非遗代表性传承人技艺实录，含选料、雕刻、打磨全过程。' },
+      { kb: '华侨红色相关史料', type: 'video', title: '侨乡青田海外联谊纪实', date: '2019-09-20', size: '420 MB', duration: '32:18', tags: ['侨乡', '海外联谊', '纪实'], source: '青田县档案馆', image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400&h=300&fit=crop', desc: '2019年侨乡青田海外联谊活动现场记录，含侨胞访谈、文化展示、文艺演出。' },
+      { kb: '党史办红立方', type: 'doc', title: '丽水党史宣讲材料汇编', date: '2023-06', size: '12.4 MB', tags: ['党史宣讲', '红立方'], source: '丽水市党史办', image: 'https://images.unsplash.com/photo-1532012197267-da84d127e765?w=400&h=300&fit=crop' },
+      { kb: '党史办红立方', type: 'doc', title: '“红立方”党建品牌创建档案', date: '2021-03', size: '6.8 MB', tags: ['党建品牌', '创建'], source: '丽水市党史办', image: 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=400&h=300&fit=crop' },
+      { kb: '党史办红立方', type: 'doc', title: '主题党日活动纪实手册', date: '2024-09', size: '9.1 MB', tags: ['主题党日', '纪实'], source: '丽水市党史办', image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400&h=300&fit=crop' },
+      { kb: '红色文物文献资料', type: 'doc', title: '红军挺进师印章登记表', date: '1935-1938', size: '2.4 MB', tags: ['文物', '印章'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1532012197267-da84d127e765?w=400&h=300&fit=crop' },
+      { kb: '红色文物文献资料', type: 'doc', title: '红色文物普查登记册', date: '1987-10', size: '8.6 MB', tags: ['文物普查', '登记'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=400&h=300&fit=crop' },
+      { kb: '红色文物文献资料', type: 'doc', title: '革命文献修复档案', date: '2016-05', size: '5.3 MB', tags: ['文献修复', '保护'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400&h=300&fit=crop' },
+      { kb: '革命英烈群体', type: 'doc', title: '革命烈士牺牲登记表', date: '1951-1962', size: '4.7 MB', tags: ['烈士', '登记表'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1506784365847-bbad939e8fd5?w=400&h=300&fit=crop' },
+      { kb: '红色设施', type: 'doc', title: '革命旧址普查登记表', date: '2020-08', size: '3.9 MB', tags: ['旧址普查', '登记表'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1532012197267-da84d127e765?w=400&h=300&fit=crop' },
+      { kb: '档案馆编研', type: 'doc', title: '丽水档案馆藏指南', date: '2019-11', size: '10.2 MB', tags: ['馆藏', '指南'], source: '丽水市档案馆', image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400&h=300&fit=crop' },
     ];
 
     const typeMap = {
@@ -553,7 +561,7 @@
 
     // ===== 读取 URL 参数，确定当前知识库 =====
     const params = new URLSearchParams(window.location.search);
-    const kbName = params.get('kb') || '红色记忆';
+    const kbName = params.get('kb') || '党史办红立方';
     const kb = kbMap.find(k => k.name === kbName) || kbMap[0];
 
     // ===== 渲染知识库头部 =====
@@ -718,6 +726,44 @@
     document.querySelectorAll('.menu-item[data-kb]').forEach(item => {
       if (item.getAttribute('data-kb') === kb.name) item.classList.add('active');
     });
+    // ===== 收藏知识库（左侧栏动态列表，与档案资源中心共用） =====
+    const FAV_KEY = 'wf_fav_kbs';
+    let favSet = new Set();
+    try {
+      const saved = JSON.parse(localStorage.getItem(FAV_KEY) || '[]');
+      if (Array.isArray(saved)) favSet = new Set(saved);
+    } catch (e) {}
+
+    function renderFav() {
+      const box = document.getElementById('favList');
+      if (!box) return;
+      const names = kbMap.filter(k => favSet.has(k.name)).map(k => k.name)
+        .concat(Array.from(favSet).filter(n => !kbMap.some(k => k.name === n)));
+      if (!names.length) {
+        box.innerHTML = '<div class="fav-empty">暂无收藏<br>在档案资源中心的知识库卡片上点击 ★</div>';
+        return;
+      }
+      box.innerHTML = '';
+      names.forEach(n => {
+        const meta = kbMap.find(k => k.name === n);
+        const item = document.createElement('div');
+        item.className = 'fav-item';
+        item.innerHTML = '<span class="fi-ico">' + (meta ? meta.icon : '📚') + '</span>' +
+                         '<span class="fi-name">' + n + '</span>' +
+                         '<span class="fi-del" title="取消收藏">✕</span>';
+        item.addEventListener('click', () => {
+          window.location.href = 'kb-detail.html?kb=' + encodeURIComponent(n);
+        });
+        item.querySelector('.fi-del').addEventListener('click', (e) => {
+          e.stopPropagation();
+          favSet.delete(n);
+          try { localStorage.setItem(FAV_KEY, JSON.stringify(Array.from(favSet))); } catch (err) {}
+          renderFav();
+        });
+        box.appendChild(item);
+      });
+    }
+    renderFav();
   </script>
 </body>
 </html>
