@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>万象未来 · AI 档案知识空间</title>
+  <title>万象未来 数字思政</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=ZCOOL+XiaoWei&family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -1172,7 +1172,7 @@
     }
 
     .main-title::after {
-      content: '档案';
+      content: '思政';
       position: absolute;
       top: 10px;
       right: -35px;
@@ -1332,6 +1332,235 @@
       border-color: rgba(166, 44, 44, 0.25);
       color: var(--accent-red);
       transform: translateY(-2px);
+    }
+
+    /* ===== AI 机器人欢迎气泡 ===== */
+    .ai-welcome {
+      margin-top: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      min-height: 84px;
+    }
+
+    .ai-robot {
+      position: relative;
+      width: 68px;
+      height: 68px;
+      flex-shrink: 0;
+      cursor: pointer;
+      filter: drop-shadow(0 6px 16px rgba(166, 44, 44, 0.18));
+    }
+
+    .ai-robot::before {
+      content: '';
+      position: absolute;
+      inset: -9px;
+      border-radius: 50%;
+      border: 1px dashed rgba(166, 44, 44, 0.22);
+      animation: robotHalo 9s linear infinite;
+    }
+
+    .ai-robot::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: -9px;
+      width: 6px;
+      height: 6px;
+      margin-left: -3px;
+      border-radius: 50%;
+      background: var(--accent-gold);
+      box-shadow: 0 0 8px rgba(201, 168, 108, 0.9);
+      transform-origin: 3px 43px;
+      animation: robotHalo 4.6s linear infinite;
+    }
+
+    @keyframes robotHalo {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .ai-robot-float {
+      position: absolute;
+      inset: 0;
+      animation: robotFloat 3.6s ease-in-out infinite;
+      transform-origin: 50% 82%;
+    }
+
+    @keyframes robotFloat {
+      0%, 100% { transform: translateY(0) rotate(-3deg); }
+      50% { transform: translateY(-7px) rotate(3deg); }
+    }
+
+    .ai-robot.spin .ai-robot-float { animation: robotSpin 0.85s cubic-bezier(.34,1.4,.5,1); }
+
+    @keyframes robotSpin {
+      from { transform: rotate(0deg) scale(1); }
+      50% { transform: rotate(200deg) scale(1.08); }
+      to { transform: rotate(360deg) scale(1); }
+    }
+
+    .robot-antenna {
+      position: absolute;
+      left: 50%;
+      top: 3px;
+      width: 2px;
+      height: 10px;
+      margin-left: -1px;
+      border-radius: 2px;
+      background: rgba(166, 44, 44, 0.45);
+    }
+
+    .robot-antenna-core {
+      position: absolute;
+      left: 50%;
+      top: -5px;
+      width: 11px;
+      height: 11px;
+      margin-left: -5.5px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 34% 32%, #fbe3b6, var(--accent-gold));
+      box-shadow: 0 0 10px rgba(201, 168, 108, 0.9);
+      transform-origin: 50% 10px;
+      animation: robotHalo 4.5s linear infinite;
+    }
+
+    .robot-head {
+      position: absolute;
+      left: 9px;
+      top: 12px;
+      width: 50px;
+      height: 38px;
+      border-radius: 14px;
+      background: linear-gradient(160deg, #fffdf9, #f3e6d6);
+      border: 1.6px solid rgba(166, 44, 44, 0.45);
+      box-shadow: inset 0 -3px 8px rgba(166, 44, 44, 0.08);
+    }
+
+    .robot-eye {
+      position: absolute;
+      top: 13px;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--accent-red);
+      box-shadow: 0 0 6px rgba(166, 44, 44, 0.6);
+      animation: robotBlink 4.2s infinite;
+    }
+
+    .robot-eye.l { left: 9px; }
+    .robot-eye.r { right: 9px; }
+
+    @keyframes robotBlink {
+      0%, 86%, 100% { transform: scaleY(1); }
+      90% { transform: scaleY(0.1); }
+      94% { transform: scaleY(1); }
+    }
+
+    .robot-mouth {
+      position: absolute;
+      left: 50%;
+      bottom: 8px;
+      width: 16px;
+      height: 4px;
+      margin-left: -8px;
+      border-radius: 0 0 8px 8px;
+      background: rgba(166, 44, 44, 0.5);
+    }
+
+    .robot-body {
+      position: absolute;
+      left: 17px;
+      top: 48px;
+      width: 34px;
+      height: 18px;
+      border-radius: 9px;
+      background: linear-gradient(160deg, #fffdf9, #f0e2d0);
+      border: 1.6px solid rgba(166, 44, 44, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .robot-core {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #ffe8bd, var(--accent-gold));
+      box-shadow: 0 0 8px rgba(201, 168, 108, 0.95);
+      animation: corePulse 2s ease-in-out infinite;
+    }
+
+    @keyframes corePulse {
+      0%, 100% { transform: scale(1); opacity: 0.85; }
+      50% { transform: scale(1.28); opacity: 1; }
+    }
+
+    .ai-robot:hover { transform: translateY(-2px); }
+
+    .ai-bubble {
+      position: relative;
+      max-width: 430px;
+      padding: 11px 16px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.72);
+      border: 1px solid rgba(166, 44, 44, 0.16);
+      box-shadow: 0 8px 24px rgba(92, 61, 46, 0.1);
+      backdrop-filter: blur(8px);
+      font-size: 12.5px;
+      color: var(--text-primary);
+      line-height: 1.7;
+      text-align: left;
+      animation: bubbleIn 0.5s ease;
+    }
+
+    .ai-bubble::before {
+      content: '';
+      position: absolute;
+      left: -7px;
+      top: 50%;
+      margin-top: -6px;
+      border-style: solid;
+      border-width: 6px 7px 6px 0;
+      border-color: transparent rgba(166, 44, 44, 0.16) transparent transparent;
+    }
+
+    .ai-bubble::after {
+      content: '';
+      position: absolute;
+      left: -5px;
+      top: 50%;
+      margin-top: -5px;
+      border-style: solid;
+      border-width: 5px 6px 5px 0;
+      border-color: transparent rgba(255, 255, 255, 0.9) transparent transparent;
+    }
+
+    @keyframes bubbleIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: none; }
+    }
+
+    .ai-caret {
+      display: inline-block;
+      width: 2px;
+      height: 13px;
+      margin-left: 2px;
+      vertical-align: -2px;
+      background: var(--accent-red);
+      animation: caretBlink 0.8s step-end infinite;
+    }
+
+    @keyframes caretBlink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    @media (max-width: 768px) {
+      .ai-welcome { flex-direction: column; min-height: 0; }
+      .ai-bubble::before, .ai-bubble::after { display: none; }
     }
 
     /* 问AI 知识库下拉 */
@@ -1677,8 +1906,8 @@
     .card-header {
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 6px;
+      align-items: center;
+      margin-bottom: 10px;
     }
 
     .card-title {
@@ -2068,7 +2297,7 @@
         <div class="logo-icon">万</div>
         <div class="logo-text">
           <div class="logo-title">万象未来</div>
-          <div class="logo-subtitle">AI 档案知识空间</div>
+          <div class="logo-subtitle">数字思政</div>
         </div>
       </div>
 
@@ -2120,11 +2349,11 @@
         <div class="hud-particles" id="hudParticles"></div>
       </div>
 
-      <!-- 左侧口述档案 -->
+      <!-- 左侧影像视频 -->
       <div class="history-sidebar">
         <div class="history-card-main">
           <div class="history-header">
-            <div class="history-title">口述档案</div>
+            <div class="history-title">影像视频</div>
             <div class="history-more-btn" id="videoMoreBtn">查看更多</div>
           </div>
           <div class="video-list" id="videoList">
@@ -2135,7 +2364,7 @@
 
       <div class="hero-content">
         <h1 class="main-title">万象未来</h1>
-        <div class="subtitle">AI 档 案 知 识 空 间</div>
+        <div class="subtitle">数 字 思 政</div>
         <p class="tagline">以档案为根,以AI为翼,探索历史 · 连接知识 · 望向未来</p>
 
         <div class="hero-search">
@@ -2161,10 +2390,22 @@
           </div>
         </div>
 
-        <div class="hot-tags">
-          <span class="hot-label">你可以这样问:</span>
-          <span class="hot-tag">讲讲粟裕在浙西南的游击抗战事迹</span>
-          <span class="hot-tag">介绍龙泉革命英雄陈凤生的生平事迹</span>
+        <!-- AI 机器人欢迎气泡 -->
+        <div class="ai-welcome">
+          <div class="ai-robot" id="aiRobot" title="点我一下试试～">
+            <div class="ai-robot-float">
+              <span class="robot-antenna"><i class="robot-antenna-core"></i></span>
+              <span class="robot-head">
+                <i class="robot-eye l"></i>
+                <i class="robot-eye r"></i>
+                <i class="robot-mouth"></i>
+              </span>
+              <span class="robot-body"><i class="robot-core"></i></span>
+            </div>
+          </div>
+          <div class="ai-bubble">
+            <span id="aiBubbleText"></span><i class="ai-caret"></i>
+          </div>
         </div>
       </div>
 
@@ -2177,11 +2418,11 @@
         <div class="data-row">
           <div class="data-icon">📚</div>
           <div class="data-main">
-            <div class="data-label">馆藏档案总量</div>
+            <div class="data-label">档案数据总量</div>
             <div class="data-value">2.7<span class="unit">TB</span></div>
           </div>
           <div class="data-side">
-            <div class="data-label">数字档案资源</div>
+            <div class="data-label">数字化档案量</div>
             <div class="data-value">15<span class="unit">万页+</span></div>
           </div>
           <div class="data-arrow">›</div>
@@ -2190,11 +2431,11 @@
         <div class="data-row">
           <div class="data-icon">🎵</div>
           <div class="data-main">
-            <div class="data-label">声像档案资源</div>
+            <div class="data-label">声像档案</div>
             <div class="data-value">3<span class="unit">万分钟+</span></div>
           </div>
           <div class="data-side">
-            <div class="data-label">专题知识图谱</div>
+            <div class="data-label">知识图谱</div>
             <div class="data-value">10<span class="unit">个</span></div>
           </div>
           <div class="data-arrow">›</div>
@@ -2203,11 +2444,11 @@
         <div class="data-row">
           <div class="data-icon">📖</div>
           <div class="data-main">
-            <div class="data-label">思政课程资源</div>
+            <div class="data-label">思政课程</div>
             <div class="data-value">5<span class="unit">套</span></div>
           </div>
           <div class="data-side">
-            <div class="data-label">研学路线资源</div>
+            <div class="data-label">研学路线</div>
             <div class="data-value">10<span class="unit">条</span></div>
           </div>
           <div class="data-arrow">›</div>
@@ -2221,7 +2462,6 @@
         <div class="card-header">
           <div>
             <div class="card-title">档案资源中心</div>
-            <div class="card-desc">海量档案资源智能检索</div>
           </div>
           <div class="card-arrow">›</div>
         </div>
@@ -2237,7 +2477,6 @@
         <div class="card-header">
           <div>
             <div class="card-title">知识图谱中心</div>
-            <div class="card-desc">探索人物关系与历史脉络</div>
           </div>
           <div class="card-arrow">›</div>
         </div>
@@ -2253,7 +2492,6 @@
         <div class="card-header">
           <div>
             <div class="card-title">数字思政课程</div>
-            <div class="card-desc">红色记忆 · 思想传承</div>
           </div>
           <div class="card-arrow">›</div>
         </div>
@@ -2268,8 +2506,7 @@
       <a href="yanxue.html" class="feature-card" style="text-decoration:none">
         <div class="card-header">
           <div>
-            <div class="card-title">研学路线探索</div>
-            <div class="card-desc">行走的课堂 · 沉浸体验</div>
+            <div class="card-title">特色研学路线</div>
           </div>
           <div class="card-arrow">›</div>
         </div>
@@ -2283,12 +2520,12 @@
     </section>
   </div>
 
-  <!-- 口述档案视频库弹窗 -->
+  <!-- 影像视频视频库弹窗 -->
   <div class="video-library-overlay" id="videoLibrary">
     <div class="video-library">
       <div class="video-library-header">
         <div class="video-library-title">
-          <span class="title-main">口述档案</span>
+          <span class="title-main">影像视频</span>
           <span class="title-sub">视频列表</span>
         </div>
         <div class="video-library-dots">
@@ -2365,20 +2602,61 @@
       }
     });
 
-    // 热门标签点击
-    document.querySelectorAll('.hot-tag').forEach(tag => {
-      tag.addEventListener('click', function() {
-        document.querySelector('.search-box input').value = this.textContent;
-      });
-    });
+    // AI 机器人欢迎气泡：打字机循环
+    (function initAiBubble() {
+      const textEl = document.getElementById('aiBubbleText');
+      if (!textEl) return;
+      const msgs = [
+        '你好呀，我是万象未来的 AI 助手小未～',
+        '问我一段历史、一位人物，或一条研学路线都可以！',
+        '试试这样问：讲讲粟裕在浙西南的游击抗战事迹'
+      ];
+      let mi = 0, ci = 0, del = false, timer = null;
+      function plan(ms) { timer = setTimeout(tick, ms); }
+      function tick() {
+        const full = msgs[mi];
+        if (!del) {
+          ci++;
+          textEl.textContent = full.slice(0, ci);
+          if (ci >= full.length) { del = true; return plan(2300); }
+        } else {
+          ci--;
+          textEl.textContent = full.slice(0, ci);
+          if (ci <= 0) { del = false; mi = (mi + 1) % msgs.length; return plan(430); }
+        }
+        plan(del ? 30 : 62);
+      }
+      plan(520);
 
-    // 口述档案视频库数据（贴合丽水本地历史主题）
+      // 点击机器人：转一圈 + 换一句欢迎语
+      const robot = document.getElementById('aiRobot');
+      const floatEl = robot && robot.querySelector('.ai-robot-float');
+      if (floatEl) {
+        floatEl.addEventListener('animationend', function (e) {
+          if (e.animationName === 'robotSpin') robot.classList.remove('spin');
+        });
+      }
+      if (robot) {
+        robot.addEventListener('click', function () {
+          robot.classList.remove('spin');
+          void robot.offsetWidth;
+          robot.classList.add('spin');
+          if (timer) clearTimeout(timer);
+          mi = (mi + 1) % msgs.length;
+          ci = 0;
+          del = false;
+          tick();
+        });
+      }
+    })();
+
+    // 影像视频视频库数据（贴合丽水本地历史主题）
     const oralVideos = [
       { id: 1, title: '刘英·挺进浙西南', badge: '口述史', views: '02', date: '04:05', date2: '9-25', keywords: '刘英 | 挺进师 | 浙西南革命 | 红色记忆', desc: '通过老同志口述，还原刘英率领挺进师在浙西南开展游击战争的峥嵘岁月，再现革命先辈在丽水山区的战斗足迹与坚定信念。', cover: 'linear-gradient(135deg, #4a3220, #2a1c10)', coverImg: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=600&h=400&fit=crop', source: '丽水市档案馆', src: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4' },
       { id: 2, title: '粟裕·根据地的灯', badge: '口述史', views: '03', date: '1:20:45', date2: '8-20', keywords: '粟裕 | 革命根据地 | 浙西南 | 游击战争', desc: '亲历者讲述粟裕在浙西南创建革命根据地的亲身经历，回忆那段在丽水山林间与敌人周旋、以弱胜强的革命斗争岁月。', cover: 'linear-gradient(135deg, #8b1a1a, #4a0e0e)', coverImg: 'https://images.unsplash.com/photo-1551264187-9c0d4e2ca8b5?w=400&h=240&fit=crop', source: '松阳县档案馆', src: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4' },
       { id: 3, title: '红色通讯网', badge: '口述史', views: '02', date: '1:20:45', date2: '8-20', keywords: '地下交通 | 秘密联络 | 浙西南 | 红色通讯', desc: '亲历者讲述革命战争年代丽水地区地下交通站的秘密联络故事，再现那条隐匿于崇山峻岭间、传递情报与希望的生命线。', cover: 'linear-gradient(135deg, #3a4a2a, #1f2a15)', coverImg: 'https://images.unsplash.com/photo-1505664194779-8beaceb93744?w=400&h=240&fit=crop', source: '云和县档案馆', src: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4' },
       { id: 4, title: '浙西南·星火岁月', badge: '口述史', views: '02', date: '1:20:45', date2: '8-20', keywords: '浙西南三年游击战争 | 革命老区 | 丽水 | 口述历史', desc: '以丽水革命老区为视角，通过老党员、老战士及其后代的深情口述，讲述浙西南三年游击战争时期革命先辈浴血奋战的真实故事。', cover: 'linear-gradient(135deg, #4a4a2a, #2a2a15)', coverImg: 'https://images.unsplash.com/photo-1488972685288-c3fd157d7c7a?w=400&h=240&fit=crop', source: '莲都区档案馆', src: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4' },
-      { id: 5, title: '丽水革命遗址寻访', badge: '口述史', views: '02', date: '1:20:45', date2: '8-20', keywords: '革命遗址 | 丽水 | 红色教育 | 口述档案', desc: '档案工作人员与党史研究者实地寻访丽水境内重要革命遗址，通过口述与影像结合，记录那些承载红色记忆的山水与建筑。', cover: 'linear-gradient(135deg, #2a4a3a, #152a20)', coverImg: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=400&h=240&fit=crop', source: '缙云县档案馆', src: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4' },
+      { id: 5, title: '丽水革命遗址寻访', badge: '口述史', views: '02', date: '1:20:45', date2: '8-20', keywords: '革命遗址 | 丽水 | 红色教育 | 影像视频', desc: '档案工作人员与党史研究者实地寻访丽水境内重要革命遗址，通过口述与影像结合，记录那些承载红色记忆的山水与建筑。', cover: 'linear-gradient(135deg, #2a4a3a, #152a20)', coverImg: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=400&h=240&fit=crop', source: '缙云县档案馆', src: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4' },
       { id: 6, title: '老党员的红色家书', badge: '口述史', views: '12', date: '12:36', date2: '7-15', keywords: '红色家书 | 党员 | 革命精神 | 丽水', desc: '珍藏于丽水档案馆的红色家书原件，配合老党员及其家属的口述解读，讲述一封封家书背后的革命情怀与家国记忆。', cover: 'linear-gradient(135deg, #6b2d2d, #3a1a1a)', coverImg: 'https://images.unsplash.com/photo-1574717024653-61fd2cf4b4d9?w=400&h=240&fit=crop', source: '丽水市档案馆', src: 'https://www.w3schools.com/html/mov_bbb.mp4' },
       { id: 7, title: '青田华侨与革命', badge: '口述史', views: '08', date: '08:52', date2: '6-20', keywords: '华侨 | 革命资助 | 青田 | 海外关系', desc: '青田籍华侨后代口述老一辈华侨在海外支持国内革命的真实经历，展现丽水青田作为著名侨乡与革命历史的深厚渊源。', cover: 'linear-gradient(135deg, #2c3e50, #1a2530)', coverImg: 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=400&h=240&fit=crop', source: '青田县档案馆', src: 'https://www.w3schools.com/html/movie.mp4' },
       { id: 8, title: '畲族山寨的革命火种', badge: '口述史', views: '15', date: '15:20', date2: '5-10', keywords: '畲族 | 革命 | 民族团结 | 景宁', desc: '景宁畲族老人讲述革命战争年代红军在畲族山寨的故事，呈现丽水畲汉同胞并肩作战、共同守护革命火种的动人篇章。', cover: 'linear-gradient(135deg, #1d4e3a, #0f2a1f)', coverImg: 'https://images.unsplash.com/photo-1532012197267-da84d127e765?w=400&h=240&fit=crop', source: '景宁县档案馆', src: 'https://www.w3schools.com/html/mov_bbb.mp4' }

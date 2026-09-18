@@ -71,6 +71,9 @@
   .route-meta{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
   .meta-item{display:inline-flex;align-items:center;gap:4px;padding:4px 8px;border-radius:6px;background:rgba(166,44,44,.06);font-size:11px;color:var(--text-secondary)}
   .meta-item svg{width:12px;height:12px;color:var(--accent-red)}
+  .meta-nearby{cursor:pointer;border:1px solid rgba(166,44,44,.2);transition:all .25s}
+  .meta-nearby:hover{background:rgba(166,44,44,.16);color:var(--accent-red);transform:translateY(-1px)}
+  .meta-nearby:hover svg{color:var(--accent-red)}
   .route-desc{font-size:12px;color:var(--text-secondary);line-height:1.65;margin-bottom:12px}
   .route-actions{display:flex;gap:8px}
   .route-actions button{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:4px;padding:8px 0;border-radius:8px;background:rgba(166,44,44,.05);border:1px solid rgba(166,44,44,.16);color:var(--accent-red);font-size:12px;cursor:pointer;transition:all .3s;font-family:inherit}
@@ -97,6 +100,18 @@
   .safety-foot{padding:12px 20px;border-top:1px solid rgba(166,44,44,.12);display:flex;justify-content:flex-end;gap:8px;background:var(--glass)}
   .safety-ok{padding:8px 22px;border-radius:10px;border:1px solid var(--accent-red);background:var(--accent-red);color:#fff;font-size:13px;cursor:pointer;font-family:inherit}
   .safety-ok:hover{background:var(--accent-red-light);border-color:var(--accent-red-light)}
+
+  /* ===== 本区域研学点位列表 ===== */
+  .nb-box{max-width:700px}
+  .nb-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;background:rgba(255,255,255,.6);border:1px solid rgba(166,44,44,.1);cursor:pointer;transition:all .25s}
+  .nb-item:hover{background:rgba(166,44,44,.08);border-color:rgba(166,44,44,.28);transform:translateX(3px)}
+  .nb-item.on-route{background:rgba(166,44,44,.07);border-color:rgba(166,44,44,.22)}
+  .nb-num{width:24px;height:24px;border-radius:50%;background:#fff;border:2px solid var(--accent-red);color:var(--accent-red);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .nb-main{flex:1;min-width:0}
+  .nb-name{font-size:12.5px;color:var(--text-primary);font-weight:500;display:flex;align-items:center;gap:6px;line-height:1.5}
+  .nb-badge{font-size:10px;padding:1px 6px;border-radius:6px;background:var(--accent-red);color:#fff;font-weight:400;flex-shrink:0}
+  .nb-meta{font-size:11px;color:var(--text-muted);margin-top:3px;line-height:1.5}
+  .nb-go{font-size:11px;color:var(--accent-red);flex-shrink:0;display:flex;align-items:center;gap:2px;white-space:nowrap}
 
   /* 站点列表 */
   .site-list{flex:1;overflow-y:auto;padding:12px}
@@ -257,9 +272,9 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
             <span id="mDur">—</span>
           </span>
-          <span class="meta-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-            <span id="mSuit">—</span>
+          <span class="meta-item meta-nearby" id="mNearby" title="点击查看本区域全部红色研学点位">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+            <span id="mNearbyText">—</span>
           </span>
         </div>
         <p class="route-desc" id="routeDesc"></p>
@@ -625,7 +640,24 @@ document.getElementById('routeTitle').textContent = route.name;
 document.getElementById('routeTag').textContent = route.region + ' · ' + route.theme;
 document.getElementById('mSites').textContent = SITES.length + '个点位';
 document.getElementById('mDur').textContent = route.duration + '路线';
-document.getElementById('mSuit').textContent = '适合' + route.suitable;
+/* 本区域（同一县市区）红色研学点位汇总：跨线路合并，供“周围点位”使用 */
+var NEARBY = [];
+(function buildNearby(){
+  var seen = {};
+  ROUTES.forEach(function(r){
+    if(r.county !== route.county) return;
+    r.sites.forEach(function(s, i){
+      var key = r.id + '|' + s.name;
+      if(seen[key]) return;
+      seen[key] = 1;
+      NEARBY.push({
+        name: s.name, address: s.address, tags: s.tags || [], icon: s.icon,
+        routeId: r.id, routeName: r.name, siteIndex: i, onRoute: r.id === route.id
+      });
+    });
+  });
+})();
+document.getElementById('mNearbyText').textContent = '周围点位 ' + NEARBY.length + '个';
 document.getElementById('routeDesc').textContent = route.desc;
 document.getElementById('lgCountyText').textContent = '本线路覆盖：' + route.region;
 
@@ -694,7 +726,8 @@ function selectSite(index){
 
   if(window.__chart && window.__mapReady) updateMapSelection();
 }
-selectSite(0);
+var initSite = parseInt(getParam('site'), 10);
+selectSite(initSite >= 0 && initSite < SITES.length ? initSite : 0);
 
 /* ============ 中间：ECharts 行政区划底图 + 真实点位 ============ */
 var chart = null;
@@ -990,6 +1023,41 @@ function closeSafetyPlan(){
   document.body.style.overflow = '';
 }
 
+/* ===== 本区域红色研学点位 ===== */
+function showNearbyPoints(){
+  var ov = document.getElementById('nearbyOverlay');
+  if(!ov) return;
+  var sub = document.getElementById('nearbySub');
+  if(sub) sub.textContent = route.region + ' · 本区域（' + route.county + '）共 ' + NEARBY.length + ' 个红色研学点位';
+  var body = document.getElementById('nearbyBody');
+  if(!body) return;
+  body.innerHTML = NEARBY.map(function(p, i){
+    return '<div class="nb-item' + (p.onRoute ? ' on-route' : '') + '" data-route="' + p.routeId + '" data-site="' + p.siteIndex + '">' +
+      '<div class="nb-num">' + (i + 1) + '</div>' +
+      '<div class="nb-main">' +
+        '<div class="nb-name">' + p.icon + ' ' + p.name + (p.onRoute ? '<span class="nb-badge">本线路</span>' : '') + '</div>' +
+        '<div class="nb-meta">' + p.routeName + ' · ' + p.address + '</div>' +
+      '</div>' +
+      '<div class="nb-go">' + (p.onRoute ? '定位' : '查看') + '<span>›</span></div>' +
+    '</div>';
+  }).join('');
+  body.querySelectorAll('.nb-item').forEach(function(el){
+    el.addEventListener('click', function(){
+      var rid = parseInt(el.getAttribute('data-route'), 10);
+      var idx = parseInt(el.getAttribute('data-site'), 10);
+      if(rid === route.id){ closeNearbyPoints(); selectSite(idx); }
+      else { window.location.href = 'yanxue-detail.html?id=' + rid + '&site=' + idx; }
+    });
+  });
+  ov.classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+function closeNearbyPoints(){
+  var ov = document.getElementById('nearbyOverlay');
+  if(ov) ov.classList.remove('show');
+  document.body.style.overflow = '';
+}
+
 initMap();
 </script>
 
@@ -1006,6 +1074,23 @@ initMap();
     <div class="safety-body" id="safetyBody"></div>
     <div class="safety-foot">
       <button class="safety-ok" type="button" onclick="closeSafetyPlan()">我已阅读</button>
+    </div>
+  </div>
+</div>
+
+<!-- 本区域红色研学点位弹窗 -->
+<div class="safety-overlay" id="nearbyOverlay" onclick="if(event.target===this)closeNearbyPoints()">
+  <div class="safety-box nb-box">
+    <div class="safety-head">
+      <div>
+        <div class="safety-title">本区域红色研学点位</div>
+        <div class="safety-sub" id="nearbySub">区域 · 点位数量</div>
+      </div>
+      <button class="safety-close" type="button" onclick="closeNearbyPoints()">×</button>
+    </div>
+    <div class="safety-body" id="nearbyBody"></div>
+    <div class="safety-foot">
+      <button class="safety-ok" type="button" onclick="closeNearbyPoints()">关闭</button>
     </div>
   </div>
 </div>
