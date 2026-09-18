@@ -74,6 +74,8 @@
   .meta-nearby{cursor:pointer;border:1px solid rgba(166,44,44,.2);transition:all .25s}
   .meta-nearby:hover{background:rgba(166,44,44,.16);color:var(--accent-red);transform:translateY(-1px)}
   .meta-nearby:hover svg{color:var(--accent-red)}
+  .meta-nearby .nb-caret{opacity:.85;transition:transform .25s}
+  .meta-nearby:hover .nb-caret{transform:translateX(2px);color:var(--accent-red)}
   .route-desc{font-size:12px;color:var(--text-secondary);line-height:1.65;margin-bottom:12px}
   .route-actions{display:flex;gap:8px}
   .route-actions button{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:4px;padding:8px 0;border-radius:8px;background:rgba(166,44,44,.05);border:1px solid rgba(166,44,44,.16);color:var(--accent-red);font-size:12px;cursor:pointer;transition:all .3s;font-family:inherit}
@@ -272,9 +274,10 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
             <span id="mDur">—</span>
           </span>
-          <span class="meta-item meta-nearby" id="mNearby" title="点击查看本区域全部红色研学点位">
+          <span class="meta-item meta-nearby" id="mNearby" role="button" tabindex="0" onclick="showNearbyPoints()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();showNearbyPoints();}" title="点击查看本区域全部红色研学点位">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
             <span id="mNearbyText">—</span>
+            <svg class="nb-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="9 18 15 12 9 6"/></svg>
           </span>
         </div>
         <p class="route-desc" id="routeDesc"></p>
@@ -1057,6 +1060,15 @@ function closeNearbyPoints(){
   if(ov) ov.classList.remove('show');
   document.body.style.overflow = '';
 }
+
+/* 兜底绑定：确保「周围点位」可点击 */
+(function bindNearby(){
+  var el = document.getElementById('mNearby');
+  if(el && !el.getAttribute('data-bound')){
+    el.setAttribute('data-bound', '1');
+    el.addEventListener('click', function(){ showNearbyPoints(); });
+  }
+})();
 
 initMap();
 </script>
