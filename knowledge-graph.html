@@ -362,11 +362,13 @@
       /* 十大知识图谱：统一按关系网络设计 */
       const GRAPH_LIST = [
         { id: 'dangzuzhi', name: '地方党组织史料', icon: '🏛️', layout: 'timeline',
-          desc: '以时间轴串联地方党组织沿革：遂昌支部、浙西南特委、省委机关等节点沿年代依次展开，每张卡片列出隶属、重建、领导等关联关系。',
-          tags: ['遂昌支部', '浙西南特委', '省委机关'], foot: '1927—1949' },
+          href: 'lishui-party-org-knowledge-graph.html',
+          desc: '以时间轴为脉络串联地方党组织沿革：拖动时间轴按年代聚焦，关系图谱与实体列表同步切换，从遂昌支部到省委机关逐段展开。',
+          tags: ['遂昌支部', '浙西南特委', '省委机关'], foot: '1923—2000' },
 
         { id: 'liuying', name: '刘英', icon: '🎖️',
-          desc: '以刘英为中心节点，串联红军挺进师、浙江省委与浙西南根据地的多重身份与人物关系。',
+          href: 'liuying-knowledge-graph.html',
+          desc: '以刘英为中心节点的人物脉络图谱，串联红军挺进师、浙江省委与浙西南根据地的多重身份与人物关系，可拖动时间轴按年份查看同期实体。',
           tags: ['红军挺进师', '中共浙江省委', '闽浙边临时省委'], foot: '1905—1942' },
 
         { id: 'suyu', name: '粟裕', icon: '⭐',
@@ -444,7 +446,8 @@
       const grid = document.getElementById('graphGrid');
       grid.innerHTML = GRAPH_LIST.map(function (g, i) {
         const isTl = g.layout === 'timeline';
-        return '<a class="graph-card" href="knowledge-graph-detail.html?g=' + g.id + '">' +
+        const href = g.href || ('knowledge-graph-detail.html?g=' + g.id);
+        return '<a class="graph-card" href="' + href + '">' +
             '<div class="gc-top">' +
               '<div class="gc-icon">' + g.icon + '</div>' +
               '<span class="gc-badge ' + (isTl ? 'timeline' : 'network') + '">' + (isTl ? '时间轴' : '关系网络') + '</span>' +
