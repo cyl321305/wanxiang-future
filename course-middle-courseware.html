@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>挺进师之路 · 挺进浙西南 · 档案特色思政课件</title>
+<style>
+  :root{
+    --p:#1f6b4a; --p2:#39a06a; --soft:#eaf7f0; --ink:#1b2430; --mut:#5c6b7a;
+    --line:rgba(0,0,0,.08); --card:#fff;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family:"Microsoft YaHei","PingFang SC","Hiragino Sans GB",'Source Han Sans SC',system-ui,sans-serif;
+    background:linear-gradient(160deg,#eaf7f0 0%,#f7f9fc 55%,#eef2f7 100%);
+    color:var(--ink);display:grid;place-items:center;overflow:hidden;
+  }
+  .deck{position:relative;width:min(1180px,94vw);height:min(680px,90vh);border-radius:20px;
+    background:var(--card);box-shadow:0 24px 70px rgba(20,35,60,.16),0 2px 0 rgba(255,255,255,.8) inset;overflow:hidden}
+  .slide{position:absolute;inset:0;padding:52px 62px;opacity:0;transform:translateY(14px) scale(.995);
+    transition:opacity .38s ease,transform .38s ease;pointer-events:none;display:flex;flex-direction:column;justify-content:center}
+  .slide.on{opacity:1;transform:none;pointer-events:auto}
+  .kicker{display:inline-block;align-self:flex-start;font-size:13px;letter-spacing:.14em;color:#fff;
+    background:linear-gradient(135deg,var(--p),var(--p2));padding:5px 14px;border-radius:999px;margin-bottom:16px;font-weight:700}
+  h1{font-size:46px;line-height:1.22;letter-spacing:.01em}
+  h2{font-size:29px;line-height:1.34;color:var(--p);margin-bottom:18px}
+  .body{font-size:19px;line-height:2;color:#26313d}
+  .body p{margin-bottom:12px}
+  .body b{color:var(--p)}
+  .cite{margin-top:16px;font-size:14px;color:var(--mut);border-left:3px solid var(--p);padding-left:12px;line-height:1.7}
+  /* cover */
+  .cover{justify-content:center;background:
+     radial-gradient(900px 420px at 88% -10%,#eaf7f0,transparent 60%),
+     linear-gradient(135deg,#fff 0%,#fbfcfe 100%)}
+  .cv-emoji{font-size:64px;margin-bottom:8px}
+  .cv-kicker{font-size:14px;letter-spacing:.22em;color:var(--p);font-weight:800;margin-bottom:10px}
+  .cover h1{font-size:50px}
+  .cv-sub{font-size:21px;color:var(--mut);margin-top:14px;line-height:1.7;max-width:820px}
+  .cv-meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+  .cv-meta span{font-size:13px;color:var(--p);background:var(--soft);border:1px solid var(--line);
+    padding:6px 14px;border-radius:999px;font-weight:700}
+  /* obj */
+  .objlist{list-style:none;display:grid;gap:14px;margin-top:6px}
+  .objlist li{position:relative;padding:14px 18px 14px 54px;background:linear-gradient(180deg,#fff,#eaf7f0);
+    border:1px solid var(--line);border-radius:14px;font-size:18px;line-height:1.7}
+  .objlist li::before{content:counter(o);counter-increment:o;position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:26px;height:26px;border-radius:50%;background:var(--p);color:#fff;font-size:14px;display:grid;place-items:center;font-weight:700}
+  .objlist{counter-reset:o}
+  .objlist.sm li{font-size:16.5px;padding:11px 16px 11px 50px;background:#fff}
+  /* arc */
+  .arc{background:linear-gradient(135deg,#eaf7f0 0%,#fff 46%)}
+  .arctitle{font-size:25px;font-weight:800;color:var(--ink);margin-bottom:12px;line-height:1.4}
+  .arcmeta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+  .arcmeta span{font-size:12.5px;color:#fff;background:var(--p2);padding:4px 12px;border-radius:999px;font-weight:700}
+  .arclabel{font-size:13px;font-weight:800;letter-spacing:.1em;color:var(--p);margin-top:16px}
+  .arcuse{margin-top:8px;font-size:17px;line-height:1.85;background:#fff;border:1px dashed var(--p);
+    border-radius:12px;padding:14px 18px}
+  /* act */
+  .actgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:6px}
+  .actcard{position:relative;background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px 16px 60px;
+    font-size:17px;line-height:1.7;box-shadow:0 6px 18px rgba(20,35,60,.05)}
+  .actcard b{position:absolute;left:16px;top:14px;width:28px;height:28px;border-radius:9px;background:linear-gradient(135deg,var(--p),var(--p2));
+    color:#fff;display:grid;place-items:center;font-size:14px}
+  /* quiz */
+  .opts{display:grid;gap:12px;margin-top:4px}
+  .opt{text-align:left;font:inherit;font-size:18px;padding:15px 20px;border-radius:14px;border:1.5px solid var(--line);
+    background:#fff;cursor:pointer;transition:.18s;color:var(--ink)}
+  .opt:hover{border-color:var(--p);transform:translateX(3px)}
+  .opt.right{background:#e8f7ee;border-color:#22a06b;font-weight:800}
+  .opt.wrong{background:#fdecec;border-color:#d9534f}
+  .ans{margin-top:16px;font-size:15px;color:#1d7a4d;background:#e8f7ee;border-radius:12px;padding:12px 16px;
+    opacity:0;transition:.3s;line-height:1.7}
+  .ans.show{opacity:1}
+  /* list */
+  .rows{display:grid;gap:12px;margin-top:4px}
+  .row{display:grid;grid-template-columns:150px 1fr;gap:16px;align-items:start;background:#fff;border:1px solid var(--line);
+    border-radius:12px;padding:14px 18px}
+  .rt{font-weight:800;color:var(--p);font-size:16.5px;line-height:1.6}
+  .rb{font-size:16.5px;line-height:1.75;color:#2b3742}
+  /* end */
+  .end{background:linear-gradient(135deg,#fff 0%,#eaf7f0 100%)}
+  .endnote{margin-top:22px;font-size:16px;color:var(--mut);line-height:1.8;border-top:1px solid var(--line);padding-top:16px}
+  /* hud */
+  .hud{position:fixed;left:0;right:0;bottom:18px;display:flex;justify-content:center;align-items:center;gap:16px;z-index:20}
+  .btn{width:42px;height:42px;border-radius:50%;border:none;background:#fff;color:var(--p);font-size:19px;cursor:pointer;
+    box-shadow:0 8px 22px rgba(20,35,60,.16);display:grid;place-items:center;transition:.18s}
+  .btn:hover{background:var(--p);color:#fff;transform:translateY(-2px)}
+  .pageno{font-size:14px;font-weight:800;color:var(--p);background:#fff;padding:8px 16px;border-radius:999px;
+    box-shadow:0 8px 22px rgba(20,35,60,.14);min-width:86px;text-align:center}
+  .bar{position:absolute;left:0;bottom:0;height:4px;width:0;background:linear-gradient(90deg,var(--p),var(--p2));
+    border-radius:0 4px 4px 0;transition:width .35s ease}
+  .brand{position:absolute;right:22px;top:20px;font-size:12px;letter-spacing:.12em;color:var(--mut);opacity:.75;z-index:10}
+  @media (max-width:820px){
+    .slide{padding:30px 24px}h1{font-size:32px}.cover h1{font-size:34px}h2{font-size:22px}
+    .body{font-size:16px}.actgrid{grid-template-columns:1fr}.row{grid-template-columns:1fr;gap:6px}
+  }
+</style>
+</head>
+<body>
+<div class="deck" id="deck">
+<section class="slide cover">
+        <div class="cv-emoji">📚</div>
+        <div class="cv-kicker">初中 · 档案特色思政课程</div>
+        <h1>挺进师之路</h1>
+        <div class="cv-sub">1935—1938，一支只有 538 人的小部队，如何在几十倍敌人的围困中，走出一条挺进浙西南的路。</div>
+        <div class="cv-meta"><span>共 2 课时</span><span>适用 初中 7—9 年级</span><span>引用档案 13 件</span><span>档案来源：丽水·遂昌·庆元·松阳·龙泉档案馆</span></div>
+      </section>
+<section class="slide">
+        <div class="kicker">学习目标</div>
+        <h2>学习目标</h2>
+        <ul class="objlist"><li>理清北上抗日先遣队与红军挺进师的沿革关系，理解“牺牲与新生”。</li><li>掌握 1935—1938 年挺进师创建浙西南游击根据地的主要史实与时间线。</li><li>运用档案史料分析斋郎大捷、反“清剿”斗争，初步形成史料实证意识。</li><li>体会“忠诚使命、求是挺进、植根人民”的浙西南革命精神。</li></ul>
+      </section>
+<section class="slide">
+        <div class="kicker">第一课时</div>
+        <h2>先遣队的牺牲：一支几乎覆没的队伍</h2>
+        <div class="body"><p>1934 年 7 月，中央红军第五次反“围剿”失利，被迫准备战略转移。为了调动和牵制国民党军队、掩护主力突围，中共中央抽调<b>红七军团</b>组成红军北上抗日先遣队，从瑞金出发，一路北上，率先举起抗日旗帜。</p><p>先遣队先后攻占庆元县城、活捉伪县长，并在<b>竹口</b>击溃浙江两个保安团。1934 年 10 月，部队进入赣东北德兴重溪，与红十军团会合，组成更强的北上抗日先遣队，方志敏为首，<b>刘英任政治部主任，粟裕任参谋长</b>。</p><p>1935 年 1 月，先遣队在江西<b>怀玉山</b>陷入敌人重围，大部分指战员牺牲，方志敏等领导人被俘后英勇就义，仅有粟裕、刘英率少数人突出重围。先遣队以自己的牺牲，策应了党中央和主力红军的安全。</p></div>
+        <div class="cite">档案依据：《3 遂昌革命斗争史第 3 期》《丽水党史 2011 年合订本》</div>
+      </section>
+<section class="slide">
+        <div class="kicker">历史现场</div>
+        <h2>538 人的挺进师</h2>
+        <div class="body"><p>1935 年 1 月 15 日，中央军区电令：以先遣队突围部队为基础，组建新的红军部队。突围部队退至闽浙赣省委驻地<b>横峰槎源坞</b>，于 <b>1935 年 2 月</b>组成<b>中国工农红军挺进师</b>。</p><p>全师仅 <b>538 人</b>：师长粟裕，政治委员刘英，参谋长王蕴瑞，政治部主任黄富武。政治委员会由刘英、粟裕、黄富武、宗孟平、王维信、姚阿宝、刘达云、洪家云、方志富九人组成，刘英任书记。</p><p>这支部队既无外援，又无内应，却毅然南下浙江，去开辟一块新的根据地。</p></div>
+        <div class="cite">档案依据：《龙泉党史与方志》2002 年第 24 期、《丽水党史 2011 年合订本》</div>
+      </section>
+<section class="slide arc">
+        <div class="kicker">档案实证</div>
+        <div class="arctitle">📜 挺进师与丽水（专题档案图册）</div>
+        <div class="arcmeta"><span>编研·文书</span><span>丽水市档案馆</span><span>红色档案专题</span></div>
+        <div class="body"><p>《挺进师与丽水》是丽水市档案馆围绕红军挺进师挺进浙西南这一主题编纂的专题档案图册，用档案原件、照片和地图还原了挺进师在丽水的行军、作战与建政历程。</p><p>中央交给挺进师的任务是：经过闽北到浙江，长期行动，发动广泛的游击战争，创建苏维埃新的根据地，建立党的组织，<b>调动和牵制大批敌人，从战略上配合主力红军的长征</b>。</p></div>
+        <div class="arclabel">这条档案告诉我们什么</div>
+        <div class="arcuse">读档案要先读“任务书”。挺进师的每一步行动，都是为了完成中央交给的战略任务。</div>
+      </section>
+<section class="slide">
+        <div class="kicker">历史现场</div>
+        <h2>入浙首战与斋郎大捷</h2>
+        <div class="body"><p>1935 年 3 月 23 日，挺进师从闽北出发到达龙泉以西地带，在龙泉<b>宝溪溪头村</b>歼敌一个中队，取得入浙首战胜利。</p><p>4 月 28 日（农历三月二十六日），挺进师在庆元县<b>斋郎村</b>预先设伏，以五六百人的兵力迎战浙江保安第一团李秀部、福建保安第二团马洪琛部及地主武装共 3000 余人的分进合击。</p><p>战斗大获全胜：<b>毙伤敌军 300 余人、俘敌约 200 人，缴获长短枪 150 余支</b>。斋郎大捷迫使龙泉河以南的敌人由攻势转为守势，为开辟以仙霞岭为中心的浙西南游击根据地创造了有利条件。</p></div>
+        <div class="cite">档案依据：《遂昌红军挺进师与遂昌》《龙泉党史与方志》2002 年第 24 期、《丽水党史 2011 年合订本》</div>
+      </section>
+<section class="slide arc">
+        <div class="kicker">档案实证</div>
+        <div class="arctitle">📜 斋郎战斗史料汇编</div>
+        <div class="arcmeta"><span>文书</span><span>1935 年 4 月</span><span>庆元县档案馆</span><span>作战档案</span></div>
+        <div class="body"><p>档案记下了战前态势、作战经过与战果统计，也记下了红军取胜的“密码”：选择敌人必经的隘口设伏，集中兵力打其一路。</p><p>同一批档案还显示，敌军此次“分进合击”动用了浙闽两省保安团和近千名大刀会徒打头阵；红军采取争取、分化大刀会的策略，比喻为“大刀会是把刀，敌拿杀我，我拿杀敌”。</p></div>
+        <div class="arclabel">这条档案告诉我们什么</div>
+        <div class="arcuse">档案让“以少胜多”不再是口号，而是一步一步可核查的部署与数字。</div>
+      </section>
+<section class="slide">
+        <div class="kicker">课堂活动</div>
+        <h2>史料研读任务</h2>
+        <div class="actgrid"><div class="actcard"><b>1</b>在地图上标出斋郎村位置，画出挺进师由闽北入浙的行军路线。</div><div class="actcard"><b>2</b>从档案中摘录斋郎战斗的三组数字，说明“以少胜多”体现在哪里。</div><div class="actcard"><b>3</b>完成事件排序：先遣队余部改编为挺进师 → 挺进师南下浙江 → 斋郎设伏歼敌 → 进入浙西南腹地。</div><div class="actcard"><b>4</b>讨论：为什么先遣队的牺牲，换来了挺进师的新生？</div></div>
+      </section>
+<section class="slide quiz" data-a="1">
+        <div class="kicker">随堂检测</div>
+        <h2>红军挺进师组建时全师有多少人？</h2>
+        <div class="opts"><button class="opt" data-n="0">A. 300 余人</button><button class="opt" data-n="1">B. 538 人</button><button class="opt" data-n="2">C. 1000 余人</button><button class="opt" data-n="3">D. 1500 余人</button></div>
+        <div class="ans">✔ 正确答案：B　1935 年 2 月，挺进师在横峰槎源坞组成，全师 538 人。</div>
+      </section>
+<section class="slide">
+        <div class="kicker">第二课时</div>
+        <h2>站稳脚跟：从小吉会议到红色政权</h2>
+        <div class="body"><p>1935 年 5 月，挺进师进入松阳、龙泉、遂昌交界地区，与当地“青帮”首领<b>陈凤生、陈丹山、卢子敬</b>率领的农民武装会合。卢子敬牵来大白马迎接粟裕、刘英，挺进师在斗潭村休整，发出《告“青帮”兄弟书》，许多贫苦农民参军。</p><p><b>1935 年 6 月上旬</b>，挺进师各部会合于松阳<b>小吉村</b>，刘英主持政治委员会议，决定创建浙西南游击根据地，成立<b>中共浙西南特委</b>，宗孟平任第一任书记（后黄富武、许信焜、张麒麟相继继任）。</p><p>1935 年 7 月以后，挺进师在遂昌、松阳、龙泉等地陆续建立玉岩区、竹溪区、王村口区、住溪区等区、乡、村苏维埃政权，开展分田分地的土地革命，形成了以松阳安岱后、遂昌王村口、龙泉住溪为中心、纵横百余公里的浙西南游击根据地。挺进师也由 500 余人发展到 1500 余人。</p></div>
+        <div class="cite">档案依据：《丽水党史 2011 年合订本》《浙西南革命故事集》《4 遂昌革命斗争史资料 第四期》</div>
+      </section>
+<section class="slide arc">
+        <div class="kicker">档案实证</div>
+        <div class="arctitle">📜 遂昌王村口师部旧址普查档案</div>
+        <div class="arcmeta"><span>文书·图纸</span><span>2019 年 6 月</span><span>遂昌县档案馆</span><span>红色设施</span></div>
+        <div class="body"><p>1935 年春，挺进师以遂昌<b>王村口</b>为师部驻地和领导中心。普查档案完整登记了师部旧址及蔡相庙、宏济桥等旧址群的测绘图纸、照片与保护范围。</p><p>同批档案还记载：1935 年 7 月，挺进师师部进驻王村口；国民党则在遂昌设“浙南剿匪指挥部”，一场更严酷的较量即将开始。</p></div>
+        <div class="arclabel">这条档案告诉我们什么</div>
+        <div class="arcuse">旧址普查档案是“活着的史料”——它让 80 多年前的驻地、桥梁、标语至今仍能被准确指认。</div>
+      </section>
+<section class="slide">
+        <div class="kicker">历史现场</div>
+        <h2>七万敌军压境与“敌进我进”</h2>
+        <div class="body"><p>1935 年 <b>9 月 19 日</b>，国民党调集以<b>第十八军（罗卓英）</b>为主力的约 7 万兵力，开始对浙西南大举清剿。三年间，国民党先后两次以 40 个团的兵力进行围剿，而当时挺进师连同地方武装和工作人员只有 3000 余人。</p><p>面对重兵压境，挺进师采取<b>“敌进我进”</b>的方针：留下第二、五纵队和地方游击队在根据地坚持，主力跳到敌人后方去，吸引、调动、打击敌人。</p><p>敌人的血洗并没有摧垮浙西南。随着人员不断牺牲减少，挺进师把支队整编为大队，大队又缩编为小队，到最后只剩下数十人，仍与敌人周旋。到 1935 年 12 月，根据地中心区丧失，黄富武被捕就义，但游击斗争始终未断。</p></div>
+        <div class="cite">档案依据：《丽水党史 2011 年合订本》《4 遂昌革命斗争史资料 第四期》《中国共产党龙泉历史第一卷》</div>
+      </section>
+<section class="slide">
+        <div class="kicker">历史现场</div>
+        <h2>从合作抗日到开赴前线的“新四军一部”</h2>
+        <div class="body"><p>1937 年，日本发动全面侵华战争，民族矛盾上升为主要矛盾。根据中央精神，刘英代表中共闽浙边临时省委，与国民党闽浙赣皖边区主任公署代表谈判，达成合作抗日协议。</p><p>1935 年 11 月，<b>中共闽浙边临时省委</b>成立，刘英任书记，粟裕任组织部部长，叶飞任宣传部部长，统一领导浙南、浙西南等地的革命斗争。1938 年，根据中央指示，闽浙边临时省委撤销，成立浙江临时省委，刘英任书记。</p><p>1938 年 3 月，浙西南、浙南的红军由粟裕率领，改编为<b>新四军一部</b>，开赴皖南，北上抗日。坚持了三年游击战争的浙西南红军，由此融入了全民族抗日战争的洪流。</p></div>
+        <div class="cite">档案依据：《丽水党史 2011 年合订本》《丽水史志：2022-1》</div>
+      </section>
+<section class="slide">
+        <div class="kicker">时间线梳理</div>
+        <h2>挺进师三年大事记（1935—1938）</h2>
+        <div class="rows"><div class="row"><div class="rt">1934.07</div><div class="rb">红七军团组成北上抗日先遣队，率先举起抗日旗帜</div></div><div class="row"><div class="rt">1935.01</div><div class="rb">先遣队在江西怀玉山失利，粟裕、刘英率少数人突围</div></div><div class="row"><div class="rt">1935.02</div><div class="rb">挺进师在横峰槎源坞组成，全师 538 人</div></div><div class="row"><div class="rt">1935.03</div><div class="rb">入浙首战：龙泉宝溪溪头村歼敌一个中队</div></div><div class="row"><div class="rt">1935.04</div><div class="rb">庆元斋郎大捷，打开进入浙西南的通道</div></div><div class="row"><div class="rt">1935.06</div><div class="rb">松阳小吉会议，成立中共浙西南特委</div></div><div class="row"><div class="rt">1935.07</div><div class="rb">建立区、乡、村苏维埃政权，部队发展到 1500 余人</div></div><div class="row"><div class="rt">1935.09</div><div class="rb">国民党以第十八军为主力约 7 万兵力大举清剿</div></div><div class="row"><div class="rt">1935.11</div><div class="rb">成立中共闽浙边临时省委，刘英任书记</div></div><div class="row"><div class="rt">1937</div><div class="rb">国共合作抗日，达成合作抗日协议</div></div><div class="row"><div class="rt">1938.03</div><div class="rb">改编为新四军一部，开赴皖南抗日</div></div></div>
+      </section>
+<section class="slide arc">
+        <div class="kicker">档案实证</div>
+        <div class="arctitle">📜 丽水党史 2011 年合订本</div>
+        <div class="arcmeta"><span>编研·期刊</span><span>丽水市档案馆 / 党史部门</span><span>地方党史资料</span></div>
+        <div class="body"><p>合订本系统梳理了浙西南根据地的创建、反“清剿”与党组织恢复的完整脉络，并列出“丽水党史上的几个第一”。</p><p>其中明确记载：1935 年 2 月挺进师组建（538 人）；4 月 28 日斋郎战斗胜利；5 月—9 月创建浙西南游击根据地；9 月 19 日国民党军开始大规模清剿。</p></div>
+        <div class="arclabel">这条档案告诉我们什么</div>
+        <div class="arcuse">编研档案把零散的原始记录“串珠成线”，是我们梳理时间轴时最可靠的依据。</div>
+      </section>
+<section class="slide quiz" data-a="0">
+        <div class="kicker">随堂检测</div>
+        <h2>1935 年 9 月起国民党清剿浙西南，主力是哪一支部队？</h2>
+        <div class="opts"><button class="opt" data-n="0">A. 第十八军</button><button class="opt" data-n="1">B. 第十九路军</button><button class="opt" data-n="2">C. 第八十八师</button><button class="opt" data-n="3">D. 新编第五军</button></div>
+        <div class="ans">✔ 正确答案：A　国民党调集以第十八军为主力的约 7 万兵力。</div>
+      </section>
+<section class="slide">
+        <div class="kicker">历史现场</div>
+        <h2>挺进师的历史地位</h2>
+        <div class="body"><p>浙西南革命根据地，是红军主力长征之后、南方革命根据地纷纷收缩乃至丧失、中国革命总体上处于艰难逆境之时诞生的<b>第一块崭新根据地</b>。</p><p>仅在两次反清剿战争中，浙西南就先后吸引了国民党罗卓英、刘建绪部各三四十个团的兵力，历时 8 个月之久，有效减轻了其他根据地的军事压力，<b>从战略上策应了红军主力长征</b>。</p><p>艰苦卓绝的斗争，培养造就了以粟裕、刘英为代表的一批优秀干部队伍。“忠诚使命、求是挺进、植根人民”的浙西南革命精神，由此孕育。</p></div>
+        <div class="cite">档案依据：《丽水党史 2011 年合订本》（周德春论点）《永远的丰碑》专题档案图板展</div>
+      </section>
+<section class="slide end">
+        <div class="kicker">本课小结</div>
+        <h2>本课要点回顾</h2>
+        <ul class="objlist sm"><li>先遣队的牺牲换来了挺进师的新生；挺进师 1935 年 2 月组成于横峰槎源坞，全师 538 人。</li><li>1935 年 3 月入浙首战（龙泉溪头），4 月 28 日取得斋郎大捷。</li><li>1935 年 6 月上旬松阳小吉会议成立中共浙西南特委，随后建立苏维埃政权，部队发展到 1500 余人。</li><li>1935 年 9 月 19 日国民党以第十八军为主力约 7 万兵力清剿，挺进师以“敌进我进”坚持斗争。</li><li>1938 年 3 月改编为新四军一部，开赴皖南抗日。</li></ul>
+        <div class="endnote">浙西南革命根据地是长征后南方新建立的第一块根据地，从战略上策应了红军主力长征。</div>
+      </section>
+<div class="bar" id="bar"></div>
+</div>
+<div class="brand">档案特色思政课程 · 初中</div>
+<div class="hud">
+  <button class="btn" id="prev" title="上一页">‹</button>
+  <div class="pageno" id="pg">1 / 18</div>
+  <button class="btn" id="next" title="下一页">›</button>
+</div>
+<script>
+(function(){
+  var slides=[].slice.call(document.querySelectorAll('.slide'));
+  var i=0, pg=document.getElementById('pg'), bar=document.getElementById('bar');
+  function show(n){
+    i=Math.max(0,Math.min(slides.length-1,n));
+    slides.forEach(function(s,k){ s.classList.toggle('on',k===i); });
+    pg.textContent=(i+1)+' / '+slides.length;
+    bar.style.width=((i)/(slides.length-1)*100)+'%';
+  }
+  document.getElementById('prev').onclick=function(){show(i-1)};
+  document.getElementById('next').onclick=function(){show(i+1)};
+  document.addEventListener('keydown',function(e){
+    if(e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' '){e.preventDefault();show(i+1)}
+    if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();show(i-1)}
+    if(e.key==='Home'){show(0)} if(e.key==='End'){show(slides.length-1)}
+  });
+  document.getElementById('deck').addEventListener('click',function(e){
+    if(e.target.closest('.opt')||e.target.closest('.btn'))return;
+    show(i+1);
+  });
+  var x0=null;
+  document.addEventListener('touchstart',function(e){x0=e.touches[0].clientX},{passive:true});
+  document.addEventListener('touchend',function(e){
+    if(x0===null)return; var dx=e.changedTouches[0].clientX-x0;
+    if(Math.abs(dx)>45){ show(dx<0?i+1:i-1); } x0=null;
+  },{passive:true});
+  // quiz
+  slides.forEach(function(s){
+    if(!s.classList.contains('quiz'))return;
+    var a=+s.getAttribute('data-a'), ans=s.querySelector('.ans');
+    s.querySelectorAll('.opt').forEach(function(b){
+      b.onclick=function(){
+        var n=+b.getAttribute('data-n');
+        s.querySelectorAll('.opt').forEach(function(o){o.classList.remove('right','wrong')});
+        b.classList.add(n===a?'right':'wrong');
+        if(n!==a) s.querySelectorAll('.opt')[a].classList.add('right');
+        ans.classList.add('show');
+      };
+    });
+  });
+  show(0);
+})();
+</script>
+</body>
+</html>
