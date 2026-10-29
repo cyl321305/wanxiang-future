@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>特色研学路线 - 万象未来 · AI 档案知识空间</title>
+<title>跟着档案去研学 - 万象未来 · AI 档案知识空间</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=ZCOOL+XiaoWei&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
@@ -200,8 +200,8 @@
     <!-- 头部紧凑 -->
     <div class="head-row">
       <div class="head-left">
-        <h1 class="page-title">特色研学路线</h1>
-        <p class="page-subtitle">行走的课堂 · 丽水九县市区红色研学线路</p>
+        <h1 class="page-title">跟着档案去研学</h1>
+        <p class="page-subtitle">从一份档案出发，走到一处旧址 · 丽水九县市区红色研学线路</p>
       </div>
       <div class="stats-row">
         <div class="stat-mini">
@@ -210,7 +210,7 @@
         </div>
         <div class="stat-mini">
           <div class="icon red">🚩</div>
-          <div class="txt"><span class="num" id="statSites">45<small style="font-size:10px;color:var(--text-muted)">个</small></span><span class="lbl">研学点位总数</span></div>
+          <div class="txt"><span class="num" id="statSites">42<small style="font-size:10px;color:var(--text-muted)">个</small></span><span class="lbl">研学点位总数</span></div>
         </div>
         <div class="stat-mini">
           <div class="icon green">🗺️</div>
@@ -253,36 +253,146 @@
 <script>
   /* 丽水九县市区 + 市级，共 10 条红色研学线路（依据丽水市文广旅体局发布的十条红色旅游精品线路整理） */
   const routes = [
-    {id:1,scope:'市级',region:'丽水市本级',title:'浙西南革命精神寻根之旅',emoji:'🏛️',days:'1天',durKey:'1',
-      theme:'革命历史',hot:true,sites:4,cover:'#c9a884,#8a6c4a',
-      desc:'串联浙西南革命根据地纪念馆、中共浙江省委机关旧址与万象山革命烈士陵园，一天内理清浙西南革命根据地创建、发展与壮大的主线。'},
-    {id:2,scope:'区',region:'莲都区',title:'寻访红色印记 · 丹霞研学之旅',emoji:'⛰️',days:'1天',durKey:'1',
-      theme:'红色教育',hot:false,sites:4,cover:'#bfa07a,#7d6244',
-      desc:'走进大港头浙江铁工厂旧址、南乡革命纪念馆与东西岩革命老区，在丹霞地貌与古堰画乡之间寻找抗战记忆。'},
-    {id:3,scope:'市',region:'龙泉市',title:'品剑风瓷韵 · 寻红色根脉',emoji:'⚔️',days:'2天1夜',durKey:'2',
-      theme:'革命历史',hot:false,sites:5,cover:'#a98f6b,#6f5638',
-      desc:'从浙大龙泉分校旧址到披云山、住龙红色小镇，在剑瓷名城与浙西南革命中心区域之间完成一次跨越时空的研学。'},
-    {id:4,scope:'县',region:'青田县',title:'初心路立根之旅 · 侨心向党',emoji:'🌏',days:'2天1夜',durKey:'2',
-      theme:'红色教育',hot:false,sites:4,cover:'#c0a682,#7a603f',
-      desc:'以青田县革命烈士陵园、石门洞与祯旺乡吴畲村为主线，读懂侨乡儿女在革命年代的家国情怀。'},
-    {id:5,scope:'县',region:'云和县',title:'浙西南第一块革命根据地之旅',emoji:'🚩',days:'2天1夜',durKey:'2',
-      theme:'革命历史',hot:false,sites:5,cover:'#b89a76,#75593c',
-      desc:'沿“一面党旗、一个支部、一次会议”三条线索，走访小顺、梅湾与云和会议旧址，触摸云和的红色“三个一”。'},
-    {id:6,scope:'县',region:'庆元县',title:'红色斋郎 · 百山祖国防教育之旅',emoji:'🏔️',days:'2天1夜',durKey:'2',
-      theme:'革命历史',hot:false,sites:4,cover:'#a58c68,#6b5334',
-      desc:'重走斋郎战斗遗址，看会龙桥、牧牛场与斋郎战斗纪念碑，理解挺进师入浙“关键性一仗”的历史分量。'},
-    {id:7,scope:'县',region:'缙云县',title:'星火缙云 · 寻访中共处属特委',emoji:'🔥',days:'2天1夜',durKey:'2',
-      theme:'革命历史',hot:false,sites:4,cover:'#c2a481,#7c6141',
-      desc:'从壶镇燕翼小学的中共缙云县第一次代表大会旧址，走到大源镇江西山后中共处属特委机关旧址纪念馆。'},
-    {id:8,scope:'县',region:'遂昌县',title:'逛红色古镇 · 探千年金窟',emoji:'🏘️',days:'2天1夜',durKey:'2',
-      theme:'红色教育',hot:true,sites:5,cover:'#b3946f,#705438',
-      desc:'在浙西南第一个党组织诞生地泉湖寺重温初心，再赴王村口红色古镇寻访挺进师师部旧址群与红军古道。'},
-    {id:9,scope:'县',region:'松阳县',title:'挺进师之旅 · 寻革命足迹',emoji:'🌲',days:'3天2夜',durKey:'3',
-      theme:'革命历史',hot:false,sites:6,cover:'#9e8865,#65502f',
-      desc:'沿横樟、小吉、高亭、斗潭一路深入，最终抵达“红色古寨”安岱后浙西南革命根据地领导机关旧址群。'},
-    {id:10,scope:'县',region:'景宁畲族自治县',title:'忠勇畲乡红色研学之旅',emoji:'🎋',days:'2天1夜',durKey:'2',
-      theme:'红色教育',hot:false,sites:4,cover:'#b9a07c,#6f5837',
-      desc:'走访毛垟闽东红军景宁馆与大张坑红色畲寨，听畲族群众与红军并肩战斗的故事，感受忠勇畲乡。'}
+    {
+      "id": 1,
+      "scope": "市级",
+      "region": "丽水市",
+      "title": "溪头第一枪 · 浙西南三日",
+      "emoji": "🧭",
+      "days": "3天2夜",
+      "durKey": "3",
+      "theme": "入浙、建政、抗战",
+      "hot": true,
+      "sites": 10,
+      "cover": "#c9a884,#8a6c4a",
+      "desc": "挺进师入浙第一仗在龙泉溪头打响，八个月后王村口苏维埃政府成立，再到省委机关驻丽水、小顺兵工厂支撑抗战后方——三日走完浙西南从入浙到抗战的完整链条。"
+    },
+    {
+      "id": 2,
+      "scope": "区",
+      "region": "莲都区",
+      "title": "四牌楼暗线 · 省委驻丽水",
+      "emoji": "📜",
+      "days": "2天1夜",
+      "durKey": "2",
+      "theme": "隐蔽战线、抗战省城",
+      "hot": true,
+      "sites": 11,
+      "cover": "#bfa07a,#7d6244",
+      "desc": "四牌楼兴华广货号、花园弄黄景之律师事务所、高井弄新四军办事处，三处老城街巷撑起省委地下网络；第二天转南乡、老竹与大港头，看城乡两面的革命现场。"
+    },
+    {
+      "id": 3,
+      "scope": "市",
+      "region": "龙泉市",
+      "title": "住龙特委 · 宝溪枪声",
+      "emoji": "🏺",
+      "days": "1天",
+      "durKey": "1",
+      "theme": "特委驻地、入浙首战",
+      "hot": false,
+      "sites": 3,
+      "cover": "#a98f6b,#6f5638",
+      "desc": "宝溪溪头村的入浙第一仗、内高塘的特委诞生地、住龙的 11 个党支部——龙泉一天，走的是挺进师从战斗到建政的最初半年。"
+    },
+    {
+      "id": 4,
+      "scope": "县",
+      "region": "青田县",
+      "title": "万山廿一年 · 洞中星火",
+      "emoji": "🐟",
+      "days": "1天",
+      "durKey": "1",
+      "theme": "红十三军、稻鱼侨乡",
+      "hot": false,
+      "sites": 2,
+      "cover": "#c0a682,#7a603f",
+      "desc": "万山的廿一年、滴水洞里的伤员、藏枪树下的枪，是红十三军在侨乡留下的根；下午到龙现村，看全球重要农业文化遗产稻鱼共生。"
+    },
+    {
+      "id": 5,
+      "scope": "县",
+      "region": "云和县",
+      "title": "顶天立地 · 小顺兵工厂",
+      "emoji": "🏭",
+      "days": "1天",
+      "durKey": "1",
+      "theme": "抗战兵工、省城记忆",
+      "hot": false,
+      "sites": 3,
+      "cover": "#b89a76,#75593c",
+      "desc": "周恩来在小顺礼堂说“工人两字合起来就是天”；这座东南最大兵工厂撑起战时省会的工业命脉。下午走赤石，看 1937 年红军分浮财的那一页。"
+    },
+    {
+      "id": 6,
+      "scope": "县",
+      "region": "庆元县",
+      "title": "月山出师 · 斋郎决胜",
+      "emoji": "🚩",
+      "days": "1天",
+      "durKey": "1",
+      "theme": "先遣队、斋郎大捷",
+      "hot": false,
+      "sites": 3,
+      "cover": "#a58c68,#6b5334",
+      "desc": "1934 年竹口后坑桥的八九小时激战，1935 年斋郎击溃三千余众——先遣队出师、挺进师决胜，同一支血脉的两次突围。"
+    },
+    {
+      "id": 7,
+      "scope": "县",
+      "region": "缙云县",
+      "title": "黄弄坑会师 · 山路密语",
+      "emoji": "🛤️",
+      "days": "1天",
+      "durKey": "1",
+      "theme": "浙东游击、秘密交通",
+      "hot": false,
+      "sites": 2,
+      "cover": "#c2a481,#7c6141",
+      "desc": "黄弄坑的会师让浙东根据地站稳了脚，双溪口的秘密交通线把浙南、浙西、闽北连成一片——一条明线打仗，一条暗线送信。"
+    },
+    {
+      "id": 8,
+      "scope": "县",
+      "region": "遂昌县",
+      "title": "桥上的政权 · 泉湖寺火种",
+      "emoji": "🏘️",
+      "days": "1天",
+      "durKey": "1",
+      "theme": "首个支部、苏维埃政权",
+      "hot": false,
+      "sites": 3,
+      "cover": "#b3946f,#705438",
+      "desc": "浙西南第一个党组织诞生在泉湖寺，八年后苏维埃政府在宏济桥成立；桥柱上那副“粟师长呼风雨巧制顽敌”的对联，还留在老桥上。"
+    },
+    {
+      "id": 9,
+      "scope": "县",
+      "region": "松阳县",
+      "title": "古寨首府 · 安岱后岁月",
+      "emoji": "🌲",
+      "days": "1天",
+      "durKey": "1",
+      "theme": "根据地首府、古城文脉",
+      "hot": false,
+      "sites": 2,
+      "cover": "#9e8865,#65502f",
+      "desc": "小吉会议后，特委与军分区机关进驻安岱后，古寨成了根据地首府；总指挥陈凤生为救群众下山就捕。下午回松阳老城，看三庙文脉。"
+    },
+    {
+      "id": 10,
+      "scope": "县",
+      "region": "景宁畲族自治县",
+      "title": "忠勇畲山 · 第一支部",
+      "emoji": "🎋",
+      "days": "1天",
+      "durKey": "1",
+      "theme": "畲族忠勇、两面政权",
+      "hot": false,
+      "sites": 3,
+      "cover": "#b9a07c,#6f5837",
+      "desc": "梅岐桂远的第一个党支部、东坑北溪的两面政权、大张坑的民兵连——畲山的忠勇，写在一次次站队与牺牲里。"
+    }
   ];
 
   const DUR_LABEL = {'1':'1日研学','2':'2日研学','3':'3日及以上'};
